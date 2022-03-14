@@ -1,0 +1,64 @@
+package api
+
+import (
+	"encoding/json"
+	"io"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"net/url"
+	"strings"
+)
+
+// RebrickableBaseURL contains the Rebrickable API base URL
+const RebrickableBaseURL string = "https://rebrickable.com/api/v3/"
+
+// CreateRequest returns a new http.Reqest object for the given url of the Rebrickable API
+func CreateRequest(method string, url string, apiKey string, data url.Values) (*http.Request, error) {
+	var body io.Reader
+	if data != nil {
+		body = strings.NewReader(data.Encode())
+	}
+
+	reqest, err := http.NewRequest(method, url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	reqest.Header.Set("Accept", "application/json")
+	reqest.Header.Set("Authorization", "key "+apiKey)
+
+	return reqest, nil
+}
+
+// CreateGetRequest returns a new http.Reqest object for the given path of the Rebrickable API
+func CreateGetRequest(url string, apiKey string) (*http.Request, error) {
+	return CreateRequest(http.MethodGet, url, apiKey, nil)
+}
+
+// DoRequest issues an HTTP request
+func DoRequest(client *http.Client, reqest *http.Request, v interface{}) error {
+	log.Printf("Requesting %s\n", reqest.URL)
+
+	var body []byte
+	result, err := client.Do(reqest)
+	if err != nil {
+		return err
+	}
+
+	if result.Body != nil {
+		defer result.Body.Close()
+	}
+
+	body, err = ioutil.ReadAll(result.Body)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(body, v)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

@@ -1,0 +1,74 @@
+{
+    "parts": [
+        {
+            "quantity": 10,
+            "part": {
+                "part_num": "25",
+                "name": "name25",
+                "part_url": "name25.url",
+                "part_img_url": "name25.image.url"
+            },
+            "color": {
+                "id": 1,
+                "name": "black"
+            },
+            "is_spare": false
+        },
+        {
+            "quantity": 3,
+            "part": {
+                "part_num": "25",
+                "name": "name25",
+                "part_url": "name25.url",
+                "part_img_url": "name25.image.url"
+            },
+            "color": {
+                "id": 2,
+                "name": "red"
+            },
+            "is_spare": false
+        },
+        {
+            "quantity": 5,
+            "part": {
+                "part_num": "2c",
+                "name": "name2c",
+                "part_url": "name2c.url",
+                "part_img_url": "name2c.image.url"
+            },
+            "color": {
+                "id": 3,
+                "name": "yellow"
+            },
+            "is_spare": false
+        },
+        {
+            "quantity": 1,
+            "part": {
+                "part_num": "2",
+                "name": "name2",
+                "part_url": "name2.url",
+                "part_img_url": "name2.image.url"
+            },
+            "color": {
+                "id": 5,
+                "name": "blue"
+            },
+            "is_spare": false
+        },
+        {
+            "quantity": 1,
+            "part": {
+                "part_num": "2a",
+                "name": "name2a",
+                "part_url": "name2a.url",
+                "part_img_url": "name2a.image.url"
+            },
+            "color": {
+                "id": 4,
+                "name": "gray"
+            },
+            "is_spare": true
+        }
+    ]
+}

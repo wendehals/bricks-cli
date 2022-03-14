@@ -1,0 +1,74 @@
+{
+    "parts": [
+        {
+            "quantity": 20,
+            "part": {
+                "part_num": "25",
+                "name": "name25",
+                "part_url": "name25.url",
+                "part_img_url": "name25.image.url"
+            },
+            "color": {
+                "id": 3,
+                "name": "yellow"
+            },
+            "is_spare": false
+        },
+        {
+            "quantity": 1,
+            "part": {
+                "part_num": "2412a",
+                "name": "name2412a",
+                "part_url": "name2412a.url",
+                "part_img_url": "name2412a.image.url"
+            },
+            "color": {
+                "id": 3,
+                "name": "yellow"
+            },
+            "is_spare": false
+        },
+        {
+            "quantity": 1,
+            "part": {
+                "part_num": "2412a",
+                "name": "name2412a",
+                "part_url": "name2412a.url",
+                "part_img_url": "name2412a.image.url"
+            },
+            "color": {
+                "id": 1,
+                "name": "black"
+            },
+            "is_spare": false
+        },
+        {
+            "quantity": 1,
+            "part": {
+                "part_num": "2412b",
+                "name": "name2412b",
+                "part_url": "name2412b.url",
+                "part_img_url": "name2412b.image.url"
+            },
+            "color": {
+                "id": 1,
+                "name": "black"
+            },
+            "is_spare": false
+        },
+        {
+            "quantity": 100,
+            "part": {
+                "part_num": "2",
+                "name": "name2",
+                "part_url": "name2.url",
+                "part_img_url": "name2.image.url"
+            },
+            "color": {
+                "id": 5,
+                "name": "blue"
+            },
+            "is_spare": true
+        }
+    ]
+}

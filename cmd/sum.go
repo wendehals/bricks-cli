@@ -12,8 +12,9 @@ import (
 var sumCmd = &cobra.Command{
 	Use:   "sum [-c FILE] [-o FILE] [-j FILE] JSONFILE...",
 	Short: "Sums up the parts of multiple collections.",
-	Long: `The command sums up all parts of multiple collections to a new collection
-by merging identical parts to single lots.`,
+	Long: `
+The command sums up all parts of multiple collections to a new collection by
+merging identical parts to single lots.`,
 
 	DisableFlagsInUseLine: true,
 

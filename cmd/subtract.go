@@ -12,11 +12,12 @@ import (
 var subtractCmd = &cobra.Command{
 	Use:   "subtract [-c FILE] [-o FILE] [-j FILE] JSONFILE_MINUEND JSONFILE_SUBTRAHEND",
 	Short: "Subtracts one collection of parts from another.",
-	Long: `The command subtracts the second collection of parts given in the args from
-the first collection.
+	Long: `
+The command subtracts the second collection of parts given in the args from the
+first collection.
 
-If the quantity of a certain part is zero the lot of this part is removed
-from the resulting collection. If the quantity is negative the lot will be added to
+If the quantity of a certain part is zero the lot of this part is removed from
+the resulting collection. If the quantity is negative the lot will be added to
 the list of missing parts.`,
 
 	DisableFlagsInUseLine: true,

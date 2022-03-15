@@ -25,10 +25,11 @@ var (
 	getSetPartsCmd = &cobra.Command{
 		Use:   "getSetParts [-c FILE] [-o FILE] [-j FILE] {-s SET_NUMBER | --sets FILE}",
 		Short: "Returns a list of parts used in the given set or sets",
-		Long: `The command returns a list of parts of the given set.
+		Long: `
+The command returns a list of parts of the given set.
 
-If a list of sets is given instead it merges the parts of all sets to a
-single collection of parts.`,
+If a list of sets is given instead it merges the parts of all sets to a single
+collection of parts.`,
 
 		DisableFlagsInUseLine: true,
 

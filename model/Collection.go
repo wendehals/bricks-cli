@@ -71,13 +71,13 @@ func (c *Collection) Sort() *Collection {
 }
 
 // Add one collection to another.
-// The isSpare flag of PartEntry will be invalid afterwards set to false for all entries.
+// The isSpare flag of PartEntry will be invalid afterwards and set to false for all entries.
 func (c *Collection) Add(other *Collection) *Collection {
 	return c.recalculateQuantity(other, add)
 }
 
 // Subtract on collection from another.
-// The isSpare flag of PartEntry will be invalid afterwards set to false for all entries.
+// The isSpare flag of PartEntry will be invalid afterwards and set to false for all entries.
 func (c *Collection) Subtract(other *Collection) *Collection {
 	c.recalculateQuantity(other, subtract)
 
@@ -93,14 +93,14 @@ func (c *Collection) Subtract(other *Collection) *Collection {
 }
 
 // Max calculates the max quantity of each part in both collections.
-// The isSpare flag of PartEntry will be invalid afterwards set to false for all entries.
+// The isSpare flag of PartEntry will be invalid afterwards and set to false for all entries.
 func (c *Collection) Max(other *Collection) *Collection {
 	return c.recalculateQuantity(other, max)
 }
 
 // MergeByColor merges all parts of the same type ignoring the color.
 // The Color field of PartEntry will be invalid afterwards.
-// The isSpare flag of PartEntry will be invalid afterwards set to false for all entries.
+// The isSpare flag of PartEntry will be invalid afterwards and set to false for all entries.
 func (c *Collection) MergeByColor() *Collection {
 	partsMap := c.mapPartsByPartNumber(nil, identity)
 
@@ -122,7 +122,7 @@ func (c *Collection) MergeByColor() *Collection {
 }
 
 // MergeByVariant merges all parts of compatible types (variants).
-// The isSpare flag of PartEntry will be invalid afterwards set to false for all entries.
+// The isSpare flag of PartEntry will be invalid afterwards and set to false for all entries.
 func (c *Collection) MergeByVariant() *Collection {
 	f := func(k string) string {
 		key, exists := variantsMapping[k]

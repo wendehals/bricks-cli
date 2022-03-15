@@ -37,7 +37,7 @@ If a list of sets is given instead it merges the bricks lists of all sets and re
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return run()
+			return excuteGetSetParts()
 		},
 	}
 )
@@ -53,7 +53,7 @@ func init() {
 	getSetPartsCmd.Flags().StringVar(&setsFile, "sets", "", "A JSON file containing a list of sets")
 }
 
-func run() error {
+func excuteGetSetParts() error {
 	err := readSets()
 	if err != nil {
 		return err

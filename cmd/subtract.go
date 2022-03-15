@@ -1,7 +1,3 @@
-/*
-Copyright © 2022 Lothar Wendehals
-
-*/
 package cmd
 
 import (

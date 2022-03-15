@@ -5,26 +5,25 @@ import (
 	"github.com/wendehals/bricks/model"
 )
 
-var sumCmd = &cobra.Command{
-	Use:   "sum [-c FILE] [-o FILE] [-j FILE] JSONFILE...",
-	Short: "Sums up the parts of multiple collections.",
+var maxCmd = &cobra.Command{
+	Use:   "max [-c FILE] [-o FILE] [-j FILE] JSONFILE...",
+	Short: "Calculates the maximum quantity of each part of multiple collections.",
 	Long: `
-The command sums up all parts of multiple collections to a new collection by
-merging identical parts to single lots.`,
+The command calculates the maximum quantity of each part of multiple collections.`,
 
 	DisableFlagsInUseLine: true,
 
 	Args: cobra.MinimumNArgs(2),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return executeSum(args)
+		return executeMax(args)
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(sumCmd)
+	rootCmd.AddCommand(maxCmd)
 }
 
-func executeSum(args []string) error {
+func executeMax(args []string) error {
 	var collections []model.Collection
 	for _, filename := range args {
 		collection, err := model.Import(filename)
@@ -34,15 +33,15 @@ func executeSum(args []string) error {
 		collections = append(collections, *collection)
 	}
 
-	sum := model.Collection{}
+	max := model.Collection{}
 	for _, collection := range collections {
-		sum.Add(&collection)
+		max.Max(&collection)
 	}
 
-	sum.ExportToHTML(htmlFile)
+	max.ExportToHTML(htmlFile)
 
 	if jsonFile != "" {
-		sum.Export(jsonFile)
+		max.Export(jsonFile)
 	}
 
 	return nil

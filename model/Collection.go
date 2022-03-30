@@ -2,6 +2,7 @@ package model
 
 import (
 	"bufio"
+	"embed"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -22,7 +23,11 @@ type Collection struct {
 
 var variantsMapping = make(map[string]string)
 
-func _init() {
+//go:embed variants.json
+//go:embed parts_html.gotpl
+var fs embed.FS
+
+func init() {
 	var v struct {
 		Variants []struct {
 			Original   string `json:"original"`
@@ -30,7 +35,7 @@ func _init() {
 		} `json:"variants"`
 	}
 
-	jsonFile, err := os.Open("variants.json")
+	jsonFile, err := fs.Open("variants.json")
 	if err != nil {
 		log.Fatal(err.Error())
 	}
@@ -182,7 +187,7 @@ func Import(fileName string) (*Collection, error) {
 
 // ExportToHTML writes an HTML file with all parts of the collection.
 func (c *Collection) ExportToHTML(fileName string) error {
-	t, err := template.ParseFiles("parts_html.gotpl")
+	t, err := template.ParseFS(fs, "parts_html.gotpl")
 	if err != nil {
 		return fmt.Errorf("exporting collection to HTML file '%s' failed: %s", fileName, err.Error())
 	}

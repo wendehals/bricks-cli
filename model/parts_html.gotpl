@@ -12,13 +12,13 @@
 	</style>
 	<head>
 		<meta charset="UTF-8">
-		<title>Lego Parts Collection</title>
+		<title>Parts Collection</title>
 	</head>
 	<body>
-		<h1>Lego Parts</h1>
+		<h1>Parts</h1>
 		<p>Number of distinct part types: {{len .}}</p>
 
-		<h2>Existing Lego Parts</h2>
+		<h2>Existing Parts</h2>
 		<div class="container">{{range $index, $element := .}}{{if (gt $element.Quantity 0)}}
 			<div>
 				<a href="{{$element.Part.PartURL}}">
@@ -27,7 +27,7 @@
 			</div>{{end}}{{end}}
 		</div>
 
-		<h2>Missing Lego Parts</h2>
+		<h2>Missing Parts</h2>
 		<div class="container">{{range $index, $element := .}}{{if (lt $element.Quantity 0)}}
 			<div>
 				<a href="{{$element.Part.PartURL}}">

@@ -5,7 +5,7 @@ import (
 )
 
 func TestSort(t *testing.T) {
-	collection := readCollection(t, "testCollection1.json")
+	collection := readCollection(t, "testdata/testCollection1.json")
 
 	collection.Sort()
 
@@ -17,7 +17,7 @@ func TestSort(t *testing.T) {
 }
 
 func TestAdd(t *testing.T) {
-	collection := readCollection(t, "testCollection1.json").Add(readCollection(t, "testCollection2.json")).Sort()
+	collection := readCollection(t, "testdata/testCollection1.json").Add(readCollection(t, "testdata/testCollection2.json")).Sort()
 
 	assertSize(t, collection, 9)
 
@@ -44,7 +44,7 @@ func TestAdd(t *testing.T) {
 }
 
 func TestSubstract(t *testing.T) {
-	collection := readCollection(t, "testCollection1.json").Subtract(readCollection(t, "testCollection2.json")).Sort()
+	collection := readCollection(t, "testdata/testCollection1.json").Subtract(readCollection(t, "testdata/testCollection2.json")).Sort()
 
 	assertSize(t, collection, 9)
 
@@ -77,7 +77,7 @@ func TestSubstract(t *testing.T) {
 }
 
 func TestMax(t *testing.T) {
-	collection := readCollection(t, "testCollection1.json").MergeByColor().Max(readCollection(t, "testCollection2.json").MergeByColor()).Sort()
+	collection := readCollection(t, "testdata/testCollection1.json").MergeByColor().Max(readCollection(t, "testdata/testCollection2.json").MergeByColor()).Sort()
 
 	assertSize(t, collection, 6)
 
@@ -101,7 +101,7 @@ func TestMax(t *testing.T) {
 }
 
 func TestMergeByColor(t *testing.T) {
-	collection := readCollection(t, "testCollection1.json").MergeByColor().Sort()
+	collection := readCollection(t, "testdata/testCollection1.json").MergeByColor().Sort()
 
 	assertSize(t, collection, 4)
 
@@ -123,7 +123,7 @@ func TestMergeByColor(t *testing.T) {
 }
 
 func TestMergeByVariant(t *testing.T) {
-	collection := readCollection(t, "testCollection2.json").MergeByVariant().Sort()
+	collection := readCollection(t, "testdata/testCollection2.json").MergeByVariant().Sort()
 
 	assertSize(t, collection, 4)
 

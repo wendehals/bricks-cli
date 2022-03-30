@@ -37,7 +37,7 @@ collection of parts.`,
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return executeGetSetParts()
+			return executeSetParts()
 		},
 	}
 )
@@ -53,7 +53,7 @@ func init() {
 	setPartsCmd.Flags().StringVar(&setsFile, "sets", "", "A JSON file containing a list of sets")
 }
 
-func executeGetSetParts() error {
+func executeSetParts() error {
 	err := readSets()
 	if err != nil {
 		return err
@@ -105,7 +105,10 @@ func readSets() error {
 func processSet(bricksAPI *api.BricksAPI) error {
 	fmt.Println("Retrieving set number ", set)
 	collection := bricksAPI.GetSetParts(set, false)
-	collection.ExportToHTML(htmlFile)
+	err := collection.ExportToHTML(htmlFile)
+	if err != nil {
+		return err
+	}
 
 	if jsonFile != "" {
 		err := model.ExportToJSON(jsonFile, collection)

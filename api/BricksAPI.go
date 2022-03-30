@@ -12,8 +12,7 @@ const bricksURL string = RebrickableBaseURL + "lego/%s"
 
 // BricksAPI provides API for accessing Lego's data
 type BricksAPI struct {
-	client *http.Client
-	apiKey string
+	AbstractAPI
 }
 
 // NewBricksAPI creates a new object of BricksAPI
@@ -62,18 +61,4 @@ func (b *BricksAPI) GetSetParts(setNum string, includeMiniFigs bool) *model.Coll
 	}
 
 	return &collection
-}
-
-func (b *BricksAPI) requestPage(url string, v interface{}) error {
-	reqest, err := CreateGetRequest(url, b.apiKey)
-	if err != nil {
-		return err
-	}
-
-	err = DoRequest(b.client, reqest, v)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }

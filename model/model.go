@@ -30,6 +30,14 @@ type SetListEntry struct {
 	NumSets     uint   `json:"num_sets"`
 }
 
+// PartListEntry represents an entry in the user's part lists.
+type PartListEntry struct {
+	ID          uint   `json:"id"`
+	IsBuildable bool   `json:"is_buildable"`
+	Name        string `json:"name"`
+	NumParts    uint   `json:"num_parts"`
+}
+
 // SetType represents a Lego set.
 type SetType struct {
 	SetNum      string `json:"set_num"`

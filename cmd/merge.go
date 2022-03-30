@@ -57,7 +57,7 @@ func executeMerge(args []string) error {
 	merged.ExportToHTML(htmlFile)
 
 	if jsonFile != "" {
-		merged.Export(jsonFile)
+		model.ExportToJSON(jsonFile, merged)
 	}
 
 	return nil

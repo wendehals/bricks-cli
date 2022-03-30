@@ -19,8 +19,8 @@ var (
 
 	sets *setsList
 
-	getSetPartsCmd = &cobra.Command{
-		Use:   "getSetParts [-c FILE] [-o FILE] [-j FILE] {-s SET_NUMBER | --sets FILE}",
+	setPartsCmd = &cobra.Command{
+		Use:   "setParts [-c FILE] [-o FILE] [-j FILE] {-s SET_NUMBER | --sets FILE}",
 		Short: "Returns a list of parts used in the given set or sets",
 		Long: `
 The command returns a list of parts of the given set.
@@ -47,10 +47,10 @@ type setsList struct {
 }
 
 func init() {
-	rootCmd.AddCommand(getSetPartsCmd)
+	rootCmd.AddCommand(setPartsCmd)
 
-	getSetPartsCmd.Flags().StringVarP(&set, "set", "s", "", "A set number")
-	getSetPartsCmd.Flags().StringVar(&setsFile, "sets", "", "A JSON file containing a list of sets")
+	setPartsCmd.Flags().StringVarP(&set, "set", "s", "", "A set number")
+	setPartsCmd.Flags().StringVar(&setsFile, "sets", "", "A JSON file containing a list of sets")
 }
 
 func excuteGetSetParts() error {
@@ -107,7 +107,7 @@ func processSet(bricksAPI *api.BricksAPI) {
 	collection.ExportToHTML(htmlFile)
 
 	if jsonFile != "" {
-		collection.Export(jsonFile)
+		model.ExportToJSON(jsonFile, collection)
 	}
 }
 
@@ -121,6 +121,6 @@ func processSets(bricksAPI *api.BricksAPI) {
 	collection.ExportToHTML(htmlFile)
 
 	if jsonFile != "" {
-		collection.Export(jsonFile)
+		model.ExportToJSON(jsonFile, collection)
 	}
 }

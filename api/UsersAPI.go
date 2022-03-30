@@ -13,9 +13,8 @@ const usersURL string = RebrickableBaseURL + "users/%s/%s"
 
 // UsersAPI provides API for accessing a Rebrickable user's data
 type UsersAPI struct {
-	client *http.Client
-	apiKey string
-	token  string
+	AbstractAPI
+	token string
 }
 
 // NewUsersAPI creates a new object of UsersAPI and initializes it with a token by issueing a request to the Rebrickable API
@@ -93,6 +92,37 @@ func (u *UsersAPI) GetSetLists() ([]model.SetListEntry, error) {
 }
 
 // allPartsPageResult contains the result of /api/v3/users/{user_token}/allparts/?page={page}
+type partListsResult struct {
+	Next    string                `json:"next"`
+	Results []model.PartListEntry `json:"results"`
+}
+
+// PartLists returns the result of /api/v3/users/{user_token}/partlists/
+func (u *UsersAPI) GetPartLists() ([]model.PartListEntry, error) {
+	var partListEntry []model.PartListEntry
+	partListsPage := partListsResult{}
+
+	err := u.requestPage(fmt.Sprintf(usersURL, u.token, "partlists"), &partListsPage)
+	if err != nil {
+		return nil, err
+	}
+
+	partListEntry = append(partListEntry, partListsPage.Results...)
+	for len(partListsPage.Next) > 0 {
+		url := partListsPage.Next
+		setListsPage := setListsPageResult{}
+		err = u.requestPage(url, &setListsPage)
+		if err != nil {
+			return nil, err
+		}
+
+		partListEntry = append(partListEntry, partListsPage.Results...)
+	}
+
+	return partListEntry, nil
+}
+
+// allPartsPageResult contains the result of /api/v3/users/{user_token}/allparts/?page={page}
 type allPartsPageResult struct {
 	Next    string            `json:"next"`
 	Results []model.PartEntry `json:"results"`
@@ -105,7 +135,7 @@ func (u *UsersAPI) GetAllParts() *model.Collection {
 
 	err := u.requestPage(fmt.Sprintf(usersURL, u.token, "allparts"), &allPartsPage)
 	if err != nil {
-		log.Printf("User's all parts list could not be retrieved: %s\n", err.Error())
+		log.Printf("The list of all user's parts could not be retrieved: %s\n", err.Error())
 		return &model.Collection{}
 	}
 
@@ -115,7 +145,7 @@ func (u *UsersAPI) GetAllParts() *model.Collection {
 		allPartsPage = allPartsPageResult{}
 		err = u.requestPage(url, &allPartsPage)
 		if err != nil {
-			log.Printf("User's all parts list could not be retrieved: %s\n", err.Error())
+			log.Printf("The list of all user's parts could not be retrieved: %s\n", err.Error())
 			return &model.Collection{}
 		}
 
@@ -156,18 +186,4 @@ func (u *UsersAPI) GetSets() []model.UsersSet {
 	}
 
 	return usersSets
-}
-
-func (u *UsersAPI) requestPage(url string, v interface{}) error {
-	reqest, err := CreateGetRequest(url, u.apiKey)
-	if err != nil {
-		return err
-	}
-
-	err = DoRequest(u.client, reqest, v)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }

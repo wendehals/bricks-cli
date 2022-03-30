@@ -33,7 +33,7 @@ func executeSort(args []string) error {
 	sorted.ExportToHTML(htmlFile)
 
 	if jsonFile != "" {
-		sorted.Export(jsonFile)
+		model.ExportToJSON(jsonFile, sorted)
 	}
 
 	return nil

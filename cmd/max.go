@@ -41,7 +41,7 @@ func executeMax(args []string) error {
 	max.ExportToHTML(htmlFile)
 
 	if jsonFile != "" {
-		max.Export(jsonFile)
+		model.ExportToJSON(jsonFile, max)
 	}
 
 	return nil

@@ -44,7 +44,7 @@ func executeSubtract(args []string) error {
 	result.ExportToHTML(htmlFile)
 
 	if jsonFile != "" {
-		result.Export(jsonFile)
+		model.ExportToJSON(jsonFile, result)
 	}
 
 	return nil

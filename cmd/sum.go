@@ -42,7 +42,7 @@ func executeSum(args []string) error {
 	sum.ExportToHTML(htmlFile)
 
 	if jsonFile != "" {
-		sum.Export(jsonFile)
+		model.ExportToJSON(jsonFile, sum)
 	}
 
 	return nil

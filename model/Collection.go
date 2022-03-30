@@ -179,21 +179,6 @@ func Import(fileName string) (*Collection, error) {
 	return &collection, nil
 }
 
-// Export writes a collection into a JSON encoded file.
-func (c *Collection) Export(fileName string) {
-	data, err := json.MarshalIndent(c, "", " ")
-	if err != nil {
-		log.Printf("Serializing to JSON failed: %s\n", err)
-	}
-
-	ioutil.WriteFile(fileName, data, os.ModePerm)
-	if err != nil {
-		log.Printf("Exporting collection to JSON file '%s' failed: %s\n", fileName, err)
-	}
-
-	log.Printf("Exported result to '%s'\n", fileName)
-}
-
 // ExportToHTML writes an HTML file with all parts of the collection.
 func (c *Collection) ExportToHTML(fileName string) {
 	t, err := template.ParseFiles("parts_html.gotpl")

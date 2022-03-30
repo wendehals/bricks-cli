@@ -38,10 +38,16 @@ func executeMax(args []string) error {
 		max.Max(&collection)
 	}
 
-	max.ExportToHTML(htmlFile)
+	err := max.ExportToHTML(htmlFile)
+	if err != nil {
+		return err
+	}
 
 	if jsonFile != "" {
-		model.ExportToJSON(jsonFile, max)
+		err := model.ExportToJSON(jsonFile, max)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

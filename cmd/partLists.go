@@ -39,7 +39,10 @@ func executePartLists() error {
 	}
 
 	if jsonFile != "" {
-		model.ExportToJSON(jsonFile, partLists)
+		err := model.ExportToJSON(jsonFile, partLists)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

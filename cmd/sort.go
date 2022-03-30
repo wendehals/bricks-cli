@@ -30,10 +30,17 @@ func executeSort(args []string) error {
 	}
 
 	sorted := collection.Sort()
-	sorted.ExportToHTML(htmlFile)
+
+	err = sorted.ExportToHTML(htmlFile)
+	if err != nil {
+		return err
+	}
 
 	if jsonFile != "" {
-		model.ExportToJSON(jsonFile, sorted)
+		err := model.ExportToJSON(jsonFile, sorted)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

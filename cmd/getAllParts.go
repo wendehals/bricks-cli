@@ -38,10 +38,16 @@ func executeGetAllParts() error {
 		return err
 	}
 
-	allParts.ExportToHTML(htmlFile)
+	err = allParts.ExportToHTML(htmlFile)
+	if err != nil {
+		return err
+	}
 
 	if jsonFile != "" {
-		model.ExportToJSON(jsonFile, allParts)
+		err := model.ExportToJSON(jsonFile, allParts)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

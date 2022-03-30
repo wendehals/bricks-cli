@@ -54,10 +54,16 @@ func executeMerge(args []string) error {
 		merged = merged.MergeByVariant()
 	}
 
-	merged.ExportToHTML(htmlFile)
+	err = merged.ExportToHTML(htmlFile)
+	if err != nil {
+		return err
+	}
 
 	if jsonFile != "" {
-		model.ExportToJSON(jsonFile, merged)
+		err := model.ExportToJSON(jsonFile, merged)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

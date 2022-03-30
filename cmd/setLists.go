@@ -39,7 +39,10 @@ func executeSetLists() error {
 	}
 
 	if jsonFile != "" {
-		model.ExportToJSON(jsonFile, setLists)
+		err := model.ExportToJSON(jsonFile, setLists)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

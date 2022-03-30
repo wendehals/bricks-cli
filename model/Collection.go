@@ -3,6 +3,7 @@ package model
 import (
 	"bufio"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -180,15 +181,15 @@ func Import(fileName string) (*Collection, error) {
 }
 
 // ExportToHTML writes an HTML file with all parts of the collection.
-func (c *Collection) ExportToHTML(fileName string) {
+func (c *Collection) ExportToHTML(fileName string) error {
 	t, err := template.ParseFiles("parts_html.gotpl")
 	if err != nil {
-		log.Printf("Exporting collection to HTML file '%s' failed: %s\n", fileName, err)
+		return fmt.Errorf("exporting collection to HTML file '%s' failed: %s", fileName, err.Error())
 	}
 
 	file, err := os.Create(fileName)
 	if err != nil {
-		log.Printf("Exporting collection to HTML file '%s' failed: %s\n", fileName, err)
+		return fmt.Errorf("exporting collection to HTML file '%s' failed: %s", fileName, err.Error())
 	}
 	defer file.Close()
 
@@ -196,12 +197,14 @@ func (c *Collection) ExportToHTML(fileName string) {
 
 	err = t.Execute(writer, c.Parts)
 	if err != nil {
-		log.Printf("Exporting HTML to '%s' failed: %s\n", fileName, err)
+		return fmt.Errorf("exporting collection to HTML file '%s' failed: %s", fileName, err.Error())
 	}
 
 	writer.Flush()
 
 	log.Printf("Exported result to '%s'\n", fileName)
+
+	return nil
 }
 
 func (c *Collection) mapPartsByPartNumber(partsMap map[string][]PartEntry, keyMapping func(string) string) map[string][]PartEntry {

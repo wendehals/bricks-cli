@@ -65,9 +65,10 @@ func executeGetSetParts() error {
 
 	bricksAPI := api.NewBricksAPI(&client, credentials.APIKey)
 	if set != "" {
-		processSet(bricksAPI)
-	} else if sets != nil {
-		processSets(bricksAPI)
+		return processSet(bricksAPI)
+	}
+	if sets != nil {
+		return processSets(bricksAPI)
 	}
 
 	return nil
@@ -101,26 +102,39 @@ func readSets() error {
 	return nil
 }
 
-func processSet(bricksAPI *api.BricksAPI) {
+func processSet(bricksAPI *api.BricksAPI) error {
 	fmt.Println("Retrieving set number ", set)
 	collection := bricksAPI.GetSetParts(set, false)
 	collection.ExportToHTML(htmlFile)
 
 	if jsonFile != "" {
-		model.ExportToJSON(jsonFile, collection)
+		err := model.ExportToJSON(jsonFile, collection)
+		if err != nil {
+			return err
+		}
 	}
+
+	return nil
 }
 
-func processSets(bricksAPI *api.BricksAPI) {
+func processSets(bricksAPI *api.BricksAPI) error {
 	var collection *model.Collection
 	for _, set := range sets.Sets {
 		fmt.Println("Retrieving set number ", set)
 		collection.Add(bricksAPI.GetSetParts(set, false))
 	}
 
-	collection.ExportToHTML(htmlFile)
+	err := collection.ExportToHTML(htmlFile)
+	if err != nil {
+		return err
+	}
 
 	if jsonFile != "" {
-		model.ExportToJSON(jsonFile, collection)
+		err := model.ExportToJSON(jsonFile, collection)
+		if err != nil {
+			return err
+		}
 	}
+
+	return nil
 }

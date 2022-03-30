@@ -39,10 +39,16 @@ func executeSum(args []string) error {
 		sum.Add(&collection)
 	}
 
-	sum.ExportToHTML(htmlFile)
+	err := sum.ExportToHTML(htmlFile)
+	if err != nil {
+		return err
+	}
 
 	if jsonFile != "" {
-		model.ExportToJSON(jsonFile, sum)
+		err := model.ExportToJSON(jsonFile, sum)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

@@ -41,10 +41,16 @@ func executeSubtract(args []string) error {
 
 	result := minuend.Subtract(subtrahend)
 
-	result.ExportToHTML(htmlFile)
+	err = result.ExportToHTML(htmlFile)
+	if err != nil {
+		return err
+	}
 
 	if jsonFile != "" {
-		model.ExportToJSON(jsonFile, result)
+		err := model.ExportToJSON(jsonFile, result)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

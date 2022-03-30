@@ -31,3 +31,5 @@
     -v, --version              version for bricks
 
     Use "bricks [command] --help" for more information about a command.
+
+![Go](https://github.com/wendehals/bricks-cli/workflows/Go/badge.svg)

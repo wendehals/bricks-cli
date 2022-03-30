@@ -129,14 +129,14 @@ type allPartsPageResult struct {
 }
 
 // GetAllParts returns all owned parts of a user provided by /api/v3/users/{user_token}/allparts
-func (u *UsersAPI) GetAllParts() *model.Collection {
+func (u *UsersAPI) GetAllParts() (*model.Collection, error) {
 	collection := model.Collection{}
 	allPartsPage := allPartsPageResult{}
 
 	err := u.requestPage(fmt.Sprintf(usersURL, u.token, "allparts"), &allPartsPage)
 	if err != nil {
-		log.Printf("The list of all user's parts could not be retrieved: %s\n", err.Error())
-		return &model.Collection{}
+		err = fmt.Errorf("the list of all user's parts could not be retrieved: %s", err.Error())
+		return nil, err
 	}
 
 	collection.Parts = append(collection.Parts, allPartsPage.Results...)
@@ -145,14 +145,14 @@ func (u *UsersAPI) GetAllParts() *model.Collection {
 		allPartsPage = allPartsPageResult{}
 		err = u.requestPage(url, &allPartsPage)
 		if err != nil {
-			log.Printf("The list of all user's parts could not be retrieved: %s\n", err.Error())
-			return &model.Collection{}
+			err = fmt.Errorf("the list of all user's parts could not be retrieved: %s", err.Error())
+			return nil, err
 		}
 
 		collection.Parts = append(collection.Parts, allPartsPage.Results...)
 	}
 
-	return &collection
+	return &collection, nil
 }
 
 // setsPageResult contains the result of /api/v3/users/{user_token}/sets/?page={page}

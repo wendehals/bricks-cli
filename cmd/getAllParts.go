@@ -9,37 +9,39 @@ import (
 	"github.com/wendehals/bricks/model"
 )
 
-var setListsCmd = &cobra.Command{
-	Use:   "setLists [-c FILE] [-o FILE] [-j FILE]",
-	Short: "Get a list of all the user's set lists",
+var getAllPartsCmd = &cobra.Command{
+	Use:   "getAllParts [-c FILE] [-o FILE] [-j FILE]",
+	Short: "Get all parts owned by the user",
 	Long: `
-The command returns a list of all set lists of the user.
+The command returns a list of all parts owned by the user.
 `,
 
 	DisableFlagsInUseLine: true,
 
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return executeSetLists()
+		return executeGetAllParts()
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(setListsCmd)
+	rootCmd.AddCommand(getAllPartsCmd)
 }
 
-func executeSetLists() error {
+func executeGetAllParts() error {
 	client := http.Client{
 		Timeout: time.Second * 5,
 	}
 
 	usersAPI := api.NewUsersAPI(&client, credentials.Username, credentials.Password, credentials.APIKey)
-	setLists, err := usersAPI.GetSetLists()
+	allParts, err := usersAPI.GetAllParts()
 	if err != nil {
 		return err
 	}
 
+	allParts.ExportToHTML(htmlFile)
+
 	if jsonFile != "" {
-		model.ExportToJSON(jsonFile, setLists)
+		model.ExportToJSON(jsonFile, allParts)
 	}
 
 	return nil

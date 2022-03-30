@@ -21,7 +21,7 @@ var (
 
 	setPartsCmd = &cobra.Command{
 		Use:   "setParts [-c FILE] [-o FILE] [-j FILE] {-s SET_NUMBER | --sets FILE}",
-		Short: "Returns a list of parts used in the given set or sets",
+		Short: "Returns all parts used in the given set or sets",
 		Long: `
 The command returns a list of parts of the given set.
 
@@ -37,7 +37,7 @@ collection of parts.`,
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return excuteGetSetParts()
+			return executeGetSetParts()
 		},
 	}
 )
@@ -53,7 +53,7 @@ func init() {
 	setPartsCmd.Flags().StringVar(&setsFile, "sets", "", "A JSON file containing a list of sets")
 }
 
-func excuteGetSetParts() error {
+func executeGetSetParts() error {
 	err := readSets()
 	if err != nil {
 		return err

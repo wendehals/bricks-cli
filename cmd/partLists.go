@@ -19,7 +19,7 @@ The command returns a list of all part lists of the user.
 	DisableFlagsInUseLine: true,
 
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return excutePartLists()
+		return executePartLists()
 	},
 }
 
@@ -27,7 +27,7 @@ func init() {
 	rootCmd.AddCommand(partListsCmd)
 }
 
-func excutePartLists() error {
+func executePartLists() error {
 	client := http.Client{
 		Timeout: time.Second * 5,
 	}
@@ -38,7 +38,9 @@ func excutePartLists() error {
 		return err
 	}
 
-	model.ExportToJSON(jsonFile, partLists)
+	if jsonFile != "" {
+		model.ExportToJSON(jsonFile, partLists)
+	}
 
 	return nil
 }

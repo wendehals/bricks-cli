@@ -9,8 +9,8 @@ import (
 	"github.com/wendehals/bricks/model"
 )
 
-var getAllPartsCmd = &cobra.Command{
-	Use:   "getAllParts [-c FILE] [-o FILE] [-j FILE]",
+var allPartsCmd = &cobra.Command{
+	Use:   "allParts [-c FILE] [-o FILE] [-j FILE]",
 	Short: "Get all parts owned by the user",
 	Long: `
 The command returns a list of all parts owned by the user.
@@ -24,7 +24,7 @@ The command returns a list of all parts owned by the user.
 }
 
 func init() {
-	rootCmd.AddCommand(getAllPartsCmd)
+	rootCmd.AddCommand(allPartsCmd)
 }
 
 func executeGetAllParts() error {

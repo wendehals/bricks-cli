@@ -11,12 +11,14 @@
     bricks [command]
 
     Available Commands:
+    allParts    Get all parts owned by the user
     help        Help about any command
     max         Calculates the maximum quantity of each part of multiple collections.
     merge       Merges the parts of a collection by their color or by their variant.
     partLists   Get a list of all the user's part lists
     setLists    Get a list of all the user's set lists
-    setParts    Returns a list of parts used in the given set or sets
+    setParts    Returns all parts used in the given set or sets
+    sets        Get a list of all the user's sets
     sort        Sorts the parts of a collection by their number.
     subtract    Subtracts one collection of parts from another.
     sum         Sums up the parts of multiple collections.

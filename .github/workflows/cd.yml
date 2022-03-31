@@ -1,9 +1,8 @@
-name: release
+name: CD
 
 on:
-  push:
-    tags:
-      - '*'
+  release:
+    types: [published]
 
 jobs:
   build_release:

@@ -28,7 +28,9 @@ jobs:
         run: env GOOS=windows GOARCH=amd64 go build
 
       - name: version
-        run: echo "::set-output name=version::${(./bricks --version):15}"
+        run: |
+          v=$(./bricks --version)
+          echo "::set-output name=version::${v:15}"
         id: version
 
       - name: release

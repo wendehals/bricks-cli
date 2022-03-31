@@ -27,7 +27,7 @@ of all bricks of a certain set or user specific brick collections.
 
 bricks is also able to merge, sort, add, or subtract collections of bricks
 to new collections.`,
-		Version: "0.0.1-alpha1",
+		Version: "0.0.1",
 
 		CompletionOptions: cobra.CompletionOptions{
 			DisableDefaultCmd: true},

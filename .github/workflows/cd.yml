@@ -25,10 +25,10 @@ jobs:
         run: |
           env GOOS=linux GOARCH=amd64 go build
           gzip --keep bricks
-          mv bricks.gz bricks-linux-amd64.gz
+          mv bricks.gz bricks-linux-x64.gz
           env GOOS=windows GOARCH=amd64 go build
-          gzip --keep bricks.exe
-          mv bricks.exe.gz bricks-windows-amd64.zip
+          zip bricks-windows-x64.zip bricks.exe
+          mv bricks.exe.gz bricks-windows-x64.zip
 
       - name: Version
         run: |
@@ -53,8 +53,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bricks-linux-amd64.gz
-          asset_name: bricks-linux-amd64.gz
+          asset_path: ./bricks-linux-x64.gz
+          asset_name: bricks-linux-x64.gz
           asset_content_type: application/x-executable
 
       - name: Upload Windows executable
@@ -63,6 +63,6 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bricks-windows-amd64.zip
-          asset_name: bricks-windows-amd64.zip
+          asset_path: ./bricks-windows-x64.zip
+          asset_name: bricks-windows-x64.zip
           asset_content_type: application/octet-stream; version="64 bit"

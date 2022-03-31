@@ -28,7 +28,6 @@ jobs:
           mv bricks.gz bricks-linux-x64.gz
           env GOOS=windows GOARCH=amd64 go build
           zip bricks-windows-x64.zip bricks.exe
-          mv bricks.exe.gz bricks-windows-x64.zip
 
       - name: Version
         run: |

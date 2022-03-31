@@ -30,7 +30,6 @@ jobs:
           mv bricks.exe.gz bricks-windows-amd64.zip
 
       - name: Version
-        id: version
         run: |
           v=$(./bricks --version)
           echo "::set-output name=version::${v:15}"

@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -21,19 +21,23 @@ jobs:
         with:
           go-version: 1.18
 
-      - name: build Linux version
-        run: env GOOS=linux GOARCH=amd64 go build
+      - name: Build
+        run: |
+          env GOOS=linux GOARCH=amd64 go build
+          gzip --keep bricks
+          mv bricks.gz bricks-linux-amd64.gz
+          env GOOS=windows GOARCH=amd64 go build
+          gzip --keep bricks.exe
+          mv bricks.exe.gz bricks-windows-amd64.zip
 
-      - name: build windoows version
-        run: env GOOS=windows GOARCH=amd64 go build
-
-      - name: version
+      - name: Version
+        id: version
         run: |
           v=$(./bricks --version)
           echo "::set-output name=version::${v:15}"
         id: version
 
-      - name: release
+      - name: Release
         uses: actions/create-release@v1
         id: create_release
         with:
@@ -44,22 +48,22 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
-      - name: upload linux executable
+      - name: Upload Linux executable
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bricks
-          asset_name: bricks
+          asset_path: ./bricks-linux-amd64.gz
+          asset_name: bricks-linux-amd64.gz
           asset_content_type: application/x-executable
 
-      - name: upload windows executable
+      - name: Upload Windows executable
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bricks.exe
-          asset_name: bricks.exe
+          asset_path: ./bricks-windows-amd64.zip
+          asset_name: bricks-windows-amd64.zip
           asset_content_type: application/octet-stream; version="64 bit"

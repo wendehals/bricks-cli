@@ -1,0 +1,59 @@
+name: release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build_release:
+    name: build_release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: build Linux version
+        run: env GOOS=linux GOARCH=amd64 go build
+
+      - name: build windoows version
+        run: env GOOS=windows GOARCH=amd64 go build
+
+      - name: version
+        run: echo "::set-output name=version::${(./bricks --version):15}"
+        id: version
+
+      - name: release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          draft: false
+          prerelease: false
+          release_name: ${{ steps.version.outputs.version }}
+          tag_name: ${{ github.ref }}
+          body_path: CHANGELOG.md
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: upload linux executable
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./bricks
+          asset_name: bricks
+          asset_content_type: application/x-executable
+
+      - name: upload windows executable
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./bricks.exe
+          asset_name: bricks.exe
+          asset_content_type: application/octet-stream; version="64 bit"

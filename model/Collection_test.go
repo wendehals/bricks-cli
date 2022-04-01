@@ -165,7 +165,7 @@ func assertSameString(t *testing.T, expected string, actual string) {
 }
 
 func readCollection(t *testing.T, fileName string) *Collection {
-	collection, err := Import(fileName)
+	collection, err := ImportCollection(fileName)
 	if err != nil {
 		t.FailNow()
 	}

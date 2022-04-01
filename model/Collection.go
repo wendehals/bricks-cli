@@ -25,6 +25,29 @@ type Collection struct {
 //go:embed resources/parts_html.gotpl
 var fs embed.FS
 
+// ImportCollection reads a collection from a JSON encoded file.
+func ImportCollection(fileName string) (*Collection, error) {
+	collection := &Collection{}
+
+	jsonFile, err := os.Open(fileName)
+	if err != nil {
+		return nil, err
+	}
+	defer jsonFile.Close()
+
+	data, err := ioutil.ReadAll(jsonFile)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(data, collection)
+	if err != nil {
+		return nil, err
+	}
+
+	return collection, nil
+}
+
 // Sort the Parts of a collection by their Part Number
 func (c *Collection) Sort() *Collection {
 	sort.Slice(c.Parts, func(i, j int) bool {
@@ -131,29 +154,6 @@ func (c *Collection) filter(f func(PartEntry) bool) *Collection {
 // RemoveQuantityZero removes all parts of the collection which quantity is zero.
 func (c *Collection) RemoveQuantityZero() *Collection {
 	return c.filter(func(part PartEntry) bool { return part.Quantity != 0 })
-}
-
-// Import reads a collection from a JSON encoded file.
-func Import(fileName string) (*Collection, error) {
-	var collection Collection
-
-	jsonFile, err := os.Open(fileName)
-	if err != nil {
-		return nil, err
-	}
-	defer jsonFile.Close()
-
-	data, err := ioutil.ReadAll(jsonFile)
-	if err != nil {
-		return nil, err
-	}
-
-	err = json.Unmarshal(data, &collection)
-	if err != nil {
-		return nil, err
-	}
-
-	return &collection, nil
 }
 
 // ExportToHTML writes an HTML file with all parts of the collection.

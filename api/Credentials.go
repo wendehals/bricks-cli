@@ -2,9 +2,12 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 )
+
+const errorMessage = "please provide a valid JSON file containing the Rebrickable credentials:\n   %s"
 
 type Credentials struct {
 	Username string `json:"username"`
@@ -12,24 +15,24 @@ type Credentials struct {
 	APIKey   string `json:"api_key"`
 }
 
-func NewCredentials(credentialsFile string) (*Credentials, error) {
-	c := &Credentials{}
+func ImportCredentials(fileName string) (*Credentials, error) {
+	credentials := &Credentials{}
 
-	jsonFile, err := os.Open(credentialsFile)
+	jsonFile, err := os.Open(fileName)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf(errorMessage, err)
 	}
 	defer jsonFile.Close()
 
 	data, err := ioutil.ReadAll(jsonFile)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf(errorMessage, err)
 	}
 
-	err = json.Unmarshal(data, c)
+	err = json.Unmarshal(data, credentials)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf(errorMessage, err)
 	}
 
-	return c, nil
+	return credentials, nil
 }

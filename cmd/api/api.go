@@ -1,8 +1,6 @@
 package api
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/api"
 )
@@ -33,7 +31,9 @@ var (
 		DisableFlagsInUseLine: true,
 
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-			return readCredentials()
+			var err error
+			credentials, err = api.ImportCredentials(credentialsFile)
+			return err
 		},
 	}
 )
@@ -49,14 +49,4 @@ func init() {
 	ApiCmd.PersistentFlags().StringVarP(&credentialsFile, credentials_opt, credentials_sopt, "credentials.json",
 		credentials_usage)
 	ApiCmd.PersistentFlags().StringVarP(&jsonFile, json_output_opt, json_output_sopt, "", json_output_usage)
-}
-
-func readCredentials() error {
-	var err error
-	credentials, err = api.NewCredentials(credentialsFile)
-	if err != nil {
-		return fmt.Errorf("please provide a valid JSON file containing the Rebrickable credentials:\n   %s", err)
-	}
-
-	return nil
 }

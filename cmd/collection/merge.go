@@ -38,7 +38,7 @@ func init() {
 }
 
 func executeMerge(args []string) error {
-	collection, err := model.Import(args[0])
+	collection, err := model.ImportCollection(args[0])
 	if err != nil {
 		return err
 	}

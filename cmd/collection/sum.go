@@ -29,7 +29,7 @@ func init() {
 func executeSum(args []string) error {
 	var collections []model.Collection
 	for _, filename := range args {
-		collection, err := model.Import(filename)
+		collection, err := model.ImportCollection(filename)
 		if err != nil {
 			return err
 		}

@@ -31,12 +31,12 @@ func init() {
 }
 
 func executeSubtract(args []string) error {
-	minuend, err := model.Import(args[0])
+	minuend, err := model.ImportCollection(args[0])
 	if err != nil {
 		return err
 	}
 
-	subtrahend, err := model.Import(args[1])
+	subtrahend, err := model.ImportCollection(args[1])
 	if err != nil {
 		return err
 	}

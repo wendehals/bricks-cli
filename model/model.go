@@ -38,6 +38,13 @@ type PartListEntry struct {
 	NumParts    uint   `json:"num_parts"`
 }
 
+// UsersSet represents a set owned by the user.
+type UsersSet struct {
+	Quantity       uint    `json:"quantity"`
+	IncludesSpares bool    `json:"include_spares"`
+	Set            SetType `json:"set"`
+}
+
 // SetType represents a Lego set.
 type SetType struct {
 	SetNum      string `json:"set_num"`
@@ -46,11 +53,4 @@ type SetType struct {
 	NumParts    uint   `json:"num_parts"`
 	SetURL      string `json:"set_url"`
 	SetImageURL string `json:"set_img_url"`
-}
-
-// UsersSet represents a set owned by the user.
-type UsersSet struct {
-	Quantity       uint    `json:"quantity"`
-	IncludesSpares bool    `json:"include_spares"`
-	Set            SetType `json:"set"`
 }

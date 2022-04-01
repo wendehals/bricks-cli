@@ -42,7 +42,7 @@ func executeSum(args []string) error {
 	}
 
 	if jsonFile == "" {
-		jsonFile = fileNameFromArgs(args, "_sum.json")
+		jsonFile = fileNameFromArgs(args, "_parts.json")
 	}
 
 	return model.ExportToJSON(jsonFile, sum)

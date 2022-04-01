@@ -60,10 +60,29 @@ func (u *UsersAPI) postToken(userName string, password string) error {
 	return nil
 }
 
-// setListsPageResult contains the result of /api/v3/users/{user_token}/setlists/?page={page}
-type setListsPageResult struct {
-	Next    string               `json:"next"`
-	Results []model.SetListEntry `json:"results"`
+// GetSets returns all sets of a user provided by /api/v3/users/{user_token}/sets
+func (u *UsersAPI) GetSets() ([]model.UsersSet, error) {
+	usersSets := []model.UsersSet{}
+	setsPage := setsPageResult{}
+
+	err := u.requestPage(fmt.Sprintf(usersURL, u.token, "sets"), &setsPage)
+	if err != nil {
+		return nil, fmt.Errorf("user's sets could not be retrieved: %s", err.Error())
+	}
+
+	usersSets = append(usersSets, setsPage.Results...)
+	for len(setsPage.Next) > 0 {
+		url := setsPage.Next
+		setsPage := setsPageResult{}
+		err = u.requestPage(url, &setsPage)
+		if err != nil {
+			return nil, fmt.Errorf("user's sets could not be retrieved: %s", err.Error())
+		}
+
+		usersSets = append(usersSets, setsPage.Results...)
+	}
+
+	return usersSets, nil
 }
 
 // GetSetLists returns all owned sets of a uses provided by /api/v3/users/{user_token}/setlists/
@@ -91,16 +110,10 @@ func (u *UsersAPI) GetSetLists() ([]model.SetListEntry, error) {
 	return setList, nil
 }
 
-// allPartsPageResult contains the result of /api/v3/users/{user_token}/allparts/?page={page}
-type partListsResult struct {
-	Next    string                `json:"next"`
-	Results []model.PartListEntry `json:"results"`
-}
-
 // PartLists returns the result of /api/v3/users/{user_token}/partlists/
 func (u *UsersAPI) GetPartLists() ([]model.PartListEntry, error) {
 	var partListEntry []model.PartListEntry
-	partListsPage := partListsResult{}
+	partListsPage := partListsPageResult{}
 
 	err := u.requestPage(fmt.Sprintf(usersURL, u.token, "partlists"), &partListsPage)
 	if err != nil {
@@ -122,16 +135,10 @@ func (u *UsersAPI) GetPartLists() ([]model.PartListEntry, error) {
 	return partListEntry, nil
 }
 
-// allPartsPageResult contains the result of /api/v3/users/{user_token}/allparts/?page={page}
-type allPartsPageResult struct {
-	Next    string            `json:"next"`
-	Results []model.PartEntry `json:"results"`
-}
-
-// GetAllParts returns all owned parts of a user provided by /api/v3/users/{user_token}/allparts
+// GetAllParts returns all parts owned by a user provided by /api/v3/users/{user_token}/allparts
 func (u *UsersAPI) GetAllParts() (*model.Collection, error) {
 	collection := model.Collection{}
-	allPartsPage := allPartsPageResult{}
+	allPartsPage := partsPageResult{}
 
 	err := u.requestPage(fmt.Sprintf(usersURL, u.token, "allparts"), &allPartsPage)
 	if err != nil {
@@ -141,7 +148,7 @@ func (u *UsersAPI) GetAllParts() (*model.Collection, error) {
 	collection.Parts = append(collection.Parts, allPartsPage.Results...)
 	for len(allPartsPage.Next) > 0 {
 		url := allPartsPage.Next
-		allPartsPage = allPartsPageResult{}
+		allPartsPage = partsPageResult{}
 		err = u.requestPage(url, &allPartsPage)
 		if err != nil {
 			return nil, fmt.Errorf("the list of all user's parts could not be retrieved: %s", err.Error())
@@ -153,33 +160,29 @@ func (u *UsersAPI) GetAllParts() (*model.Collection, error) {
 	return &collection, nil
 }
 
-// setsPageResult contains the result of /api/v3/users/{user_token}/sets/?page={page}
-type setsPageResult struct {
-	Next    string           `json:"next"`
-	Results []model.UsersSet `json:"results"`
-}
+// GetPartListParts returns all parts of a user defined parts list provided by /api/v3/users/{user_token}/partlists/{list_id}/parts
+func (u *UsersAPI) GetPartListParts(listId string) (*model.Collection, error) {
+	collection := model.Collection{}
+	partsPage := partsPageResult{}
 
-// GetSets returns all sets of a user provided by /api/v3/users/{user_token}/sets
-func (u *UsersAPI) GetSets() ([]model.UsersSet, error) {
-	usersSets := []model.UsersSet{}
-	setsPage := setsPageResult{}
-
-	err := u.requestPage(fmt.Sprintf(usersURL, u.token, "sets"), &setsPage)
+	err := u.requestPage(fmt.Sprintf(usersURL, u.token, fmt.Sprintf("partlists/%s/parts", listId)), &partsPage)
 	if err != nil {
-		return nil, fmt.Errorf("user's sets could not be retrieved: %s", err.Error())
+		return nil,
+			fmt.Errorf("the parts of the user defined parts list %s could not be retrieved: %s", listId, err.Error())
 	}
 
-	usersSets = append(usersSets, setsPage.Results...)
-	for len(setsPage.Next) > 0 {
-		url := setsPage.Next
-		setsPage := setsPageResult{}
-		err = u.requestPage(url, &setsPage)
+	collection.Parts = append(collection.Parts, partsPage.Results...)
+	for len(partsPage.Next) > 0 {
+		url := partsPage.Next
+		partsPage = partsPageResult{}
+		err = u.requestPage(url, &partsPage)
 		if err != nil {
-			return nil, fmt.Errorf("user's sets could not be retrieved: %s", err.Error())
+			return nil,
+				fmt.Errorf("the parts of the user defined parts list %s could not be retrieved: %s", listId, err.Error())
 		}
 
-		usersSets = append(usersSets, setsPage.Results...)
+		collection.Parts = append(collection.Parts, partsPage.Results...)
 	}
 
-	return usersSets, nil
+	return &collection, nil
 }

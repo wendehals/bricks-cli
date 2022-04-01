@@ -41,7 +41,13 @@ func fileNameFromArgs(args []string, suffix string) string {
 	for i := 0; i < len(args) && i < 5; i++ {
 		base := filepath.Base(args[i])
 		ext := filepath.Ext(base)
-		builder.WriteString(base[:len(base)-len(ext)])
+		baseWoExt := base[:len(base)-len(ext)]
+
+		builder.WriteString(baseWoExt[:strings.Index(baseWoExt, "_")])
+
+		if i < len(args)-1 && i < 4 {
+			builder.WriteString("_")
+		}
 	}
 
 	builder.WriteString(suffix)

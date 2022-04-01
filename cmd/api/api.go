@@ -41,6 +41,7 @@ var (
 func init() {
 	ApiCmd.AddCommand(allPartsCmd)
 	ApiCmd.AddCommand(partListsCmd)
+	ApiCmd.AddCommand(partListPartsCmd)
 	ApiCmd.AddCommand(setListsCmd)
 	ApiCmd.AddCommand(setPartsCmd)
 	ApiCmd.AddCommand(setsCmd)

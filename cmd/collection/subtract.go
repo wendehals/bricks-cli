@@ -44,7 +44,7 @@ func executeSubtract(args []string) error {
 	result := minuend.Subtract(subtrahend).RemoveQuantityZero()
 
 	if jsonFile == "" {
-		jsonFile = fileNameFromArgs(args, "_subtracted.json")
+		jsonFile = fileNameFromArgs(args, "_subtracted_parts.json")
 	}
 
 	return model.ExportToJSON(jsonFile, result)

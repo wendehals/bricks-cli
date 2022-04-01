@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -101,7 +102,7 @@ func processSet(bricksAPI *api.BricksAPI) error {
 	collection := bricksAPI.GetSetParts(set, false)
 
 	if jsonFile == "" {
-		jsonFile = "setParts.json"
+		jsonFile = set + "_setParts.json"
 	}
 
 	return model.ExportToJSON(jsonFile, collection)
@@ -115,7 +116,12 @@ func processSets(bricksAPI *api.BricksAPI) error {
 	}
 
 	if jsonFile == "" {
-		jsonFile = "setParts.json"
+		var b strings.Builder
+		for i := 0; i < len(sets.Sets) && i < 5; i++ {
+			b.WriteString(sets.Sets[i])
+		}
+		b.WriteString("_parts.json")
+		jsonFile = b.String()
 	}
 
 	return model.ExportToJSON(jsonFile, collection)

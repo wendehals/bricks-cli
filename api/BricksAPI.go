@@ -24,12 +24,6 @@ func NewBricksAPI(client *http.Client, apiKey string) *BricksAPI {
 	return &bricks
 }
 
-// setPartsPageResult contains the result of /api/v3/lego/sets/{set_num}/parts/
-type setPartsPageResult struct {
-	Next    string            `json:"next"`
-	Results []model.PartEntry `json:"results"`
-}
-
 // GetSetParts returns the result of /api/v3/lego/sets/{set_num}/parts/
 func (b *BricksAPI) GetSetParts(setNum string, includeMiniFigs bool) *model.Collection {
 	collection := model.Collection{}
@@ -40,7 +34,7 @@ func (b *BricksAPI) GetSetParts(setNum string, includeMiniFigs bool) *model.Coll
 	}
 	url := fmt.Sprintf(bricksURL, subPath)
 
-	setParts := setPartsPageResult{}
+	setParts := partsPageResult{}
 	err := b.requestPage(url, &setParts)
 	if err != nil {
 		log.Printf("Set number %s parts list could not be retrieved: %s\n", setNum, err.Error())
@@ -50,7 +44,7 @@ func (b *BricksAPI) GetSetParts(setNum string, includeMiniFigs bool) *model.Coll
 	collection.Parts = append(collection.Parts, setParts.Results...)
 	for len(setParts.Next) > 0 {
 		url = setParts.Next
-		setParts = setPartsPageResult{}
+		setParts = partsPageResult{}
 		err = b.requestPage(url, &setParts)
 		if err != nil {
 			log.Printf("Set number %s parts list could not be retrieved: %s\n", setNum, err.Error())

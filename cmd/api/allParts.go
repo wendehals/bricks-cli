@@ -34,7 +34,7 @@ func executeGetAllParts() error {
 	}
 
 	if jsonFile == "" {
-		jsonFile = "allParts.json"
+		jsonFile = "all_parts.json"
 	}
 
 	return model.ExportToJSON(jsonFile, allParts)

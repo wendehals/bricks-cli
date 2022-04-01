@@ -1,6 +1,8 @@
+[![CI](https://github.com/wendehals/bricks-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/wendehals/bricks-cli/actions/workflows/ci.yml)
+
 # bricks-cli
 
-    bricks is command line interface to the Rebrickable.com API. It
+    bricks is a command line interface to the Rebrickable.com API. It
     enables you to access the Rebrickable database to retrieve for example a list
     of all bricks of a certain set or user specific brick collections.
 
@@ -21,5 +23,12 @@
 
     Use "bricks [command] --help" for more information about a command.
 
-[![Build](https://github.com/wendehals/bricks-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/wendehals/bricks-cli/actions/workflows/ci.yml)
-[![Release](https://github.com/wendehals/bricks-cli/actions/workflows/cd.yml/badge.svg)](https://github.com/wendehals/bricks-cli/actions/workflows/cd.yml)
+## credentials.json
+
+The content of the `credentials.json` file looks like:
+
+    {
+        "username": "<rebrickable username>",
+        "password": "<rebrickable password>",
+        "api_key": "<rebrickable api key>"
+    }

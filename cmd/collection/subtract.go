@@ -41,7 +41,7 @@ func executeSubtract(args []string) error {
 		return err
 	}
 
-	result := minuend.Subtract(subtrahend)
+	result := minuend.Subtract(subtrahend).RemoveQuantityZero()
 
 	if jsonFile == "" {
 		jsonFile = fileNameFromArgs(args, "_subtracted.json")

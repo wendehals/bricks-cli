@@ -113,8 +113,8 @@ func (c *Collection) MergeByVariant() *Collection {
 	return c
 }
 
-// Filter applies function f on each part of the collection and removes those from the collection for which f returns false.
-func (c *Collection) Filter(f func(PartEntry) bool) *Collection {
+// filter applies function f on each part of the collection and removes those from the collection for which f returns false.
+func (c *Collection) filter(f func(PartEntry) bool) *Collection {
 	filteredParts := []PartEntry{}
 
 	for i := range c.Parts {
@@ -130,7 +130,7 @@ func (c *Collection) Filter(f func(PartEntry) bool) *Collection {
 
 // RemoveQuantityZero removes all parts of the collection which quantity is zero.
 func (c *Collection) RemoveQuantityZero() *Collection {
-	return c.Filter(func(part PartEntry) bool { return part.Quantity != 0 })
+	return c.filter(func(part PartEntry) bool { return part.Quantity != 0 })
 }
 
 // Import reads a collection from a JSON encoded file.

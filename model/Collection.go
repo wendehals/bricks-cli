@@ -21,40 +21,9 @@ type Collection struct {
 	Parts []PartEntry `json:"parts"`
 }
 
-var variantsMapping = make(map[string]string)
-
-//go:embed variants.json
-//go:embed parts_html.gotpl
+//go:embed resources/variants.json
+//go:embed resources/parts_html.gotpl
 var fs embed.FS
-
-func init() {
-	var v struct {
-		Variants []struct {
-			Original   string `json:"original"`
-			Substitute string `json:"substitute"`
-		} `json:"variants"`
-	}
-
-	jsonFile, err := fs.Open("variants.json")
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-	defer jsonFile.Close()
-
-	data, err := ioutil.ReadAll(jsonFile)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-
-	err = json.Unmarshal(data, &v)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-
-	for i := range v.Variants {
-		variantsMapping[v.Variants[i].Original] = v.Variants[i].Substitute
-	}
-}
 
 // Sort the Parts of a collection by their Part Number
 func (c *Collection) Sort() *Collection {
@@ -130,6 +99,8 @@ func (c *Collection) MergeByColor() *Collection {
 // MergeByVariant merges all parts of compatible types (variants).
 // The isSpare flag of PartEntry will be invalid afterwards and set to false for all entries.
 func (c *Collection) MergeByVariant() *Collection {
+	variantsMapping := loadVariants()
+
 	f := func(k string) string {
 		key, exists := variantsMapping[k]
 		if !exists {
@@ -187,7 +158,7 @@ func Import(fileName string) (*Collection, error) {
 
 // ExportToHTML writes an HTML file with all parts of the collection.
 func (c *Collection) ExportToHTML(fileName string) error {
-	t, err := template.ParseFS(fs, "parts_html.gotpl")
+	t, err := template.ParseFS(fs, "resources/parts_html.gotpl")
 	if err != nil {
 		return fmt.Errorf("exporting collection to HTML file '%s' failed: %s", fileName, err.Error())
 	}
@@ -308,4 +279,36 @@ func max(x1, x2 int) int {
 		return x1
 	}
 	return x2
+}
+
+func loadVariants() map[string]string {
+	var v struct {
+		Variants []struct {
+			Original   string `json:"original"`
+			Substitute string `json:"substitute"`
+		} `json:"variants"`
+	}
+
+	jsonFile, err := fs.Open("resources/variants.json")
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	defer jsonFile.Close()
+
+	data, err := ioutil.ReadAll(jsonFile)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	err = json.Unmarshal(data, &v)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	var variantsMapping = make(map[string]string)
+	for i := range v.Variants {
+		variantsMapping[v.Variants[i].Original] = v.Variants[i].Substitute
+	}
+
+	return variantsMapping
 }

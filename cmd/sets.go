@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -10,11 +11,9 @@ import (
 )
 
 var setsCmd = &cobra.Command{
-	Use:   "sets [-c FILE] [-o FILE] [-j FILE]",
+	Use:   fmt.Sprintf("sets %s %s", credentials_arg, json_output_arg),
 	Short: "Get a list of all the user's sets",
-	Long: `
-The command returns a list of all sets of the user.
-`,
+	Long:  "The sets command returns a list of all sets of the user.",
 
 	DisableFlagsInUseLine: true,
 
@@ -24,7 +23,7 @@ The command returns a list of all sets of the user.
 }
 
 func init() {
-	rootCmd.AddCommand(setsCmd)
+	apiCmd.AddCommand(setsCmd)
 }
 
 func executeSets() error {
@@ -32,18 +31,15 @@ func executeSets() error {
 		Timeout: time.Second * 5,
 	}
 
-	usersAPI := api.NewUsersAPI(&client, credentials.Username, credentials.Password, credentials.APIKey)
+	usersAPI := api.NewUsersAPI(&client, credentials)
 	sets, err := usersAPI.GetSets()
 	if err != nil {
 		return err
 	}
 
-	if jsonFile != "" {
-		err := model.ExportToJSON(jsonFile, sets)
-		if err != nil {
-			return err
-		}
+	if jsonFile == "" {
+		jsonFile = "sets.json"
 	}
 
-	return nil
+	return model.ExportToJSON(jsonFile, sets)
 }

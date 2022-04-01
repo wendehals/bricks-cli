@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -10,11 +11,9 @@ import (
 )
 
 var allPartsCmd = &cobra.Command{
-	Use:   "allParts [-c FILE] [-o FILE] [-j FILE]",
+	Use:   fmt.Sprintf("allParts %s %s", credentials_arg, json_output_arg),
 	Short: "Get all parts owned by the user",
-	Long: `
-The command returns a list of all parts owned by the user.
-`,
+	Long:  "The allParts command returns a list of all parts owned by the user.",
 
 	DisableFlagsInUseLine: true,
 
@@ -24,7 +23,7 @@ The command returns a list of all parts owned by the user.
 }
 
 func init() {
-	rootCmd.AddCommand(allPartsCmd)
+	apiCmd.AddCommand(allPartsCmd)
 }
 
 func executeGetAllParts() error {
@@ -32,23 +31,15 @@ func executeGetAllParts() error {
 		Timeout: time.Second * 5,
 	}
 
-	usersAPI := api.NewUsersAPI(&client, credentials.Username, credentials.Password, credentials.APIKey)
+	usersAPI := api.NewUsersAPI(&client, credentials)
 	allParts, err := usersAPI.GetAllParts()
 	if err != nil {
 		return err
 	}
 
-	err = allParts.ExportToHTML(htmlFile)
-	if err != nil {
-		return err
+	if jsonFile == "" {
+		jsonFile = "allParts.json"
 	}
 
-	if jsonFile != "" {
-		err := model.ExportToJSON(jsonFile, allParts)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
+	return model.ExportToJSON(jsonFile, allParts)
 }

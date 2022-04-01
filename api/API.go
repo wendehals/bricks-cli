@@ -14,12 +14,12 @@ type AbstractAPI struct {
 }
 
 func (a *AbstractAPI) requestPage(url string, v interface{}) error {
-	reqest, err := CreateGetRequest(url, a.apiKey)
+	reqest, err := createGetRequest(url, a.apiKey)
 	if err != nil {
 		return err
 	}
 
-	err = DoRequest(a.client, reqest, v)
+	err = doRequest(a.client, reqest, v)
 	if err != nil {
 		return err
 	}

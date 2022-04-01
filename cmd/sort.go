@@ -1,15 +1,16 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/model"
 )
 
 var sortCmd = &cobra.Command{
-	Use:   "sort [-c FILE] [-o FILE] [-j FILE] JSONFILE",
+	Use:   fmt.Sprintf("sort %s JSON_FILE", json_output_arg),
 	Short: "Sorts the parts of a collection by their number.",
-	Long: `
-The command sorts the parts of a collection in descending order by their part number.`,
+	Long:  "The command sorts the parts of a collection in descending order by their part number.",
 
 	DisableFlagsInUseLine: true,
 
@@ -20,7 +21,9 @@ The command sorts the parts of a collection in descending order by their part nu
 }
 
 func init() {
-	rootCmd.AddCommand(sortCmd)
+	collectionCmd.AddCommand(sortCmd)
+
+	sortCmd.Flags().StringVarP(&jsonFile, json_output_opt, json_output_sopt, "", json_output_usage)
 }
 
 func executeSort(args []string) error {
@@ -29,19 +32,11 @@ func executeSort(args []string) error {
 		return err
 	}
 
+	if jsonFile == "" {
+		jsonFile = fileNameFromArgs(args, "_sorted.json")
+	}
+
 	sorted := collection.Sort()
 
-	err = sorted.ExportToHTML(htmlFile)
-	if err != nil {
-		return err
-	}
-
-	if jsonFile != "" {
-		err := model.ExportToJSON(jsonFile, sorted)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
+	return model.ExportToJSON(jsonFile, sorted)
 }

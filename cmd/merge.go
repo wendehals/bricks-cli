@@ -12,17 +12,16 @@ var (
 	variant bool
 
 	mergeCmd = &cobra.Command{
-		Use:   "merge [-c FILE] [-o FILE] [-j FILE] {--color | --variant} JSONFILE",
+		Use:   fmt.Sprintf("merge %s {--color | --variant} JSON_FILE", json_output_arg),
 		Short: "Merges the parts of a collection by their color or by their variant.",
-		Long: `
-The command merges all parts of the same type and color or by variants.`,
+		Long:  "The command merges all parts of the same type and color or by variants.",
 
 		DisableFlagsInUseLine: true,
 
 		Args: cobra.ExactArgs(1),
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			if !color && !variant {
-				return fmt.Errorf("either --color or --variant must be set")
+				return fmt.Errorf("at least one option of --color or --variant must be set")
 			}
 			return nil
 		},
@@ -33,8 +32,9 @@ The command merges all parts of the same type and color or by variants.`,
 )
 
 func init() {
-	rootCmd.AddCommand(mergeCmd)
+	collectionCmd.AddCommand(mergeCmd)
 
+	mergeCmd.Flags().StringVarP(&jsonFile, json_output_opt, json_output_sopt, "", json_output_usage)
 	mergeCmd.Flags().BoolVarP(&color, "color", "", false, "Merge by color")
 	mergeCmd.Flags().BoolVarP(&variant, "variant", "", false, "Merge by variant")
 }
@@ -54,17 +54,9 @@ func executeMerge(args []string) error {
 		merged = merged.MergeByVariant()
 	}
 
-	err = merged.ExportToHTML(htmlFile)
-	if err != nil {
-		return err
+	if jsonFile == "" {
+		jsonFile = fileNameFromArgs(args, "_merged.json")
 	}
 
-	if jsonFile != "" {
-		err := model.ExportToJSON(jsonFile, merged)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
+	return model.ExportToJSON(jsonFile, merged)
 }

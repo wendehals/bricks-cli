@@ -11,25 +11,15 @@
     bricks [command]
 
     Available Commands:
-    allParts    Get all parts owned by the user
+    api         Groups all commands for the Rebrickable API.
+    collection  Groups all commands for working with bricks collections.
     help        Help about any command
-    max         Calculates the maximum quantity of each part of multiple collections.
-    merge       Merges the parts of a collection by their color or by their variant.
-    partLists   Get a list of all the user's part lists
-    setLists    Get a list of all the user's set lists
-    setParts    Returns all parts used in the given set or sets
-    sets        Get a list of all the user's sets
-    sort        Sorts the parts of a collection by their number.
-    subtract    Subtracts one collection of parts from another.
-    sum         Sums up the parts of multiple collections.
 
     Flags:
-    -c, --credentials string   A JSON file containing the Rebrickable credentials (default "credentials.json")
-    -h, --help                 help for bricks
-    -o, --html string          A name for the HTML output file (default "output.html")
-    -j, --json string          A name for the JSON output file
-    -v, --version              version for bricks
+    -h, --help      help for bricks
+    -v, --version   version for bricks
 
     Use "bricks [command] --help" for more information about a command.
 
-![Go](https://github.com/wendehals/bricks-cli/workflows/Go/badge.svg)
+[![Build](https://github.com/wendehals/bricks-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/wendehals/bricks-cli/actions/workflows/ci.yml)
+[![Release](https://github.com/wendehals/bricks-cli/actions/workflows/cd.yml/badge.svg)](https://github.com/wendehals/bricks-cli/actions/workflows/cd.yml)

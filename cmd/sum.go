@@ -1,12 +1,14 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/model"
 )
 
 var sumCmd = &cobra.Command{
-	Use:   "sum [-c FILE] [-o FILE] [-j FILE] JSONFILE...",
+	Use:   fmt.Sprintf("sum %s JSON_FILE...", json_output_arg),
 	Short: "Sums up the parts of multiple collections.",
 	Long: `
 The command sums up all parts of multiple collections to a new collection by
@@ -21,7 +23,8 @@ merging identical parts to single lots.`,
 }
 
 func init() {
-	rootCmd.AddCommand(sumCmd)
+	collectionCmd.AddCommand(sumCmd)
+	sumCmd.Flags().StringVarP(&jsonFile, json_output_opt, json_output_sopt, "", json_output_usage)
 }
 
 func executeSum(args []string) error {
@@ -39,17 +42,9 @@ func executeSum(args []string) error {
 		sum.Add(&collection)
 	}
 
-	err := sum.ExportToHTML(htmlFile)
-	if err != nil {
-		return err
+	if jsonFile == "" {
+		jsonFile = fileNameFromArgs(args, "_sum.json")
 	}
 
-	if jsonFile != "" {
-		err := model.ExportToJSON(jsonFile, sum)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
+	return model.ExportToJSON(jsonFile, sum)
 }

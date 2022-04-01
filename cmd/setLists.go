@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -10,11 +11,9 @@ import (
 )
 
 var setListsCmd = &cobra.Command{
-	Use:   "setLists [-c FILE] [-o FILE] [-j FILE]",
+	Use:   fmt.Sprintf("setLists %s %s", credentials_arg, json_output_arg),
 	Short: "Get a list of all the user's set lists",
-	Long: `
-The command returns a list of all set lists of the user.
-`,
+	Long:  "The setLists command returns a list of all set lists of the user.",
 
 	DisableFlagsInUseLine: true,
 
@@ -24,7 +23,7 @@ The command returns a list of all set lists of the user.
 }
 
 func init() {
-	rootCmd.AddCommand(setListsCmd)
+	apiCmd.AddCommand(setListsCmd)
 }
 
 func executeSetLists() error {
@@ -32,18 +31,15 @@ func executeSetLists() error {
 		Timeout: time.Second * 5,
 	}
 
-	usersAPI := api.NewUsersAPI(&client, credentials.Username, credentials.Password, credentials.APIKey)
+	usersAPI := api.NewUsersAPI(&client, credentials)
 	setLists, err := usersAPI.GetSetLists()
 	if err != nil {
 		return err
 	}
 
-	if jsonFile != "" {
-		err := model.ExportToJSON(jsonFile, setLists)
-		if err != nil {
-			return err
-		}
+	if jsonFile == "" {
+		jsonFile = "setLists.json"
 	}
 
-	return nil
+	return model.ExportToJSON(jsonFile, setLists)
 }

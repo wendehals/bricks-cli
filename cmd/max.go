@@ -1,15 +1,16 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/model"
 )
 
 var maxCmd = &cobra.Command{
-	Use:   "max [-c FILE] [-o FILE] [-j FILE] JSONFILE...",
-	Short: "Calculates the maximum quantity of each part of multiple collections.",
-	Long: `
-The command calculates the maximum quantity of each part of multiple collections.`,
+	Use:   fmt.Sprintf("max %s JSON_FILE1 JSON_FILE2...", json_output_arg),
+	Short: "Calculates the maximum quantity of each part of at least two collections.",
+	Long:  "The command calculates the maximum quantity of each part of at least two collections.",
 
 	DisableFlagsInUseLine: true,
 
@@ -20,7 +21,9 @@ The command calculates the maximum quantity of each part of multiple collections
 }
 
 func init() {
-	rootCmd.AddCommand(maxCmd)
+	collectionCmd.AddCommand(maxCmd)
+
+	maxCmd.Flags().StringVarP(&jsonFile, json_output_opt, json_output_sopt, "", json_output_usage)
 }
 
 func executeMax(args []string) error {
@@ -38,17 +41,9 @@ func executeMax(args []string) error {
 		max.Max(&collection)
 	}
 
-	err := max.ExportToHTML(htmlFile)
-	if err != nil {
-		return err
+	if jsonFile == "" {
+		jsonFile = fileNameFromArgs(args, "_max.json")
 	}
 
-	if jsonFile != "" {
-		err := model.ExportToJSON(jsonFile, max)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
+	return model.ExportToJSON(jsonFile, max)
 }

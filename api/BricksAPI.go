@@ -8,7 +8,7 @@ import (
 	"github.com/wendehals/bricks/model"
 )
 
-const bricksURL string = RebrickableBaseURL + "lego/%s"
+const bricksURL string = rebrickableBaseURL + "lego/%s"
 
 // BricksAPI provides API for accessing Lego's data
 type BricksAPI struct {

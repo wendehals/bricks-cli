@@ -11,10 +11,10 @@ import (
 )
 
 // RebrickableBaseURL contains the Rebrickable API base URL
-const RebrickableBaseURL string = "https://rebrickable.com/api/v3/"
+const rebrickableBaseURL string = "https://rebrickable.com/api/v3/"
 
 // CreateRequest returns a new http.Reqest object for the given url of the Rebrickable API
-func CreateRequest(method string, url string, apiKey string, data url.Values) (*http.Request, error) {
+func createRequest(method string, url string, apiKey string, data url.Values) (*http.Request, error) {
 	var body io.Reader
 	if data != nil {
 		body = strings.NewReader(data.Encode())
@@ -32,12 +32,12 @@ func CreateRequest(method string, url string, apiKey string, data url.Values) (*
 }
 
 // CreateGetRequest returns a new http.Reqest object for the given path of the Rebrickable API
-func CreateGetRequest(url string, apiKey string) (*http.Request, error) {
-	return CreateRequest(http.MethodGet, url, apiKey, nil)
+func createGetRequest(url string, apiKey string) (*http.Request, error) {
+	return createRequest(http.MethodGet, url, apiKey, nil)
 }
 
 // DoRequest issues an HTTP request
-func DoRequest(client *http.Client, reqest *http.Request, v interface{}) error {
+func doRequest(client *http.Client, reqest *http.Request, v interface{}) error {
 	log.Printf("Requesting %s\n", reqest.URL)
 
 	var body []byte

@@ -9,7 +9,7 @@ import (
 	"github.com/wendehals/bricks/model"
 )
 
-const usersURL string = RebrickableBaseURL + "users/%s/%s"
+const usersURL string = rebrickableBaseURL + "users/%s/%s"
 
 // UsersAPI provides API for accessing a Rebrickable user's data
 type UsersAPI struct {
@@ -18,12 +18,12 @@ type UsersAPI struct {
 }
 
 // NewUsersAPI creates a new object of UsersAPI and initializes it with a token by issueing a request to the Rebrickable API
-func NewUsersAPI(client *http.Client, userName string, password string, apiKey string) *UsersAPI {
+func NewUsersAPI(client *http.Client, credentials *Credentials) *UsersAPI {
 	users := UsersAPI{}
 	users.client = client
-	users.apiKey = apiKey
+	users.apiKey = credentials.APIKey
 
-	err := users.postToken(userName, password)
+	err := users.postToken(credentials.Username, credentials.Password)
 	if err != nil {
 		log.Fatalf("Could not log into Rebrickable API: %s\n", err.Error())
 	}
@@ -42,14 +42,14 @@ func (u *UsersAPI) postToken(userName string, password string) error {
 		"password": {password},
 	}
 
-	reqest, err := CreateRequest(http.MethodPost, RebrickableBaseURL+"users/_token/", u.apiKey, data)
+	reqest, err := createRequest(http.MethodPost, rebrickableBaseURL+"users/_token/", u.apiKey, data)
 	if err != nil {
 		return err
 	}
 
 	reqest.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
-	err = DoRequest(u.client, reqest, &token)
+	err = doRequest(u.client, reqest, &token)
 	if err != nil {
 		return err
 	}

@@ -20,7 +20,7 @@ var (
 	sets *setsList
 
 	setPartsCmd = &cobra.Command{
-		Use:   "setParts [-c FILE] [-o FILE] [-j FILE] {-s SET_NUMBER | --sets FILE}",
+		Use:   fmt.Sprintf("setParts %s %s {-s SET_NUMBER | --sets SETS_FILE}", credentials_arg, json_output_arg),
 		Short: "Returns all parts used in the given set or sets",
 		Long: `
 The command returns a list of parts of the given set.
@@ -47,10 +47,10 @@ type setsList struct {
 }
 
 func init() {
-	rootCmd.AddCommand(setPartsCmd)
+	apiCmd.AddCommand(setPartsCmd)
 
 	setPartsCmd.Flags().StringVarP(&set, "set", "s", "", "A set number")
-	setPartsCmd.Flags().StringVar(&setsFile, "sets", "", "A JSON file containing a list of sets")
+	setPartsCmd.Flags().StringVar(&setsFile, "sets", "", "A JSON file containing a list of set numbers")
 }
 
 func executeSetParts() error {
@@ -79,8 +79,6 @@ func readSets() error {
 		return nil
 	}
 
-	c := &setsList{}
-
 	jsonFile, err := os.Open(setsFile)
 	if err != nil {
 		return err
@@ -92,12 +90,10 @@ func readSets() error {
 		return err
 	}
 
-	err = json.Unmarshal(data, c)
+	err = json.Unmarshal(data, sets)
 	if err != nil {
 		return err
 	}
-
-	sets = c
 
 	return nil
 }
@@ -105,19 +101,12 @@ func readSets() error {
 func processSet(bricksAPI *api.BricksAPI) error {
 	fmt.Println("Retrieving set number ", set)
 	collection := bricksAPI.GetSetParts(set, false)
-	err := collection.ExportToHTML(htmlFile)
-	if err != nil {
-		return err
+
+	if jsonFile == "" {
+		jsonFile = "setParts.json"
 	}
 
-	if jsonFile != "" {
-		err := model.ExportToJSON(jsonFile, collection)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
+	return model.ExportToJSON(jsonFile, collection)
 }
 
 func processSets(bricksAPI *api.BricksAPI) error {
@@ -127,17 +116,9 @@ func processSets(bricksAPI *api.BricksAPI) error {
 		collection.Add(bricksAPI.GetSetParts(set, false))
 	}
 
-	err := collection.ExportToHTML(htmlFile)
-	if err != nil {
-		return err
+	if jsonFile == "" {
+		jsonFile = "setParts.json"
 	}
 
-	if jsonFile != "" {
-		err := model.ExportToJSON(jsonFile, collection)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
+	return model.ExportToJSON(jsonFile, collection)
 }

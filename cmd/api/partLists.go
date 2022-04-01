@@ -22,10 +22,6 @@ var partListsCmd = &cobra.Command{
 	},
 }
 
-func init() {
-	apiCmd.AddCommand(partListsCmd)
-}
-
 func executePartLists() error {
 	client := http.Client{
 		Timeout: time.Second * 5,

@@ -22,10 +22,6 @@ var allPartsCmd = &cobra.Command{
 	},
 }
 
-func init() {
-	apiCmd.AddCommand(allPartsCmd)
-}
-
 func executeGetAllParts() error {
 	client := http.Client{
 		Timeout: time.Second * 5,

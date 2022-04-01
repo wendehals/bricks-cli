@@ -1,11 +1,10 @@
-package cmd
+package collection
 
 import (
 	"path/filepath"
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/wendehals/bricks/cmd"
 )
 
 const (
@@ -18,7 +17,7 @@ const (
 var (
 	jsonFile string
 
-	collectionCmd = &cobra.Command{
+	CollectionCmd = &cobra.Command{
 		Use:   "collection",
 		Short: "Groups all commands for working with bricks collections.",
 		Long:  "The collection command groups all commands for working with bricks collections.",
@@ -28,7 +27,12 @@ var (
 )
 
 func init() {
-	cmd.RootCmd.AddCommand(collectionCmd)
+	CollectionCmd.AddCommand(exportCmd)
+	CollectionCmd.AddCommand(maxCmd)
+	CollectionCmd.AddCommand(mergeCmd)
+	CollectionCmd.AddCommand(sortCmd)
+	CollectionCmd.AddCommand(subtractCmd)
+	CollectionCmd.AddCommand(sumCmd)
 }
 
 func fileNameFromArgs(args []string, suffix string) string {

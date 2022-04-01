@@ -1,4 +1,4 @@
-package cmd
+package collection
 
 import (
 	"fmt"
@@ -23,7 +23,6 @@ merging identical parts to single lots.`,
 }
 
 func init() {
-	collectionCmd.AddCommand(sumCmd)
 	sumCmd.Flags().StringVarP(&jsonFile, json_output_opt, json_output_sopt, "", json_output_usage)
 }
 

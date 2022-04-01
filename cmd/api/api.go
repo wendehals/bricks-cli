@@ -5,7 +5,6 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/api"
-	"github.com/wendehals/bricks/cmd"
 )
 
 const (
@@ -26,7 +25,7 @@ var (
 
 	credentials *api.Credentials
 
-	apiCmd = &cobra.Command{
+	ApiCmd = &cobra.Command{
 		Use:   "api",
 		Short: "Groups all commands for the Rebrickable API.",
 		Long:  "The api command groups all commands for the Rebrickable API.",
@@ -40,11 +39,15 @@ var (
 )
 
 func init() {
-	cmd.RootCmd.AddCommand(apiCmd)
+	ApiCmd.AddCommand(allPartsCmd)
+	ApiCmd.AddCommand(partListsCmd)
+	ApiCmd.AddCommand(setListsCmd)
+	ApiCmd.AddCommand(setPartsCmd)
+	ApiCmd.AddCommand(setsCmd)
 
-	apiCmd.PersistentFlags().StringVarP(&credentialsFile, credentials_opt, credentials_sopt, "credentials.json",
+	ApiCmd.PersistentFlags().StringVarP(&credentialsFile, credentials_opt, credentials_sopt, "credentials.json",
 		credentials_usage)
-	apiCmd.PersistentFlags().StringVarP(&jsonFile, json_output_opt, json_output_sopt, "", json_output_usage)
+	ApiCmd.PersistentFlags().StringVarP(&jsonFile, json_output_opt, json_output_sopt, "", json_output_usage)
 }
 
 func readCredentials() error {

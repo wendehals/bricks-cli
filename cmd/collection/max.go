@@ -1,4 +1,4 @@
-package cmd
+package collection
 
 import (
 	"fmt"
@@ -21,8 +21,6 @@ var maxCmd = &cobra.Command{
 }
 
 func init() {
-	collectionCmd.AddCommand(maxCmd)
-
 	maxCmd.Flags().StringVarP(&jsonFile, json_output_opt, json_output_sopt, "", json_output_usage)
 }
 

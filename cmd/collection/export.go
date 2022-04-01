@@ -1,4 +1,4 @@
-package cmd
+package collection
 
 import (
 	"github.com/spf13/cobra"
@@ -23,7 +23,6 @@ var (
 )
 
 func init() {
-	collectionCmd.AddCommand(exportCmd)
 	exportCmd.Flags().StringVar(&htmlFile, "html", "", "A name for the HTML output file (default is name of JSON input file)")
 }
 

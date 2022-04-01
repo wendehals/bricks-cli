@@ -1,4 +1,4 @@
-package cmd
+package collection
 
 import (
 	"fmt"
@@ -27,8 +27,6 @@ the list of missing parts.`,
 }
 
 func init() {
-	collectionCmd.AddCommand(subtractCmd)
-
 	subtractCmd.Flags().StringVarP(&jsonFile, json_output_opt, json_output_sopt, "", json_output_usage)
 }
 

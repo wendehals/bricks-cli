@@ -47,8 +47,6 @@ type setsList struct {
 }
 
 func init() {
-	apiCmd.AddCommand(setPartsCmd)
-
 	setPartsCmd.Flags().StringVarP(&set, "set", "s", "", "A set number")
 	setPartsCmd.Flags().StringVar(&setsFile, "sets", "", "A JSON file containing a list of set numbers")
 }

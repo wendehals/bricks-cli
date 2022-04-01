@@ -22,10 +22,6 @@ var setListsCmd = &cobra.Command{
 	},
 }
 
-func init() {
-	apiCmd.AddCommand(setListsCmd)
-}
-
 func executeSetLists() error {
 	client := http.Client{
 		Timeout: time.Second * 5,

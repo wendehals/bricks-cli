@@ -4,6 +4,8 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/wendehals/bricks/cmd/api"
+	"github.com/wendehals/bricks/cmd/collection"
 )
 
 var RootCmd = &cobra.Command{
@@ -19,6 +21,11 @@ to new collections.`,
 
 	CompletionOptions: cobra.CompletionOptions{
 		DisableDefaultCmd: true},
+}
+
+func init() {
+	RootCmd.AddCommand(api.ApiCmd)
+	RootCmd.AddCommand(collection.CollectionCmd)
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

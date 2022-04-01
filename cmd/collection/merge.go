@@ -1,4 +1,4 @@
-package cmd
+package collection
 
 import (
 	"fmt"
@@ -32,8 +32,6 @@ var (
 )
 
 func init() {
-	collectionCmd.AddCommand(mergeCmd)
-
 	mergeCmd.Flags().StringVarP(&jsonFile, json_output_opt, json_output_sopt, "", json_output_usage)
 	mergeCmd.Flags().BoolVarP(&color, "color", "", false, "Merge by color")
 	mergeCmd.Flags().BoolVarP(&variant, "variant", "", false, "Merge by variant")

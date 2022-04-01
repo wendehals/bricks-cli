@@ -1,4 +1,4 @@
-package cmd
+package collection
 
 import (
 	"fmt"
@@ -21,8 +21,6 @@ var sortCmd = &cobra.Command{
 }
 
 func init() {
-	collectionCmd.AddCommand(sortCmd)
-
 	sortCmd.Flags().StringVarP(&jsonFile, json_output_opt, json_output_sopt, "", json_output_usage)
 }
 

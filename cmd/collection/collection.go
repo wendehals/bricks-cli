@@ -4,15 +4,11 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/wendehals/bricks/api"
+	"github.com/spf13/cobra"
+	"github.com/wendehals/bricks/cmd"
 )
 
 const (
-	credentials_opt   = "credentials"
-	credentials_sopt  = "c"
-	credentials_arg   = "[-" + credentials_sopt + " CREDENTIAL_FILE]"
-	credentials_usage = "A JSON file containing the Rebrickable credentials"
-
 	json_output_opt   = "output"
 	json_output_sopt  = "o"
 	json_output_arg   = "[-" + json_output_sopt + " JSON_FILE]"
@@ -20,11 +16,20 @@ const (
 )
 
 var (
-	credentialsFile string
-	credentials     *api.Credentials
-
 	jsonFile string
+
+	collectionCmd = &cobra.Command{
+		Use:   "collection",
+		Short: "Groups all commands for working with bricks collections.",
+		Long:  "The collection command groups all commands for working with bricks collections.",
+
+		DisableFlagsInUseLine: true,
+	}
 )
+
+func init() {
+	cmd.RootCmd.AddCommand(collectionCmd)
+}
 
 func fileNameFromArgs(args []string, suffix string) string {
 	var builder strings.Builder

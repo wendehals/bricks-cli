@@ -54,3 +54,8 @@ type SetType struct {
 	SetURL      string `json:"set_url"`
 	SetImageURL string `json:"set_img_url"`
 }
+
+type PartColor struct {
+	ColorId  uint   `json:"color_id"`
+	ImageURL string `json:"part_img_url"`
+}

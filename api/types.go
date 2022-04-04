@@ -14,7 +14,7 @@ type setsPageResult struct {
 	Results []model.UsersSet `json:"results"`
 }
 
-// allPartsPageResult contains the result of /api/v3/users/{user_token}/allparts/?page={page}
+// partListsPageResult contains the result of /api/v3/users/{user_token}/allparts/?page={page}
 type partListsPageResult struct {
 	Next    string                `json:"next"`
 	Results []model.PartListEntry `json:"results"`
@@ -29,4 +29,10 @@ type partListsPageResult struct {
 type partsPageResult struct {
 	Next    string            `json:"next"`
 	Results []model.PartEntry `json:"results"`
+}
+
+// partColorsPageResult contains the result of /api/v3/lego/parts/{part_num}/colors/
+type partColorsPageResult struct {
+	Next    string            `json:"next"`
+	Results []model.PartColor `json:"results"`
 }

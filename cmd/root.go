@@ -26,6 +26,7 @@ to new collections.`,
 func init() {
 	RootCmd.AddCommand(api.ApiCmd)
 	RootCmd.AddCommand(collection.CollectionCmd)
+	RootCmd.AddCommand(exportCmd)
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

@@ -22,7 +22,7 @@ var (
 
 	setPartsCmd = &cobra.Command{
 		Use:   fmt.Sprintf("setParts %s %s {-s SET_NUMBER | --sets SETS_FILE}", credentials_arg, json_output_arg),
-		Short: "Returns all parts used in the given set or sets",
+		Short: "Get all parts used in the given set(s)",
 		Long: `
 The command returns a list of parts of the given set.
 
@@ -99,7 +99,10 @@ func readSets() error {
 
 func processSet(bricksAPI *api.BricksAPI) error {
 	fmt.Println("Retrieving set number ", set)
-	collection := bricksAPI.GetSetParts(set, false)
+	collection, err := bricksAPI.GetSetParts(set, false)
+	if err != nil {
+		return err
+	}
 
 	if jsonFile == "" {
 		jsonFile = set + "_setParts.json"
@@ -112,7 +115,12 @@ func processSets(bricksAPI *api.BricksAPI) error {
 	var collection *model.Collection
 	for _, set := range sets.Sets {
 		fmt.Println("Retrieving set number ", set)
-		collection.Add(bricksAPI.GetSetParts(set, false))
+		setParts, err := bricksAPI.GetSetParts(set, false)
+		if err != nil {
+			return err
+		}
+
+		collection.Add(setParts)
 	}
 
 	if jsonFile == "" {

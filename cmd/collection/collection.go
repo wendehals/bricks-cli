@@ -27,7 +27,6 @@ var (
 )
 
 func init() {
-	CollectionCmd.AddCommand(exportCmd)
 	CollectionCmd.AddCommand(maxCmd)
 	CollectionCmd.AddCommand(mergeCmd)
 	CollectionCmd.AddCommand(sortCmd)

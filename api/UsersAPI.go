@@ -73,7 +73,7 @@ func (u *UsersAPI) GetSets() ([]model.UsersSet, error) {
 	usersSets = append(usersSets, setsPage.Results...)
 	for len(setsPage.Next) > 0 {
 		url := setsPage.Next
-		setsPage := setsPageResult{}
+		setsPage = setsPageResult{}
 		err = u.requestPage(url, &setsPage)
 		if err != nil {
 			return nil, fmt.Errorf("user's sets could not be retrieved: %s", err.Error())
@@ -98,7 +98,7 @@ func (u *UsersAPI) GetSetLists() ([]model.SetListEntry, error) {
 	setList = append(setList, setListsPage.Results...)
 	for len(setListsPage.Next) > 0 {
 		url := setListsPage.Next
-		setListsPage := setListsPageResult{}
+		setListsPage = setListsPageResult{}
 		err = u.requestPage(url, &setListsPage)
 		if err != nil {
 			return nil, fmt.Errorf("the user's set lists could not be retrieved: %s", err.Error())
@@ -123,8 +123,8 @@ func (u *UsersAPI) GetPartLists() ([]model.PartListEntry, error) {
 	partListEntry = append(partListEntry, partListsPage.Results...)
 	for len(partListsPage.Next) > 0 {
 		url := partListsPage.Next
-		setListsPage := setListsPageResult{}
-		err = u.requestPage(url, &setListsPage)
+		partListsPage = partListsPageResult{}
+		err = u.requestPage(url, &partListsPage)
 		if err != nil {
 			return nil, fmt.Errorf("the user's part lists could not be retrieved: %s", err.Error())
 		}

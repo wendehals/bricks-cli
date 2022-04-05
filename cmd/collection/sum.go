@@ -4,11 +4,12 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/wendehals/bricks/cmd/options"
 	"github.com/wendehals/bricks/model"
 )
 
 var sumCmd = &cobra.Command{
-	Use:   fmt.Sprintf("sum %s JSON_FILE...", json_output_arg),
+	Use:   fmt.Sprintf("sum %s JSON_FILE1 JSON_FILE2 ...", options.JSON_OUTPUT_ARG),
 	Short: "Sums up the parts of multiple collections.",
 	Long: `
 The command sums up all parts of multiple collections to a new collection by
@@ -20,10 +21,6 @@ merging identical parts to single lots.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return executeSum(args)
 	},
-}
-
-func init() {
-	sumCmd.Flags().StringVarP(&jsonFile, json_output_opt, json_output_sopt, "", json_output_usage)
 }
 
 func executeSum(args []string) error {
@@ -42,7 +39,7 @@ func executeSum(args []string) error {
 	}
 
 	if jsonFile == "" {
-		jsonFile = fileNameFromArgs(args, "_parts.json")
+		jsonFile = options.FileNameFromArgs(args, "_parts.json")
 	}
 
 	return model.ExportToJSON(jsonFile, sum)

@@ -4,11 +4,12 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/wendehals/bricks/cmd/options"
 	"github.com/wendehals/bricks/model"
 )
 
 var subtractCmd = &cobra.Command{
-	Use:   fmt.Sprintf("subtract %s JSON_FILE_MINUEND JSON_FILE_SUBTRAHEND", json_output_arg),
+	Use:   fmt.Sprintf("subtract %s JSON_FILE_MINUEND JSON_FILE_SUBTRAHEND", options.JSON_OUTPUT_ARG),
 	Short: "Subtracts one collection of parts from another.",
 	Long: `
 The command subtracts the second collection of parts given in the args from the
@@ -26,10 +27,6 @@ the list of missing parts.`,
 	},
 }
 
-func init() {
-	subtractCmd.Flags().StringVarP(&jsonFile, json_output_opt, json_output_sopt, "", json_output_usage)
-}
-
 func executeSubtract(args []string) error {
 	minuend, err := model.ImportCollection(args[0])
 	if err != nil {
@@ -44,7 +41,7 @@ func executeSubtract(args []string) error {
 	result := minuend.Subtract(subtrahend).RemoveQuantityZero()
 
 	if jsonFile == "" {
-		jsonFile = fileNameFromArgs(args, "_subtracted_parts.json")
+		jsonFile = options.FileNameFromArgs(args, "_subtracted_parts.json")
 	}
 
 	return model.ExportToJSON(jsonFile, result)

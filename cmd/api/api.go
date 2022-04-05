@@ -3,18 +3,7 @@ package api
 import (
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/api"
-)
-
-const (
-	credentials_opt   = "credentials"
-	credentials_sopt  = "c"
-	credentials_arg   = "[-" + credentials_sopt + " CREDENTIAL_FILE]"
-	credentials_usage = "A JSON file containing the Rebrickable credentials"
-
-	json_output_opt   = "output"
-	json_output_sopt  = "o"
-	json_output_arg   = "[-" + json_output_sopt + " JSON_FILE]"
-	json_output_usage = "A name for the JSON output file"
+	"github.com/wendehals/bricks/cmd/options"
 )
 
 var (
@@ -46,7 +35,7 @@ func init() {
 	ApiCmd.AddCommand(setPartsCmd)
 	ApiCmd.AddCommand(setsCmd)
 
-	ApiCmd.PersistentFlags().StringVarP(&credentialsFile, credentials_opt, credentials_sopt, "credentials.json",
-		credentials_usage)
-	ApiCmd.PersistentFlags().StringVarP(&jsonFile, json_output_opt, json_output_sopt, "", json_output_usage)
+	ApiCmd.PersistentFlags().StringVarP(&credentialsFile, options.CREDENTIALS_OPT, options.CREDENTIALS_SOPT, "credentials.json",
+		options.CREDENTIALS_USAGE)
+	ApiCmd.PersistentFlags().StringVarP(&jsonFile, options.JSON_OUTPUT_OPT, options.JSON_OUTPUT_SOPT, "", options.JSON_OUTPUT_USAGE)
 }

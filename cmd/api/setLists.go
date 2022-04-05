@@ -7,11 +7,12 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/api"
+	"github.com/wendehals/bricks/cmd/options"
 	"github.com/wendehals/bricks/model"
 )
 
 var setListsCmd = &cobra.Command{
-	Use:   fmt.Sprintf("setLists %s %s", credentials_arg, json_output_arg),
+	Use:   fmt.Sprintf("setLists %s %s", options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG),
 	Short: "Get a list of all the user's set lists",
 	Long:  "The setLists command returns a list of all set lists of the user.",
 

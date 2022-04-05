@@ -1,23 +1,24 @@
 package cmd
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/api"
+	"github.com/wendehals/bricks/cmd/options"
 	"github.com/wendehals/bricks/model"
 )
 
 var (
 	credentialsFile string
 	htmlFile        string
-	jsonFile        string
 
 	credentials *api.Credentials
 
 	exportCmd = &cobra.Command{
-		Use:   "export [-c CREDENTIAL_FILE] [-html HTML_FILE] JSON_FILE",
+		Use:   fmt.Sprintf("export %s [-o HTML_FILE] JSON_FILE", options.CREDENTIALS_ARG),
 		Short: "Exports the JSON input as HTML.",
 		Long:  "The command exports the JSON input file as an HTML file.",
 
@@ -37,7 +38,10 @@ var (
 )
 
 func init() {
-	exportCmd.Flags().StringVar(&htmlFile, "html", "", "A name for the HTML output file (default is name of JSON input file)")
+	exportCmd.Flags().StringVarP(&credentialsFile, options.CREDENTIALS_OPT, options.CREDENTIALS_SOPT,
+		"credentials.json", options.CREDENTIALS_USAGE)
+	exportCmd.Flags().StringVarP(&htmlFile, options.HTML_OUTPUT_OPT, options.HTML_OUTPUT_SOPT,
+		"", options.HTML_OUTPUT_USAGE)
 }
 
 func executeExport(args []string) error {
@@ -57,7 +61,7 @@ func executeExport(args []string) error {
 	}
 
 	if htmlFile == "" {
-		htmlFile = "export.html"
+		htmlFile = options.FileNameFromArgs(args, ".html")
 	}
 
 	err = collection.ExportToHTML(htmlFile)

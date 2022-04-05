@@ -4,11 +4,12 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/wendehals/bricks/cmd/options"
 	"github.com/wendehals/bricks/model"
 )
 
 var sortCmd = &cobra.Command{
-	Use:   fmt.Sprintf("sort %s JSON_FILE", json_output_arg),
+	Use:   fmt.Sprintf("sort %s JSON_FILE", options.JSON_OUTPUT_ARG),
 	Short: "Sorts the parts of a collection by their number.",
 	Long:  "The command sorts the parts of a collection in descending order by their part number.",
 
@@ -20,10 +21,6 @@ var sortCmd = &cobra.Command{
 	},
 }
 
-func init() {
-	sortCmd.Flags().StringVarP(&jsonFile, json_output_opt, json_output_sopt, "", json_output_usage)
-}
-
 func executeSort(args []string) error {
 	collection, err := model.ImportCollection(args[0])
 	if err != nil {
@@ -31,7 +28,7 @@ func executeSort(args []string) error {
 	}
 
 	if jsonFile == "" {
-		jsonFile = fileNameFromArgs(args, "_sorted.json")
+		jsonFile = options.FileNameFromArgs(args, "_sorted_parts.json")
 	}
 
 	sorted := collection.Sort()

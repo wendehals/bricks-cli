@@ -7,11 +7,12 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/api"
+	"github.com/wendehals/bricks/cmd/options"
 	"github.com/wendehals/bricks/model"
 )
 
 var allPartsCmd = &cobra.Command{
-	Use:   fmt.Sprintf("allParts %s %s", credentials_arg, json_output_arg),
+	Use:   fmt.Sprintf("allParts %s %s", options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG),
 	Short: "Get all parts owned by the user",
 	Long:  "The allParts command returns a list of all parts owned by the user.",
 

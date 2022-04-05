@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/wendehals/bricks/cmd/options"
 	"github.com/wendehals/bricks/model"
 )
 
@@ -12,7 +13,7 @@ var (
 	variant bool
 
 	mergeCmd = &cobra.Command{
-		Use:   fmt.Sprintf("merge %s {--color | --variant} JSON_FILE", json_output_arg),
+		Use:   fmt.Sprintf("merge %s {--color | --variant} JSON_FILE", options.JSON_OUTPUT_ARG),
 		Short: "Merges the parts of a collection by their color or by their variant.",
 		Long:  "The command merges all parts of the same type and color or by variants.",
 
@@ -32,7 +33,6 @@ var (
 )
 
 func init() {
-	mergeCmd.Flags().StringVarP(&jsonFile, json_output_opt, json_output_sopt, "", json_output_usage)
 	mergeCmd.Flags().BoolVarP(&color, "color", "", false, "Merge by color")
 	mergeCmd.Flags().BoolVarP(&variant, "variant", "", false, "Merge by variant")
 }
@@ -53,7 +53,7 @@ func executeMerge(args []string) error {
 	}
 
 	if jsonFile == "" {
-		jsonFile = fileNameFromArgs(args, "_merged.json")
+		jsonFile = options.FileNameFromArgs(args, "_merged_parts.json")
 	}
 
 	return model.ExportToJSON(jsonFile, merged)

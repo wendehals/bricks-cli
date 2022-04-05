@@ -1,17 +1,8 @@
 package collection
 
 import (
-	"path/filepath"
-	"strings"
-
 	"github.com/spf13/cobra"
-)
-
-const (
-	json_output_opt   = "output"
-	json_output_sopt  = "o"
-	json_output_arg   = "[-" + json_output_sopt + " JSON_FILE]"
-	json_output_usage = "A name for the JSON output file"
+	"github.com/wendehals/bricks/cmd/options"
 )
 
 var (
@@ -32,24 +23,7 @@ func init() {
 	CollectionCmd.AddCommand(sortCmd)
 	CollectionCmd.AddCommand(subtractCmd)
 	CollectionCmd.AddCommand(sumCmd)
-}
 
-func fileNameFromArgs(args []string, suffix string) string {
-	var builder strings.Builder
-
-	for i := 0; i < len(args) && i < 5; i++ {
-		base := filepath.Base(args[i])
-		ext := filepath.Ext(base)
-		baseWoExt := base[:len(base)-len(ext)]
-
-		builder.WriteString(baseWoExt[:strings.Index(baseWoExt, "_")])
-
-		if i < len(args)-1 && i < 4 {
-			builder.WriteString("_")
-		}
-	}
-
-	builder.WriteString(suffix)
-
-	return builder.String()
+	CollectionCmd.PersistentFlags().StringVarP(&jsonFile, options.JSON_OUTPUT_OPT,
+		options.JSON_OUTPUT_SOPT, "", options.JSON_OUTPUT_USAGE)
 }

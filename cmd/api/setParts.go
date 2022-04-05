@@ -11,6 +11,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/api"
+	"github.com/wendehals/bricks/cmd/options"
 	"github.com/wendehals/bricks/model"
 )
 
@@ -21,7 +22,7 @@ var (
 	sets *setsList
 
 	setPartsCmd = &cobra.Command{
-		Use:   fmt.Sprintf("setParts %s %s {-s SET_NUMBER | --sets SETS_FILE}", credentials_arg, json_output_arg),
+		Use:   fmt.Sprintf("setParts %s %s {-s SET_NUMBER | --sets SETS_FILE}", options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG),
 		Short: "Get all parts used in the given set(s)",
 		Long: `
 The command returns a list of parts of the given set.

@@ -7,6 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/api"
+	"github.com/wendehals/bricks/cmd/options"
 	"github.com/wendehals/bricks/model"
 )
 
@@ -14,7 +15,7 @@ var (
 	listId string
 
 	partListPartsCmd = &cobra.Command{
-		Use:   fmt.Sprintf("partListParts %s %s -l LIST_ID", credentials_arg, json_output_arg),
+		Use:   fmt.Sprintf("partListParts %s %s -l LIST_ID", options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG),
 		Short: "Get all parts of a user defined part list.",
 		Long:  "The partListParts command returns all parts of a user defined part list.",
 

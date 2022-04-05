@@ -17,9 +17,9 @@
     Available Commands:
     api         Groups all commands for the Rebrickable API.
     collection  Groups all commands for working with bricks collections.
+    export      Exports the JSON input as HTML.
     help        Help about any command
 
-    Flags:
     -h, --help      help for bricks
     -v, --version   version for bricks
 
@@ -30,7 +30,6 @@
 
     The api command groups all commands for the Rebrickable API.
 
-    Usage:
     bricks api [command]
 
     Available Commands:
@@ -38,13 +37,12 @@
     partListParts Get all parts of a user defined part list.
     partLists     Get a list of all the user's part lists
     setLists      Get a list of all the user's set lists
-    setParts      Returns all parts used in the given set or sets
+    setParts      Get all parts used in the given set(s)
     sets          Get a list of all the user's sets
 
-    Flags:
     -c, --credentials string   A JSON file containing the Rebrickable credentials (default "credentials.json")
     -h, --help                 help for api
-    -o, --output string        A name for the JSON output file
+    -o, --json string          A name for the JSON output file
 
     Use "bricks api [command] --help" for more information about a command.
 
@@ -57,7 +55,6 @@
     bricks collection [command]
 
     Available Commands:
-    export      Exports the JSON input as HTML.
     max         Calculates the maximum quantity of each part of at least two collections.
     merge       Merges the parts of a collection by their color or by their variant.
     sort        Sorts the parts of a collection by their number.
@@ -65,7 +62,8 @@
     sum         Sums up the parts of multiple collections.
 
     Flags:
-    -h, --help   help for collection
+    -h, --help          help for collection
+    -o, --json string   A name for the JSON output file
 
     Use "bricks collection [command] --help" for more information about a command.
 

@@ -97,7 +97,7 @@ func (b *BricksAPI) ReplaceImagesByMatchingColor(collection *model.Collection) e
 
 		for j := range partColors {
 			if partColors[j].ColorId == partEntry.Color.ID {
-				partEntry.Part.ImageURL = partColors[j].ImageURL
+				collection.Parts[i].Part.ImageURL = partColors[j].ImageURL
 				break
 			}
 		}

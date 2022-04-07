@@ -21,6 +21,10 @@ type Collection struct {
 	Parts []PartEntry `json:"parts"`
 }
 
+const (
+	EXPORT_FAILED_MSG = "exporting collection to HTML file '%s' failed: %s"
+)
+
 //go:embed resources/variants.json
 //go:embed resources/parts_html.gotpl
 var fs embed.FS
@@ -160,12 +164,13 @@ func (c *Collection) RemoveQuantityZero() *Collection {
 func (c *Collection) ExportToHTML(fileName string) error {
 	t, err := template.ParseFS(fs, "resources/parts_html.gotpl")
 	if err != nil {
-		return fmt.Errorf("exporting collection to HTML file '%s' failed: %s", fileName, err.Error())
+
+		return fmt.Errorf(EXPORT_FAILED_MSG, fileName, err.Error())
 	}
 
 	file, err := os.Create(fileName)
 	if err != nil {
-		return fmt.Errorf("exporting collection to HTML file '%s' failed: %s", fileName, err.Error())
+		return fmt.Errorf(EXPORT_FAILED_MSG, fileName, err.Error())
 	}
 	defer file.Close()
 
@@ -173,7 +178,7 @@ func (c *Collection) ExportToHTML(fileName string) error {
 
 	err = t.Execute(writer, c.Parts)
 	if err != nil {
-		return fmt.Errorf("exporting collection to HTML file '%s' failed: %s", fileName, err.Error())
+		return fmt.Errorf(EXPORT_FAILED_MSG, fileName, err.Error())
 	}
 
 	writer.Flush()

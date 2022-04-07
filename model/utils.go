@@ -24,10 +24,3 @@ func ExportToJSON(fileName string, v interface{}) error {
 
 	return nil
 }
-
-func abs(i int) int {
-	if i < 0 {
-		return -i
-	}
-	return i
-}

@@ -5,13 +5,13 @@ import (
 	"embed"
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"log"
 	"os"
 	"regexp"
 	"sort"
 	"strconv"
-	"text/template"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -140,6 +140,25 @@ func (c *Collection) MergeByVariant() *Collection {
 	return c
 }
 
+// CountParts sums up the quantity of all parts of a collection.
+func (c *Collection) CountParts() int {
+	var partsCounter int
+	for i := range c.Parts {
+		partsCounter += c.Parts[i].Quantity
+	}
+	return partsCounter
+}
+
+func (c *Collection) HasNegativePartQuantity() bool {
+	for i := range c.Parts {
+		if c.Parts[i].Quantity < 0 {
+			return true
+		}
+	}
+
+	return false
+}
+
 // filter applies function f on each part of the collection and removes those from the collection for which f returns false.
 func (c *Collection) filter(f func(PartEntry) bool) *Collection {
 	filteredParts := []PartEntry{}
@@ -162,11 +181,27 @@ func (c *Collection) RemoveQuantityZero() *Collection {
 
 // ExportToHTML writes an HTML file with all parts of the collection.
 func (c *Collection) ExportToHTML(fileName string) error {
-	t, err := template.ParseFS(fs, "resources/parts_html.gotpl")
-	if err != nil {
+	t := template.New("my")
+	t.Funcs(template.FuncMap{
+		"abs": func(i int) int {
+			if i < 0 {
+				return -i
+			}
+			return i
+		},
+	})
 
+	b, err := fs.ReadFile("resources/parts_html.gotpl")
+	if err != nil {
 		return fmt.Errorf(EXPORT_FAILED_MSG, fileName, err.Error())
 	}
+
+	t, err = t.Parse(string(b))
+	if err != nil {
+		return fmt.Errorf(EXPORT_FAILED_MSG, fileName, err.Error())
+	}
+
+	//	t, err := template.ParseFS(fs, "resources/parts_html.gotpl")
 
 	file, err := os.Create(fileName)
 	if err != nil {
@@ -176,7 +211,7 @@ func (c *Collection) ExportToHTML(fileName string) error {
 
 	writer := bufio.NewWriter(file)
 
-	err = t.Execute(writer, c.Parts)
+	err = t.Execute(writer, c)
 	if err != nil {
 		return fmt.Errorf(EXPORT_FAILED_MSG, fileName, err.Error())
 	}

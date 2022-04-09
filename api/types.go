@@ -4,8 +4,8 @@ import "github.com/wendehals/bricks/model"
 
 // setListsPageResult contains the result of /api/v3/users/{user_token}/setlists/?page={page}
 type setListsPageResult struct {
-	Next    string               `json:"next"`
-	Results []model.SetListEntry `json:"results"`
+	Next    string          `json:"next"`
+	Results []model.SetList `json:"results"`
 }
 
 // setsPageResult contains the result of /api/v3/users/{user_token}/sets/?page={page}
@@ -16,8 +16,8 @@ type setsPageResult struct {
 
 // partListsPageResult contains the result of /api/v3/users/{user_token}/allparts/?page={page}
 type partListsPageResult struct {
-	Next    string                `json:"next"`
-	Results []model.PartListEntry `json:"results"`
+	Next    string           `json:"next"`
+	Results []model.PartList `json:"results"`
 }
 
 /*

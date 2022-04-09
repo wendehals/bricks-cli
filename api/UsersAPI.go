@@ -69,53 +69,51 @@ func (u *UsersAPI) postToken(userName string, password string) error {
 }
 
 // GetSets returns all sets of a user provided by /api/v3/users/{user_token}/sets
-func (u *UsersAPI) GetSets() ([]model.UsersSet, error) {
-	usersSets := []model.UsersSet{}
-	setsPage := setsPageResult{}
+func (u *UsersAPI) GetSets() (*model.UsersSets, error) {
+	usersSets := model.UsersSets{}
+	var setsPage *setsPageResult
 
 	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "sets"), &setsPage)
 	if err != nil {
 		return nil, fmt.Errorf(GET_SETS_ERR_MSG, err.Error())
 	}
 
-	usersSets = append(usersSets, setsPage.Results...)
+	usersSets.Sets = setsPage.Results
 	for len(setsPage.Next) > 0 {
 		url := setsPage.Next
-		setsPage = setsPageResult{}
 		err = u.requestPage(url, &setsPage)
 		if err != nil {
 			return nil, fmt.Errorf(GET_SETS_ERR_MSG, err.Error())
 		}
 
-		usersSets = append(usersSets, setsPage.Results...)
+		usersSets.Sets = append(usersSets.Sets, setsPage.Results...)
 	}
 
-	return usersSets, nil
+	return &usersSets, nil
 }
 
-// GetSetLists returns all owned sets of a uses provided by /api/v3/users/{user_token}/setlists/
-func (u *UsersAPI) GetSetLists() ([]model.SetListEntry, error) {
-	var setList []model.SetListEntry
-	setListsPage := setListsPageResult{}
+// GetSetLists returns all owned sets of a user provided by /api/v3/users/{user_token}/setlists/
+func (u *UsersAPI) GetSetLists() (*model.SetLists, error) {
+	setLists := model.SetLists{}
+	var setListsPage *setListsPageResult
 
 	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "setlists"), &setListsPage)
 	if err != nil {
 		return nil, fmt.Errorf(GET_SET_LISTS_ERR_MSG, err.Error())
 	}
 
-	setList = append(setList, setListsPage.Results...)
+	setLists.SetLists = setListsPage.Results
 	for len(setListsPage.Next) > 0 {
 		url := setListsPage.Next
-		setListsPage = setListsPageResult{}
 		err = u.requestPage(url, &setListsPage)
 		if err != nil {
 			return nil, fmt.Errorf(GET_SET_LISTS_ERR_MSG, err.Error())
 		}
 
-		setList = append(setList, setListsPage.Results...)
+		setLists.SetLists = append(setLists.SetLists, setListsPage.Results...)
 	}
 
-	return setList, nil
+	return &setLists, nil
 }
 
 // PartLists returns the result of /api/v3/users/{user_token}/partlists/

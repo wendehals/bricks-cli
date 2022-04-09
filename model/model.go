@@ -22,25 +22,30 @@ type PartEntry struct {
 	IsSpare  bool      `json:"is_spare"`
 }
 
-// SetListEntry represents an entry in the user's sets list.
-type SetListEntry struct {
+// SetList represents a user's set list.
+type SetList struct {
 	ID          uint   `json:"id"`
 	IsBuildable bool   `json:"is_buildable"`
 	Name        string `json:"name"`
 	NumSets     uint   `json:"num_sets"`
 }
 
-// PartListEntry represents an entry in the user's part lists.
-type PartListEntry struct {
+// SetLists represents all the user's set lists
+type SetLists struct {
+	SetLists []SetList `json:"setLists"`
+}
+
+// PartList represents a user's part list.
+type PartList struct {
 	ID          uint   `json:"id"`
 	IsBuildable bool   `json:"is_buildable"`
 	Name        string `json:"name"`
 	NumParts    uint   `json:"num_parts"`
 }
 
-// PartLists represents a list of user's part lists
+// PartLists represents all the user's part lists
 type PartLists struct {
-	PartLists []PartListEntry `json:"partLists"`
+	PartLists []PartList `json:"partLists"`
 }
 
 // UsersSet represents a set owned by the user.
@@ -48,6 +53,11 @@ type UsersSet struct {
 	Quantity       uint    `json:"quantity"`
 	IncludesSpares bool    `json:"include_spares"`
 	Set            SetType `json:"set"`
+}
+
+// UserSets represents all the user's sets
+type UsersSets struct {
+	Sets []UsersSet `json:"sets"`
 }
 
 // SetType represents a Lego set.

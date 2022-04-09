@@ -18,6 +18,8 @@ import (
 
 // Collection represents any collection of Lego parts (set, parts list, ...)
 type Collection struct {
+	IDs   []string    `json:"ids"`
+	Names []string    `json:"names"`
 	Parts []PartEntry `json:"parts"`
 }
 
@@ -75,12 +77,18 @@ func (c *Collection) Sort() *Collection {
 // Add one collection to another.
 // The isSpare flag of PartEntry will be invalid afterwards and set to false for all entries.
 func (c *Collection) Add(other *Collection) *Collection {
+	c.IDs = append(c.IDs, other.IDs...)
+	c.Names = append(c.Names, other.Names...)
+
 	return c.recalculateQuantity(other, add)
 }
 
 // Subtract on collection from another.
 // The isSpare flag of PartEntry will be invalid afterwards and set to false for all entries.
 func (c *Collection) Subtract(other *Collection) *Collection {
+	c.IDs = []string{}
+	c.Names = []string{}
+
 	c.recalculateQuantity(other, subtract)
 
 	newParts := []PartEntry{}
@@ -97,6 +105,9 @@ func (c *Collection) Subtract(other *Collection) *Collection {
 // Max calculates the max quantity of each part in both collections.
 // The isSpare flag of PartEntry will be invalid afterwards and set to false for all entries.
 func (c *Collection) Max(other *Collection) *Collection {
+	c.IDs = []string{}
+	c.Names = []string{}
+
 	return c.recalculateQuantity(other, max)
 }
 
@@ -104,6 +115,9 @@ func (c *Collection) Max(other *Collection) *Collection {
 // The Color field of PartEntry will be invalid afterwards.
 // The isSpare flag of PartEntry will be invalid afterwards and set to false for all entries.
 func (c *Collection) MergeByColor() *Collection {
+	c.IDs = []string{}
+	c.Names = []string{}
+
 	partsMap := c.mapPartsByPartNumber(nil, identity)
 
 	newParts := []PartEntry{}
@@ -126,6 +140,9 @@ func (c *Collection) MergeByColor() *Collection {
 // MergeByVariant merges all parts of compatible types (variants).
 // The isSpare flag of PartEntry will be invalid afterwards and set to false for all entries.
 func (c *Collection) MergeByVariant() *Collection {
+	c.IDs = []string{}
+	c.Names = []string{}
+
 	variantsMapping := loadVariants()
 
 	f := func(k string) string {
@@ -181,7 +198,7 @@ func (c *Collection) RemoveQuantityZero() *Collection {
 
 // ExportToHTML writes an HTML file with all parts of the collection.
 func (c *Collection) ExportToHTML(fileName string) error {
-	t := template.New("my")
+	t := template.New("parts")
 	t.Funcs(template.FuncMap{
 		"abs": func(i int) int {
 			if i < 0 {
@@ -200,8 +217,6 @@ func (c *Collection) ExportToHTML(fileName string) error {
 	if err != nil {
 		return fmt.Errorf(EXPORT_FAILED_MSG, fileName, err.Error())
 	}
-
-	//	t, err := template.ParseFS(fs, "resources/parts_html.gotpl")
 
 	file, err := os.Create(fileName)
 	if err != nil {

@@ -168,6 +168,8 @@ func (u *UsersAPI) GetAllParts() (*model.Collection, error) {
 // GetPartListParts returns all parts of a user defined parts list provided by /api/v3/users/{user_token}/partlists/{list_id}/parts
 func (u *UsersAPI) GetPartListParts(listId uint) (*model.Collection, error) {
 	collection := model.Collection{}
+	collection.IDs = append(collection.IDs, fmt.Sprint(listId))
+
 	partsPage := partsPageResult{}
 
 	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, fmt.Sprintf("partlists/%d/parts", listId)), &partsPage)

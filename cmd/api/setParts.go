@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -16,10 +17,8 @@ import (
 )
 
 var (
-	set      string
+	setNum   string
 	setsFile string
-
-	sets *setsList
 
 	setPartsCmd = &cobra.Command{
 		Use:   fmt.Sprintf("setParts %s %s {-s SET_NUMBER | --sets SETS_FILE}", options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG),
@@ -33,7 +32,7 @@ collection of parts.`,
 		DisableFlagsInUseLine: true,
 
 		PreRunE: func(cmd *cobra.Command, args []string) error {
-			if (set == "" && setsFile == "") || (set != "" && setsFile != "") {
+			if (setNum == "" && setsFile == "") || (setNum != "" && setsFile != "") {
 				return fmt.Errorf("please provide either a single set number with --set or a JSON file containing a list of sets with --sets")
 			}
 			return nil
@@ -44,90 +43,95 @@ collection of parts.`,
 	}
 )
 
-type setsList struct {
-	Sets []string `json:"sets"`
-}
-
 func init() {
-	setPartsCmd.Flags().StringVarP(&set, "set", "s", "", "A set number")
-	setPartsCmd.Flags().StringVar(&setsFile, "sets", "", "A JSON file containing a list of set numbers")
+	setPartsCmd.Flags().StringVarP(&setNum, "set", "n", "", "A set number")
+	setPartsCmd.Flags().StringVarP(&setsFile, "setsFile", "f", "", "A JSON file containing a list of sets")
 }
 
 func executeSetParts() error {
-	err := readSets()
-	if err != nil {
-		return err
-	}
-
 	client := http.Client{
 		Timeout: time.Second * 5,
 	}
 
 	bricksAPI := api.NewBricksAPI(&client, credentials.APIKey)
-	if set != "" {
-		return processSet(bricksAPI)
+
+	if setsFile != "" {
+		sets, err := readUsersSets()
+		if err != nil {
+			return err
+		}
+
+		return processUsersSets(bricksAPI, sets)
 	}
-	if sets != nil {
-		return processSets(bricksAPI)
+
+	if setNum != "" {
+		return processSet(bricksAPI)
 	}
 
 	return nil
 }
 
-func readSets() error {
-	if setsFile == "" {
-		return nil
-	}
-
+func readUsersSets() (*model.UsersSets, error) {
 	jsonFile, err := os.Open(setsFile)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer jsonFile.Close()
 
 	data, err := ioutil.ReadAll(jsonFile)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	err = json.Unmarshal(data, sets)
+	usersSets := model.UsersSets{}
+	err = json.Unmarshal(data, &usersSets)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return &usersSets, nil
 }
 
 func processSet(bricksAPI *api.BricksAPI) error {
-	fmt.Println("Retrieving set number ", set)
-	collection, err := bricksAPI.GetSetParts(set, false)
+	log.Printf("Retrieving details about set %s\n", setNum)
+	set, err := bricksAPI.GetSet(setNum)
 	if err != nil {
 		return err
 	}
 
+	log.Printf("Retrieving parts of set %s\n", setNum)
+	collection, err := bricksAPI.GetSetParts(setNum, false)
+	if err != nil {
+		return err
+	}
+	collection.IDs = append(collection.IDs, set.SetNum)
+	collection.Names = append(collection.Names, set.Name)
+
 	if jsonFile == "" {
-		jsonFile = set + "_setParts.json"
+		jsonFile = setNum + "_setParts.json"
 	}
 
 	return model.ExportToJSON(jsonFile, collection)
 }
 
-func processSets(bricksAPI *api.BricksAPI) error {
-	var collection *model.Collection
-	for _, set := range sets.Sets {
-		fmt.Println("Retrieving set number ", set)
-		setParts, err := bricksAPI.GetSetParts(set, false)
+func processUsersSets(bricksAPI *api.BricksAPI, usersSets *model.UsersSets) error {
+	collection := model.Collection{}
+	for i := range usersSets.Sets {
+		log.Printf("Retrieving set number %s\n", setNum)
+		setParts, err := bricksAPI.GetSetParts(usersSets.Sets[i].Set.SetNum, false)
 		if err != nil {
 			return err
 		}
+		setParts.IDs = append(setParts.IDs, usersSets.Sets[i].Set.SetNum)
+		setParts.Names = append(setParts.Names, usersSets.Sets[i].Set.Name)
 
 		collection.Add(setParts)
 	}
 
 	if jsonFile == "" {
 		var b strings.Builder
-		for i := 0; i < len(sets.Sets) && i < 5; i++ {
-			b.WriteString(sets.Sets[i])
+		for i := 0; i < len(usersSets.Sets) && i < 5; i++ {
+			b.WriteString(usersSets.Sets[i].Set.SetNum)
 		}
 		b.WriteString("_parts.json")
 		jsonFile = b.String()

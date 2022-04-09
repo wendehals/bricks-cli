@@ -10,7 +10,7 @@ import (
 const (
 	BRICKS_URL string = REBRICKABLE_BASE_URL + "lego/%s"
 
-	SET_PARTS_ERR_MSG   string = "set number %s parts list could not be retrieved: %s"
+	SET_PARTS_ERR_MSG   string = "parts list of set number %s could not be retrieved: %s"
 	PART_COLORS_ERR_MSG string = "part colors could not be retrieved: %s"
 )
 
@@ -28,13 +28,28 @@ func NewBricksAPI(client *http.Client, apiKey string) *BricksAPI {
 	return &bricks
 }
 
+// GetSet returns the result of /api/v3/lego/sets/{set_num}/
+func (b *BricksAPI) GetSet(setNum string) (*model.SetType, error) {
+	set := model.SetType{}
+
+	subPath := fmt.Sprintf("sets/%s/", setNum)
+	url := fmt.Sprintf(BRICKS_URL, subPath)
+
+	err := b.requestPage(url, &set)
+	if err != nil {
+		return nil, fmt.Errorf("details of set %s could not be retrieved: %s", setNum, err.Error())
+	}
+
+	return &set, nil
+}
+
 // GetSetParts returns the result of /api/v3/lego/sets/{set_num}/parts/
 func (b *BricksAPI) GetSetParts(setNum string, includeMiniFigs bool) (*model.Collection, error) {
 	collection := model.Collection{}
 
-	subPath := fmt.Sprintf("sets/%s/parts", setNum)
+	subPath := fmt.Sprintf("sets/%s/parts/", setNum)
 	if includeMiniFigs {
-		subPath += "/?inc_minifig_parts=1"
+		subPath += "?inc_minifig_parts=1"
 	}
 	url := fmt.Sprintf(BRICKS_URL, subPath)
 

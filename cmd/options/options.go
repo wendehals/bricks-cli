@@ -1,7 +1,9 @@
 package options
 
 import (
+	"fmt"
 	"path/filepath"
+	"regexp"
 	"strings"
 )
 
@@ -40,4 +42,19 @@ func FileNameFromArgs(args []string, suffix string) string {
 	builder.WriteString(suffix)
 
 	return builder.String()
+}
+
+func FileNameFrom(s string) (string, error) {
+	var illegalFileNames = [...]string{"CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4",
+		"COM5", "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5",
+		"LPT6", "LPT7", "LPT8", "LPT9"}
+
+	for i := range illegalFileNames {
+		if s == illegalFileNames[i] {
+			return "", fmt.Errorf("the string %s is an illegal file name", s)
+		}
+	}
+
+	illegalChars := regexp.MustCompile(`[<>:\"/\\|?*]`)
+	return illegalChars.ReplaceAllLiteralString(s, "_"), nil
 }

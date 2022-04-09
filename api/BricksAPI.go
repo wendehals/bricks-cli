@@ -10,8 +10,8 @@ import (
 const (
 	BRICKS_URL string = REBRICKABLE_BASE_URL + "lego/%s"
 
-	SET_PARTS_ERROR_MSG   string = "set number %s parts list could not be retrieved: %s"
-	PART_COLORS_ERROR_MSG string = "part colors could not be retrieved: %s"
+	SET_PARTS_ERR_MSG   string = "set number %s parts list could not be retrieved: %s"
+	PART_COLORS_ERR_MSG string = "part colors could not be retrieved: %s"
 )
 
 // BricksAPI provides API for accessing Lego's data
@@ -41,7 +41,7 @@ func (b *BricksAPI) GetSetParts(setNum string, includeMiniFigs bool) (*model.Col
 	setParts := partsPageResult{}
 	err := b.requestPage(url, &setParts)
 	if err != nil {
-		return nil, fmt.Errorf(SET_PARTS_ERROR_MSG, setNum, err.Error())
+		return nil, fmt.Errorf(SET_PARTS_ERR_MSG, setNum, err.Error())
 	}
 
 	collection.Parts = append(collection.Parts, setParts.Results...)
@@ -50,7 +50,7 @@ func (b *BricksAPI) GetSetParts(setNum string, includeMiniFigs bool) (*model.Col
 		setParts = partsPageResult{}
 		err = b.requestPage(url, &setParts)
 		if err != nil {
-			return nil, fmt.Errorf(SET_PARTS_ERROR_MSG, setNum, err.Error())
+			return nil, fmt.Errorf(SET_PARTS_ERR_MSG, setNum, err.Error())
 		}
 
 		collection.Parts = append(collection.Parts, setParts.Results...)
@@ -69,7 +69,7 @@ func (b *BricksAPI) GetPartColors(partNum string) ([]model.PartColor, error) {
 
 	err := b.requestPage(url, &partColorsPage)
 	if err != nil {
-		return nil, fmt.Errorf(PART_COLORS_ERROR_MSG, err.Error())
+		return nil, fmt.Errorf(PART_COLORS_ERR_MSG, err.Error())
 	}
 
 	partColors = append(partColors, partColorsPage.Results...)
@@ -78,7 +78,7 @@ func (b *BricksAPI) GetPartColors(partNum string) ([]model.PartColor, error) {
 		partColorsPage = partColorsPageResult{}
 		err = b.requestPage(url, &partColorsPage)
 		if err != nil {
-			return nil, fmt.Errorf(PART_COLORS_ERROR_MSG, err.Error())
+			return nil, fmt.Errorf(PART_COLORS_ERR_MSG, err.Error())
 		}
 
 		partColors = append(partColors, partColorsPage.Results...)

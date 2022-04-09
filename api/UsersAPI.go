@@ -9,7 +9,15 @@ import (
 	"github.com/wendehals/bricks/model"
 )
 
-const USERS_URL string = REBRICKABLE_BASE_URL + "users/%s/%s"
+const (
+	USERS_URL string = REBRICKABLE_BASE_URL + "users/%s/%s"
+
+	GET_SETS_ERR_MSG            string = "the user's sets could not be retrieved: %s"
+	GET_SET_LISTS_ERR_MSG       string = "the user's set lists could not be retrieved: %s"
+	GET_PARTS_LISTS_ERR_MSG     string = "the user's part lists could not be retrieved: %s"
+	GET_ALL_PARTS_ERR_MSG       string = "the list of all user's parts could not be retrieved: %s"
+	GET_PART_LIST_PARTS_ERR_MSG string = "the parts of the user defined part list %d could not be retrieved: %s"
+)
 
 // UsersAPI provides API for accessing a Rebrickable user's data
 type UsersAPI struct {
@@ -67,7 +75,7 @@ func (u *UsersAPI) GetSets() ([]model.UsersSet, error) {
 
 	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "sets"), &setsPage)
 	if err != nil {
-		return nil, fmt.Errorf("user's sets could not be retrieved: %s", err.Error())
+		return nil, fmt.Errorf(GET_SETS_ERR_MSG, err.Error())
 	}
 
 	usersSets = append(usersSets, setsPage.Results...)
@@ -76,7 +84,7 @@ func (u *UsersAPI) GetSets() ([]model.UsersSet, error) {
 		setsPage = setsPageResult{}
 		err = u.requestPage(url, &setsPage)
 		if err != nil {
-			return nil, fmt.Errorf("user's sets could not be retrieved: %s", err.Error())
+			return nil, fmt.Errorf(GET_SETS_ERR_MSG, err.Error())
 		}
 
 		usersSets = append(usersSets, setsPage.Results...)
@@ -92,7 +100,7 @@ func (u *UsersAPI) GetSetLists() ([]model.SetListEntry, error) {
 
 	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "setlists"), &setListsPage)
 	if err != nil {
-		return nil, fmt.Errorf("the user's set lists could not be retrieved: %s", err.Error())
+		return nil, fmt.Errorf(GET_SET_LISTS_ERR_MSG, err.Error())
 	}
 
 	setList = append(setList, setListsPage.Results...)
@@ -101,7 +109,7 @@ func (u *UsersAPI) GetSetLists() ([]model.SetListEntry, error) {
 		setListsPage = setListsPageResult{}
 		err = u.requestPage(url, &setListsPage)
 		if err != nil {
-			return nil, fmt.Errorf("the user's set lists could not be retrieved: %s", err.Error())
+			return nil, fmt.Errorf(GET_SET_LISTS_ERR_MSG, err.Error())
 		}
 
 		setList = append(setList, setListsPage.Results...)
@@ -111,28 +119,27 @@ func (u *UsersAPI) GetSetLists() ([]model.SetListEntry, error) {
 }
 
 // PartLists returns the result of /api/v3/users/{user_token}/partlists/
-func (u *UsersAPI) GetPartLists() ([]model.PartListEntry, error) {
-	var partListEntry []model.PartListEntry
-	partListsPage := partListsPageResult{}
+func (u *UsersAPI) GetPartLists() (*model.PartLists, error) {
+	partLists := model.PartLists{}
+	var partListsPage *partListsPageResult
 
 	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "partlists"), &partListsPage)
 	if err != nil {
-		return nil, fmt.Errorf("the user's part lists could not be retrieved: %s", err.Error())
+		return nil, fmt.Errorf(GET_PARTS_LISTS_ERR_MSG, err.Error())
 	}
 
-	partListEntry = append(partListEntry, partListsPage.Results...)
+	partLists.PartLists = partListsPage.Results
 	for len(partListsPage.Next) > 0 {
 		url := partListsPage.Next
-		partListsPage = partListsPageResult{}
 		err = u.requestPage(url, &partListsPage)
 		if err != nil {
-			return nil, fmt.Errorf("the user's part lists could not be retrieved: %s", err.Error())
+			return nil, fmt.Errorf(GET_PARTS_LISTS_ERR_MSG, err.Error())
 		}
 
-		partListEntry = append(partListEntry, partListsPage.Results...)
+		partLists.PartLists = append(partLists.PartLists, partListsPage.Results...)
 	}
 
-	return partListEntry, nil
+	return &partLists, nil
 }
 
 // GetAllParts returns all parts owned by a user provided by /api/v3/users/{user_token}/allparts
@@ -142,7 +149,7 @@ func (u *UsersAPI) GetAllParts() (*model.Collection, error) {
 
 	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "allparts"), &allPartsPage)
 	if err != nil {
-		return nil, fmt.Errorf("the list of all user's parts could not be retrieved: %s", err.Error())
+		return nil, fmt.Errorf(GET_ALL_PARTS_ERR_MSG, err.Error())
 	}
 
 	collection.Parts = append(collection.Parts, allPartsPage.Results...)
@@ -151,7 +158,7 @@ func (u *UsersAPI) GetAllParts() (*model.Collection, error) {
 		allPartsPage = partsPageResult{}
 		err = u.requestPage(url, &allPartsPage)
 		if err != nil {
-			return nil, fmt.Errorf("the list of all user's parts could not be retrieved: %s", err.Error())
+			return nil, fmt.Errorf(GET_ALL_PARTS_ERR_MSG, err.Error())
 		}
 
 		collection.Parts = append(collection.Parts, allPartsPage.Results...)
@@ -161,14 +168,14 @@ func (u *UsersAPI) GetAllParts() (*model.Collection, error) {
 }
 
 // GetPartListParts returns all parts of a user defined parts list provided by /api/v3/users/{user_token}/partlists/{list_id}/parts
-func (u *UsersAPI) GetPartListParts(listId string) (*model.Collection, error) {
+func (u *UsersAPI) GetPartListParts(listId uint) (*model.Collection, error) {
 	collection := model.Collection{}
 	partsPage := partsPageResult{}
 
-	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, fmt.Sprintf("partlists/%s/parts", listId)), &partsPage)
+	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, fmt.Sprintf("partlists/%d/parts", listId)), &partsPage)
 	if err != nil {
 		return nil,
-			fmt.Errorf("the parts of the user defined parts list %s could not be retrieved: %s", listId, err.Error())
+			fmt.Errorf(GET_PART_LIST_PARTS_ERR_MSG, listId, err.Error())
 	}
 
 	collection.Parts = append(collection.Parts, partsPage.Results...)
@@ -178,7 +185,7 @@ func (u *UsersAPI) GetPartListParts(listId string) (*model.Collection, error) {
 		err = u.requestPage(url, &partsPage)
 		if err != nil {
 			return nil,
-				fmt.Errorf("the parts of the user defined parts list %s could not be retrieved: %s", listId, err.Error())
+				fmt.Errorf(GET_PART_LIST_PARTS_ERR_MSG, listId, err.Error())
 		}
 
 		collection.Parts = append(collection.Parts, partsPage.Results...)

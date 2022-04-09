@@ -38,6 +38,11 @@ type PartListEntry struct {
 	NumParts    uint   `json:"num_parts"`
 }
 
+// PartLists represents a list of user's part lists
+type PartLists struct {
+	PartLists []PartListEntry `json:"partLists"`
+}
+
 // UsersSet represents a set owned by the user.
 type UsersSet struct {
 	Quantity       uint    `json:"quantity"`

@@ -9,6 +9,7 @@ import (
 var (
 	credentialsFile string
 	jsonFile        string
+	setNum          string
 
 	credentials *api.Credentials
 
@@ -33,6 +34,7 @@ func init() {
 	ApiCmd.AddCommand(partListPartsCmd)
 	ApiCmd.AddCommand(setListsCmd)
 	ApiCmd.AddCommand(setPartsCmd)
+	ApiCmd.AddCommand(setCmd)
 	ApiCmd.AddCommand(setsCmd)
 
 	ApiCmd.PersistentFlags().StringVarP(&credentialsFile, options.CREDENTIALS_OPT, options.CREDENTIALS_SOPT, "credentials.json",

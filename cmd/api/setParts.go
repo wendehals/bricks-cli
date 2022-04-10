@@ -17,11 +17,10 @@ import (
 )
 
 var (
-	setNum   string
 	setsFile string
 
 	setPartsCmd = &cobra.Command{
-		Use:   fmt.Sprintf("setParts %s %s {-s SET_NUMBER | --sets SETS_FILE}", options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG),
+		Use:   fmt.Sprintf("setParts %s %s {-n SET_NUMBER|-f SETS_FILE}", options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG),
 		Short: "Get all parts used in the given set(s)",
 		Long: `
 The command returns a list of parts of the given set.

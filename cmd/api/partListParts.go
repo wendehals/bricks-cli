@@ -22,7 +22,7 @@ var (
 	mergeParts          bool
 
 	partListPartsCmd = &cobra.Command{
-		Use:   fmt.Sprintf("partListParts %s %s -l LIST_ID", options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG),
+		Use:   fmt.Sprintf("partListParts %s %s {-l LIST_ID|-p PART_LISTS_FILE} [-i] [-m]", options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG),
 		Short: "Get all parts of (a) user defined part list(s).",
 		Long:  "The partListParts command returns all parts of a single or multiple user defined part lists.",
 

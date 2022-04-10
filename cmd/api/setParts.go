@@ -31,10 +31,7 @@ collection of parts.`,
 		DisableFlagsInUseLine: true,
 
 		PreRunE: func(cmd *cobra.Command, args []string) error {
-			if (setNum == "" && setsFile == "") || (setNum != "" && setsFile != "") {
-				return fmt.Errorf("please provide either a single set number with --set or a JSON file containing a list of sets with --sets")
-			}
-			return nil
+			return checkOptionsSetParts()
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return executeSetParts()
@@ -45,6 +42,13 @@ collection of parts.`,
 func init() {
 	setPartsCmd.Flags().StringVarP(&setNum, "set", "n", "", "A set number")
 	setPartsCmd.Flags().StringVarP(&setsFile, "setsFile", "f", "", "A JSON file containing a list of sets")
+}
+
+func checkOptionsSetParts() error {
+	if (setNum == "" && setsFile == "") || (setNum != "" && setsFile != "") {
+		return fmt.Errorf("please provide either a single set number with --set or a JSON file containing a list of sets with --sets")
+	}
+	return nil
 }
 
 func executeSetParts() error {

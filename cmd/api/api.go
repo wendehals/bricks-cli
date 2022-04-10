@@ -10,6 +10,7 @@ var (
 	credentialsFile string
 	jsonFile        string
 	setNum          string
+	listId          uint
 
 	credentials *api.Credentials
 
@@ -33,6 +34,7 @@ func init() {
 	ApiCmd.AddCommand(partListsCmd)
 	ApiCmd.AddCommand(partListPartsCmd)
 	ApiCmd.AddCommand(setListsCmd)
+	ApiCmd.AddCommand(setListSetsCmd)
 	ApiCmd.AddCommand(setPartsCmd)
 	ApiCmd.AddCommand(setCmd)
 	ApiCmd.AddCommand(setsCmd)

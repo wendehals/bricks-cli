@@ -16,7 +16,6 @@ import (
 )
 
 var (
-	listId              uint
 	partListsFile       string
 	includeNonBuildable bool
 	mergeParts          bool

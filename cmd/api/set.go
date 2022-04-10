@@ -18,6 +18,9 @@ var setCmd = &cobra.Command{
 
 	DisableFlagsInUseLine: true,
 
+	PreRunE: func(cmd *cobra.Command, args []string) error {
+		return checkOptionsSet()
+	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return executeSet()
 	},
@@ -27,6 +30,12 @@ func init() {
 	setCmd.Flags().StringVarP(&setNum, "set", "n", "", "A set number")
 }
 
+func checkOptionsSet() error {
+	if setNum == "" {
+		return fmt.Errorf("please provide a set number")
+	}
+	return nil
+}
 func executeSet() error {
 	client := http.Client{
 		Timeout: time.Second * 5,

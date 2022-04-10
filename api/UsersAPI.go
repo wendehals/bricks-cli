@@ -13,6 +13,7 @@ const (
 	USERS_URL string = REBRICKABLE_BASE_URL + "users/%s/%s"
 
 	GET_SETS_ERR_MSG            string = "the user's sets could not be retrieved: %s"
+	GET_SET_LIST_SETS_ERR_MSG   string = "the sets of list %d could not be retrieved: %s"
 	GET_SET_LISTS_ERR_MSG       string = "the user's set lists could not be retrieved: %s"
 	GET_PARTS_LISTS_ERR_MSG     string = "the user's part lists could not be retrieved: %s"
 	GET_ALL_PARTS_ERR_MSG       string = "the list of all user's parts could not be retrieved: %s"
@@ -68,6 +69,30 @@ func (u *UsersAPI) postToken(userName string, password string) error {
 	return nil
 }
 
+// GetSetLists returns all owned sets of a user provided by /api/v3/users/{user_token}/setlists/
+func (u *UsersAPI) GetSetLists() (*model.SetLists, error) {
+	setLists := model.SetLists{}
+	var setListsPage *setListsPageResult
+
+	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "setlists"), &setListsPage)
+	if err != nil {
+		return nil, fmt.Errorf(GET_SET_LISTS_ERR_MSG, err.Error())
+	}
+
+	setLists.SetLists = setListsPage.Results
+	for len(setListsPage.Next) > 0 {
+		url := setListsPage.Next
+		err = u.requestPage(url, &setListsPage)
+		if err != nil {
+			return nil, fmt.Errorf(GET_SET_LISTS_ERR_MSG, err.Error())
+		}
+
+		setLists.SetLists = append(setLists.SetLists, setListsPage.Results...)
+	}
+
+	return &setLists, nil
+}
+
 // GetSets returns all sets of a user provided by /api/v3/users/{user_token}/sets
 func (u *UsersAPI) GetSets() (*model.UsersSets, error) {
 	usersSets := model.UsersSets{}
@@ -92,28 +117,30 @@ func (u *UsersAPI) GetSets() (*model.UsersSets, error) {
 	return &usersSets, nil
 }
 
-// GetSetLists returns all owned sets of a user provided by /api/v3/users/{user_token}/setlists/
-func (u *UsersAPI) GetSetLists() (*model.SetLists, error) {
-	setLists := model.SetLists{}
-	var setListsPage *setListsPageResult
+// GetSetListSets returns all sets of a users set list provided by
+// /api/v3/users/{user_token}/setlists/{list_id}/sets/
+func (u *UsersAPI) GetSetListSets(listId uint) (*model.UsersSets, error) {
+	sets := model.UsersSets{}
+	var setsPage *setsPageResult
 
-	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "setlists"), &setListsPage)
+	subPath := fmt.Sprintf("setlists/%d/sets/", listId)
+	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, subPath), &setsPage)
 	if err != nil {
-		return nil, fmt.Errorf(GET_SET_LISTS_ERR_MSG, err.Error())
+		return nil, fmt.Errorf(GET_SET_LIST_SETS_ERR_MSG, listId, err.Error())
 	}
 
-	setLists.SetLists = setListsPage.Results
-	for len(setListsPage.Next) > 0 {
-		url := setListsPage.Next
-		err = u.requestPage(url, &setListsPage)
+	sets.Sets = setsPage.Results
+	for len(setsPage.Next) > 0 {
+		url := setsPage.Next
+		err = u.requestPage(url, &setsPage)
 		if err != nil {
-			return nil, fmt.Errorf(GET_SET_LISTS_ERR_MSG, err.Error())
+			return nil, fmt.Errorf(GET_SET_LIST_SETS_ERR_MSG, listId, err.Error())
 		}
 
-		setLists.SetLists = append(setLists.SetLists, setListsPage.Results...)
+		sets.Sets = append(sets.Sets, setsPage.Results...)
 	}
 
-	return &setLists, nil
+	return &sets, nil
 }
 
 // PartLists returns the result of /api/v3/users/{user_token}/partlists/
@@ -172,7 +199,8 @@ func (u *UsersAPI) GetPartListParts(listId uint) (*model.Collection, error) {
 
 	partsPage := partsPageResult{}
 
-	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, fmt.Sprintf("partlists/%d/parts", listId)), &partsPage)
+	subPath := fmt.Sprintf("partlists/%d/parts", listId)
+	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, subPath), &partsPage)
 	if err != nil {
 		return nil,
 			fmt.Errorf(GET_PART_LIST_PARTS_ERR_MSG, listId, err.Error())

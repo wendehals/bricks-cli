@@ -2,7 +2,7 @@
 
 # bricks-cli
 
-## bricks-cli Commands
+## bricks Commands
 
     bricks is a command line interface to the Rebrickable.com API. It
     enables you to access the Rebrickable database to retrieve for example a list
@@ -26,28 +26,31 @@
     Use "bricks [command] --help" for more information about a command.
 
 
-## bricks-cli api Subcommands
+## bricks api Subcommands
 
     The api command groups all commands for the Rebrickable API.
 
+    Usage:
     bricks api [command]
 
     Available Commands:
     allParts      Get all parts owned by the user
-    partListParts Get all parts of a user defined part list.
+    partListParts Get all parts of (a) user defined part list(s).
     partLists     Get a list of all the user's part lists
+    set           Get details for a specific set
+    setListSets   Get a list of all the sets in a specific set list
     setLists      Get a list of all the user's set lists
     setParts      Get all parts used in the given set(s)
     sets          Get a list of all the user's sets
 
+    Flags:
     -c, --credentials string   A JSON file containing the Rebrickable credentials (default "credentials.json")
     -h, --help                 help for api
     -o, --json string          A name for the JSON output file
 
     Use "bricks api [command] --help" for more information about a command.
 
-
-## bricks-cli collection Subcommands
+## bricks collection Subcommands
 
     The collection command groups all commands for working with bricks collections.
 

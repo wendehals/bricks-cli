@@ -1,7 +1,14 @@
 package main
 
-import "github.com/wendehals/bricks/cmd"
+import (
+	"os"
+
+	"github.com/wendehals/bricks/cmd"
+)
 
 func main() {
-	cmd.Execute()
+	err := cmd.RootCmd.Execute()
+	if err != nil {
+		os.Exit(1)
+	}
 }

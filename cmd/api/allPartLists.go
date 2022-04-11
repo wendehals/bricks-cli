@@ -27,12 +27,8 @@ func executeAllPartLists() error {
 	}
 
 	if jsonFile == "" {
-		userPrefix, err := options.FileNameFrom(credentials.UserName)
-		if err != nil {
-			return nil
-		}
-
-		jsonFile = fmt.Sprintf("%s_all_part_lists.json", userPrefix)
+		jsonFile = fmt.Sprintf("%s_all_part_lists.json",
+			options.ReplaceIllegalCharsFromFileName(credentials.UserName))
 	}
 
 	return model.ExportToJSON(jsonFile, partLists)

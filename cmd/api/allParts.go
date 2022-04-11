@@ -27,7 +27,8 @@ func executeGetAllParts() error {
 	}
 
 	if jsonFile == "" {
-		jsonFile = "all_parts.json"
+		jsonFile = fmt.Sprintf("%s_all_parts.json",
+			options.ReplaceIllegalCharsFromFileName(credentials.UserName))
 	}
 
 	return model.ExportToJSON(jsonFile, allParts)

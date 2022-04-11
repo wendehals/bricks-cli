@@ -27,7 +27,8 @@ func executeAllSets() error {
 	}
 
 	if jsonFile == "" {
-		jsonFile = "all_sets.json"
+		jsonFile = fmt.Sprintf("%s_all_sets.json",
+			options.ReplaceIllegalCharsFromFileName(credentials.UserName))
 	}
 
 	return model.ExportToJSON(jsonFile, sets)

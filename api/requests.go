@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -44,6 +45,9 @@ func doRequest(client *http.Client, reqest *http.Request, v interface{}) error {
 	result, err := client.Do(reqest)
 	if err != nil {
 		return err
+	}
+	if result.StatusCode != 200 {
+		return fmt.Errorf("request returned '%s'", result.Status)
 	}
 
 	if result.Body != nil {

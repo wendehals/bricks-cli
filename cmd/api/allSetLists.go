@@ -27,7 +27,8 @@ func executeAllSetLists() error {
 	}
 
 	if jsonFile == "" {
-		jsonFile = "all_set_lists.json"
+		jsonFile = fmt.Sprintf("%s_all_set_lists.json",
+			options.ReplaceIllegalCharsFromFileName(credentials.UserName))
 	}
 
 	return model.ExportToJSON(jsonFile, setLists)

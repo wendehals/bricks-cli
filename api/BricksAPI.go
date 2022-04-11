@@ -14,7 +14,7 @@ const (
 	PART_COLORS_ERR_MSG string = "part colors could not be retrieved: %s"
 )
 
-// BricksAPI provides API for accessing Lego's data
+// BricksAPI provides API for accessing Lego's data at Rebrickable
 type BricksAPI struct {
 	AbstractAPI
 }

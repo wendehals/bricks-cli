@@ -10,7 +10,7 @@ import (
 const CREDENTIALS_ERR_MSG = "please provide a valid JSON file containing the Rebrickable credentials:\n   %s"
 
 type Credentials struct {
-	Username string `json:"username"`
+	UserName string `json:"username"`
 	Password string `json:"password"`
 	APIKey   string `json:"api_key"`
 }

@@ -4,15 +4,14 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/wendehals/bricks/api"
 	"github.com/wendehals/bricks/cmd/options"
 	"github.com/wendehals/bricks/model"
 )
 
 var allSetsCmd = &cobra.Command{
 	Use:   fmt.Sprintf("allSets %s %s", options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG),
-	Short: "Get all sets owned by the user",
-	Long:  "The allSets command returns a list of all sets of the user.",
+	Short: "Get a list of all sets owned by the user",
+	Long:  "The allSets command returns a list of all sets owned by the user.",
 
 	DisableFlagsInUseLine: true,
 
@@ -22,8 +21,7 @@ var allSetsCmd = &cobra.Command{
 }
 
 func executeAllSets() error {
-	usersAPI := api.NewUsersAPI(createClient(), credentials)
-	sets, err := usersAPI.GetAllSets()
+	sets, err := createUsersAPI().GetAllSets()
 	if err != nil {
 		return err
 	}

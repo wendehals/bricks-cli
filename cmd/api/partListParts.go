@@ -53,7 +53,7 @@ func checkOptionsPartListParts() error {
 }
 
 func executePartListParts() error {
-	usersAPI := api.NewUsersAPI(createClient(), credentials)
+	usersAPI := createUsersAPI()
 
 	if listId != 0 {
 		return processListId(usersAPI, listId)

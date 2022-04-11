@@ -18,6 +18,7 @@ import (
 
 // Collection represents any collection of Lego parts (set, parts list, ...)
 type Collection struct {
+	User  string      `json:"user"`
 	IDs   []string    `json:"ids"`
 	Names []string    `json:"names"`
 	Parts []PartEntry `json:"parts"`

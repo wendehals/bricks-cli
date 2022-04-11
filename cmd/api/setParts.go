@@ -18,7 +18,8 @@ var (
 	setsFile string
 
 	setPartsCmd = &cobra.Command{
-		Use:   fmt.Sprintf("setParts %s %s {-n SET_NUMBER|-f SETS_FILE}", options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG),
+		Use: fmt.Sprintf("setParts %s %s {%s|-f SETS_FILE}",
+			options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG, SET_NUM_ARG),
 		Short: "Get all parts used in the given set(s)",
 		Long: `
 The command returns a list of parts of the given set.
@@ -38,19 +39,20 @@ collection of parts.`,
 )
 
 func init() {
-	setPartsCmd.Flags().StringVarP(&setNum, "set", "n", "", "A set number")
+	setPartsCmd.Flags().StringVarP(&setNum, SET_NUM_OPT, SET_NUM_SOPT, "", SET_NUM_USAGE)
 	setPartsCmd.Flags().StringVarP(&setsFile, "setsFile", "f", "", "A JSON file containing a list of sets")
 }
 
 func checkOptionsSetParts() error {
 	if (setNum == "" && setsFile == "") || (setNum != "" && setsFile != "") {
-		return fmt.Errorf("please provide either a single set number with --set or a JSON file containing a list of sets with --sets")
+		return fmt.Errorf("please provide either a single set number with --%s or a JSON file containing a list of sets with --setsFile",
+			SET_NUM_OPT)
 	}
 	return nil
 }
 
 func executeSetParts() error {
-	bricksAPI := api.NewBricksAPI(createClient(), credentials.APIKey)
+	bricksAPI := createBricksAPI()
 
 	if setsFile != "" {
 		sets, err := readUsersSets()

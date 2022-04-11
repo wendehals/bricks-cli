@@ -14,7 +14,7 @@ type ColorType struct {
 	Name string `json:"name"`
 }
 
-// PartEntry represents an entry of a single part in a set with its quantity and color.
+// PartEntry represents an entry of a single part in a collection with its quantity and color.
 type PartEntry struct {
 	Quantity int       `json:"quantity"`
 	Part     PartType  `json:"part"`
@@ -32,6 +32,7 @@ type SetList struct {
 
 // SetLists represents all the user's set lists
 type SetLists struct {
+	User     string    `json:"user"`
 	SetLists []SetList `json:"setLists"`
 }
 
@@ -45,6 +46,7 @@ type PartList struct {
 
 // PartLists represents all the user's part lists
 type PartLists struct {
+	User      string     `json:"user"`
 	PartLists []PartList `json:"partLists"`
 }
 
@@ -57,6 +59,7 @@ type UsersSet struct {
 
 // UserSets represents all the user's sets
 type UsersSets struct {
+	User string     `json:"user"`
 	ID   uint       `json:"id"`
 	Name string     `json:"name"`
 	Sets []UsersSet `json:"sets"`

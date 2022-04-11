@@ -4,20 +4,19 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/wendehals/bricks/api"
 	"github.com/wendehals/bricks/cmd/options"
 	"github.com/wendehals/bricks/model"
 )
 
 var setCmd = &cobra.Command{
-	Use:   fmt.Sprintf("set %s %s -n SET_NUMBER", options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG),
-	Short: "Get details for a specific set",
-	Long:  "The set command returns details for a specific set.",
+	Use:   fmt.Sprintf("set %s %s %s", options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG, SET_NUM_ARG),
+	Short: "Get details about a specific set",
+	Long:  "The set command returns details about a specific set.",
 
 	DisableFlagsInUseLine: true,
 
 	PreRunE: func(cmd *cobra.Command, args []string) error {
-		return checkOptionsSet()
+		return checkOptionSetNum()
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return executeSet()
@@ -25,18 +24,11 @@ var setCmd = &cobra.Command{
 }
 
 func init() {
-	setCmd.Flags().StringVarP(&setNum, "set", "n", "", "A set number")
+	setCmd.Flags().StringVarP(&setNum, SET_NUM_OPT, SET_NUM_SOPT, "", SET_NUM_USAGE)
 }
 
-func checkOptionsSet() error {
-	if setNum == "" {
-		return fmt.Errorf("please provide a set number")
-	}
-	return nil
-}
 func executeSet() error {
-	bricksAPI := api.NewBricksAPI(createClient(), credentials.APIKey)
-	set, err := bricksAPI.GetSet(setNum)
+	set, err := createBricksAPI().GetSet(setNum)
 	if err != nil {
 		return err
 	}

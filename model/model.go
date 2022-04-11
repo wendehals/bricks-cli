@@ -57,6 +57,8 @@ type UsersSet struct {
 
 // UserSets represents all the user's sets
 type UsersSets struct {
+	ID   uint       `json:"id"`
+	Name string     `json:"name"`
 	Sets []UsersSet `json:"sets"`
 }
 

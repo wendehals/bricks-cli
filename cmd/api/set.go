@@ -2,8 +2,6 @@ package api
 
 import (
 	"fmt"
-	"net/http"
-	"time"
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/api"
@@ -37,11 +35,7 @@ func checkOptionsSet() error {
 	return nil
 }
 func executeSet() error {
-	client := http.Client{
-		Timeout: time.Second * 5,
-	}
-
-	bricksAPI := api.NewBricksAPI(&client, credentials.APIKey)
+	bricksAPI := api.NewBricksAPI(createClient(), credentials.APIKey)
 	set, err := bricksAPI.GetSet(setNum)
 	if err != nil {
 		return err

@@ -5,10 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"net/http"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/api"
@@ -52,11 +50,7 @@ func checkOptionsSetParts() error {
 }
 
 func executeSetParts() error {
-	client := http.Client{
-		Timeout: time.Second * 5,
-	}
-
-	bricksAPI := api.NewBricksAPI(&client, credentials.APIKey)
+	bricksAPI := api.NewBricksAPI(createClient(), credentials.APIKey)
 
 	if setsFile != "" {
 		sets, err := readUsersSets()

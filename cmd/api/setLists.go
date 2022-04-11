@@ -2,8 +2,6 @@ package api
 
 import (
 	"fmt"
-	"net/http"
-	"time"
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/api"
@@ -13,7 +11,7 @@ import (
 
 var setListsCmd = &cobra.Command{
 	Use:   fmt.Sprintf("setLists %s %s", options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG),
-	Short: "Get a list of all the user's set lists",
+	Short: "Get a list of all set lists of the user",
 	Long:  "The setLists command returns a list of all set lists of the user.",
 
 	DisableFlagsInUseLine: true,
@@ -24,11 +22,7 @@ var setListsCmd = &cobra.Command{
 }
 
 func executeSetLists() error {
-	client := http.Client{
-		Timeout: time.Second * 5,
-	}
-
-	usersAPI := api.NewUsersAPI(&client, credentials)
+	usersAPI := api.NewUsersAPI(createClient(), credentials)
 	setLists, err := usersAPI.GetSetLists()
 	if err != nil {
 		return err

@@ -1,6 +1,9 @@
 package api
 
 import (
+	"net/http"
+	"time"
+
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/api"
 	"github.com/wendehals/bricks/cmd/options"
@@ -30,6 +33,7 @@ var (
 )
 
 func init() {
+	ApiCmd.AddCommand(allSetsCmd)
 	ApiCmd.AddCommand(allPartsCmd)
 	ApiCmd.AddCommand(partListsCmd)
 	ApiCmd.AddCommand(partListPartsCmd)
@@ -37,9 +41,15 @@ func init() {
 	ApiCmd.AddCommand(setListSetsCmd)
 	ApiCmd.AddCommand(setPartsCmd)
 	ApiCmd.AddCommand(setCmd)
-	ApiCmd.AddCommand(setsCmd)
 
 	ApiCmd.PersistentFlags().StringVarP(&credentialsFile, options.CREDENTIALS_OPT, options.CREDENTIALS_SOPT, "credentials.json",
 		options.CREDENTIALS_USAGE)
 	ApiCmd.PersistentFlags().StringVarP(&jsonFile, options.JSON_OUTPUT_OPT, options.JSON_OUTPUT_SOPT, "", options.JSON_OUTPUT_USAGE)
+}
+
+func createClient() *http.Client {
+	client := http.Client{
+		Timeout: time.Second * 5,
+	}
+	return &client
 }

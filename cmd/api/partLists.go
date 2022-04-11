@@ -2,8 +2,6 @@ package api
 
 import (
 	"fmt"
-	"net/http"
-	"time"
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/api"
@@ -24,11 +22,7 @@ var partListsCmd = &cobra.Command{
 }
 
 func executePartLists() error {
-	client := http.Client{
-		Timeout: time.Second * 5,
-	}
-
-	usersAPI := api.NewUsersAPI(&client, credentials)
+	usersAPI := api.NewUsersAPI(createClient(), credentials)
 	partLists, err := usersAPI.GetPartLists()
 	if err != nil {
 		return err

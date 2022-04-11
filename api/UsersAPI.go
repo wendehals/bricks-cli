@@ -93,9 +93,11 @@ func (u *UsersAPI) GetSetLists() (*model.SetLists, error) {
 	return &setLists, nil
 }
 
-// GetSets returns all sets of a user provided by /api/v3/users/{user_token}/sets
-func (u *UsersAPI) GetSets() (*model.UsersSets, error) {
+// GetAllSets returns all sets of a user provided by /api/v3/users/{user_token}/sets
+func (u *UsersAPI) GetAllSets() (*model.UsersSets, error) {
 	usersSets := model.UsersSets{}
+	usersSets.Name = "All sets"
+
 	var setsPage *setsPageResult
 
 	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "sets"), &setsPage)
@@ -170,6 +172,8 @@ func (u *UsersAPI) GetPartLists() (*model.PartLists, error) {
 // GetAllParts returns all parts owned by a user provided by /api/v3/users/{user_token}/allparts
 func (u *UsersAPI) GetAllParts() (*model.Collection, error) {
 	collection := model.Collection{}
+	collection.Names = []string{"All Parts"}
+
 	allPartsPage := partsPageResult{}
 
 	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "allparts"), &allPartsPage)

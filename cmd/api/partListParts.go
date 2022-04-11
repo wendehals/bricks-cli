@@ -4,10 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"net/http"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/api"
@@ -55,11 +53,7 @@ func checkOptionsPartListParts() error {
 }
 
 func executePartListParts() error {
-	client := http.Client{
-		Timeout: time.Second * 5,
-	}
-
-	usersAPI := api.NewUsersAPI(&client, credentials)
+	usersAPI := api.NewUsersAPI(createClient(), credentials)
 
 	if listId != 0 {
 		return processListId(usersAPI, listId)

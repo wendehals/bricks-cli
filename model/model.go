@@ -40,7 +40,7 @@ type SetList struct {
 // SetLists represents all the user's set lists
 type SetLists struct {
 	User     string    `json:"user"`
-	SetLists []SetList `json:"setLists"`
+	SetLists []SetList `json:"set_lists"`
 }
 
 // PartList represents a user's part list.
@@ -54,7 +54,7 @@ type PartList struct {
 // PartLists represents all the user's part lists
 type PartLists struct {
 	User      string     `json:"user"`
-	PartLists []PartList `json:"partLists"`
+	PartLists []PartList `json:"part_lists"`
 }
 
 func ImportPartLists(partListsFile string) *PartLists {
@@ -88,8 +88,8 @@ type UserSet struct {
 // UserSets represents all the user's sets
 type UserSets struct {
 	User string    `json:"user"`
-	ID   uint      `json:"setListId"`
-	Name string    `json:"setListName"`
+	ID   uint      `json:"set_list_id"`
+	Name string    `json:"set_list_name"`
 	Sets []UserSet `json:"sets"`
 }
 
@@ -127,4 +127,23 @@ type SetType struct {
 type PartColor struct {
 	ColorId  uint   `json:"color_id"`
 	ImageURL string `json:"part_img_url"`
+}
+
+type InvPart struct {
+	Part     PartType  `json:"part"`
+	Color    ColorType `json:"color"`
+	SetNum   string    `json:"set_num"`
+	Quantity uint      `json:"quantity"`
+	IsSpare  bool      `json:"is_spare"`
+}
+
+type LostPart struct {
+	ID       uint    `json:"lost_part_id"`
+	Quantity uint    `json:"lost_quantity"`
+	InvPart  InvPart `json:"inv_part"`
+}
+
+type LostParts struct {
+	User      string     `json:"user"`
+	LostParts []LostPart `json:"lost_parts"`
 }

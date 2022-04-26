@@ -12,14 +12,16 @@ import (
 const (
 	USERS_URL string = REBRICKABLE_BASE_URL + "users/%s/%s"
 
-	GET_ALL_PARTS_LISTS_ERR_MSG string = "the user's part lists could not be retrieved: %s"
 	GET_ALL_PARTS_ERR_MSG       string = "the list of all user's parts could not be retrieved: %s"
-	GET_ALL_SET_LISTS_ERR_MSG   string = "the user's set lists could not be retrieved: %s"
-	GET_ALL_SETS_ERR_MSG        string = "the user's sets could not be retrieved: %s"
-	GET_PART_LIST_ERR_MSG       string = "the details about part list %d could not be retrieved: %s"
-	GET_PART_LIST_PARTS_ERR_MSG string = "the parts of the user defined part list %d could not be retrieved: %s"
+	GET_SETS_ERR_MSG            string = "the user's sets could not be retrieved: %s"
 	GET_SET_LIST_ERR_MSG        string = "the details about set list %d could not be retrieved: %s"
+	GET_SET_LISTS_ERR_MSG       string = "the user's set lists could not be retrieved: %s"
 	GET_SET_LIST_SETS_ERR_MSG   string = "the sets of list %d could not be retrieved: %s"
+	GET_PART_LIST_ERR_MSG       string = "the details about part list %d could not be retrieved: %s"
+	GET_PART_LISTS_ERR_MSG      string = "the user's part lists could not be retrieved: %s"
+	GET_PART_LIST_PARTS_ERR_MSG string = "the parts of the user defined part list %d could not be retrieved: %s"
+	GET_LOST_PARTS_ERR_MSG      string = "the list of the user's lost parts could not be retrieved: %s"
+	TOKEN_ERR_MSG               string = "Could not log into Rebrickable API: %s"
 )
 
 // UsersAPI provides API for accessing the user's data at Rebrickable
@@ -39,41 +41,12 @@ func NewUsersAPI(client *http.Client, credentials *Credentials) *UsersAPI {
 	usersAPI.userName = credentials.UserName
 	usersAPI.password = credentials.Password
 
-	err := usersAPI.postToken()
-	if err != nil {
-		log.Fatalf("Could not log into Rebrickable API: %s\n", err.Error())
-	}
+	usersAPI.postToken()
 
 	return &usersAPI
 }
 
-// GetPartLists returns all part lists of the user provided by /api/v3/users/{user_token}/partlists/
-func (u *UsersAPI) GetPartLists() *model.PartLists {
-	partLists := model.PartLists{}
-	partLists.User = u.userName
-
-	var partListsPage *partListsPageResult
-
-	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "partlists"), &partListsPage)
-	if err != nil {
-		log.Fatalf(GET_ALL_PARTS_LISTS_ERR_MSG, err.Error())
-	}
-
-	partLists.PartLists = partListsPage.Results
-	for len(partListsPage.Next) > 0 {
-		url := partListsPage.Next
-		err = u.requestPage(url, &partListsPage)
-		if err != nil {
-			log.Fatalf(GET_ALL_PARTS_LISTS_ERR_MSG, err.Error())
-		}
-
-		partLists.PartLists = append(partLists.PartLists, partListsPage.Results...)
-	}
-
-	return &partLists
-}
-
-// GetAllParts returns all parts owned by the user provided by /api/v3/users/{user_token}/allparts
+// GetAllParts returns all parts owned by the user provided by /api/v3/users/{user_token}/allparts/
 func (u *UsersAPI) GetAllParts() *model.Collection {
 	collection := model.Collection{}
 	collection.User = u.userName
@@ -102,33 +75,7 @@ func (u *UsersAPI) GetAllParts() *model.Collection {
 	return &collection
 }
 
-// GetSetLists returns all set lists of the user provided by /api/v3/users/{user_token}/setlists/
-func (u *UsersAPI) GetSetLists() *model.SetLists {
-	setLists := model.SetLists{}
-	setLists.User = u.userName
-
-	var setListsPage *setListsPageResult
-
-	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "setlists"), &setListsPage)
-	if err != nil {
-		log.Fatalf(GET_ALL_SET_LISTS_ERR_MSG, err.Error())
-	}
-
-	setLists.SetLists = setListsPage.Results
-	for len(setListsPage.Next) > 0 {
-		url := setListsPage.Next
-		err = u.requestPage(url, &setListsPage)
-		if err != nil {
-			log.Fatalf(GET_ALL_SET_LISTS_ERR_MSG, err.Error())
-		}
-
-		setLists.SetLists = append(setLists.SetLists, setListsPage.Results...)
-	}
-
-	return &setLists
-}
-
-// GetSets returns all sets of the user provided by /api/v3/users/{user_token}/sets
+// GetSets returns all sets of the user provided by /api/v3/users/{user_token}/sets/
 func (u *UsersAPI) GetSets() *model.UserSets {
 	usersSets := model.UserSets{}
 	usersSets.User = u.userName
@@ -139,7 +86,7 @@ func (u *UsersAPI) GetSets() *model.UserSets {
 
 	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "sets"), &setsPage)
 	if err != nil {
-		log.Fatalf(GET_ALL_SETS_ERR_MSG, err.Error())
+		log.Fatalf(GET_SETS_ERR_MSG, err.Error())
 	}
 
 	usersSets.Sets = setsPage.Results
@@ -147,42 +94,13 @@ func (u *UsersAPI) GetSets() *model.UserSets {
 		url := setsPage.Next
 		err = u.requestPage(url, &setsPage)
 		if err != nil {
-			log.Fatalf(GET_ALL_SETS_ERR_MSG, err.Error())
+			log.Fatalf(GET_SETS_ERR_MSG, err.Error())
 		}
 
 		usersSets.Sets = append(usersSets.Sets, setsPage.Results...)
 	}
 
 	return &usersSets
-}
-
-// PostToken posts /api/v3/users/_token/
-func (u *UsersAPI) postToken() error {
-	token := struct {
-		Value string `json:"user_token"`
-	}{}
-
-	data := url.Values{
-		"username": {u.userName},
-		"password": {u.password},
-	}
-
-	reqest, err := createRequest(http.MethodPost, REBRICKABLE_BASE_URL+"users/_token/", u.apiKey, data)
-	if err != nil {
-		return err
-	}
-
-	reqest.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-
-	err = doRequest(u.client, reqest, &token)
-	if err != nil {
-		return err
-	}
-
-	u.token = token.Value
-	log.Printf("User token: %s\n", u.token)
-
-	return nil
 }
 
 // GetSetList returns details about a certain set list of the user provided by
@@ -197,6 +115,32 @@ func (u *UsersAPI) GetSetList(listId uint) *model.SetList {
 	}
 
 	return setList
+}
+
+// GetSetLists returns all set lists of the user provided by /api/v3/users/{user_token}/setlists/
+func (u *UsersAPI) GetSetLists() *model.SetLists {
+	setLists := model.SetLists{}
+	setLists.User = u.userName
+
+	var setListsPage *setListsPageResult
+
+	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "setlists"), &setListsPage)
+	if err != nil {
+		log.Fatalf(GET_SET_LISTS_ERR_MSG, err.Error())
+	}
+
+	setLists.SetLists = setListsPage.Results
+	for len(setListsPage.Next) > 0 {
+		url := setListsPage.Next
+		err = u.requestPage(url, &setListsPage)
+		if err != nil {
+			log.Fatalf(GET_SET_LISTS_ERR_MSG, err.Error())
+		}
+
+		setLists.SetLists = append(setLists.SetLists, setListsPage.Results...)
+	}
+
+	return &setLists
 }
 
 // GetSetListSets returns all sets of the user's set list provided by
@@ -242,8 +186,34 @@ func (u *UsersAPI) GetPartList(listId uint) *model.PartList {
 	return partList
 }
 
+// GetPartLists returns all part lists of the user provided by /api/v3/users/{user_token}/partlists/
+func (u *UsersAPI) GetPartLists() *model.PartLists {
+	partLists := model.PartLists{}
+	partLists.User = u.userName
+
+	var partListsPage *partListsPageResult
+
+	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "partlists"), &partListsPage)
+	if err != nil {
+		log.Fatalf(GET_PART_LISTS_ERR_MSG, err.Error())
+	}
+
+	partLists.PartLists = partListsPage.Results
+	for len(partListsPage.Next) > 0 {
+		url := partListsPage.Next
+		err = u.requestPage(url, &partListsPage)
+		if err != nil {
+			log.Fatalf(GET_PART_LISTS_ERR_MSG, err.Error())
+		}
+
+		partLists.PartLists = append(partLists.PartLists, partListsPage.Results...)
+	}
+
+	return &partLists
+}
+
 // GetPartListParts returns all parts of the user defined part list provided by
-// /api/v3/users/{user_token}/partlists/{list_id}/parts
+// /api/v3/users/{user_token}/partlists/{list_id}/parts/
 func (u *UsersAPI) GetPartListParts(listId uint) *model.Collection {
 	collection := model.Collection{}
 	collection.IDs = append(collection.IDs, fmt.Sprint(listId))
@@ -269,4 +239,58 @@ func (u *UsersAPI) GetPartListParts(listId uint) *model.Collection {
 	}
 
 	return &collection
+}
+
+// GetLostParts returns all parts owned by the user provided by /api/v3/users/{user_token}/lost_parts/
+func (u *UsersAPI) GetLostParts() *model.LostParts {
+	lostParts := model.LostParts{}
+	lostParts.User = u.userName
+
+	lostPartsPage := lostPartsPageResult{}
+
+	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "lost_parts"), &lostPartsPage)
+	if err != nil {
+		log.Fatalf(GET_LOST_PARTS_ERR_MSG, err.Error())
+	}
+
+	lostParts.LostParts = append(lostParts.LostParts, lostPartsPage.Results...)
+	for len(lostPartsPage.Next) > 0 {
+		url := lostPartsPage.Next
+		lostPartsPage = lostPartsPageResult{}
+		err = u.requestPage(url, &lostPartsPage)
+		if err != nil {
+			log.Fatalf(GET_LOST_PARTS_ERR_MSG, err.Error())
+		}
+
+		lostParts.LostParts = append(lostParts.LostParts, lostPartsPage.Results...)
+	}
+
+	return &lostParts
+}
+
+// postToken posts /api/v3/users/_token/
+func (u *UsersAPI) postToken() {
+	token := struct {
+		Value string `json:"user_token"`
+	}{}
+
+	data := url.Values{
+		"username": {u.userName},
+		"password": {u.password},
+	}
+
+	reqest, err := createRequest(http.MethodPost, REBRICKABLE_BASE_URL+"users/_token/", u.apiKey, data)
+	if err != nil {
+		log.Fatalf(TOKEN_ERR_MSG, err.Error())
+	}
+
+	reqest.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	err = doRequest(u.client, reqest, &token)
+	if err != nil {
+		log.Fatalf(TOKEN_ERR_MSG, err.Error())
+	}
+
+	u.token = token.Value
+	log.Printf("User token: %s\n", u.token)
 }

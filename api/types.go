@@ -36,3 +36,9 @@ type partColorsPageResult struct {
 	Next    string            `json:"next"`
 	Results []model.PartColor `json:"results"`
 }
+
+// lostPartsPageResult contains the result of /api/v3/users/{user_token}/lost_parts/
+type lostPartsPageResult struct {
+	Next    string           `json:"next"`
+	Results []model.LostPart `json:"results"`
+}

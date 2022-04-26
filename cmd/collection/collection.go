@@ -10,8 +10,8 @@ var (
 
 	CollectionCmd = &cobra.Command{
 		Use:   "collection",
-		Short: "Groups all commands for working with bricks collections.",
-		Long:  "The collection command groups all commands for working with bricks collections.",
+		Short: "Groups all commands for working with part collections.",
+		Long:  "The collection command groups all commands for working with part collections.",
 
 		DisableFlagsInUseLine: true,
 	}

@@ -11,8 +11,8 @@ import (
 var detailsCmd = &cobra.Command{
 	Use: fmt.Sprintf("details %s %s {%s | %s | %s}", options.CREDENTIALS_ARG,
 		options.JSON_OUTPUT_ARG, SET_NUM_ARG, SET_LIST_ID_ARG, PART_LIST_ID_ARG),
-	Short: "Get details about a specific set, set list, or part list",
-	Long:  "The details command returns details about a specific set, set list, or part list.",
+	Short: "Get details about a certain set, set list, or part list",
+	Long:  "The details command returns details about a certain set, set list, or part list.",
 
 	DisableFlagsInUseLine: true,
 
@@ -43,14 +43,17 @@ func checkOptionsDetails() error {
 	}
 
 	if optionsProvided < 1 || optionsProvided > 1 {
-		return fmt.Errorf("please provide exactly one option of -%s, -%s, or -%s",
-			SET_NUM_SOPT, SET_LIST_ID_SOPT, PART_LIST_ID_SOPT)
+		return fmt.Errorf("please provide exactly one option of %s, %s, or %s",
+			SET_NUM_ARG, SET_LIST_ID_ARG, PART_LIST_ID_ARG)
 	}
 
 	return nil
 }
 
 func executeDetails() error {
+	if setNum != "" {
+		return executeSetDetails()
+	}
 	if setListId != 0 {
 		return executeSetListDetails()
 	}
@@ -61,6 +64,19 @@ func executeDetails() error {
 	return nil
 }
 
+func executeSetDetails() error {
+	set, err := createBricksAPI().GetSet(setNum)
+	if err != nil {
+		return err
+	}
+
+	if jsonFile == "" {
+		jsonFile = fmt.Sprintf("%s_set.json", setNum)
+	}
+
+	return model.ExportToJSON(jsonFile, set)
+}
+
 func executeSetListDetails() error {
 	setList, err := createUsersAPI().GetSetList(setListId)
 	if err != nil {
@@ -68,7 +84,7 @@ func executeSetListDetails() error {
 	}
 
 	if jsonFile == "" {
-		jsonFile = fmt.Sprintf("%d_set_list.json", setListId)
+		jsonFile = fmt.Sprintf("%d_setList.json", setListId)
 	}
 
 	return model.ExportToJSON(jsonFile, setList)
@@ -81,7 +97,7 @@ func executePartListDetails() error {
 	}
 
 	if jsonFile == "" {
-		jsonFile = fmt.Sprintf("%d_part_list.json", partListId)
+		jsonFile = fmt.Sprintf("%d_partList.json", partListId)
 	}
 
 	return model.ExportToJSON(jsonFile, partList)

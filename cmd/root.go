@@ -11,7 +11,7 @@ var RootCmd = &cobra.Command{
 	Short: "A command line interface to Rebrickable and bricks collections",
 	Long: `bricks is a command line interface to the rebrickable.com API. It
 enables you to access the Rebrickable database to retrieve for example a list
-of all bricks of a certain set or user specific brick collections.
+of all parts of a certain set or user specific part collections.
 
 bricks is also able to merge, sort, add, or subtract collections of parts
 to new collections.`,

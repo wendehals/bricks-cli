@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
@@ -13,7 +12,12 @@ import (
 const (
 	ALL_OPT  = "all"
 	ALL_SOPT = "a"
-	ALL_ARG  = "-" + ALL_OPT
+	ALL_ARG  = "-" + ALL_SOPT
+
+	SET_NUM_OPT   = "set"
+	SET_NUM_SOPT  = "s"
+	SET_NUM_ARG   = "-" + SET_NUM_SOPT + " SET_NUM"
+	SET_NUM_USAGE = "The set number"
 
 	SET_LIST_ID_OPT   = "setList"
 	SET_LIST_ID_SOPT  = "l"
@@ -24,11 +28,6 @@ const (
 	PART_LIST_ID_SOPT  = "p"
 	PART_LIST_ID_ARG   = "-" + PART_LIST_ID_SOPT + " PART_LIST_ID"
 	PART_LIST_ID_USAGE = "The id of a user defined part list"
-
-	SET_NUM_OPT   = "set"
-	SET_NUM_SOPT  = "s"
-	SET_NUM_ARG   = "-" + SET_NUM_SOPT + " SET_NUM"
-	SET_NUM_USAGE = "The set number"
 )
 
 var (
@@ -58,29 +57,13 @@ var (
 
 func init() {
 	ApiCmd.AddCommand(detailsCmd)
-	ApiCmd.AddCommand(setListsCmd)
-	ApiCmd.AddCommand(partListsCmd)
-	ApiCmd.AddCommand(userSetsCmd)
+	ApiCmd.AddCommand(listsCmd)
+	ApiCmd.AddCommand(setsCmd)
 	ApiCmd.AddCommand(partsCmd)
-	ApiCmd.AddCommand(setListCmd)
 
 	ApiCmd.PersistentFlags().StringVarP(&credentialsFile, options.CREDENTIALS_OPT, options.CREDENTIALS_SOPT, "credentials.json",
 		options.CREDENTIALS_USAGE)
 	ApiCmd.PersistentFlags().StringVarP(&jsonFile, options.JSON_OUTPUT_OPT, options.JSON_OUTPUT_SOPT, "", options.JSON_OUTPUT_USAGE)
-}
-
-func checkOptionSetNum() error {
-	if setNum == "" {
-		return fmt.Errorf("please provide a valid set number")
-	}
-	return nil
-}
-
-func checkOptionListId() error {
-	if setListId == 0 {
-		return fmt.Errorf("please provide a valid list id of a user defined set list")
-	}
-	return nil
 }
 
 func createClient() *http.Client {

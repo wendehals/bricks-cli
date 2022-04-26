@@ -4,11 +4,11 @@
 
 ## bricks Commands
 
-    bricks is a command line interface to the Rebrickable.com API. It
+    bricks is a command line interface to the rebrickable.com API. It
     enables you to access the Rebrickable database to retrieve for example a list
-    of all bricks of a certain set or user specific brick collections.
+    of all parts of a certain set or user specific part collections.
 
-    bricks is also able to merge, sort, add, or subtract collections of bricks
+    bricks is also able to merge, sort, add, or subtract collections of parts
     to new collections.
 
     Usage:
@@ -16,15 +16,15 @@
 
     Available Commands:
     api         Groups all commands for the Rebrickable API.
-    collection  Groups all commands for working with bricks collections.
+    collection  Groups all commands for working with part collections.
     export      Exports the JSON input as HTML.
     help        Help about any command
 
+    Flags:
     -h, --help      help for bricks
     -v, --version   version for bricks
 
     Use "bricks [command] --help" for more information about a command.
-
 
 ## bricks api Subcommands
 
@@ -34,14 +34,10 @@
     bricks api [command]
 
     Available Commands:
-    allParts      Get all parts owned by the user
-    partListParts Get all parts of (a) user defined part list(s).
-    partLists     Get a list of all the user's part lists
-    set           Get details for a specific set
-    setListSets   Get a list of all the sets in a specific set list
-    setLists      Get a list of all the user's set lists
-    setParts      Get all parts used in the given set(s)
-    sets          Get a list of all the user's sets
+    details     Get details about a certain set, set list, or part list
+    lists       Get the user's set or part lists
+    parts       Get a list of parts
+    sets        Get details about sets owned by the user
 
     Flags:
     -c, --credentials string   A JSON file containing the Rebrickable credentials (default "credentials.json")
@@ -52,7 +48,7 @@
 
 ## bricks collection Subcommands
 
-    The collection command groups all commands for working with bricks collections.
+    The collection command groups all commands for working with part collections.
 
     Usage:
     bricks collection [command]
@@ -69,7 +65,6 @@
     -o, --json string   A name for the JSON output file
 
     Use "bricks collection [command] --help" for more information about a command.
-
 
 ## credentials.json
 

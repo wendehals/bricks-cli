@@ -12,10 +12,6 @@ import (
 )
 
 const (
-	SET_LISTS_OPT   = "setLists"
-	SET_LISTS_ARG   = "--" + SET_LISTS_OPT + " SET_LISTS_FILE"
-	SET_LISTS_USAGE = "A JSON file containing a list of user sets"
-
 	PART_LISTS_OPT   = "partLists"
 	PART_LISTS_ARG   = "--" + PART_LISTS_OPT + " PART_LISTS_FILE"
 	PART_LISTS_USAGE = "A JSON file containing the user's part lists."
@@ -34,22 +30,24 @@ const (
 )
 
 var (
-	setListsFile string
-	partsCmd     = &cobra.Command{
-		Use: fmt.Sprintf("parts %s %s {%s|%s|%s|%s|%s|%s} %s %s",
+	partListsFile       string
+	includeNonBuildable bool
+	mergeParts          bool
+
+	partsCmd = &cobra.Command{
+		Use: fmt.Sprintf("parts %s %s {%s | %s | %s | %s | %s} %s %s",
 			options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG,
-			ALL_ARG, SET_NUM_ARG, SET_LIST_ID_ARG, SET_LISTS_ARG, PART_LIST_ID_ARG, PART_LISTS_ARG,
+			ALL_ARG, SET_NUM_ARG, SET_LIST_ID_ARG, PART_LIST_ID_ARG, PART_LISTS_ARG,
 			INC_NON_BUILDABLE_ARG, MERGE_PARTS_ARG),
 		Short: "Get a list of parts",
 		Long: `The parts command returns a list of parts.
 	
 This list contains either all parts
 - owned by a user,
-- of a user set,
-- of a list of user sets,
-- of a part list,
-- of a list of part lists, or
-- of a certain set.`,
+- of a set,
+- of a user set list,
+- of a part list, or
+- of a list of part lists.`,
 
 		DisableFlagsInUseLine: true,
 
@@ -67,7 +65,6 @@ func init() {
 
 	partsCmd.Flags().StringVarP(&setNum, SET_NUM_OPT, SET_NUM_SOPT, "", SET_NUM_USAGE)
 	partsCmd.Flags().UintVarP(&setListId, SET_LIST_ID_OPT, SET_LIST_ID_SOPT, 0, SET_LIST_ID_USAGE)
-	partsCmd.Flags().StringVarP(&setListsFile, SET_LISTS_OPT, "", "", SET_LISTS_USAGE)
 
 	partsCmd.Flags().UintVarP(&partListId, PART_LIST_ID_OPT, PART_LIST_ID_SOPT, 0, PART_LIST_ID_USAGE)
 	partsCmd.Flags().StringVarP(&partListsFile, PART_LISTS_OPT, "", "", PART_LISTS_USAGE)
@@ -81,10 +78,10 @@ func checkOptionsParts() error {
 	if all {
 		optionsProvided++
 	}
-	if setListId != 0 {
+	if setNum != "" {
 		optionsProvided++
 	}
-	if setListsFile != "" {
+	if setListId != 0 {
 		optionsProvided++
 	}
 	if partListId != 0 {
@@ -93,13 +90,10 @@ func checkOptionsParts() error {
 	if partListsFile != "" {
 		optionsProvided++
 	}
-	if setNum != "" {
-		optionsProvided++
-	}
 
 	if optionsProvided < 1 || optionsProvided > 1 {
-		return fmt.Errorf("please provide exactly one option of -%s, -%s, -%s, --%s, -%s, or --%s",
-			ALL_SOPT, SET_NUM_SOPT, SET_LIST_ID_SOPT, SET_LISTS_OPT, PART_LIST_ID_SOPT, PART_LISTS_OPT)
+		return fmt.Errorf("please provide exactly one option of -%s, -%s, -%s, -%s, or --%s",
+			ALL_SOPT, SET_NUM_SOPT, SET_LIST_ID_SOPT, PART_LIST_ID_SOPT, PART_LISTS_OPT)
 	}
 
 	return nil
@@ -110,12 +104,12 @@ func executeParts() error {
 		return executeAllParts()
 	}
 
-	if setListId != 0 {
-		return executeSetListParts()
+	if setNum != "" {
+		return executeSetParts()
 	}
 
-	if setListsFile != "" {
-		return executeSetListsParts()
+	if setListId != 0 {
+		return executeSetListParts()
 	}
 
 	if partListId != 0 {
@@ -124,10 +118,6 @@ func executeParts() error {
 
 	if partListsFile != "" {
 		return executePartListsParts()
-	}
-
-	if setNum != "" {
-		return executeSetParts()
 	}
 
 	return nil
@@ -148,31 +138,30 @@ func executeAllParts() error {
 }
 
 func executeSetParts() error {
-	bricksAPI := createBricksAPI()
-
-	collection, err := retrieveSetParts(bricksAPI, setNum)
+	collection, err := retrieveSetParts(createBricksAPI(), setNum)
 	if err != nil {
 		return err
 	}
 
 	if jsonFile == "" {
-		jsonFile = setNum + PARTS_FILE_SUFFIX
+		jsonFile = options.ReplaceIllegalCharsFromFileName(setNum) + PARTS_FILE_SUFFIX
 	}
 
 	return model.ExportToJSON(jsonFile, collection)
 }
 
 func executeSetListParts() error {
-	log.Printf("Retrieving all parts of all sets in the set list %d\n", setListId)
+	log.Printf("Retrieving parts of all sets from the set list %d\n", setListId)
 
 	userSets, err := createUsersAPI().GetSetListSets(setListId)
 	if err != nil {
 		return err
 	}
 
+	bricksAPI := createBricksAPI()
 	collections := make([]model.Collection, len(userSets.Sets))
 	for i := range userSets.Sets {
-		collection, err := retrieveSetParts(createBricksAPI(), userSets.Sets[i].Set.SetNum)
+		collection, err := retrieveSetParts(bricksAPI, userSets.Sets[i].Set.SetNum)
 		if err != nil {
 			return err
 		}
@@ -180,98 +169,16 @@ func executeSetListParts() error {
 	}
 
 	if mergeParts {
-		log.Println("Merging parts of all sets")
-		collection := model.Collection{}
-		for i := range collections {
-			collection.Add(&collections[i])
-			collection.IDs = append(collection.IDs, userSets.Sets[i].Set.SetNum)
-			collection.Names = append(collection.Names, userSets.Sets[i].Set.Name)
-		}
-
-		if jsonFile == "" {
-			var b strings.Builder
-			for i := 0; i < len(userSets.Sets) && i < 5; i++ {
-				b.WriteString(userSets.Sets[i].Set.SetNum)
-			}
-			b.WriteString(PARTS_FILE_SUFFIX)
-			jsonFile = b.String()
-		}
-
-		return model.ExportToJSON(jsonFile, collection)
+		mergeAndExport(collections)
 	} else {
-		for i := range collections {
-			var fileName string
-			if jsonFile == "" {
-				fileName = collections[i].IDs[0] + PARTS_FILE_SUFFIX
-			} else {
-				fileName = fmt.Sprintf("%02d_%s", i+1, jsonFile)
-			}
-
-			err := model.ExportToJSON(fileName, collections[i])
-			if err != nil {
-				return err
-			}
-		}
-	}
-
-	return nil
-}
-
-func executeSetListsParts() error {
-	log.Printf("Retrieving all parts of all sets in the set list %s\n", setListsFile)
-
-	userSets, err := model.ImportUserSets(setListsFile)
-	if err != nil {
-		return err
-	}
-
-	bricksApi := createBricksAPI()
-	collections := make([]model.Collection, len(userSets.Sets))
-	for i := range userSets.Sets {
-		collection, err := retrieveSetParts(bricksApi, userSets.Sets[i].Set.SetNum)
-		if err != nil {
-			return err
-		}
-
-		collections[i] = *collection
-	}
-
-	if mergeParts {
-		log.Println("Merging parts of all sets")
-		collection := model.Collection{}
-		for i := range collections {
-			collection.Add(&collections[i])
-			collection.IDs = append(collection.IDs, userSets.Sets[i].Set.SetNum)
-			collection.Names = append(collection.Names, userSets.Sets[i].Set.Name)
-		}
-		if jsonFile == "" {
-			var b strings.Builder
-			for i := 0; i < len(userSets.Sets) && i < 5; i++ {
-				b.WriteString(userSets.Sets[i].Set.SetNum)
-			}
-			b.WriteString(PARTS_FILE_SUFFIX)
-			jsonFile = b.String()
-		}
-
-		return model.ExportToJSON(jsonFile, collection)
-	} else {
-		for i := range collections {
-			if jsonFile == "" {
-				jsonFile = collections[i].IDs[0] + PARTS_FILE_SUFFIX
-			}
-
-			err := model.ExportToJSON(jsonFile, collections[i])
-			if err != nil {
-				return err
-			}
-		}
+		exportAll(collections)
 	}
 
 	return nil
 }
 
 func executePartListParts() error {
-	log.Printf("Retrieving all parts of part list %d\n", partListId)
+	log.Printf("Retrieving parts of part list %d\n", partListId)
 	usersAPI := createUsersAPI()
 
 	partListParts, err := usersAPI.GetPartListParts(partListId)
@@ -279,21 +186,45 @@ func executePartListParts() error {
 		return err
 	}
 
-	fileName := jsonFile
-	if fileName == "" {
-		fileName = fmt.Sprint(partListId) + PARTS_FILE_SUFFIX
+	if jsonFile == "" {
+		jsonFile = fmt.Sprint(partListId) + PARTS_FILE_SUFFIX
 	}
 
-	return model.ExportToJSON(fileName, partListParts)
+	return model.ExportToJSON(jsonFile, partListParts)
 }
 
 func executePartListsParts() error {
-	log.Printf("Retrieving all parts of all lits of the part list %s\n", partListsFile)
+	log.Printf("Retrieving parts of all part lists from the part lists file %s\n", partListsFile)
+	usersAPI := createUsersAPI()
+
+	partLists, err := model.ImportPartLists(partListsFile)
+	if err != nil {
+		return err
+	}
+
+	var collections []model.Collection
+	for i := range partLists.PartLists {
+		if partLists.PartLists[i].IsBuildable || (includeNonBuildable && !partLists.PartLists[i].IsBuildable) {
+			partListParts, err := usersAPI.GetPartListParts(partLists.PartLists[i].ID)
+			if err != nil {
+				return err
+			}
+
+			collections = append(collections, *partListParts)
+		}
+	}
+
+	if mergeParts {
+		mergeAndExport(collections)
+	} else {
+		exportAll(collections)
+	}
+
 	return nil
 }
 
 func retrieveSetParts(bricksAPI *api.BricksAPI, setNum string) (*model.Collection, error) {
-	log.Printf("Retrieving all parts of set %s\n", setNum)
+	log.Printf("Retrieving parts of set %s\n", setNum)
 
 	set, err := bricksAPI.GetSet(setNum)
 	if err != nil {
@@ -308,4 +239,45 @@ func retrieveSetParts(bricksAPI *api.BricksAPI, setNum string) (*model.Collectio
 	collection.Names = append(collection.Names, set.Name)
 
 	return collection, nil
+}
+
+func mergeAndExport(collections []model.Collection) error {
+	log.Println("Merging parts")
+
+	collection := model.Collection{}
+	for i := range collections {
+		collection.Add(&collections[i])
+		collection.IDs = append(collection.IDs, collection.IDs...)
+		collection.Names = append(collection.Names, collection.Names...)
+	}
+
+	if jsonFile == "" {
+		var b strings.Builder
+		for i := 0; i < len(collection.IDs) && i < 5; i++ {
+			b.WriteString(collection.IDs[i])
+			b.WriteString("_")
+		}
+		b.WriteString("parts.json")
+		jsonFile = b.String()
+	}
+
+	return model.ExportToJSON(jsonFile, collection)
+}
+
+func exportAll(collections []model.Collection) error {
+	for i := range collections {
+		var fileName string
+		if jsonFile == "" {
+			fileName = collections[i].IDs[0] + PARTS_FILE_SUFFIX
+		} else {
+			fileName = fmt.Sprintf("%02d_%s", i+1, jsonFile)
+		}
+
+		err := model.ExportToJSON(fileName, collections[i])
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

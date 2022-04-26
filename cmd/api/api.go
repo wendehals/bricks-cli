@@ -11,22 +11,33 @@ import (
 )
 
 const (
-	LIST_ID_OPT   = "list"
-	LIST_ID_SOPT  = "l"
-	LIST_ID_ARG   = "[-" + LIST_ID_SOPT + " LIST_ID]"
-	LIST_ID_USAGE = "The list id of a user defined set list"
+	ALL_OPT  = "all"
+	ALL_SOPT = "a"
+	ALL_ARG  = "-" + ALL_OPT
+
+	SET_LIST_ID_OPT   = "setList"
+	SET_LIST_ID_SOPT  = "l"
+	SET_LIST_ID_ARG   = "-" + SET_LIST_ID_SOPT + " SET_LIST_ID"
+	SET_LIST_ID_USAGE = "The id of a user defined set list"
+
+	PART_LIST_ID_OPT   = "partList"
+	PART_LIST_ID_SOPT  = "p"
+	PART_LIST_ID_ARG   = "-" + PART_LIST_ID_SOPT + " PART_LIST_ID"
+	PART_LIST_ID_USAGE = "The id of a user defined part list"
 
 	SET_NUM_OPT   = "set"
 	SET_NUM_SOPT  = "s"
-	SET_NUM_ARG   = "[-" + SET_NUM_SOPT + " SET_NUM]"
+	SET_NUM_ARG   = "-" + SET_NUM_SOPT + " SET_NUM"
 	SET_NUM_USAGE = "The set number"
 )
 
 var (
 	credentialsFile string
 	jsonFile        string
+	all             bool
 	setNum          string
-	listId          uint
+	setListId       uint
+	partListId      uint
 
 	credentials *api.Credentials
 
@@ -46,15 +57,11 @@ var (
 )
 
 func init() {
-	ApiCmd.AddCommand(allPartListsCmd)
-	ApiCmd.AddCommand(allPartsCmd)
-	ApiCmd.AddCommand(allSetListsCmd)
-	ApiCmd.AddCommand(allSetsCmd)
-
-	ApiCmd.AddCommand(partListPartsCmd)
-	ApiCmd.AddCommand(setListSetsCmd)
-	ApiCmd.AddCommand(setPartsCmd)
-	ApiCmd.AddCommand(setCmd)
+	ApiCmd.AddCommand(detailsCmd)
+	ApiCmd.AddCommand(setListsCmd)
+	ApiCmd.AddCommand(partListsCmd)
+	ApiCmd.AddCommand(userSetsCmd)
+	ApiCmd.AddCommand(partsCmd)
 	ApiCmd.AddCommand(setListCmd)
 
 	ApiCmd.PersistentFlags().StringVarP(&credentialsFile, options.CREDENTIALS_OPT, options.CREDENTIALS_SOPT, "credentials.json",
@@ -70,17 +77,16 @@ func checkOptionSetNum() error {
 }
 
 func checkOptionListId() error {
-	if listId == 0 {
+	if setListId == 0 {
 		return fmt.Errorf("please provide a valid list id of a user defined set list")
 	}
 	return nil
 }
 
 func createClient() *http.Client {
-	client := http.Client{
+	return &http.Client{
 		Timeout: time.Second * 5,
 	}
-	return &client
 }
 
 func createBricksAPI() *api.BricksAPI {

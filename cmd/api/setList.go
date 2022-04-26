@@ -9,7 +9,7 @@ import (
 )
 
 var setListCmd = &cobra.Command{
-	Use:   fmt.Sprintf("setList %s %s %s", options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG, LIST_ID_ARG),
+	Use:   fmt.Sprintf("setList %s %s %s", options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG, SET_LIST_ID_ARG),
 	Short: "Get details about a specific set list",
 	Long:  "The setList command returns details about a specific set list.",
 
@@ -24,17 +24,17 @@ var setListCmd = &cobra.Command{
 }
 
 func init() {
-	setListCmd.Flags().UintVarP(&listId, LIST_ID_OPT, LIST_ID_SOPT, 0, LIST_ID_USAGE)
+	setListCmd.Flags().UintVarP(&setListId, SET_LIST_ID_OPT, SET_LIST_ID_SOPT, 0, SET_LIST_ID_USAGE)
 }
 
 func executeSetList() error {
-	setList, err := createUsersAPI().GetSetList(listId)
+	setList, err := createUsersAPI().GetSetList(setListId)
 	if err != nil {
 		return err
 	}
 
 	if jsonFile == "" {
-		jsonFile = fmt.Sprintf("%d_set_list.json", listId)
+		jsonFile = fmt.Sprintf("%d_set_list.json", setListId)
 	}
 
 	return model.ExportToJSON(jsonFile, setList)

@@ -10,8 +10,8 @@ type setListsPageResult struct {
 
 // setsPageResult contains the result of /api/v3/users/{user_token}/sets/?page={page}
 type setsPageResult struct {
-	Next    string           `json:"next"`
-	Results []model.UsersSet `json:"results"`
+	Next    string          `json:"next"`
+	Results []model.UserSet `json:"results"`
 }
 
 // partListsPageResult contains the result of /api/v3/users/{user_token}/allparts/?page={page}

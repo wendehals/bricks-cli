@@ -19,8 +19,8 @@ var detailsCmd = &cobra.Command{
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		return checkOptionsDetails()
 	},
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return executeDetails()
+	Run: func(cmd *cobra.Command, args []string) {
+		executeDetails()
 	},
 }
 
@@ -50,55 +50,44 @@ func checkOptionsDetails() error {
 	return nil
 }
 
-func executeDetails() error {
+func executeDetails() {
 	if setNum != "" {
-		return executeSetDetails()
+		executeSetDetails()
 	}
 	if setListId != 0 {
-		return executeSetListDetails()
+		executeSetListDetails()
 	}
 	if partListId != 0 {
-		return executePartListDetails()
+		executePartListDetails()
 	}
-
-	return nil
 }
 
-func executeSetDetails() error {
-	set, err := createBricksAPI().GetSet(setNum)
-	if err != nil {
-		return err
-	}
+func executeSetDetails() {
+	set := createBricksAPI().GetSet(setNum)
 
 	if jsonFile == "" {
 		jsonFile = fmt.Sprintf("%s_set.json", setNum)
 	}
 
-	return model.ExportToJSON(jsonFile, set)
+	model.ExportToJSON(jsonFile, set)
 }
 
-func executeSetListDetails() error {
-	setList, err := createUsersAPI().GetSetList(setListId)
-	if err != nil {
-		return err
-	}
+func executeSetListDetails() {
+	setList := createUsersAPI().GetSetList(setListId)
 
 	if jsonFile == "" {
 		jsonFile = fmt.Sprintf("%d_setList.json", setListId)
 	}
 
-	return model.ExportToJSON(jsonFile, setList)
+	model.ExportToJSON(jsonFile, setList)
 }
 
-func executePartListDetails() error {
-	partList, err := createUsersAPI().GetPartList(partListId)
-	if err != nil {
-		return err
-	}
+func executePartListDetails() {
+	partList := createUsersAPI().GetPartList(partListId)
 
 	if jsonFile == "" {
 		jsonFile = fmt.Sprintf("%d_partList.json", partListId)
 	}
 
-	return model.ExportToJSON(jsonFile, partList)
+	model.ExportToJSON(jsonFile, partList)
 }

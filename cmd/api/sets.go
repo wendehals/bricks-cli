@@ -18,8 +18,8 @@ var setsCmd = &cobra.Command{
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		return checkOptionsSets()
 	},
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return executeSets()
+	Run: func(cmd *cobra.Command, args []string) {
+		executeSets()
 	},
 }
 
@@ -36,47 +36,35 @@ func checkOptionsSets() error {
 	return nil
 }
 
-func executeSets() error {
+func executeSets() {
 	if all {
-		return executeAllSets()
+		executeAllSets()
 	}
 	if setListId != 0 {
-		return executeSetListSets()
+		executeSetListSets()
 	}
-
-	return nil
 }
 
-func executeAllSets() error {
-	sets, err := createUsersAPI().GetSets()
-	if err != nil {
-		return err
-	}
+func executeAllSets() {
+	sets := createUsersAPI().GetSets()
 
 	if jsonFile == "" {
 		jsonFile = fmt.Sprintf("%s_sets.json",
 			options.ReplaceIllegalCharsFromFileName(credentials.UserName))
 	}
 
-	return model.ExportToJSON(jsonFile, sets)
+	model.ExportToJSON(jsonFile, sets)
 }
 
-func executeSetListSets() error {
+func executeSetListSets() {
 	usersAPI := createUsersAPI()
-	sets, err := usersAPI.GetSetListSets(setListId)
-	if err != nil {
-		return err
-	}
-
-	setList, err := usersAPI.GetSetList(setListId)
-	if err != nil {
-		return err
-	}
+	sets := usersAPI.GetSetListSets(setListId)
+	setList := usersAPI.GetSetList(setListId)
 	sets.Name = setList.Name
 
 	if jsonFile == "" {
 		jsonFile = fmt.Sprintf("%d_sets.json", setListId)
 	}
 
-	return model.ExportToJSON(jsonFile, sets)
+	model.ExportToJSON(jsonFile, sets)
 }

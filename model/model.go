@@ -3,6 +3,7 @@ package model
 import (
 	"encoding/json"
 	"io/ioutil"
+	"log"
 	"os"
 )
 
@@ -56,25 +57,25 @@ type PartLists struct {
 	PartLists []PartList `json:"partLists"`
 }
 
-func ImportPartLists(partListsFile string) (*PartLists, error) {
+func ImportPartLists(partListsFile string) *PartLists {
 	jsonFile, err := os.Open(partListsFile)
 	if err != nil {
-		return nil, err
+		log.Fatalf(err.Error())
 	}
 	defer jsonFile.Close()
 
 	data, err := ioutil.ReadAll(jsonFile)
 	if err != nil {
-		return nil, err
+		log.Fatalf(err.Error())
 	}
 
 	partLists := PartLists{}
 	err = json.Unmarshal(data, &partLists)
 	if err != nil {
-		return nil, err
+		log.Fatalf(err.Error())
 	}
 
-	return &partLists, nil
+	return &partLists
 }
 
 // UserSet represents a set owned by the user.
@@ -92,25 +93,25 @@ type UserSets struct {
 	Sets []UserSet `json:"sets"`
 }
 
-func ImportUserSets(userSetsFile string) (*UserSets, error) {
+func ImportUserSets(userSetsFile string) *UserSets {
 	jsonFile, err := os.Open(userSetsFile)
 	if err != nil {
-		return nil, err
+		log.Fatalf(err.Error())
 	}
 	defer jsonFile.Close()
 
 	data, err := ioutil.ReadAll(jsonFile)
 	if err != nil {
-		return nil, err
+		log.Fatalf(err.Error())
 	}
 
 	userSets := UserSets{}
 	err = json.Unmarshal(data, &userSets)
 	if err != nil {
-		return nil, err
+		log.Fatalf(err.Error())
 	}
 
-	return &userSets, nil
+	return &userSets
 }
 
 // SetType represents a Lego set.

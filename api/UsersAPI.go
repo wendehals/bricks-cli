@@ -48,7 +48,7 @@ func NewUsersAPI(client *http.Client, credentials *Credentials) *UsersAPI {
 }
 
 // GetPartLists returns all part lists of the user provided by /api/v3/users/{user_token}/partlists/
-func (u *UsersAPI) GetPartLists() (*model.PartLists, error) {
+func (u *UsersAPI) GetPartLists() *model.PartLists {
 	partLists := model.PartLists{}
 	partLists.User = u.userName
 
@@ -56,7 +56,7 @@ func (u *UsersAPI) GetPartLists() (*model.PartLists, error) {
 
 	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "partlists"), &partListsPage)
 	if err != nil {
-		return nil, fmt.Errorf(GET_ALL_PARTS_LISTS_ERR_MSG, err.Error())
+		log.Fatalf(GET_ALL_PARTS_LISTS_ERR_MSG, err.Error())
 	}
 
 	partLists.PartLists = partListsPage.Results
@@ -64,17 +64,17 @@ func (u *UsersAPI) GetPartLists() (*model.PartLists, error) {
 		url := partListsPage.Next
 		err = u.requestPage(url, &partListsPage)
 		if err != nil {
-			return nil, fmt.Errorf(GET_ALL_PARTS_LISTS_ERR_MSG, err.Error())
+			log.Fatalf(GET_ALL_PARTS_LISTS_ERR_MSG, err.Error())
 		}
 
 		partLists.PartLists = append(partLists.PartLists, partListsPage.Results...)
 	}
 
-	return &partLists, nil
+	return &partLists
 }
 
 // GetAllParts returns all parts owned by the user provided by /api/v3/users/{user_token}/allparts
-func (u *UsersAPI) GetAllParts() (*model.Collection, error) {
+func (u *UsersAPI) GetAllParts() *model.Collection {
 	collection := model.Collection{}
 	collection.User = u.userName
 	collection.IDs = []string{}
@@ -84,7 +84,7 @@ func (u *UsersAPI) GetAllParts() (*model.Collection, error) {
 
 	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "allparts"), &allPartsPage)
 	if err != nil {
-		return nil, fmt.Errorf(GET_ALL_PARTS_ERR_MSG, err.Error())
+		log.Fatalf(GET_ALL_PARTS_ERR_MSG, err.Error())
 	}
 
 	collection.Parts = append(collection.Parts, allPartsPage.Results...)
@@ -93,17 +93,17 @@ func (u *UsersAPI) GetAllParts() (*model.Collection, error) {
 		allPartsPage = partsPageResult{}
 		err = u.requestPage(url, &allPartsPage)
 		if err != nil {
-			return nil, fmt.Errorf(GET_ALL_PARTS_ERR_MSG, err.Error())
+			log.Fatalf(GET_ALL_PARTS_ERR_MSG, err.Error())
 		}
 
 		collection.Parts = append(collection.Parts, allPartsPage.Results...)
 	}
 
-	return &collection, nil
+	return &collection
 }
 
 // GetSetLists returns all set lists of the user provided by /api/v3/users/{user_token}/setlists/
-func (u *UsersAPI) GetSetLists() (*model.SetLists, error) {
+func (u *UsersAPI) GetSetLists() *model.SetLists {
 	setLists := model.SetLists{}
 	setLists.User = u.userName
 
@@ -111,7 +111,7 @@ func (u *UsersAPI) GetSetLists() (*model.SetLists, error) {
 
 	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "setlists"), &setListsPage)
 	if err != nil {
-		return nil, fmt.Errorf(GET_ALL_SET_LISTS_ERR_MSG, err.Error())
+		log.Fatalf(GET_ALL_SET_LISTS_ERR_MSG, err.Error())
 	}
 
 	setLists.SetLists = setListsPage.Results
@@ -119,17 +119,17 @@ func (u *UsersAPI) GetSetLists() (*model.SetLists, error) {
 		url := setListsPage.Next
 		err = u.requestPage(url, &setListsPage)
 		if err != nil {
-			return nil, fmt.Errorf(GET_ALL_SET_LISTS_ERR_MSG, err.Error())
+			log.Fatalf(GET_ALL_SET_LISTS_ERR_MSG, err.Error())
 		}
 
 		setLists.SetLists = append(setLists.SetLists, setListsPage.Results...)
 	}
 
-	return &setLists, nil
+	return &setLists
 }
 
 // GetSets returns all sets of the user provided by /api/v3/users/{user_token}/sets
-func (u *UsersAPI) GetSets() (*model.UserSets, error) {
+func (u *UsersAPI) GetSets() *model.UserSets {
 	usersSets := model.UserSets{}
 	usersSets.User = u.userName
 	usersSets.ID = 0
@@ -139,7 +139,7 @@ func (u *UsersAPI) GetSets() (*model.UserSets, error) {
 
 	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "sets"), &setsPage)
 	if err != nil {
-		return nil, fmt.Errorf(GET_ALL_SETS_ERR_MSG, err.Error())
+		log.Fatalf(GET_ALL_SETS_ERR_MSG, err.Error())
 	}
 
 	usersSets.Sets = setsPage.Results
@@ -147,13 +147,13 @@ func (u *UsersAPI) GetSets() (*model.UserSets, error) {
 		url := setsPage.Next
 		err = u.requestPage(url, &setsPage)
 		if err != nil {
-			return nil, fmt.Errorf(GET_ALL_SETS_ERR_MSG, err.Error())
+			log.Fatalf(GET_ALL_SETS_ERR_MSG, err.Error())
 		}
 
 		usersSets.Sets = append(usersSets.Sets, setsPage.Results...)
 	}
 
-	return &usersSets, nil
+	return &usersSets
 }
 
 // PostToken posts /api/v3/users/_token/
@@ -187,21 +187,21 @@ func (u *UsersAPI) postToken() error {
 
 // GetSetList returns details about a certain set list of the user provided by
 // /api/v3/users/{user_token}/setlists/{list_id}/
-func (u *UsersAPI) GetSetList(listId uint) (*model.SetList, error) {
+func (u *UsersAPI) GetSetList(listId uint) *model.SetList {
 	var setList *model.SetList
 
 	subPath := fmt.Sprintf("setlists/%d/", listId)
 	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, subPath), &setList)
 	if err != nil {
-		return nil, fmt.Errorf(GET_SET_LIST_ERR_MSG, listId, err.Error())
+		log.Fatalf(GET_SET_LIST_ERR_MSG, listId, err.Error())
 	}
 
-	return setList, nil
+	return setList
 }
 
 // GetSetListSets returns all sets of the user's set list provided by
 // /api/v3/users/{user_token}/setlists/{list_id}/sets/
-func (u *UsersAPI) GetSetListSets(listId uint) (*model.UserSets, error) {
+func (u *UsersAPI) GetSetListSets(listId uint) *model.UserSets {
 	usersSets := model.UserSets{}
 	usersSets.User = u.userName
 	usersSets.ID = listId
@@ -211,7 +211,7 @@ func (u *UsersAPI) GetSetListSets(listId uint) (*model.UserSets, error) {
 	subPath := fmt.Sprintf("setlists/%d/sets/", listId)
 	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, subPath), &setsPage)
 	if err != nil {
-		return nil, fmt.Errorf(GET_SET_LIST_SETS_ERR_MSG, listId, err.Error())
+		log.Fatalf(GET_SET_LIST_SETS_ERR_MSG, listId, err.Error())
 	}
 
 	usersSets.Sets = setsPage.Results
@@ -219,32 +219,32 @@ func (u *UsersAPI) GetSetListSets(listId uint) (*model.UserSets, error) {
 		url := setsPage.Next
 		err = u.requestPage(url, &setsPage)
 		if err != nil {
-			return nil, fmt.Errorf(GET_SET_LIST_SETS_ERR_MSG, listId, err.Error())
+			log.Fatalf(GET_SET_LIST_SETS_ERR_MSG, listId, err.Error())
 		}
 
 		usersSets.Sets = append(usersSets.Sets, setsPage.Results...)
 	}
 
-	return &usersSets, nil
+	return &usersSets
 }
 
 // GetPartList returns details about a certain set list of the user provided by
 // /api/v3/users/{user_token}/partlists/{list_id}/
-func (u *UsersAPI) GetPartList(listId uint) (*model.PartList, error) {
+func (u *UsersAPI) GetPartList(listId uint) *model.PartList {
 	var partList *model.PartList
 
 	subPath := fmt.Sprintf("partlists/%d/", listId)
 	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, subPath), &partList)
 	if err != nil {
-		return nil, fmt.Errorf(GET_PART_LIST_ERR_MSG, listId, err.Error())
+		log.Fatalf(GET_PART_LIST_ERR_MSG, listId, err.Error())
 	}
 
-	return partList, nil
+	return partList
 }
 
 // GetPartListParts returns all parts of the user defined part list provided by
 // /api/v3/users/{user_token}/partlists/{list_id}/parts
-func (u *UsersAPI) GetPartListParts(listId uint) (*model.Collection, error) {
+func (u *UsersAPI) GetPartListParts(listId uint) *model.Collection {
 	collection := model.Collection{}
 	collection.IDs = append(collection.IDs, fmt.Sprint(listId))
 
@@ -253,8 +253,7 @@ func (u *UsersAPI) GetPartListParts(listId uint) (*model.Collection, error) {
 	subPath := fmt.Sprintf("partlists/%d/parts", listId)
 	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, subPath), &partsPage)
 	if err != nil {
-		return nil,
-			fmt.Errorf(GET_PART_LIST_PARTS_ERR_MSG, listId, err.Error())
+		log.Fatalf(GET_PART_LIST_PARTS_ERR_MSG, listId, err.Error())
 	}
 
 	collection.Parts = append(collection.Parts, partsPage.Results...)
@@ -263,12 +262,11 @@ func (u *UsersAPI) GetPartListParts(listId uint) (*model.Collection, error) {
 		partsPage = partsPageResult{}
 		err = u.requestPage(url, &partsPage)
 		if err != nil {
-			return nil,
-				fmt.Errorf(GET_PART_LIST_PARTS_ERR_MSG, listId, err.Error())
+			log.Fatalf(GET_PART_LIST_PARTS_ERR_MSG, listId, err.Error())
 		}
 
 		collection.Parts = append(collection.Parts, partsPage.Results...)
 	}
 
-	return &collection, nil
+	return &collection
 }

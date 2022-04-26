@@ -26,8 +26,8 @@ var (
 			}
 			return nil
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			return executeMerge(args)
+		Run: func(cmd *cobra.Command, args []string) {
+			executeMerge(args)
 		},
 	}
 )
@@ -37,11 +37,8 @@ func init() {
 	mergeCmd.Flags().BoolVarP(&variant, "variant", "", false, "Merge by variant")
 }
 
-func executeMerge(args []string) error {
-	collection, err := model.ImportCollection(args[0])
-	if err != nil {
-		return err
-	}
+func executeMerge(args []string) {
+	collection := model.ImportCollection(args[0])
 
 	merged := collection
 	if color {
@@ -56,5 +53,5 @@ func executeMerge(args []string) error {
 		jsonFile = options.FileNameFromArgs(args, "_merged_parts.json")
 	}
 
-	return model.ExportToJSON(jsonFile, merged)
+	model.ExportToJSON(jsonFile, merged)
 }

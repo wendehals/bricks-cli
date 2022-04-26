@@ -33,8 +33,8 @@ var (
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			return checkOptionsLists()
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			return executeLists()
+		Run: func(cmd *cobra.Command, args []string) {
+			executeLists()
 		},
 	}
 )
@@ -52,43 +52,35 @@ func checkOptionsLists() error {
 	return nil
 }
 
-func executeLists() error {
+func executeLists() {
 	if sets {
-		return executeSetLists()
+		executeSetLists()
 	}
 	if parts {
-		return executePartLists()
+		executePartLists()
 	}
-
-	return nil
 }
 
-func executeSetLists() error {
+func executeSetLists() {
 	log.Printf("Retrieving set lists of user %s\n", credentials.UserName)
-	setLists, err := createUsersAPI().GetSetLists()
-	if err != nil {
-		return err
-	}
+	setLists := createUsersAPI().GetSetLists()
 
 	if jsonFile == "" {
 		jsonFile = fmt.Sprintf("%s_setLists.json",
 			options.ReplaceIllegalCharsFromFileName(credentials.UserName))
 	}
 
-	return model.ExportToJSON(jsonFile, setLists)
+	model.ExportToJSON(jsonFile, setLists)
 }
 
-func executePartLists() error {
+func executePartLists() {
 	log.Printf("Retrieving part lists of user %s\n", credentials.UserName)
-	partLists, err := createUsersAPI().GetPartLists()
-	if err != nil {
-		return err
-	}
+	partLists := createUsersAPI().GetPartLists()
 
 	if jsonFile == "" {
 		jsonFile = fmt.Sprintf("%s_partLists.json",
 			options.ReplaceIllegalCharsFromFileName(credentials.UserName))
 	}
 
-	return model.ExportToJSON(jsonFile, partLists)
+	model.ExportToJSON(jsonFile, partLists)
 }

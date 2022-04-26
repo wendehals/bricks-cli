@@ -7,7 +7,7 @@ import (
 )
 
 func TestSort(t *testing.T) {
-	collection := readCollection(t, "test_resources/testCollection1.json")
+	collection := ImportCollection("test_resources/testCollection1.json")
 
 	collection.Sort()
 
@@ -19,7 +19,7 @@ func TestSort(t *testing.T) {
 }
 
 func TestAdd(t *testing.T) {
-	collection := readCollection(t, "test_resources/testCollection1.json").Add(readCollection(t, "test_resources/testCollection2.json")).Sort()
+	collection := ImportCollection("test_resources/testCollection1.json").Add(ImportCollection("test_resources/testCollection2.json")).Sort()
 
 	assertSize(t, collection, 9)
 
@@ -46,7 +46,7 @@ func TestAdd(t *testing.T) {
 }
 
 func TestSubstract(t *testing.T) {
-	collection := readCollection(t, "test_resources/testCollection1.json").Subtract(readCollection(t, "test_resources/testCollection2.json")).Sort()
+	collection := ImportCollection("test_resources/testCollection1.json").Subtract(ImportCollection("test_resources/testCollection2.json")).Sort()
 
 	assertSize(t, collection, 9)
 
@@ -79,7 +79,7 @@ func TestSubstract(t *testing.T) {
 }
 
 func TestMax(t *testing.T) {
-	collection := readCollection(t, "test_resources/testCollection1.json").MergeByColor().Max(readCollection(t, "test_resources/testCollection2.json").MergeByColor()).Sort()
+	collection := ImportCollection("test_resources/testCollection1.json").MergeByColor().Max(ImportCollection("test_resources/testCollection2.json").MergeByColor()).Sort()
 
 	assertSize(t, collection, 6)
 
@@ -103,7 +103,7 @@ func TestMax(t *testing.T) {
 }
 
 func TestMergeByColor(t *testing.T) {
-	collection := readCollection(t, "test_resources/testCollection1.json").MergeByColor().Sort()
+	collection := ImportCollection("test_resources/testCollection1.json").MergeByColor().Sort()
 
 	assertSize(t, collection, 4)
 
@@ -125,7 +125,7 @@ func TestMergeByColor(t *testing.T) {
 }
 
 func TestMergeByVariant(t *testing.T) {
-	collection := readCollection(t, "test_resources/testCollection2.json").MergeByVariant().Sort()
+	collection := ImportCollection("test_resources/testCollection2.json").MergeByVariant().Sort()
 
 	assertSize(t, collection, 4)
 
@@ -146,13 +146,4 @@ func assertSize(t *testing.T, collection *Collection, expected int) {
 	if len(collection.Parts) != expected {
 		t.Errorf("Too many/less distinct part types in collection. Expected: %d, actual: %d", expected, len(collection.Parts))
 	}
-}
-
-func readCollection(t *testing.T, fileName string) *Collection {
-	collection, err := ImportCollection(fileName)
-	if err != nil {
-		t.FailNow()
-	}
-
-	return collection
 }

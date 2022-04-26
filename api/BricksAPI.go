@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/wendehals/bricks/model"
@@ -29,7 +30,7 @@ func NewBricksAPI(client *http.Client, apiKey string) *BricksAPI {
 }
 
 // GetSet returns the result of /api/v3/lego/sets/{set_num}/
-func (b *BricksAPI) GetSet(setNum string) (*model.SetType, error) {
+func (b *BricksAPI) GetSet(setNum string) *model.SetType {
 	set := model.SetType{}
 
 	subPath := fmt.Sprintf("sets/%s/", setNum)
@@ -37,14 +38,14 @@ func (b *BricksAPI) GetSet(setNum string) (*model.SetType, error) {
 
 	err := b.requestPage(url, &set)
 	if err != nil {
-		return nil, fmt.Errorf("details of set %s could not be retrieved: %s", setNum, err.Error())
+		log.Fatalf("details of set %s could not be retrieved: %s", setNum, err.Error())
 	}
 
-	return &set, nil
+	return &set
 }
 
 // GetSetParts returns the result of /api/v3/lego/sets/{set_num}/parts/
-func (b *BricksAPI) GetSetParts(setNum string, includeMiniFigs bool) (*model.Collection, error) {
+func (b *BricksAPI) GetSetParts(setNum string, includeMiniFigs bool) *model.Collection {
 	collection := model.Collection{}
 
 	subPath := fmt.Sprintf("sets/%s/parts/", setNum)
@@ -56,7 +57,7 @@ func (b *BricksAPI) GetSetParts(setNum string, includeMiniFigs bool) (*model.Col
 	setParts := partsPageResult{}
 	err := b.requestPage(url, &setParts)
 	if err != nil {
-		return nil, fmt.Errorf(SET_PARTS_ERR_MSG, setNum, err.Error())
+		log.Fatalf(SET_PARTS_ERR_MSG, setNum, err.Error())
 	}
 
 	collection.Parts = append(collection.Parts, setParts.Results...)
@@ -65,17 +66,17 @@ func (b *BricksAPI) GetSetParts(setNum string, includeMiniFigs bool) (*model.Col
 		setParts = partsPageResult{}
 		err = b.requestPage(url, &setParts)
 		if err != nil {
-			return nil, fmt.Errorf(SET_PARTS_ERR_MSG, setNum, err.Error())
+			log.Fatalf(SET_PARTS_ERR_MSG, setNum, err.Error())
 		}
 
 		collection.Parts = append(collection.Parts, setParts.Results...)
 	}
 
-	return &collection, nil
+	return &collection
 }
 
 // GetPartColors returns the result of /api/v3/lego/parts/{part_num}/colors/
-func (b *BricksAPI) GetPartColors(partNum string) ([]model.PartColor, error) {
+func (b *BricksAPI) GetPartColors(partNum string) []model.PartColor {
 	partColors := []model.PartColor{}
 	partColorsPage := partColorsPageResult{}
 
@@ -84,7 +85,7 @@ func (b *BricksAPI) GetPartColors(partNum string) ([]model.PartColor, error) {
 
 	err := b.requestPage(url, &partColorsPage)
 	if err != nil {
-		return nil, fmt.Errorf(PART_COLORS_ERR_MSG, err.Error())
+		log.Fatalf(PART_COLORS_ERR_MSG, err.Error())
 	}
 
 	partColors = append(partColors, partColorsPage.Results...)
@@ -93,22 +94,19 @@ func (b *BricksAPI) GetPartColors(partNum string) ([]model.PartColor, error) {
 		partColorsPage = partColorsPageResult{}
 		err = b.requestPage(url, &partColorsPage)
 		if err != nil {
-			return nil, fmt.Errorf(PART_COLORS_ERR_MSG, err.Error())
+			log.Fatalf(PART_COLORS_ERR_MSG, err.Error())
 		}
 
 		partColors = append(partColors, partColorsPage.Results...)
 	}
 
-	return partColors, nil
+	return partColors
 }
 
-func (b *BricksAPI) ReplaceImagesByMatchingColor(collection *model.Collection) error {
+func (b *BricksAPI) ReplaceImagesByMatchingColor(collection *model.Collection) {
 	for i := range collection.Parts {
 		partEntry := collection.Parts[i]
-		partColors, err := b.GetPartColors(partEntry.Part.Number)
-		if err != nil {
-			return err
-		}
+		partColors := b.GetPartColors(partEntry.Part.Number)
 
 		for j := range partColors {
 			if partColors[j].ColorId == partEntry.Color.ID {
@@ -117,6 +115,4 @@ func (b *BricksAPI) ReplaceImagesByMatchingColor(collection *model.Collection) e
 			}
 		}
 	}
-
-	return nil
 }

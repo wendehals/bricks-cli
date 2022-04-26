@@ -22,27 +22,19 @@ the list of missing parts.`,
 	DisableFlagsInUseLine: true,
 
 	Args: cobra.ExactArgs(2),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return executeSubtract(args)
+	Run: func(cmd *cobra.Command, args []string) {
+		executeSubtract(args)
 	},
 }
 
-func executeSubtract(args []string) error {
-	minuend, err := model.ImportCollection(args[0])
-	if err != nil {
-		return err
-	}
-
-	subtrahend, err := model.ImportCollection(args[1])
-	if err != nil {
-		return err
-	}
-
+func executeSubtract(args []string) {
+	minuend := model.ImportCollection(args[0])
+	subtrahend := model.ImportCollection(args[1])
 	result := minuend.Subtract(subtrahend).RemoveQuantityZero()
 
 	if jsonFile == "" {
 		jsonFile = options.FileNameFromArgs(args, "_subtracted_parts.json")
 	}
 
-	return model.ExportToJSON(jsonFile, result)
+	model.ExportToJSON(jsonFile, result)
 }

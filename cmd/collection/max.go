@@ -16,19 +16,15 @@ var maxCmd = &cobra.Command{
 	DisableFlagsInUseLine: true,
 
 	Args: cobra.MinimumNArgs(2),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return executeMax(args)
+	Run: func(cmd *cobra.Command, args []string) {
+		executeMax(args)
 	},
 }
 
-func executeMax(args []string) error {
+func executeMax(args []string) {
 	var collections []model.Collection
 	for _, filename := range args {
-		collection, err := model.ImportCollection(filename)
-		if err != nil {
-			return err
-		}
-		collections = append(collections, *collection)
+		collections = append(collections, *model.ImportCollection(filename))
 	}
 
 	max := model.Collection{}
@@ -40,5 +36,5 @@ func executeMax(args []string) error {
 		jsonFile = options.FileNameFromArgs(args, "_max_partss.json")
 	}
 
-	return model.ExportToJSON(jsonFile, max)
+	model.ExportToJSON(jsonFile, max)
 }

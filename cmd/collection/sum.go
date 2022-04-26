@@ -18,19 +18,15 @@ merging identical parts to single lots.`,
 	DisableFlagsInUseLine: true,
 
 	Args: cobra.MinimumNArgs(2),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return executeSum(args)
+	Run: func(cmd *cobra.Command, args []string) {
+		executeSum(args)
 	},
 }
 
-func executeSum(args []string) error {
+func executeSum(args []string) {
 	var collections []model.Collection
 	for _, filename := range args {
-		collection, err := model.ImportCollection(filename)
-		if err != nil {
-			return err
-		}
-		collections = append(collections, *collection)
+		collections = append(collections, *model.ImportCollection(filename))
 	}
 
 	sum := model.Collection{}
@@ -42,5 +38,5 @@ func executeSum(args []string) error {
 		jsonFile = options.FileNameFromArgs(args, "_parts.json")
 	}
 
-	return model.ExportToJSON(jsonFile, sum)
+	model.ExportToJSON(jsonFile, sum)
 }

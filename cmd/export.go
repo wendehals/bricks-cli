@@ -26,13 +26,13 @@ var (
 
 		Args: cobra.ExactArgs(1),
 
-		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		PreRunE: func(cmd *cobra.Command, args []string) error {
 			var err error
 			credentials, err = api.ImportCredentials(credentialsFile)
 			return err
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			return executeExport(args)
+		Run: func(cmd *cobra.Command, args []string) {
+			executeExport(args)
 		},
 	}
 )
@@ -44,30 +44,19 @@ func init() {
 		"", options.HTML_OUTPUT_USAGE)
 }
 
-func executeExport(args []string) error {
-	collection, err := model.ImportCollection(args[0])
-	if err != nil {
-		return err
-	}
+func executeExport(args []string) {
+	collection := model.ImportCollection(args[0])
 
 	client := http.Client{
 		Timeout: time.Second * 5,
 	}
 
 	bricksAPI := api.NewBricksAPI(&client, credentials.APIKey)
-	err = bricksAPI.ReplaceImagesByMatchingColor(collection)
-	if err != nil {
-		return err
-	}
+	bricksAPI.ReplaceImagesByMatchingColor(collection)
 
 	if htmlFile == "" {
 		htmlFile = options.FileNameFromArgs(args, ".html")
 	}
 
-	err = collection.ExportToHTML(htmlFile)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	collection.ExportToHTML(htmlFile)
 }

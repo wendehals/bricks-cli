@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"embed"
 	"encoding/json"
-	"fmt"
 	"html/template"
 	"io/ioutil"
 	"log"
@@ -33,26 +32,26 @@ const (
 var fs embed.FS
 
 // ImportCollection reads a collection from a JSON encoded file.
-func ImportCollection(fileName string) (*Collection, error) {
+func ImportCollection(fileName string) *Collection {
 	collection := &Collection{}
 
 	jsonFile, err := os.Open(fileName)
 	if err != nil {
-		return nil, err
+		log.Fatalf(err.Error())
 	}
 	defer jsonFile.Close()
 
 	data, err := ioutil.ReadAll(jsonFile)
 	if err != nil {
-		return nil, err
+		log.Fatalf(err.Error())
 	}
 
 	err = json.Unmarshal(data, collection)
 	if err != nil {
-		return nil, err
+		log.Fatalf(err.Error())
 	}
 
-	return collection, nil
+	return collection
 }
 
 // Sort the Parts of a collection by their Part Number
@@ -198,7 +197,7 @@ func (c *Collection) RemoveQuantityZero() *Collection {
 }
 
 // ExportToHTML writes an HTML file with all parts of the collection.
-func (c *Collection) ExportToHTML(fileName string) error {
+func (c *Collection) ExportToHTML(fileName string) {
 	t := template.New("parts")
 	t.Funcs(template.FuncMap{
 		"abs": func(i int) int {
@@ -211,17 +210,17 @@ func (c *Collection) ExportToHTML(fileName string) error {
 
 	b, err := fs.ReadFile("resources/parts_html.gotpl")
 	if err != nil {
-		return fmt.Errorf(EXPORT_FAILED_MSG, fileName, err.Error())
+		log.Fatalf(EXPORT_FAILED_MSG, fileName, err.Error())
 	}
 
 	t, err = t.Parse(string(b))
 	if err != nil {
-		return fmt.Errorf(EXPORT_FAILED_MSG, fileName, err.Error())
+		log.Fatalf(EXPORT_FAILED_MSG, fileName, err.Error())
 	}
 
 	file, err := os.Create(fileName)
 	if err != nil {
-		return fmt.Errorf(EXPORT_FAILED_MSG, fileName, err.Error())
+		log.Fatalf(EXPORT_FAILED_MSG, fileName, err.Error())
 	}
 	defer file.Close()
 
@@ -229,14 +228,12 @@ func (c *Collection) ExportToHTML(fileName string) error {
 
 	err = t.Execute(writer, c)
 	if err != nil {
-		return fmt.Errorf(EXPORT_FAILED_MSG, fileName, err.Error())
+		log.Fatalf(EXPORT_FAILED_MSG, fileName, err.Error())
 	}
 
 	writer.Flush()
 
 	log.Printf("Exported result to '%s'\n", fileName)
-
-	return nil
 }
 
 func (c *Collection) mapPartsByPartNumber(partsMap map[string][]PartEntry, keyMapping func(string) string) map[string][]PartEntry {

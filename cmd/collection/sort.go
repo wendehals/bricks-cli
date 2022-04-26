@@ -16,16 +16,13 @@ var sortCmd = &cobra.Command{
 	DisableFlagsInUseLine: true,
 
 	Args: cobra.ExactArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return executeSort(args)
+	Run: func(cmd *cobra.Command, args []string) {
+		executeSort(args)
 	},
 }
 
-func executeSort(args []string) error {
-	collection, err := model.ImportCollection(args[0])
-	if err != nil {
-		return err
-	}
+func executeSort(args []string) {
+	collection := model.ImportCollection(args[0])
 
 	if jsonFile == "" {
 		jsonFile = options.FileNameFromArgs(args, "_sorted_parts.json")
@@ -33,5 +30,5 @@ func executeSort(args []string) error {
 
 	sorted := collection.Sort()
 
-	return model.ExportToJSON(jsonFile, sorted)
+	model.ExportToJSON(jsonFile, sorted)
 }

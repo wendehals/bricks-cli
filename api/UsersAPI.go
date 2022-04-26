@@ -242,9 +242,11 @@ func (u *UsersAPI) GetPartListParts(listId uint) *model.Collection {
 }
 
 // GetLostParts returns all parts owned by the user provided by /api/v3/users/{user_token}/lost_parts/
-func (u *UsersAPI) GetLostParts() *model.LostParts {
-	lostParts := model.LostParts{}
+func (u *UsersAPI) GetLostParts() *model.Collection {
+	lostParts := model.Collection{}
 	lostParts.User = u.userName
+	lostParts.IDs = []string{}
+	lostParts.Names = append(lostParts.Names, "Lost parts")
 
 	lostPartsPage := lostPartsPageResult{}
 
@@ -253,7 +255,7 @@ func (u *UsersAPI) GetLostParts() *model.LostParts {
 		log.Fatalf(GET_LOST_PARTS_ERR_MSG, err.Error())
 	}
 
-	lostParts.LostParts = append(lostParts.LostParts, lostPartsPage.Results...)
+	lostParts.Parts = append(lostParts.Parts, lostPartsPage.convertToPartEntries()...)
 	for len(lostPartsPage.Next) > 0 {
 		url := lostPartsPage.Next
 		lostPartsPage = lostPartsPageResult{}
@@ -262,7 +264,7 @@ func (u *UsersAPI) GetLostParts() *model.LostParts {
 			log.Fatalf(GET_LOST_PARTS_ERR_MSG, err.Error())
 		}
 
-		lostParts.LostParts = append(lostParts.LostParts, lostPartsPage.Results...)
+		lostParts.Parts = append(lostParts.Parts, lostPartsPage.convertToPartEntries()...)
 	}
 
 	return &lostParts

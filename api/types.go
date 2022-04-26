@@ -37,8 +37,35 @@ type partColorsPageResult struct {
 	Results []model.PartColor `json:"results"`
 }
 
+type invPart struct {
+	Part    model.PartType  `json:"part"`
+	Color   model.ColorType `json:"color"`
+	SetNum  string          `json:"set_num"`
+	IsSpare bool            `json:"is_spare"`
+}
+
+type lostPart struct {
+	ID       uint    `json:"lost_part_id"`
+	Quantity int     `json:"lost_quantity"`
+	InvPart  invPart `json:"inv_part"`
+}
+
 // lostPartsPageResult contains the result of /api/v3/users/{user_token}/lost_parts/
 type lostPartsPageResult struct {
-	Next    string           `json:"next"`
-	Results []model.LostPart `json:"results"`
+	Next    string     `json:"next"`
+	Results []lostPart `json:"results"`
+}
+
+func (l *lostPartsPageResult) convertToPartEntries() []model.PartEntry {
+	partEntries := make([]model.PartEntry, len(l.Results))
+	for i := range l.Results {
+		partEntry := model.PartEntry{}
+		partEntry.Quantity = l.Results[i].Quantity
+		partEntry.Part = l.Results[i].InvPart.Part
+		partEntry.Color = l.Results[i].InvPart.Color
+		partEntry.IsSpare = l.Results[i].InvPart.IsSpare
+		partEntries[i] = partEntry
+	}
+
+	return partEntries
 }

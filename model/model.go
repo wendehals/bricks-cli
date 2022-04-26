@@ -128,22 +128,3 @@ type PartColor struct {
 	ColorId  uint   `json:"color_id"`
 	ImageURL string `json:"part_img_url"`
 }
-
-type InvPart struct {
-	Part     PartType  `json:"part"`
-	Color    ColorType `json:"color"`
-	SetNum   string    `json:"set_num"`
-	Quantity uint      `json:"quantity"`
-	IsSpare  bool      `json:"is_spare"`
-}
-
-type LostPart struct {
-	ID       uint    `json:"lost_part_id"`
-	Quantity uint    `json:"lost_quantity"`
-	InvPart  InvPart `json:"inv_part"`
-}
-
-type LostParts struct {
-	User      string     `json:"user"`
-	LostParts []LostPart `json:"lost_parts"`
-}

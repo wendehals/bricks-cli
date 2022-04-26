@@ -15,7 +15,7 @@ of all parts of a certain set or user specific part collections.
 
 bricks is also able to merge, sort, add, or subtract collections of parts
 to new collections.`,
-	Version: "0.3.0",
+	Version: "0.3.1",
 
 	CompletionOptions: cobra.CompletionOptions{
 		DisableDefaultCmd: true},

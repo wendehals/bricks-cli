@@ -12,10 +12,7 @@ import (
 )
 
 var (
-	credentialsFile string
-	htmlFile        string
-
-	credentials *api.Credentials
+	htmlFile string
 
 	exportCmd = &cobra.Command{
 		Use:   fmt.Sprintf("export %s [-o HTML_FILE] JSON_FILE", options.CREDENTIALS_ARG),

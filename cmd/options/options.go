@@ -12,7 +12,7 @@ const (
 	CREDENTIALS_ARG   = "[-" + CREDENTIALS_SOPT + " CREDENTIAL_FILE]"
 	CREDENTIALS_USAGE = "A JSON file containing the Rebrickable credentials"
 
-	JSON_OUTPUT_OPT   = "json"
+	JSON_OUTPUT_OPT   = "output"
 	JSON_OUTPUT_SOPT  = "o"
 	JSON_OUTPUT_ARG   = "[-" + JSON_OUTPUT_SOPT + " JSON_FILE]"
 	JSON_OUTPUT_USAGE = "A name for the JSON output file"

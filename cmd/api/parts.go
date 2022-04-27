@@ -138,7 +138,7 @@ func executeAllParts() {
 }
 
 func executeSetParts() {
-	collection := retrieveSetParts(createBricksAPI(), setNum)
+	collection := RetrieveSetParts(createBricksAPI(), setNum)
 
 	if jsonFile == "" {
 		jsonFile = options.ReplaceIllegalCharsFromFileName(setNum) + PARTS_FILE_SUFFIX
@@ -155,7 +155,7 @@ func executeSetListParts() {
 	bricksAPI := createBricksAPI()
 	collections := make([]model.Collection, len(userSets.Sets))
 	for i := range userSets.Sets {
-		collection := retrieveSetParts(bricksAPI, userSets.Sets[i].Set.SetNum)
+		collection := RetrieveSetParts(bricksAPI, userSets.Sets[i].Set.SetNum)
 		collections[i] = *collection
 	}
 
@@ -211,7 +211,7 @@ func executeLostParts() {
 	model.ExportToJSON(jsonFile, lostParts)
 }
 
-func retrieveSetParts(bricksAPI *api.BricksAPI, setNum string) *model.Collection {
+func RetrieveSetParts(bricksAPI *api.BricksAPI, setNum string) *model.Collection {
 	log.Printf("Retrieving parts of set %s\n", setNum)
 
 	set := bricksAPI.GetSet(setNum)

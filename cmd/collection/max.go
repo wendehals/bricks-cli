@@ -33,7 +33,7 @@ func executeMax(args []string) {
 	}
 
 	if jsonFile == "" {
-		jsonFile = options.FileNameFromArgs(args, "_max_partss.json")
+		jsonFile = options.FileNameFromArgs(args, "_max_parts.json")
 	}
 
 	model.ExportToJSON(jsonFile, max)

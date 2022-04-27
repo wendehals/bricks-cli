@@ -16,6 +16,10 @@ const (
 	PART_LISTS_ARG   = "--" + PART_LISTS_OPT + " PART_LISTS_FILE"
 	PART_LISTS_USAGE = "A JSON file containing the user's part lists."
 
+	LOST_OPT   = "lost"
+	LOST_ARG   = "--" + LOST_OPT
+	LOST_USAGE = "Get a list of the user's lost parts"
+
 	INC_NON_BUILDABLE_OPT   = "includeNonBuildable"
 	INC_NON_BUILDABLE_SOPT  = "i"
 	INC_NON_BUILDABLE_ARG   = "[-" + INC_NON_BUILDABLE_SOPT + "]"
@@ -31,13 +35,14 @@ const (
 
 var (
 	partListsFile       string
+	lost                bool
 	includeNonBuildable bool
 	mergeParts          bool
 
 	partsCmd = &cobra.Command{
-		Use: fmt.Sprintf("parts %s %s {%s | %s | %s | %s | %s} %s %s",
+		Use: fmt.Sprintf("parts %s %s {%s | %s | %s | %s | %s | %s} %s %s",
 			options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG,
-			ALL_ARG, SET_NUM_ARG, SET_LIST_ID_ARG, PART_LIST_ID_ARG, PART_LISTS_ARG,
+			ALL_ARG, SET_NUM_ARG, SET_LIST_ID_ARG, PART_LIST_ID_ARG, PART_LISTS_ARG, LOST_ARG,
 			INC_NON_BUILDABLE_ARG, MERGE_PARTS_ARG),
 		Short: "Get a list of parts",
 		Long: `The parts command returns a list of parts.
@@ -46,8 +51,9 @@ This list contains either all parts
 - owned by a user,
 - of a set,
 - of a user set list,
-- of a part list, or
-- of a list of part lists.`,
+- of a part list,
+- of a list of part lists, or
+- that are lost by the user.`,
 
 		DisableFlagsInUseLine: true,
 
@@ -68,6 +74,8 @@ func init() {
 
 	partsCmd.Flags().UintVarP(&partListId, PART_LIST_ID_OPT, PART_LIST_ID_SOPT, 0, PART_LIST_ID_USAGE)
 	partsCmd.Flags().StringVarP(&partListsFile, PART_LISTS_OPT, "", "", PART_LISTS_USAGE)
+
+	partsCmd.Flags().BoolVarP(&lost, LOST_OPT, "", false, LOST_USAGE)
 
 	partsCmd.Flags().BoolVarP(&includeNonBuildable, INC_NON_BUILDABLE_OPT, INC_NON_BUILDABLE_SOPT, false, INC_NON_BUILDABLE_USAGE)
 	partsCmd.Flags().BoolVarP(&mergeParts, MERGE_PARTS_OPT, MERGE_PARTS_SOPT, false, MERGE_PARTS_USAGE)
@@ -90,10 +98,13 @@ func checkOptionsParts() error {
 	if partListsFile != "" {
 		optionsProvided++
 	}
+	if lost {
+		optionsProvided++
+	}
 
 	if optionsProvided < 1 || optionsProvided > 1 {
-		return fmt.Errorf("please provide exactly one option of -%s, -%s, -%s, -%s, or --%s",
-			ALL_SOPT, SET_NUM_SOPT, SET_LIST_ID_SOPT, PART_LIST_ID_SOPT, PART_LISTS_OPT)
+		return fmt.Errorf("please provide exactly one option of %s, %s, %s, %s, %s, or %s",
+			ALL_ARG, SET_NUM_ARG, SET_LIST_ID_ARG, PART_LIST_ID_ARG, PART_LISTS_ARG, LOST_ARG)
 	}
 
 	return nil
@@ -102,22 +113,16 @@ func checkOptionsParts() error {
 func executeParts() {
 	if all {
 		executeAllParts()
-	}
-
-	if setNum != "" {
+	} else if setNum != "" {
 		executeSetParts()
-	}
-
-	if setListId != 0 {
+	} else if setListId != 0 {
 		executeSetListParts()
-	}
-
-	if partListId != 0 {
+	} else if partListId != 0 {
 		executePartListParts()
-	}
-
-	if partListsFile != "" {
+	} else if partListsFile != "" {
 		executePartListsParts()
+	} else if lost {
+		executeLostParts()
 	}
 }
 
@@ -126,7 +131,7 @@ func executeAllParts() {
 	collection := createUsersAPI().GetAllParts()
 
 	if jsonFile == "" {
-		jsonFile = options.ReplaceIllegalCharsFromFileName(credentials.UserName) + PARTS_FILE_SUFFIX
+		jsonFile = options.ReplaceIllegalCharsFromFileName(credentials.UserName) + "_all" + PARTS_FILE_SUFFIX
 	}
 
 	model.ExportToJSON(jsonFile, collection)
@@ -194,6 +199,16 @@ func executePartListsParts() {
 	} else {
 		exportAll(collections)
 	}
+}
+
+func executeLostParts() {
+	lostParts := createUsersAPI().GetLostParts()
+
+	if jsonFile == "" {
+		jsonFile = options.ReplaceIllegalCharsFromFileName(credentials.UserName) + "_lost" + PARTS_FILE_SUFFIX
+	}
+
+	model.ExportToJSON(jsonFile, lostParts)
 }
 
 func retrieveSetParts(bricksAPI *api.BricksAPI, setNum string) *model.Collection {

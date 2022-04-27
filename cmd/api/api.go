@@ -60,7 +60,6 @@ func init() {
 	ApiCmd.AddCommand(listsCmd)
 	ApiCmd.AddCommand(setsCmd)
 	ApiCmd.AddCommand(partsCmd)
-	ApiCmd.AddCommand(lostPartsCmd)
 
 	ApiCmd.PersistentFlags().StringVarP(&credentialsFile, options.CREDENTIALS_OPT, options.CREDENTIALS_SOPT, "credentials.json",
 		options.CREDENTIALS_USAGE)

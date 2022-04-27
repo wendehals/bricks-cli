@@ -53,11 +53,9 @@ func checkOptionsDetails() error {
 func executeDetails() {
 	if setNum != "" {
 		executeSetDetails()
-	}
-	if setListId != 0 {
+	} else if setListId != 0 {
 		executeSetListDetails()
-	}
-	if partListId != 0 {
+	} else if partListId != 0 {
 		executePartListDetails()
 	}
 }

@@ -36,7 +36,6 @@
     Available Commands:
     details     Get details about a certain set, set list, or part list
     lists       Get the user's set or part lists
-    lostParts   Get all lost parts of the user
     parts       Get a list of parts
     sets        Get details about sets owned by the user
 

@@ -55,8 +55,7 @@ func checkOptionsLists() error {
 func executeLists() {
 	if sets {
 		executeSetLists()
-	}
-	if parts {
+	} else if parts {
 		executePartLists()
 	}
 }

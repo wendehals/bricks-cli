@@ -39,8 +39,7 @@ func checkOptionsSets() error {
 func executeSets() {
 	if all {
 		executeAllSets()
-	}
-	if setListId != 0 {
+	} else if setListId != 0 {
 		executeSetListSets()
 	}
 }

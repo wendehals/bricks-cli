@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/api"
@@ -34,6 +35,8 @@ func init() {
 }
 
 func executeScript(args []string) {
-	bricksScript := scripting.NewBricksScript(credentials, args[0])
+	log.Printf("Executing script '%s'\n", args[0])
+
+	bricksScript := scripting.NewBricksScript(credentials, args[0], options.Verbose)
 	bricksScript.Execute()
 }

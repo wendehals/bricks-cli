@@ -2,7 +2,6 @@ package api
 
 import (
 	"fmt"
-	"log"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -127,50 +126,37 @@ func executeParts() {
 }
 
 func executeAllParts() {
-	log.Printf("Retrieving all parts owned by user %s\n", credentials.UserName)
-	collection := createUsersAPI().GetAllParts()
+	allParts := createUsersAPI().GetAllParts()
 
 	if jsonFile == "" {
 		jsonFile = options.ReplaceIllegalCharsFromFileName(credentials.UserName) + "_all" + PARTS_FILE_SUFFIX
 	}
 
-	model.ExportToJSON(jsonFile, collection)
+	model.ExportToJSON(jsonFile, allParts)
 }
 
 func executeSetParts() {
-	collection := RetrieveSetParts(createBricksAPI(), setNum)
+	setParts := api.RetrieveSetParts(createBricksAPI(), setNum)
 
 	if jsonFile == "" {
 		jsonFile = options.ReplaceIllegalCharsFromFileName(setNum) + PARTS_FILE_SUFFIX
 	}
 
-	model.ExportToJSON(jsonFile, collection)
+	model.ExportToJSON(jsonFile, setParts)
 }
 
 func executeSetListParts() {
-	log.Printf("Retrieving parts of all sets from the set list %d\n", setListId)
-
-	userSets := createUsersAPI().GetSetListSets(setListId)
-
-	bricksAPI := createBricksAPI()
-	collections := make([]model.Collection, len(userSets.Sets))
-	for i := range userSets.Sets {
-		collection := RetrieveSetParts(bricksAPI, userSets.Sets[i].Set.SetNum)
-		collections[i] = *collection
-	}
+	setListParts := api.RetrieveSetListParts(createBricksAPI(), createUsersAPI(), setListId)
 
 	if mergeParts {
-		mergeAndExport(collections)
+		mergeAndExport(setListParts)
 	} else {
-		exportAll(collections)
+		exportAll(setListParts)
 	}
 }
 
 func executePartListParts() {
-	log.Printf("Retrieving parts of part list %d\n", partListId)
-	usersAPI := createUsersAPI()
-
-	partListParts := usersAPI.GetPartListParts(partListId)
+	partListParts := createUsersAPI().GetPartListParts(partListId)
 
 	if jsonFile == "" {
 		jsonFile = fmt.Sprint(partListId) + PARTS_FILE_SUFFIX
@@ -180,24 +166,12 @@ func executePartListParts() {
 }
 
 func executePartListsParts() {
-	log.Printf("Retrieving parts of all part lists from the part lists file %s\n", partListsFile)
-	usersAPI := createUsersAPI()
-
-	partLists := model.ImportPartLists(partListsFile)
-
-	var collections []model.Collection
-	for i := range partLists.PartLists {
-		if partLists.PartLists[i].IsBuildable || (includeNonBuildable && !partLists.PartLists[i].IsBuildable) {
-			partListParts := usersAPI.GetPartListParts(partLists.PartLists[i].ID)
-
-			collections = append(collections, *partListParts)
-		}
-	}
+	partListsParts := api.RetrievePartListParts(createUsersAPI(), partListsFile, includeNonBuildable)
 
 	if mergeParts {
-		mergeAndExport(collections)
+		mergeAndExport(partListsParts)
 	} else {
-		exportAll(collections)
+		exportAll(partListsParts)
 	}
 }
 
@@ -211,27 +185,8 @@ func executeLostParts() {
 	model.ExportToJSON(jsonFile, lostParts)
 }
 
-func RetrieveSetParts(bricksAPI *api.BricksAPI, setNum string) *model.Collection {
-	log.Printf("Retrieving parts of set %s\n", setNum)
-
-	set := bricksAPI.GetSet(setNum)
-
-	collection := bricksAPI.GetSetParts(setNum, true)
-	collection.IDs = append(collection.IDs, set.SetNum)
-	collection.Names = append(collection.Names, set.Name)
-
-	return collection
-}
-
-func mergeAndExport(collections []model.Collection) {
-	log.Println("Merging parts")
-
-	collection := model.Collection{}
-	for i := range collections {
-		collection.Add(&collections[i])
-		collection.IDs = append(collection.IDs, collection.IDs...)
-		collection.Names = append(collection.Names, collection.Names...)
-	}
+func mergeAndExport(collections []*model.Collection) {
+	collection := model.MergeAllCollections(collections)
 
 	if jsonFile == "" {
 		var b strings.Builder
@@ -246,15 +201,15 @@ func mergeAndExport(collections []model.Collection) {
 	model.ExportToJSON(jsonFile, collection)
 }
 
-func exportAll(collections []model.Collection) {
-	for i := range collections {
+func exportAll(collections []*model.Collection) {
+	for i, collection := range collections {
 		var fileName string
 		if jsonFile == "" {
-			fileName = collections[i].IDs[0] + PARTS_FILE_SUFFIX
+			fileName = collection.IDs[0] + PARTS_FILE_SUFFIX
 		} else {
 			fileName = fmt.Sprintf("%02d_%s", i+1, jsonFile)
 		}
 
-		model.ExportToJSON(fileName, collections[i])
+		model.ExportToJSON(fileName, collection)
 	}
 }

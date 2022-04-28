@@ -23,6 +23,10 @@ const (
 	HTML_OUTPUT_USAGE = "A name for the HTML output file"
 )
 
+var (
+	Verbose bool
+)
+
 func FileNameFromArgs(args []string, suffix string) string {
 	var builder strings.Builder
 

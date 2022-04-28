@@ -5,7 +5,6 @@ import (
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"github.com/wendehals/bricks/api"
-	cmdapi "github.com/wendehals/bricks/cmd/api"
 	"github.com/wendehals/bricks/model"
 	"github.com/wendehals/bricks/scripting/parser"
 )
@@ -51,14 +50,20 @@ func (b *bricksTreeListener) ExitLost(ctx *parser.LostContext) {
 
 func (b *bricksTreeListener) ExitSet(ctx *parser.SetContext) {
 	setNum := b.stack.pop().(string)
-	collection := cmdapi.RetrieveSetParts(b.bricksAPI, setNum)
-	b.stack.push(collection)
+	setParts := api.RetrieveSetParts(b.bricksAPI, setNum)
+	b.stack.push(setParts)
 }
 
 func (b *bricksTreeListener) ExitSetList(ctx *parser.SetListContext) {
+	setListId := b.stack.pop().(uint)
+	setListParts := api.RetrieveSetListParts(b.bricksAPI, b.usersAPI, setListId)
+	b.stack.push(model.MergeAllCollections(setListParts))
 }
 
 func (b *bricksTreeListener) ExitPartList(ctx *parser.PartListContext) {
+	partListId := b.stack.pop().(uint)
+	partListParts := b.usersAPI.GetPartListParts(partListId)
+	b.stack.push(partListParts)
 }
 
 func (b *bricksTreeListener) EnterSum(ctx *parser.SumContext) {
@@ -99,7 +104,7 @@ func (b *bricksTreeListener) EnterMax(ctx *parser.MaxContext) {
 }
 
 func (b *bricksTreeListener) ExitMax(ctx *parser.MaxContext) {
-	collection1 := b.stack.pop().(*model.Collection)
+	max := b.stack.pop().(*model.Collection)
 
 	end := false
 	for !end {
@@ -112,12 +117,12 @@ func (b *bricksTreeListener) ExitMax(ctx *parser.MaxContext) {
 				log.Fatalf("unexpected element on stack: %v", v)
 			}
 		case *model.Collection:
-			collection2 := element.(*model.Collection)
-			collection1.Max(collection2)
+			collection := element.(*model.Collection)
+			max.Max(collection)
 		}
 	}
 
-	b.stack.push(collection1)
+	b.stack.push(max)
 }
 
 func (b *bricksTreeListener) ExitMergeByColor(ctx *parser.MergeByColorContext) {

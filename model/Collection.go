@@ -92,9 +92,9 @@ func (c *Collection) Subtract(other *Collection) *Collection {
 	c.recalculateQuantity(other, subtract)
 
 	newParts := []PartEntry{}
-	for i := range c.Parts {
-		if c.Parts[i].Quantity != 0 {
-			newParts = append(newParts, c.Parts[i])
+	for _, partEntry := range c.Parts {
+		if partEntry.Quantity != 0 {
+			newParts = append(newParts, partEntry)
 		}
 	}
 	c.Parts = newParts
@@ -160,15 +160,15 @@ func (c *Collection) MergeByVariant() *Collection {
 // CountParts sums up the quantity of all parts of a collection.
 func (c *Collection) CountParts() int {
 	var partsCounter int
-	for i := range c.Parts {
-		partsCounter += c.Parts[i].Quantity
+	for _, partEntry := range c.Parts {
+		partsCounter += partEntry.Quantity
 	}
 	return partsCounter
 }
 
 func (c *Collection) HasNegativePartQuantity() bool {
-	for i := range c.Parts {
-		if c.Parts[i].Quantity < 0 {
+	for _, partEntry := range c.Parts {
+		if partEntry.Quantity < 0 {
 			return true
 		}
 	}
@@ -180,9 +180,9 @@ func (c *Collection) HasNegativePartQuantity() bool {
 func (c *Collection) filter(f func(PartEntry) bool) *Collection {
 	filteredParts := []PartEntry{}
 
-	for i := range c.Parts {
-		if f(c.Parts[i]) {
-			filteredParts = append(filteredParts, c.Parts[i])
+	for _, partEntry := range c.Parts {
+		if f(partEntry) {
+			filteredParts = append(filteredParts, partEntry)
 		}
 	}
 
@@ -241,31 +241,30 @@ func (c *Collection) mapPartsByPartNumber(partsMap map[string][]PartEntry, keyMa
 		partsMap = make(map[string][]PartEntry)
 	}
 
-	for i := range c.Parts {
-		currentPart := c.Parts[i]
-		currentPart.IsSpare = false
+	for _, partEntry := range c.Parts {
+		partEntry.IsSpare = false
 
-		key := keyMapping(currentPart.Part.Number)
+		key := keyMapping(partEntry.Part.Number)
 
-		value, exists := partsMap[key]
+		mappedPartEntries, exists := partsMap[key]
 		if !exists {
-			value = []PartEntry{}
+			mappedPartEntries = []PartEntry{}
 		}
 
 		found := false
-		for j := range value {
-			if cmp.Equal(value[j].Color, currentPart.Color) {
-				value[j].Quantity += currentPart.Quantity
+		for _, mappedPartEntry := range mappedPartEntries {
+			if cmp.Equal(mappedPartEntry.Color, partEntry.Color) {
+				mappedPartEntry.Quantity += partEntry.Quantity
 				found = true
 				break
 			}
 		}
 
 		if !found {
-			value = append(value, currentPart)
+			mappedPartEntries = append(mappedPartEntries, partEntry)
 		}
 
-		partsMap[key] = value
+		partsMap[key] = mappedPartEntries
 	}
 
 	return partsMap
@@ -287,15 +286,14 @@ func (c *Collection) recalculateQuantity(other *Collection, recalc func(int, int
 	partsMap := c.mapPartsByPartNumber(nil, identity)
 
 	missingParts := []PartEntry{}
-	for i := range other.Parts {
+	for _, currentPartEntry := range other.Parts {
 		found := false
-		currentPart := other.Parts[i]
 
-		values, exists := partsMap[currentPart.Part.Number]
+		mappedPartEntries, exists := partsMap[currentPartEntry.Part.Number]
 		if exists {
-			for j := range values {
-				if cmp.Equal(values[j].Color, currentPart.Color) {
-					values[j].Quantity = recalc(values[j].Quantity, currentPart.Quantity)
+			for _, mappedPartEntry := range mappedPartEntries {
+				if cmp.Equal(mappedPartEntry.Color, currentPartEntry.Color) {
+					mappedPartEntry.Quantity = recalc(mappedPartEntry.Quantity, currentPartEntry.Quantity)
 					found = true
 					break
 				}
@@ -303,9 +301,9 @@ func (c *Collection) recalculateQuantity(other *Collection, recalc func(int, int
 		}
 
 		if !found {
-			currentPart.Quantity = recalc(0, currentPart.Quantity)
-			currentPart.IsSpare = false
-			missingParts = append(missingParts, currentPart)
+			currentPartEntry.Quantity = recalc(0, currentPartEntry.Quantity)
+			currentPartEntry.IsSpare = false
+			missingParts = append(missingParts, currentPartEntry)
 		}
 	}
 
@@ -313,6 +311,19 @@ func (c *Collection) recalculateQuantity(other *Collection, recalc func(int, int
 	c.Parts = append(c.Parts, missingParts...)
 
 	return c
+}
+
+func MergeAllCollections(collections []*Collection) *Collection {
+	log.Println("Merging parts of collections")
+
+	collection := &Collection{}
+	for _, collection := range collections {
+		collection.Add(collection)
+		collection.IDs = append(collection.IDs, collection.IDs...)
+		collection.Names = append(collection.Names, collection.Names...)
+	}
+
+	return collection
 }
 
 func identity(k string) string {
@@ -359,8 +370,8 @@ func loadVariants() map[string]string {
 	}
 
 	var variantsMapping = make(map[string]string)
-	for i := range v.Variants {
-		variantsMapping[v.Variants[i].Original] = v.Variants[i].Substitute
+	for _, variant := range v.Variants {
+		variantsMapping[variant.Original] = variant.Substitute
 	}
 
 	return variantsMapping

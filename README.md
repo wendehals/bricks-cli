@@ -19,9 +19,11 @@
     collection  Groups all commands for working with part collections.
     export      Exports the JSON input as HTML.
     help        Help about any command
+    script      Executes a bricks script
 
     Flags:
     -h, --help      help for bricks
+        --verbose   Verbose output
     -v, --version   version for bricks
 
     Use "bricks [command] --help" for more information about a command.
@@ -42,7 +44,10 @@
     Flags:
     -c, --credentials string   A JSON file containing the Rebrickable credentials (default "credentials.json")
     -h, --help                 help for api
-    -o, --json string          A name for the JSON output file
+    -o, --output string        A name for the JSON output file
+
+    Global Flags:
+        --verbose   Verbose output
 
     Use "bricks api [command] --help" for more information about a command.
 
@@ -55,14 +60,17 @@
 
     Available Commands:
     max         Calculates the maximum quantity of each part of at least two collections.
-    merge       Merges the parts of a collection by their color or by their variant.
+    merge       Merges the parts of a collection by their color or by their variant.     
     sort        Sorts the parts of a collection by their number.
     subtract    Subtracts one collection of parts from another.
     sum         Sums up the parts of multiple collections.
 
     Flags:
-    -h, --help          help for collection
-    -o, --json string   A name for the JSON output file
+    -h, --help            help for collection
+    -o, --output string   A name for the JSON output file
+
+    Global Flags:
+        --verbose   Verbose output
 
     Use "bricks collection [command] --help" for more information about a command.
 
@@ -75,3 +83,27 @@ The content of the `credentials.json` file looks like:
         "password": "<rebrickable password>",
         "api_key": "<rebrickable api key>"
     }
+
+## Scripting
+
+The bricks-cli supports executing scripts contained in *.bricks files. The scripts are made up of expressions describing part collections. Have a look at the following example:
+
+    sort(subtract(allParts, set(8880-1)))
+
+The script above first retrieves all parts owned by the user and subtracts those parts contained in set 8880-1. After that it sorts the parts. The overall result of the expression is saved into a JSON file.
+
+### Expressions
+
+These expressions are available in the bricks scripts:
+
+* `allParts` - All parts owned by the user
+* `lost` - All parts lost by the user
+* `set(SET_NUM)` - All parts of set number SET_NUM (e.g. 8880-1)
+* `setList(LIST_ID)` - All parts contained in the set list LIST_ID (a number)
+* `partList(LIST_ID)` - All parts contained in the part list LIST_ID (a number)
+* `sum(EXP, EXP, ...)` - Calculate the sum of all parts in the expression's results
+* `subtract(EXP, EXP)` - Subtract all parts in the second expression's result from the parts in the first expression's result
+* `max(EXP, EXP, ...)` - Calculate the maximum of all parts in the expression's results
+* `mergeByColor(EXP)` - Merge all parts in the expression's result by ignoring their color
+* `mergeByVariant(EXP)` - Merge all parts in the expression's result by replacing parts by their variants
+* `sort(EXP)` - Sort parts in the expression's result

@@ -17,14 +17,16 @@ type BricksScript struct {
 	client    *http.Client
 	bricksAPI *api.BricksAPI
 	usersAPI  *api.UsersAPI
+	verbose   bool
 }
 
-func NewBricksScript(credentials *api.Credentials, scriptPath string) *BricksScript {
-	bricksScript := &BricksScript{}
-	bricksScript.scriptPath = scriptPath
-	bricksScript.credentials = credentials
+func NewBricksScript(credentials *api.Credentials, scriptPath string, verbose bool) *BricksScript {
+	b := &BricksScript{}
+	b.scriptPath = scriptPath
+	b.credentials = credentials
+	b.verbose = verbose
 
-	return bricksScript
+	return b
 }
 
 func (b *BricksScript) Execute() {
@@ -55,14 +57,14 @@ func (b *BricksScript) getClient() *http.Client {
 
 func (b *BricksScript) getBricksAPI() *api.BricksAPI {
 	if b.bricksAPI == nil {
-		b.bricksAPI = api.NewBricksAPI(b.getClient(), b.credentials.APIKey)
+		b.bricksAPI = api.NewBricksAPI(b.getClient(), b.credentials.APIKey, b.verbose)
 	}
 	return b.bricksAPI
 }
 
 func (b *BricksScript) getUsersAPI() *api.UsersAPI {
 	if b.usersAPI == nil {
-		b.usersAPI = api.NewUsersAPI(b.getClient(), b.credentials)
+		b.usersAPI = api.NewUsersAPI(b.getClient(), b.credentials, b.verbose)
 	}
 	return b.usersAPI
 }

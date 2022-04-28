@@ -21,16 +21,19 @@ type BricksAPI struct {
 }
 
 // NewBricksAPI creates a new object of BricksAPI
-func NewBricksAPI(client *http.Client, apiKey string) *BricksAPI {
+func NewBricksAPI(client *http.Client, apiKey string, verbose bool) *BricksAPI {
 	bricks := BricksAPI{}
 	bricks.client = client
 	bricks.apiKey = apiKey
+	bricks.verbose = verbose
 
 	return &bricks
 }
 
 // GetSet returns the result of /api/v3/lego/sets/{set_num}/
 func (b *BricksAPI) GetSet(setNum string) *model.SetType {
+	log.Printf("Retrieving details about set %s\n", setNum)
+
 	set := model.SetType{}
 
 	subPath := fmt.Sprintf("sets/%s/", setNum)
@@ -46,6 +49,8 @@ func (b *BricksAPI) GetSet(setNum string) *model.SetType {
 
 // GetSetParts returns the result of /api/v3/lego/sets/{set_num}/parts/
 func (b *BricksAPI) GetSetParts(setNum string, includeMiniFigs bool) *model.Collection {
+	log.Printf("Retrieving parts of set %s\n", setNum)
+
 	collection := model.Collection{}
 
 	subPath := fmt.Sprintf("sets/%s/parts/", setNum)
@@ -104,13 +109,12 @@ func (b *BricksAPI) GetPartColors(partNum string) []model.PartColor {
 }
 
 func (b *BricksAPI) ReplaceImagesByMatchingColor(collection *model.Collection) {
-	for i := range collection.Parts {
-		partEntry := collection.Parts[i]
+	for _, partEntry := range collection.Parts {
 		partColors := b.GetPartColors(partEntry.Part.Number)
 
-		for j := range partColors {
-			if partColors[j].ColorId == partEntry.Color.ID {
-				collection.Parts[i].Part.ImageURL = partColors[j].ImageURL
+		for _, color := range partColors {
+			if color.ColorId == partEntry.Color.ID {
+				partEntry.Part.ImageURL = color.ImageURL
 				break
 			}
 		}

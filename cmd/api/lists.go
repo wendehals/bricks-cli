@@ -2,7 +2,6 @@ package api
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/cmd/options"
@@ -61,7 +60,6 @@ func executeLists() {
 }
 
 func executeSetLists() {
-	log.Printf("Retrieving set lists of user %s\n", credentials.UserName)
 	setLists := createUsersAPI().GetSetLists()
 
 	if jsonFile == "" {
@@ -73,7 +71,6 @@ func executeSetLists() {
 }
 
 func executePartLists() {
-	log.Printf("Retrieving part lists of user %s\n", credentials.UserName)
 	partLists := createUsersAPI().GetPartLists()
 
 	if jsonFile == "" {

@@ -73,9 +73,9 @@ func createClient() *http.Client {
 }
 
 func createBricksAPI() *api.BricksAPI {
-	return api.NewBricksAPI(createClient(), credentials.APIKey)
+	return api.NewBricksAPI(createClient(), credentials.APIKey, options.Verbose)
 }
 
 func createUsersAPI() *api.UsersAPI {
-	return api.NewUsersAPI(createClient(), credentials)
+	return api.NewUsersAPI(createClient(), credentials, options.Verbose)
 }

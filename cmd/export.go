@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -42,18 +43,20 @@ func init() {
 }
 
 func executeExport(args []string) {
+	if htmlFile == "" {
+		htmlFile = options.FileNameFromArgs(args, ".html")
+	}
+
+	log.Printf("Exporting '%s' to HTML file '%s'", args[0], htmlFile)
+
 	collection := model.ImportCollection(args[0])
 
 	client := http.Client{
 		Timeout: time.Second * 5,
 	}
 
-	bricksAPI := api.NewBricksAPI(&client, credentials.APIKey)
+	bricksAPI := api.NewBricksAPI(&client, credentials.APIKey, options.Verbose)
 	bricksAPI.ReplaceImagesByMatchingColor(collection)
-
-	if htmlFile == "" {
-		htmlFile = options.FileNameFromArgs(args, ".html")
-	}
 
 	collection.ExportToHTML(htmlFile)
 }

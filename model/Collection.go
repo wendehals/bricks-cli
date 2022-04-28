@@ -241,30 +241,31 @@ func (c *Collection) mapPartsByPartNumber(partsMap map[string][]PartEntry, keyMa
 		partsMap = make(map[string][]PartEntry)
 	}
 
-	for _, partEntry := range c.Parts {
-		partEntry.IsSpare = false
+	for i := range c.Parts {
+		currentPart := c.Parts[i]
+		currentPart.IsSpare = false
 
-		key := keyMapping(partEntry.Part.Number)
+		key := keyMapping(currentPart.Part.Number)
 
-		mappedPartEntries, exists := partsMap[key]
+		value, exists := partsMap[key]
 		if !exists {
-			mappedPartEntries = []PartEntry{}
+			value = []PartEntry{}
 		}
 
 		found := false
-		for _, mappedPartEntry := range mappedPartEntries {
-			if cmp.Equal(mappedPartEntry.Color, partEntry.Color) {
-				mappedPartEntry.Quantity += partEntry.Quantity
+		for j := range value {
+			if cmp.Equal(value[j].Color, currentPart.Color) {
+				value[j].Quantity += currentPart.Quantity
 				found = true
 				break
 			}
 		}
 
 		if !found {
-			mappedPartEntries = append(mappedPartEntries, partEntry)
+			value = append(value, currentPart)
 		}
 
-		partsMap[key] = mappedPartEntries
+		partsMap[key] = value
 	}
 
 	return partsMap
@@ -286,14 +287,15 @@ func (c *Collection) recalculateQuantity(other *Collection, recalc func(int, int
 	partsMap := c.mapPartsByPartNumber(nil, identity)
 
 	missingParts := []PartEntry{}
-	for _, currentPartEntry := range other.Parts {
+	for i := range other.Parts {
 		found := false
+		currentPart := other.Parts[i]
 
-		mappedPartEntries, exists := partsMap[currentPartEntry.Part.Number]
+		values, exists := partsMap[currentPart.Part.Number]
 		if exists {
-			for _, mappedPartEntry := range mappedPartEntries {
-				if cmp.Equal(mappedPartEntry.Color, currentPartEntry.Color) {
-					mappedPartEntry.Quantity = recalc(mappedPartEntry.Quantity, currentPartEntry.Quantity)
+			for j := range values {
+				if cmp.Equal(values[j].Color, currentPart.Color) {
+					values[j].Quantity = recalc(values[j].Quantity, currentPart.Quantity)
 					found = true
 					break
 				}
@@ -301,9 +303,9 @@ func (c *Collection) recalculateQuantity(other *Collection, recalc func(int, int
 		}
 
 		if !found {
-			currentPartEntry.Quantity = recalc(0, currentPartEntry.Quantity)
-			currentPartEntry.IsSpare = false
-			missingParts = append(missingParts, currentPartEntry)
+			currentPart.Quantity = recalc(0, currentPart.Quantity)
+			currentPart.IsSpare = false
+			missingParts = append(missingParts, currentPart)
 		}
 	}
 

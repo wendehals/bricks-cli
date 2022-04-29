@@ -36,5 +36,5 @@ func executeMax(args []string) {
 		jsonFile = options.FileNameFromArgs(args, "_max_parts.json")
 	}
 
-	model.ExportToJSON(jsonFile, max)
+	max.Save(jsonFile)
 }

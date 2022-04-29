@@ -31,10 +31,10 @@ func NewBricksAPI(client *http.Client, apiKey string, verbose bool) *BricksAPI {
 }
 
 // GetSet returns the result of /api/v3/lego/sets/{set_num}/
-func (b *BricksAPI) GetSet(setNum string) *model.SetType {
+func (b *BricksAPI) GetSet(setNum string) *model.Set {
 	log.Printf("Retrieving details about set %s\n", setNum)
 
-	set := model.SetType{}
+	set := model.Set{}
 
 	subPath := fmt.Sprintf("sets/%s/", setNum)
 	url := fmt.Sprintf(BRICKS_URL, subPath)

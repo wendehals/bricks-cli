@@ -7,9 +7,16 @@ import (
 	"os"
 )
 
-// Export writes a struct into a JSON encoded file.
-func ExportToJSON(fileName string, v interface{}) {
-	data, err := json.MarshalIndent(v, "", " ")
+type saveable interface {
+	Save(fileName string)
+}
+
+type abstractSaveable struct{}
+
+var _ saveable = &abstractSaveable{}
+
+func (t *abstractSaveable) Save(fileName string) {
+	data, err := json.MarshalIndent(t, "", " ")
 	if err != nil {
 		log.Fatalf("serializing to JSON failed: %s", err.Error())
 	}
@@ -20,4 +27,5 @@ func ExportToJSON(fileName string, v interface{}) {
 	}
 
 	log.Printf("Exported JSON file to '%s'\n", fileName)
+
 }

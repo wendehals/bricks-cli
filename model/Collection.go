@@ -15,8 +15,9 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-// Collection represents any collection of Lego parts (set, parts list, ...)
+// Collection represents any collection of parts (set, parts list, ...)
 type Collection struct {
+	*abstractSaveable
 	User  string      `json:"user"`
 	IDs   []string    `json:"ids"`
 	Names []string    `json:"names"`
@@ -123,7 +124,7 @@ func (c *Collection) MergeByColor() *Collection {
 	newParts := []PartEntry{}
 	for _, value := range partsMap {
 		var currentPart = value[0]
-		currentPart.Color = ColorType{}
+		currentPart.Color = Color{}
 
 		for i := 1; i < len(value); i++ {
 			currentPart.Quantity += value[i].Quantity
@@ -233,7 +234,7 @@ func (c *Collection) ExportToHTML(fileName string) {
 
 	writer.Flush()
 
-	log.Printf("Exported result to '%s'\n", fileName)
+	log.Printf("Exported result to '%s'\n", file.Name())
 }
 
 func (c *Collection) mapPartsByPartNumber(partsMap map[string][]PartEntry, keyMapping func(string) string) map[string][]PartEntry {

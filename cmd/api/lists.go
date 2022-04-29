@@ -5,7 +5,6 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/cmd/options"
-	"github.com/wendehals/bricks/model"
 )
 
 const (
@@ -67,7 +66,7 @@ func executeSetLists() {
 			options.ReplaceIllegalCharsFromFileName(credentials.UserName))
 	}
 
-	model.ExportToJSON(jsonFile, setLists)
+	setLists.Save(jsonFile)
 }
 
 func executePartLists() {
@@ -78,5 +77,5 @@ func executePartLists() {
 			options.ReplaceIllegalCharsFromFileName(credentials.UserName))
 	}
 
-	model.ExportToJSON(jsonFile, partLists)
+	partLists.Save(jsonFile)
 }

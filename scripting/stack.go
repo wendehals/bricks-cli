@@ -2,21 +2,23 @@ package scripting
 
 import (
 	"log"
+
+	"github.com/wendehals/bricks/model"
 )
 
-type scriptStack struct {
-	elements []interface{}
+type stack struct {
+	elements []*model.Collection
 }
 
-func newScriptStack() *scriptStack {
-	return &scriptStack{}
+func newStack() *stack {
+	return &stack{}
 }
 
-func (s *scriptStack) push(data interface{}) {
-	s.elements = append(s.elements, data)
+func (s *stack) push(collection *model.Collection) {
+	s.elements = append(s.elements, collection)
 }
 
-func (s *scriptStack) pop() interface{} {
+func (s *stack) pop() *model.Collection {
 	top := len(s.elements) - 1
 	if top < 0 {
 		log.Fatalf("pop: no more elements on stack")

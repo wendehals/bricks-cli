@@ -36,5 +36,5 @@ func executeSubtract(args []string) {
 		jsonFile = options.FileNameFromArgs(args, "_subtracted_parts.json")
 	}
 
-	model.ExportToJSON(jsonFile, result)
+	result.Save(jsonFile)
 }

@@ -27,11 +27,47 @@ func (s *BaseBricksListener) EnterBricks(ctx *BricksContext) {}
 // ExitBricks is called when production bricks is exited.
 func (s *BaseBricksListener) ExitBricks(ctx *BricksContext) {}
 
+// EnterCommand is called when production command is entered.
+func (s *BaseBricksListener) EnterCommand(ctx *CommandContext) {}
+
+// ExitCommand is called when production command is exited.
+func (s *BaseBricksListener) ExitCommand(ctx *CommandContext) {}
+
+// EnterAssignment is called when production assignment is entered.
+func (s *BaseBricksListener) EnterAssignment(ctx *AssignmentContext) {}
+
+// ExitAssignment is called when production assignment is exited.
+func (s *BaseBricksListener) ExitAssignment(ctx *AssignmentContext) {}
+
+// EnterSave is called when production save is entered.
+func (s *BaseBricksListener) EnterSave(ctx *SaveContext) {}
+
+// ExitSave is called when production save is exited.
+func (s *BaseBricksListener) ExitSave(ctx *SaveContext) {}
+
+// EnterExport is called when production export is entered.
+func (s *BaseBricksListener) EnterExport(ctx *ExportContext) {}
+
+// ExitExport is called when production export is exited.
+func (s *BaseBricksListener) ExitExport(ctx *ExportContext) {}
+
 // EnterExp is called when production exp is entered.
 func (s *BaseBricksListener) EnterExp(ctx *ExpContext) {}
 
 // ExitExp is called when production exp is exited.
 func (s *BaseBricksListener) ExitExp(ctx *ExpContext) {}
+
+// EnterIdentifier is called when production identifier is entered.
+func (s *BaseBricksListener) EnterIdentifier(ctx *IdentifierContext) {}
+
+// ExitIdentifier is called when production identifier is exited.
+func (s *BaseBricksListener) ExitIdentifier(ctx *IdentifierContext) {}
+
+// EnterLoad is called when production load is entered.
+func (s *BaseBricksListener) EnterLoad(ctx *LoadContext) {}
+
+// ExitLoad is called when production load is exited.
+func (s *BaseBricksListener) ExitLoad(ctx *LoadContext) {}
 
 // EnterAllParts is called when production allParts is entered.
 func (s *BaseBricksListener) EnterAllParts(ctx *AllPartsContext) {}
@@ -62,6 +98,12 @@ func (s *BaseBricksListener) EnterPartList(ctx *PartListContext) {}
 
 // ExitPartList is called when production partList is exited.
 func (s *BaseBricksListener) ExitPartList(ctx *PartListContext) {}
+
+// EnterPartLists is called when production partLists is entered.
+func (s *BaseBricksListener) EnterPartLists(ctx *PartListsContext) {}
+
+// ExitPartLists is called when production partLists is exited.
+func (s *BaseBricksListener) ExitPartLists(ctx *PartListsContext) {}
 
 // EnterSum is called when production sum is entered.
 func (s *BaseBricksListener) EnterSum(ctx *SumContext) {}

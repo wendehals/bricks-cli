@@ -11,8 +11,26 @@ type BricksListener interface {
 	// EnterBricks is called when entering the bricks production.
 	EnterBricks(c *BricksContext)
 
+	// EnterCommand is called when entering the command production.
+	EnterCommand(c *CommandContext)
+
+	// EnterAssignment is called when entering the assignment production.
+	EnterAssignment(c *AssignmentContext)
+
+	// EnterSave is called when entering the save production.
+	EnterSave(c *SaveContext)
+
+	// EnterExport is called when entering the export production.
+	EnterExport(c *ExportContext)
+
 	// EnterExp is called when entering the exp production.
 	EnterExp(c *ExpContext)
+
+	// EnterIdentifier is called when entering the identifier production.
+	EnterIdentifier(c *IdentifierContext)
+
+	// EnterLoad is called when entering the load production.
+	EnterLoad(c *LoadContext)
 
 	// EnterAllParts is called when entering the allParts production.
 	EnterAllParts(c *AllPartsContext)
@@ -28,6 +46,9 @@ type BricksListener interface {
 
 	// EnterPartList is called when entering the partList production.
 	EnterPartList(c *PartListContext)
+
+	// EnterPartLists is called when entering the partLists production.
+	EnterPartLists(c *PartListsContext)
 
 	// EnterSum is called when entering the sum production.
 	EnterSum(c *SumContext)
@@ -50,8 +71,26 @@ type BricksListener interface {
 	// ExitBricks is called when exiting the bricks production.
 	ExitBricks(c *BricksContext)
 
+	// ExitCommand is called when exiting the command production.
+	ExitCommand(c *CommandContext)
+
+	// ExitAssignment is called when exiting the assignment production.
+	ExitAssignment(c *AssignmentContext)
+
+	// ExitSave is called when exiting the save production.
+	ExitSave(c *SaveContext)
+
+	// ExitExport is called when exiting the export production.
+	ExitExport(c *ExportContext)
+
 	// ExitExp is called when exiting the exp production.
 	ExitExp(c *ExpContext)
+
+	// ExitIdentifier is called when exiting the identifier production.
+	ExitIdentifier(c *IdentifierContext)
+
+	// ExitLoad is called when exiting the load production.
+	ExitLoad(c *LoadContext)
 
 	// ExitAllParts is called when exiting the allParts production.
 	ExitAllParts(c *AllPartsContext)
@@ -67,6 +106,9 @@ type BricksListener interface {
 
 	// ExitPartList is called when exiting the partList production.
 	ExitPartList(c *PartListContext)
+
+	// ExitPartLists is called when exiting the partLists production.
+	ExitPartLists(c *PartListsContext)
 
 	// ExitSum is called when exiting the sum production.
 	ExitSum(c *SumContext)

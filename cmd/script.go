@@ -11,9 +11,9 @@ import (
 )
 
 var scriptCmd = &cobra.Command{
-	Use:   fmt.Sprintf("script %s", options.CREDENTIALS_ARG),
+	Use:   fmt.Sprintf("script %s SCRIPT_FILE", options.CREDENTIALS_ARG),
 	Short: "Executes a bricks script",
-	Long:  "The script command exxecutes a bricks script.",
+	Long:  "The script command executes a bricks script.",
 
 	DisableFlagsInUseLine: true,
 

@@ -132,7 +132,7 @@ func executeAllParts() {
 		jsonFile = options.ReplaceIllegalCharsFromFileName(credentials.UserName) + "_all" + PARTS_FILE_SUFFIX
 	}
 
-	model.ExportToJSON(jsonFile, allParts)
+	allParts.Save(jsonFile)
 }
 
 func executeSetParts() {
@@ -142,7 +142,7 @@ func executeSetParts() {
 		jsonFile = options.ReplaceIllegalCharsFromFileName(setNum) + PARTS_FILE_SUFFIX
 	}
 
-	model.ExportToJSON(jsonFile, setParts)
+	setParts.Save(jsonFile)
 }
 
 func executeSetListParts() {
@@ -162,7 +162,7 @@ func executePartListParts() {
 		jsonFile = fmt.Sprint(partListId) + PARTS_FILE_SUFFIX
 	}
 
-	model.ExportToJSON(jsonFile, partListParts)
+	partListParts.Save(jsonFile)
 }
 
 func executePartListsParts() {
@@ -182,7 +182,7 @@ func executeLostParts() {
 		jsonFile = options.ReplaceIllegalCharsFromFileName(credentials.UserName) + "_lost" + PARTS_FILE_SUFFIX
 	}
 
-	model.ExportToJSON(jsonFile, lostParts)
+	lostParts.Save(jsonFile)
 }
 
 func mergeAndExport(collections []*model.Collection) {
@@ -198,7 +198,7 @@ func mergeAndExport(collections []*model.Collection) {
 		jsonFile = b.String()
 	}
 
-	model.ExportToJSON(jsonFile, collection)
+	collection.Save(jsonFile)
 }
 
 func exportAll(collections []*model.Collection) {
@@ -210,6 +210,6 @@ func exportAll(collections []*model.Collection) {
 			fileName = fmt.Sprintf("%02d_%s", i+1, jsonFile)
 		}
 
-		model.ExportToJSON(fileName, collection)
+		collection.Save(fileName)
 	}
 }

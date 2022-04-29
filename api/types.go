@@ -38,10 +38,10 @@ type partColorsPageResult struct {
 }
 
 type invPart struct {
-	Part    model.PartType  `json:"part"`
-	Color   model.ColorType `json:"color"`
-	SetNum  string          `json:"set_num"`
-	IsSpare bool            `json:"is_spare"`
+	Part    model.Part  `json:"part"`
+	Color   model.Color `json:"color"`
+	SetNum  string      `json:"set_num"`
+	IsSpare bool        `json:"is_spare"`
 }
 
 type lostPart struct {

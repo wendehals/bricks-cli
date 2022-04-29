@@ -5,7 +5,6 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/cmd/options"
-	"github.com/wendehals/bricks/model"
 )
 
 var detailsCmd = &cobra.Command{
@@ -67,7 +66,7 @@ func executeSetDetails() {
 		jsonFile = fmt.Sprintf("%s_set.json", setNum)
 	}
 
-	model.ExportToJSON(jsonFile, set)
+	set.Save(jsonFile)
 }
 
 func executeSetListDetails() {
@@ -77,7 +76,7 @@ func executeSetListDetails() {
 		jsonFile = fmt.Sprintf("%d_setList.json", setListId)
 	}
 
-	model.ExportToJSON(jsonFile, setList)
+	setList.Save(jsonFile)
 }
 
 func executePartListDetails() {
@@ -87,5 +86,5 @@ func executePartListDetails() {
 		jsonFile = fmt.Sprintf("%d_partList.json", partListId)
 	}
 
-	model.ExportToJSON(jsonFile, partList)
+	partList.Save(jsonFile)
 }

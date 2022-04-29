@@ -42,8 +42,8 @@ func (b *BricksScript) Execute() {
 	parser.AddErrorListener(antlr.NewDiagnosticErrorListener(true))
 	parser.BuildParseTrees = true
 
-	treeListener := newBricksTreeListener(b.getUsersAPI(), b.getBricksAPI())
-	antlr.ParseTreeWalkerDefault.Walk(treeListener, parser.Bricks())
+	interpreter := newBricksInterpreter(b.getUsersAPI(), b.getBricksAPI())
+	antlr.ParseTreeWalkerDefault.Walk(interpreter, parser.Bricks())
 }
 
 func (b *BricksScript) getClient() *http.Client {

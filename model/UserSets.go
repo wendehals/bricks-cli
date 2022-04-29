@@ -9,8 +9,6 @@ import (
 
 // UserSets represents all the user's sets
 type UserSets struct {
-	*abstractSaveable
-
 	User string    `json:"user"`
 	ID   uint      `json:"set_list_id"`
 	Name string    `json:"set_list_name"`

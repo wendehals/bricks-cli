@@ -5,6 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/cmd/options"
+	"github.com/wendehals/bricks/model"
 )
 
 var setsCmd = &cobra.Command{
@@ -51,7 +52,7 @@ func executeAllSets() {
 			options.ReplaceIllegalCharsFromFileName(credentials.UserName))
 	}
 
-	sets.Save(jsonFile)
+	model.Save(sets, jsonFile)
 }
 
 func executeSetListSets() {
@@ -64,5 +65,5 @@ func executeSetListSets() {
 		jsonFile = fmt.Sprintf("%d_sets.json", setListId)
 	}
 
-	sets.Save(jsonFile)
+	model.Save(sets, jsonFile)
 }

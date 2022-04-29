@@ -2,8 +2,6 @@ package model
 
 // Set represents a Lego set.
 type Set struct {
-	*abstractSaveable
-
 	SetNum      string `json:"set_num"`
 	Name        string `json:"name"`
 	Year        uint   `json:"year"`

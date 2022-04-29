@@ -7,16 +7,8 @@ import (
 	"os"
 )
 
-type saveable interface {
-	Save(fileName string)
-}
-
-type abstractSaveable struct{}
-
-var _ saveable = &abstractSaveable{}
-
-func (t *abstractSaveable) Save(fileName string) {
-	data, err := json.MarshalIndent(t, "", " ")
+func Save(v interface{}, fileName string) {
+	data, err := json.MarshalIndent(v, "", " ")
 	if err != nil {
 		log.Fatalf("serializing to JSON failed: %s", err.Error())
 	}
@@ -26,6 +18,5 @@ func (t *abstractSaveable) Save(fileName string) {
 		log.Fatalf("exporting collection to JSON file '%s' failed: %s", fileName, err.Error())
 	}
 
-	log.Printf("Exported JSON file to '%s'\n", fileName)
-
+	log.Printf("Saved data to file '%s'\n", fileName)
 }

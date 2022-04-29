@@ -32,7 +32,7 @@ func NewBricksScript(credentials *api.Credentials, scriptPath string, verbose bo
 func (b *BricksScript) Execute() {
 	input, err := antlr.NewFileStream(b.scriptPath)
 	if err != nil {
-		log.Fatalf("opening file '%s' failed: %s", b.scriptPath, err.Error())
+		log.Fatalf("opening script from file '%s' failed: %s", b.scriptPath, err.Error())
 	}
 
 	lexer := parser.NewBricksLexer(input)

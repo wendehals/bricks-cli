@@ -1,7 +1,6 @@
 package scripting
 
 import (
-	"fmt"
 	"log"
 	"strconv"
 	"strings"
@@ -38,7 +37,7 @@ func (b *bricksInterpreter) ExitAssignment(ctx *parser.AssignmentContext) {
 func (b *bricksInterpreter) ExitSave(ctx *parser.SaveContext) {
 	collection := b.stack.pop()
 	filePath := strings.Trim(ctx.STRING().GetText(), "\"")
-	collection.Save(filePath)
+	model.Save(collection, filePath)
 }
 
 func (b *bricksInterpreter) ExitExport(ctx *parser.ExportContext) {
@@ -52,13 +51,13 @@ func (b *bricksInterpreter) ExitIdentifier(ctx *parser.IdentifierContext) {
 	if !ok {
 		log.Fatalf("The variable '%s' is not defined", ctx.ID().GetText())
 	}
-	b.stack.push(value)
+	b.stack.push(value.Clone())
 }
 
 func (b *bricksInterpreter) ExitLoad(ctx *parser.LoadContext) {
 	filePath := strings.Trim(ctx.STRING().GetText(), "\"")
 
-	fmt.Printf("Loading collection from '%s'", filePath)
+	log.Printf("Loading collection from '%s'", filePath)
 	b.stack.push(model.ImportCollection(filePath))
 }
 
@@ -103,6 +102,8 @@ func (b *bricksInterpreter) ExitPartLists(ctx *parser.PartListsContext) {
 }
 
 func (b *bricksInterpreter) ExitSum(ctx *parser.SumContext) {
+	log.Printf("Calculating sum")
+
 	sum := &model.Collection{}
 
 	for range ctx.AllExp() {
@@ -114,13 +115,17 @@ func (b *bricksInterpreter) ExitSum(ctx *parser.SumContext) {
 }
 
 func (b *bricksInterpreter) ExitSubtract(ctx *parser.SubtractContext) {
+	log.Printf("Calculating difference")
+
 	subtrahend := b.stack.pop()
 	minuend := b.stack.pop()
-	result := minuend.Subtract(subtrahend)
-	b.stack.push(result)
+	difference := minuend.Subtract(subtrahend)
+	b.stack.push(difference)
 }
 
 func (b *bricksInterpreter) ExitMax(ctx *parser.MaxContext) {
+	log.Printf("Calculating maximum")
+
 	max := &model.Collection{}
 
 	for range ctx.AllExp() {
@@ -132,18 +137,24 @@ func (b *bricksInterpreter) ExitMax(ctx *parser.MaxContext) {
 }
 
 func (b *bricksInterpreter) ExitMergeByColor(ctx *parser.MergeByColorContext) {
+	log.Printf("Merging parts of collection by their color")
+
 	collection := b.stack.pop()
 	collection.MergeByColor()
 	b.stack.push(collection)
 }
 
 func (b *bricksInterpreter) ExitMergeByVariant(ctx *parser.MergeByVariantContext) {
+	log.Printf("Merging parts of collection by their variants")
+
 	collection := b.stack.pop()
 	collection.MergeByVariant()
 	b.stack.push(collection)
 }
 
 func (b *bricksInterpreter) ExitSort(ctx *parser.SortContext) {
+	log.Printf("Sorting collection")
+
 	collection := b.stack.pop()
 	collection.Sort()
 	b.stack.push(collection)

@@ -28,5 +28,5 @@ func executeSort(args []string) {
 		jsonFile = options.FileNameFromArgs(args, "_sorted_parts.json")
 	}
 
-	collection.Sort().Save(jsonFile)
+	model.Save(collection.Sort(), jsonFile)
 }

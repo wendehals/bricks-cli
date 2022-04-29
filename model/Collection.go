@@ -17,7 +17,6 @@ import (
 
 // Collection represents any collection of parts (set, parts list, ...)
 type Collection struct {
-	*abstractSaveable
 	User  string      `json:"user"`
 	IDs   []string    `json:"ids"`
 	Names []string    `json:"names"`
@@ -25,7 +24,8 @@ type Collection struct {
 }
 
 const (
-	EXPORT_FAILED_MSG = "exporting collection to HTML file '%s' failed: %s"
+	EXPORT_FAILED_MSG  = "exporting collection to HTML file '%s' failed: %s"
+	CLONING_FAILED_MSG = "cloning collection failed: %s"
 )
 
 //go:embed resources/variants.json
@@ -235,6 +235,21 @@ func (c *Collection) ExportToHTML(fileName string) {
 	writer.Flush()
 
 	log.Printf("Exported result to '%s'\n", file.Name())
+}
+
+func (c *Collection) Clone() *Collection {
+	origJSON, err := json.Marshal(c)
+	if err != nil {
+		log.Fatalf(CLONING_FAILED_MSG, err.Error())
+	}
+
+	clone := &Collection{}
+	err = json.Unmarshal(origJSON, clone)
+	if err != nil {
+		log.Fatalf(CLONING_FAILED_MSG, err.Error())
+	}
+
+	return clone
 }
 
 func (c *Collection) mapPartsByPartNumber(partsMap map[string][]PartEntry, keyMapping func(string) string) map[string][]PartEntry {

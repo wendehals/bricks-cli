@@ -9,8 +9,6 @@ import (
 
 // PartLists represents all the user's part lists
 type PartLists struct {
-	*abstractSaveable
-
 	User      string     `json:"user"`
 	PartLists []PartList `json:"part_lists"`
 }

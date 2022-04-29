@@ -53,5 +53,5 @@ func executeMerge(args []string) {
 		jsonFile = options.FileNameFromArgs(args, "_merged_parts.json")
 	}
 
-	merged.Save(jsonFile)
+	model.Save(merged, jsonFile)
 }

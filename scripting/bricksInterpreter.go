@@ -72,7 +72,8 @@ func (b *bricksInterpreter) ExitLost(ctx *parser.LostContext) {
 }
 
 func (b *bricksInterpreter) ExitSet(ctx *parser.SetContext) {
-	setParts := api.RetrieveSetParts(b.bricksAPI, ctx.SET_NUM().GetText())
+	includeMiniFigs := ctx.BOOL() != nil && ctx.BOOL().GetText() == "true"
+	setParts := api.RetrieveSetParts(b.bricksAPI, ctx.SET_NUM().GetText(), includeMiniFigs)
 	b.stack.push(setParts)
 }
 
@@ -81,7 +82,8 @@ func (b *bricksInterpreter) ExitSetList(ctx *parser.SetListContext) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	setListParts := api.RetrieveSetListParts(b.bricksAPI, b.usersAPI, uint(setListId))
+	includeMiniFigs := ctx.BOOL() != nil && ctx.BOOL().GetText() == "true"
+	setListParts := api.RetrieveSetListParts(b.bricksAPI, b.usersAPI, uint(setListId), includeMiniFigs)
 	b.stack.push(model.MergeAllCollections(setListParts))
 }
 
@@ -96,7 +98,8 @@ func (b *bricksInterpreter) ExitPartList(ctx *parser.PartListContext) {
 
 func (b *bricksInterpreter) ExitPartLists(ctx *parser.PartListsContext) {
 	filePath := strings.Trim(ctx.STRING().GetText(), "\"")
-	collections := api.RetrievePartListParts(b.usersAPI, filePath, true)
+	includeNonBuildable := ctx.BOOL() != nil && ctx.BOOL().GetText() == "true"
+	collections := api.RetrievePartListParts(b.usersAPI, filePath, includeNonBuildable)
 	collection := model.MergeAllCollections(collections)
 	b.stack.push(collection)
 }

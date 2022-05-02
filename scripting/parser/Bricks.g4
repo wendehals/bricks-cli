@@ -11,7 +11,7 @@ save: 'save' '(' exp ',' STRING ')';
 export: 'export' '(' exp ',' STRING ')';
 
 
-exp: identifier | load | allParts | lost | set | setList | partList | sum | subtract | max | mergeByColor | mergeByVariant | sort;
+exp: identifier | load | allParts | lost | set | setList | partList | partLists | sum | subtract | max | mergeByColor | mergeByVariant | sort;
 
 identifier: ID;
 
@@ -21,13 +21,13 @@ allParts: 'allParts';
 
 lost: 'lost';
 
-set: 'set' '(' SET_NUM ')';
+set: 'set' '(' SET_NUM (',' BOOL)?')';
 
-setList: 'setList' '(' INT ')';
+setList: 'setList' '(' INT (',' BOOL)?')';
 
 partList: 'partList' '(' INT ')';
 
-partLists: 'partLists' '(' STRING ')';
+partLists: 'partLists' '(' STRING (',' BOOL)?')';
 
 sum: 'sum' '(' exp (',' exp)+ ')';
 
@@ -45,6 +45,8 @@ sort: 'sort' '(' exp ')';
 fragment DIGIT: [0–9];
 
 INT: DIGIT+;
+
+BOOL: 'true'|'false';
 
 STRING : '"' ( '\\"' | . )*? '"' ;
 

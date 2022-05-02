@@ -39,7 +39,7 @@ func bricksParserInit() {
 	}
 	staticData.symbolicNames = []string{
 		"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-		"", "", "", "INT", "STRING", "ID", "SET_NUM", "WS",
+		"", "", "", "INT", "BOOL", "STRING", "ID", "SET_NUM", "WS",
 	}
 	staticData.ruleNames = []string{
 		"bricks", "command", "assignment", "save", "export", "exp", "identifier",
@@ -48,68 +48,75 @@ func bricksParserInit() {
 	}
 	staticData.predictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 24, 159, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
+		4, 1, 25, 172, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2, 10, 7,
 		10, 2, 11, 7, 11, 2, 12, 7, 12, 2, 13, 7, 13, 2, 14, 7, 14, 2, 15, 7, 15,
 		2, 16, 7, 16, 2, 17, 7, 17, 2, 18, 7, 18, 2, 19, 7, 19, 1, 0, 4, 0, 42,
 		8, 0, 11, 0, 12, 0, 43, 1, 1, 1, 1, 1, 1, 3, 1, 49, 8, 1, 1, 2, 1, 2, 1,
 		2, 1, 2, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 4, 1, 4, 1, 4, 1,
 		4, 1, 4, 1, 4, 1, 4, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1,
-		5, 1, 5, 1, 5, 1, 5, 1, 5, 3, 5, 82, 8, 5, 1, 6, 1, 6, 1, 7, 1, 7, 1, 7,
-		1, 7, 1, 7, 1, 8, 1, 8, 1, 9, 1, 9, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10,
-		1, 11, 1, 11, 1, 11, 1, 11, 1, 11, 1, 12, 1, 12, 1, 12, 1, 12, 1, 12, 1,
-		13, 1, 13, 1, 13, 1, 13, 1, 13, 1, 14, 1, 14, 1, 14, 1, 14, 1, 14, 4, 14,
-		120, 8, 14, 11, 14, 12, 14, 121, 1, 14, 1, 14, 1, 15, 1, 15, 1, 15, 1,
-		15, 1, 15, 1, 15, 1, 15, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 4, 16, 138,
-		8, 16, 11, 16, 12, 16, 139, 1, 16, 1, 16, 1, 17, 1, 17, 1, 17, 1, 17, 1,
-		17, 1, 18, 1, 18, 1, 18, 1, 18, 1, 18, 1, 19, 1, 19, 1, 19, 1, 19, 1, 19,
-		1, 19, 0, 0, 20, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28,
-		30, 32, 34, 36, 38, 0, 0, 155, 0, 41, 1, 0, 0, 0, 2, 48, 1, 0, 0, 0, 4,
-		50, 1, 0, 0, 0, 6, 54, 1, 0, 0, 0, 8, 61, 1, 0, 0, 0, 10, 81, 1, 0, 0,
-		0, 12, 83, 1, 0, 0, 0, 14, 85, 1, 0, 0, 0, 16, 90, 1, 0, 0, 0, 18, 92,
-		1, 0, 0, 0, 20, 94, 1, 0, 0, 0, 22, 99, 1, 0, 0, 0, 24, 104, 1, 0, 0, 0,
-		26, 109, 1, 0, 0, 0, 28, 114, 1, 0, 0, 0, 30, 125, 1, 0, 0, 0, 32, 132,
-		1, 0, 0, 0, 34, 143, 1, 0, 0, 0, 36, 148, 1, 0, 0, 0, 38, 153, 1, 0, 0,
-		0, 40, 42, 3, 2, 1, 0, 41, 40, 1, 0, 0, 0, 42, 43, 1, 0, 0, 0, 43, 41,
-		1, 0, 0, 0, 43, 44, 1, 0, 0, 0, 44, 1, 1, 0, 0, 0, 45, 49, 3, 4, 2, 0,
-		46, 49, 3, 6, 3, 0, 47, 49, 3, 8, 4, 0, 48, 45, 1, 0, 0, 0, 48, 46, 1,
-		0, 0, 0, 48, 47, 1, 0, 0, 0, 49, 3, 1, 0, 0, 0, 50, 51, 5, 22, 0, 0, 51,
-		52, 5, 1, 0, 0, 52, 53, 3, 10, 5, 0, 53, 5, 1, 0, 0, 0, 54, 55, 5, 2, 0,
-		0, 55, 56, 5, 3, 0, 0, 56, 57, 3, 10, 5, 0, 57, 58, 5, 4, 0, 0, 58, 59,
-		5, 21, 0, 0, 59, 60, 5, 5, 0, 0, 60, 7, 1, 0, 0, 0, 61, 62, 5, 6, 0, 0,
-		62, 63, 5, 3, 0, 0, 63, 64, 3, 10, 5, 0, 64, 65, 5, 4, 0, 0, 65, 66, 5,
-		21, 0, 0, 66, 67, 5, 5, 0, 0, 67, 9, 1, 0, 0, 0, 68, 82, 3, 12, 6, 0, 69,
-		82, 3, 14, 7, 0, 70, 82, 3, 16, 8, 0, 71, 82, 3, 18, 9, 0, 72, 82, 3, 20,
-		10, 0, 73, 82, 3, 22, 11, 0, 74, 82, 3, 24, 12, 0, 75, 82, 3, 28, 14, 0,
-		76, 82, 3, 30, 15, 0, 77, 82, 3, 32, 16, 0, 78, 82, 3, 34, 17, 0, 79, 82,
-		3, 36, 18, 0, 80, 82, 3, 38, 19, 0, 81, 68, 1, 0, 0, 0, 81, 69, 1, 0, 0,
-		0, 81, 70, 1, 0, 0, 0, 81, 71, 1, 0, 0, 0, 81, 72, 1, 0, 0, 0, 81, 73,
-		1, 0, 0, 0, 81, 74, 1, 0, 0, 0, 81, 75, 1, 0, 0, 0, 81, 76, 1, 0, 0, 0,
-		81, 77, 1, 0, 0, 0, 81, 78, 1, 0, 0, 0, 81, 79, 1, 0, 0, 0, 81, 80, 1,
-		0, 0, 0, 82, 11, 1, 0, 0, 0, 83, 84, 5, 22, 0, 0, 84, 13, 1, 0, 0, 0, 85,
-		86, 5, 7, 0, 0, 86, 87, 5, 3, 0, 0, 87, 88, 5, 21, 0, 0, 88, 89, 5, 5,
-		0, 0, 89, 15, 1, 0, 0, 0, 90, 91, 5, 8, 0, 0, 91, 17, 1, 0, 0, 0, 92, 93,
-		5, 9, 0, 0, 93, 19, 1, 0, 0, 0, 94, 95, 5, 10, 0, 0, 95, 96, 5, 3, 0, 0,
-		96, 97, 5, 23, 0, 0, 97, 98, 5, 5, 0, 0, 98, 21, 1, 0, 0, 0, 99, 100, 5,
-		11, 0, 0, 100, 101, 5, 3, 0, 0, 101, 102, 5, 20, 0, 0, 102, 103, 5, 5,
-		0, 0, 103, 23, 1, 0, 0, 0, 104, 105, 5, 12, 0, 0, 105, 106, 5, 3, 0, 0,
-		106, 107, 5, 20, 0, 0, 107, 108, 5, 5, 0, 0, 108, 25, 1, 0, 0, 0, 109,
-		110, 5, 13, 0, 0, 110, 111, 5, 3, 0, 0, 111, 112, 5, 21, 0, 0, 112, 113,
-		5, 5, 0, 0, 113, 27, 1, 0, 0, 0, 114, 115, 5, 14, 0, 0, 115, 116, 5, 3,
-		0, 0, 116, 119, 3, 10, 5, 0, 117, 118, 5, 4, 0, 0, 118, 120, 3, 10, 5,
-		0, 119, 117, 1, 0, 0, 0, 120, 121, 1, 0, 0, 0, 121, 119, 1, 0, 0, 0, 121,
-		122, 1, 0, 0, 0, 122, 123, 1, 0, 0, 0, 123, 124, 5, 5, 0, 0, 124, 29, 1,
-		0, 0, 0, 125, 126, 5, 15, 0, 0, 126, 127, 5, 3, 0, 0, 127, 128, 3, 10,
-		5, 0, 128, 129, 5, 4, 0, 0, 129, 130, 3, 10, 5, 0, 130, 131, 5, 5, 0, 0,
-		131, 31, 1, 0, 0, 0, 132, 133, 5, 16, 0, 0, 133, 134, 5, 3, 0, 0, 134,
-		137, 3, 10, 5, 0, 135, 136, 5, 4, 0, 0, 136, 138, 3, 10, 5, 0, 137, 135,
-		1, 0, 0, 0, 138, 139, 1, 0, 0, 0, 139, 137, 1, 0, 0, 0, 139, 140, 1, 0,
-		0, 0, 140, 141, 1, 0, 0, 0, 141, 142, 5, 5, 0, 0, 142, 33, 1, 0, 0, 0,
-		143, 144, 5, 17, 0, 0, 144, 145, 5, 3, 0, 0, 145, 146, 3, 10, 5, 0, 146,
-		147, 5, 5, 0, 0, 147, 35, 1, 0, 0, 0, 148, 149, 5, 18, 0, 0, 149, 150,
-		5, 3, 0, 0, 150, 151, 3, 10, 5, 0, 151, 152, 5, 5, 0, 0, 152, 37, 1, 0,
-		0, 0, 153, 154, 5, 19, 0, 0, 154, 155, 5, 3, 0, 0, 155, 156, 3, 10, 5,
-		0, 156, 157, 5, 5, 0, 0, 157, 39, 1, 0, 0, 0, 5, 43, 48, 81, 121, 139,
+		5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 3, 5, 83, 8, 5, 1, 6, 1, 6, 1, 7, 1, 7,
+		1, 7, 1, 7, 1, 7, 1, 8, 1, 8, 1, 9, 1, 9, 1, 10, 1, 10, 1, 10, 1, 10, 1,
+		10, 3, 10, 101, 8, 10, 1, 10, 1, 10, 1, 11, 1, 11, 1, 11, 1, 11, 1, 11,
+		3, 11, 110, 8, 11, 1, 11, 1, 11, 1, 12, 1, 12, 1, 12, 1, 12, 1, 12, 1,
+		13, 1, 13, 1, 13, 1, 13, 1, 13, 3, 13, 124, 8, 13, 1, 13, 1, 13, 1, 14,
+		1, 14, 1, 14, 1, 14, 1, 14, 4, 14, 133, 8, 14, 11, 14, 12, 14, 134, 1,
+		14, 1, 14, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 16, 1, 16,
+		1, 16, 1, 16, 1, 16, 4, 16, 151, 8, 16, 11, 16, 12, 16, 152, 1, 16, 1,
+		16, 1, 17, 1, 17, 1, 17, 1, 17, 1, 17, 1, 18, 1, 18, 1, 18, 1, 18, 1, 18,
+		1, 19, 1, 19, 1, 19, 1, 19, 1, 19, 1, 19, 0, 0, 20, 0, 2, 4, 6, 8, 10,
+		12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 0, 0, 172, 0, 41,
+		1, 0, 0, 0, 2, 48, 1, 0, 0, 0, 4, 50, 1, 0, 0, 0, 6, 54, 1, 0, 0, 0, 8,
+		61, 1, 0, 0, 0, 10, 82, 1, 0, 0, 0, 12, 84, 1, 0, 0, 0, 14, 86, 1, 0, 0,
+		0, 16, 91, 1, 0, 0, 0, 18, 93, 1, 0, 0, 0, 20, 95, 1, 0, 0, 0, 22, 104,
+		1, 0, 0, 0, 24, 113, 1, 0, 0, 0, 26, 118, 1, 0, 0, 0, 28, 127, 1, 0, 0,
+		0, 30, 138, 1, 0, 0, 0, 32, 145, 1, 0, 0, 0, 34, 156, 1, 0, 0, 0, 36, 161,
+		1, 0, 0, 0, 38, 166, 1, 0, 0, 0, 40, 42, 3, 2, 1, 0, 41, 40, 1, 0, 0, 0,
+		42, 43, 1, 0, 0, 0, 43, 41, 1, 0, 0, 0, 43, 44, 1, 0, 0, 0, 44, 1, 1, 0,
+		0, 0, 45, 49, 3, 4, 2, 0, 46, 49, 3, 6, 3, 0, 47, 49, 3, 8, 4, 0, 48, 45,
+		1, 0, 0, 0, 48, 46, 1, 0, 0, 0, 48, 47, 1, 0, 0, 0, 49, 3, 1, 0, 0, 0,
+		50, 51, 5, 23, 0, 0, 51, 52, 5, 1, 0, 0, 52, 53, 3, 10, 5, 0, 53, 5, 1,
+		0, 0, 0, 54, 55, 5, 2, 0, 0, 55, 56, 5, 3, 0, 0, 56, 57, 3, 10, 5, 0, 57,
+		58, 5, 4, 0, 0, 58, 59, 5, 22, 0, 0, 59, 60, 5, 5, 0, 0, 60, 7, 1, 0, 0,
+		0, 61, 62, 5, 6, 0, 0, 62, 63, 5, 3, 0, 0, 63, 64, 3, 10, 5, 0, 64, 65,
+		5, 4, 0, 0, 65, 66, 5, 22, 0, 0, 66, 67, 5, 5, 0, 0, 67, 9, 1, 0, 0, 0,
+		68, 83, 3, 12, 6, 0, 69, 83, 3, 14, 7, 0, 70, 83, 3, 16, 8, 0, 71, 83,
+		3, 18, 9, 0, 72, 83, 3, 20, 10, 0, 73, 83, 3, 22, 11, 0, 74, 83, 3, 24,
+		12, 0, 75, 83, 3, 26, 13, 0, 76, 83, 3, 28, 14, 0, 77, 83, 3, 30, 15, 0,
+		78, 83, 3, 32, 16, 0, 79, 83, 3, 34, 17, 0, 80, 83, 3, 36, 18, 0, 81, 83,
+		3, 38, 19, 0, 82, 68, 1, 0, 0, 0, 82, 69, 1, 0, 0, 0, 82, 70, 1, 0, 0,
+		0, 82, 71, 1, 0, 0, 0, 82, 72, 1, 0, 0, 0, 82, 73, 1, 0, 0, 0, 82, 74,
+		1, 0, 0, 0, 82, 75, 1, 0, 0, 0, 82, 76, 1, 0, 0, 0, 82, 77, 1, 0, 0, 0,
+		82, 78, 1, 0, 0, 0, 82, 79, 1, 0, 0, 0, 82, 80, 1, 0, 0, 0, 82, 81, 1,
+		0, 0, 0, 83, 11, 1, 0, 0, 0, 84, 85, 5, 23, 0, 0, 85, 13, 1, 0, 0, 0, 86,
+		87, 5, 7, 0, 0, 87, 88, 5, 3, 0, 0, 88, 89, 5, 22, 0, 0, 89, 90, 5, 5,
+		0, 0, 90, 15, 1, 0, 0, 0, 91, 92, 5, 8, 0, 0, 92, 17, 1, 0, 0, 0, 93, 94,
+		5, 9, 0, 0, 94, 19, 1, 0, 0, 0, 95, 96, 5, 10, 0, 0, 96, 97, 5, 3, 0, 0,
+		97, 100, 5, 24, 0, 0, 98, 99, 5, 4, 0, 0, 99, 101, 5, 21, 0, 0, 100, 98,
+		1, 0, 0, 0, 100, 101, 1, 0, 0, 0, 101, 102, 1, 0, 0, 0, 102, 103, 5, 5,
+		0, 0, 103, 21, 1, 0, 0, 0, 104, 105, 5, 11, 0, 0, 105, 106, 5, 3, 0, 0,
+		106, 109, 5, 20, 0, 0, 107, 108, 5, 4, 0, 0, 108, 110, 5, 21, 0, 0, 109,
+		107, 1, 0, 0, 0, 109, 110, 1, 0, 0, 0, 110, 111, 1, 0, 0, 0, 111, 112,
+		5, 5, 0, 0, 112, 23, 1, 0, 0, 0, 113, 114, 5, 12, 0, 0, 114, 115, 5, 3,
+		0, 0, 115, 116, 5, 20, 0, 0, 116, 117, 5, 5, 0, 0, 117, 25, 1, 0, 0, 0,
+		118, 119, 5, 13, 0, 0, 119, 120, 5, 3, 0, 0, 120, 123, 5, 22, 0, 0, 121,
+		122, 5, 4, 0, 0, 122, 124, 5, 21, 0, 0, 123, 121, 1, 0, 0, 0, 123, 124,
+		1, 0, 0, 0, 124, 125, 1, 0, 0, 0, 125, 126, 5, 5, 0, 0, 126, 27, 1, 0,
+		0, 0, 127, 128, 5, 14, 0, 0, 128, 129, 5, 3, 0, 0, 129, 132, 3, 10, 5,
+		0, 130, 131, 5, 4, 0, 0, 131, 133, 3, 10, 5, 0, 132, 130, 1, 0, 0, 0, 133,
+		134, 1, 0, 0, 0, 134, 132, 1, 0, 0, 0, 134, 135, 1, 0, 0, 0, 135, 136,
+		1, 0, 0, 0, 136, 137, 5, 5, 0, 0, 137, 29, 1, 0, 0, 0, 138, 139, 5, 15,
+		0, 0, 139, 140, 5, 3, 0, 0, 140, 141, 3, 10, 5, 0, 141, 142, 5, 4, 0, 0,
+		142, 143, 3, 10, 5, 0, 143, 144, 5, 5, 0, 0, 144, 31, 1, 0, 0, 0, 145,
+		146, 5, 16, 0, 0, 146, 147, 5, 3, 0, 0, 147, 150, 3, 10, 5, 0, 148, 149,
+		5, 4, 0, 0, 149, 151, 3, 10, 5, 0, 150, 148, 1, 0, 0, 0, 151, 152, 1, 0,
+		0, 0, 152, 150, 1, 0, 0, 0, 152, 153, 1, 0, 0, 0, 153, 154, 1, 0, 0, 0,
+		154, 155, 5, 5, 0, 0, 155, 33, 1, 0, 0, 0, 156, 157, 5, 17, 0, 0, 157,
+		158, 5, 3, 0, 0, 158, 159, 3, 10, 5, 0, 159, 160, 5, 5, 0, 0, 160, 35,
+		1, 0, 0, 0, 161, 162, 5, 18, 0, 0, 162, 163, 5, 3, 0, 0, 163, 164, 3, 10,
+		5, 0, 164, 165, 5, 5, 0, 0, 165, 37, 1, 0, 0, 0, 166, 167, 5, 19, 0, 0,
+		167, 168, 5, 3, 0, 0, 168, 169, 3, 10, 5, 0, 169, 170, 5, 5, 0, 0, 170,
+		39, 1, 0, 0, 0, 8, 43, 48, 82, 100, 109, 123, 134, 152,
 	}
 	deserializer := antlr.NewATNDeserializer(nil)
 	staticData.atn = deserializer.Deserialize(staticData.serializedATN)
@@ -168,10 +175,11 @@ const (
 	BricksParserT__17   = 18
 	BricksParserT__18   = 19
 	BricksParserINT     = 20
-	BricksParserSTRING  = 21
-	BricksParserID      = 22
-	BricksParserSET_NUM = 23
-	BricksParserWS      = 24
+	BricksParserBOOL    = 21
+	BricksParserSTRING  = 22
+	BricksParserID      = 23
+	BricksParserSET_NUM = 24
+	BricksParserWS      = 25
 )
 
 // BricksParser rules.
@@ -1029,6 +1037,22 @@ func (s *ExpContext) PartList() IPartListContext {
 	return t.(IPartListContext)
 }
 
+func (s *ExpContext) PartLists() IPartListsContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IPartListsContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IPartListsContext)
+}
+
 func (s *ExpContext) Sum() ISumContext {
 	var t antlr.RuleContext
 	for _, ctx := range s.GetChildren() {
@@ -1168,7 +1192,7 @@ func (p *BricksParser) Exp() (localctx IExpContext) {
 		}
 	}()
 
-	p.SetState(81)
+	p.SetState(82)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
@@ -1221,45 +1245,52 @@ func (p *BricksParser) Exp() (localctx IExpContext) {
 			p.PartList()
 		}
 
-	case BricksParserT__13:
+	case BricksParserT__12:
 		p.EnterOuterAlt(localctx, 8)
 		{
 			p.SetState(75)
+			p.PartLists()
+		}
+
+	case BricksParserT__13:
+		p.EnterOuterAlt(localctx, 9)
+		{
+			p.SetState(76)
 			p.Sum()
 		}
 
 	case BricksParserT__14:
-		p.EnterOuterAlt(localctx, 9)
+		p.EnterOuterAlt(localctx, 10)
 		{
-			p.SetState(76)
+			p.SetState(77)
 			p.Subtract()
 		}
 
 	case BricksParserT__15:
-		p.EnterOuterAlt(localctx, 10)
+		p.EnterOuterAlt(localctx, 11)
 		{
-			p.SetState(77)
+			p.SetState(78)
 			p.Max()
 		}
 
 	case BricksParserT__16:
-		p.EnterOuterAlt(localctx, 11)
+		p.EnterOuterAlt(localctx, 12)
 		{
-			p.SetState(78)
+			p.SetState(79)
 			p.MergeByColor()
 		}
 
 	case BricksParserT__17:
-		p.EnterOuterAlt(localctx, 12)
+		p.EnterOuterAlt(localctx, 13)
 		{
-			p.SetState(79)
+			p.SetState(80)
 			p.MergeByVariant()
 		}
 
 	case BricksParserT__18:
-		p.EnterOuterAlt(localctx, 13)
+		p.EnterOuterAlt(localctx, 14)
 		{
-			p.SetState(80)
+			p.SetState(81)
 			p.Sort()
 		}
 
@@ -1357,7 +1388,7 @@ func (p *BricksParser) Identifier() (localctx IIdentifierContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(83)
+		p.SetState(84)
 		p.Match(BricksParserID)
 	}
 
@@ -1451,19 +1482,19 @@ func (p *BricksParser) Load() (localctx ILoadContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(85)
+		p.SetState(86)
 		p.Match(BricksParserT__6)
 	}
 	{
-		p.SetState(86)
+		p.SetState(87)
 		p.Match(BricksParserT__2)
 	}
 	{
-		p.SetState(87)
+		p.SetState(88)
 		p.Match(BricksParserSTRING)
 	}
 	{
-		p.SetState(88)
+		p.SetState(89)
 		p.Match(BricksParserT__4)
 	}
 
@@ -1552,7 +1583,7 @@ func (p *BricksParser) AllParts() (localctx IAllPartsContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(90)
+		p.SetState(91)
 		p.Match(BricksParserT__7)
 	}
 
@@ -1641,7 +1672,7 @@ func (p *BricksParser) Lost() (localctx ILostContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(92)
+		p.SetState(93)
 		p.Match(BricksParserT__8)
 	}
 
@@ -1690,6 +1721,10 @@ func (s *SetContext) SET_NUM() antlr.TerminalNode {
 	return s.GetToken(BricksParserSET_NUM, 0)
 }
 
+func (s *SetContext) BOOL() antlr.TerminalNode {
+	return s.GetToken(BricksParserBOOL, 0)
+}
+
 func (s *SetContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
@@ -1716,6 +1751,7 @@ func (p *BricksParser) Set() (localctx ISetContext) {
 
 	localctx = NewSetContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 20, BricksParserRULE_set)
+	var _la int
 
 	defer func() {
 		p.ExitRule()
@@ -1735,19 +1771,34 @@ func (p *BricksParser) Set() (localctx ISetContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(94)
+		p.SetState(95)
 		p.Match(BricksParserT__9)
 	}
 	{
-		p.SetState(95)
+		p.SetState(96)
 		p.Match(BricksParserT__2)
 	}
 	{
-		p.SetState(96)
+		p.SetState(97)
 		p.Match(BricksParserSET_NUM)
 	}
+	p.SetState(100)
+	p.GetErrorHandler().Sync(p)
+	_la = p.GetTokenStream().LA(1)
+
+	if _la == BricksParserT__3 {
+		{
+			p.SetState(98)
+			p.Match(BricksParserT__3)
+		}
+		{
+			p.SetState(99)
+			p.Match(BricksParserBOOL)
+		}
+
+	}
 	{
-		p.SetState(97)
+		p.SetState(102)
 		p.Match(BricksParserT__4)
 	}
 
@@ -1796,6 +1847,10 @@ func (s *SetListContext) INT() antlr.TerminalNode {
 	return s.GetToken(BricksParserINT, 0)
 }
 
+func (s *SetListContext) BOOL() antlr.TerminalNode {
+	return s.GetToken(BricksParserBOOL, 0)
+}
+
 func (s *SetListContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
@@ -1822,6 +1877,7 @@ func (p *BricksParser) SetList() (localctx ISetListContext) {
 
 	localctx = NewSetListContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 22, BricksParserRULE_setList)
+	var _la int
 
 	defer func() {
 		p.ExitRule()
@@ -1841,19 +1897,34 @@ func (p *BricksParser) SetList() (localctx ISetListContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(99)
+		p.SetState(104)
 		p.Match(BricksParserT__10)
 	}
 	{
-		p.SetState(100)
+		p.SetState(105)
 		p.Match(BricksParserT__2)
 	}
 	{
-		p.SetState(101)
+		p.SetState(106)
 		p.Match(BricksParserINT)
 	}
+	p.SetState(109)
+	p.GetErrorHandler().Sync(p)
+	_la = p.GetTokenStream().LA(1)
+
+	if _la == BricksParserT__3 {
+		{
+			p.SetState(107)
+			p.Match(BricksParserT__3)
+		}
+		{
+			p.SetState(108)
+			p.Match(BricksParserBOOL)
+		}
+
+	}
 	{
-		p.SetState(102)
+		p.SetState(111)
 		p.Match(BricksParserT__4)
 	}
 
@@ -1947,19 +2018,19 @@ func (p *BricksParser) PartList() (localctx IPartListContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(104)
+		p.SetState(113)
 		p.Match(BricksParserT__11)
 	}
 	{
-		p.SetState(105)
+		p.SetState(114)
 		p.Match(BricksParserT__2)
 	}
 	{
-		p.SetState(106)
+		p.SetState(115)
 		p.Match(BricksParserINT)
 	}
 	{
-		p.SetState(107)
+		p.SetState(116)
 		p.Match(BricksParserT__4)
 	}
 
@@ -2008,6 +2079,10 @@ func (s *PartListsContext) STRING() antlr.TerminalNode {
 	return s.GetToken(BricksParserSTRING, 0)
 }
 
+func (s *PartListsContext) BOOL() antlr.TerminalNode {
+	return s.GetToken(BricksParserBOOL, 0)
+}
+
 func (s *PartListsContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
@@ -2034,6 +2109,7 @@ func (p *BricksParser) PartLists() (localctx IPartListsContext) {
 
 	localctx = NewPartListsContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 26, BricksParserRULE_partLists)
+	var _la int
 
 	defer func() {
 		p.ExitRule()
@@ -2053,19 +2129,34 @@ func (p *BricksParser) PartLists() (localctx IPartListsContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(109)
+		p.SetState(118)
 		p.Match(BricksParserT__12)
 	}
 	{
-		p.SetState(110)
+		p.SetState(119)
 		p.Match(BricksParserT__2)
 	}
 	{
-		p.SetState(111)
+		p.SetState(120)
 		p.Match(BricksParserSTRING)
 	}
+	p.SetState(123)
+	p.GetErrorHandler().Sync(p)
+	_la = p.GetTokenStream().LA(1)
+
+	if _la == BricksParserT__3 {
+		{
+			p.SetState(121)
+			p.Match(BricksParserT__3)
+		}
+		{
+			p.SetState(122)
+			p.Match(BricksParserBOOL)
+		}
+
+	}
 	{
-		p.SetState(112)
+		p.SetState(125)
 		p.Match(BricksParserT__4)
 	}
 
@@ -2197,37 +2288,37 @@ func (p *BricksParser) Sum() (localctx ISumContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(114)
+		p.SetState(127)
 		p.Match(BricksParserT__13)
 	}
 	{
-		p.SetState(115)
+		p.SetState(128)
 		p.Match(BricksParserT__2)
 	}
 	{
-		p.SetState(116)
+		p.SetState(129)
 		p.Exp()
 	}
-	p.SetState(119)
+	p.SetState(132)
 	p.GetErrorHandler().Sync(p)
 	_la = p.GetTokenStream().LA(1)
 
 	for ok := true; ok; ok = _la == BricksParserT__3 {
 		{
-			p.SetState(117)
+			p.SetState(130)
 			p.Match(BricksParserT__3)
 		}
 		{
-			p.SetState(118)
+			p.SetState(131)
 			p.Exp()
 		}
 
-		p.SetState(121)
+		p.SetState(134)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
-		p.SetState(123)
+		p.SetState(136)
 		p.Match(BricksParserT__4)
 	}
 
@@ -2358,27 +2449,27 @@ func (p *BricksParser) Subtract() (localctx ISubtractContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(125)
+		p.SetState(138)
 		p.Match(BricksParserT__14)
 	}
 	{
-		p.SetState(126)
+		p.SetState(139)
 		p.Match(BricksParserT__2)
 	}
 	{
-		p.SetState(127)
+		p.SetState(140)
 		p.Exp()
 	}
 	{
-		p.SetState(128)
+		p.SetState(141)
 		p.Match(BricksParserT__3)
 	}
 	{
-		p.SetState(129)
+		p.SetState(142)
 		p.Exp()
 	}
 	{
-		p.SetState(130)
+		p.SetState(143)
 		p.Match(BricksParserT__4)
 	}
 
@@ -2510,37 +2601,37 @@ func (p *BricksParser) Max() (localctx IMaxContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(132)
+		p.SetState(145)
 		p.Match(BricksParserT__15)
 	}
 	{
-		p.SetState(133)
+		p.SetState(146)
 		p.Match(BricksParserT__2)
 	}
 	{
-		p.SetState(134)
+		p.SetState(147)
 		p.Exp()
 	}
-	p.SetState(137)
+	p.SetState(150)
 	p.GetErrorHandler().Sync(p)
 	_la = p.GetTokenStream().LA(1)
 
 	for ok := true; ok; ok = _la == BricksParserT__3 {
 		{
-			p.SetState(135)
+			p.SetState(148)
 			p.Match(BricksParserT__3)
 		}
 		{
-			p.SetState(136)
+			p.SetState(149)
 			p.Exp()
 		}
 
-		p.SetState(139)
+		p.SetState(152)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
-		p.SetState(141)
+		p.SetState(154)
 		p.Match(BricksParserT__4)
 	}
 
@@ -2646,19 +2737,19 @@ func (p *BricksParser) MergeByColor() (localctx IMergeByColorContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(143)
+		p.SetState(156)
 		p.Match(BricksParserT__16)
 	}
 	{
-		p.SetState(144)
+		p.SetState(157)
 		p.Match(BricksParserT__2)
 	}
 	{
-		p.SetState(145)
+		p.SetState(158)
 		p.Exp()
 	}
 	{
-		p.SetState(146)
+		p.SetState(159)
 		p.Match(BricksParserT__4)
 	}
 
@@ -2764,19 +2855,19 @@ func (p *BricksParser) MergeByVariant() (localctx IMergeByVariantContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(148)
+		p.SetState(161)
 		p.Match(BricksParserT__17)
 	}
 	{
-		p.SetState(149)
+		p.SetState(162)
 		p.Match(BricksParserT__2)
 	}
 	{
-		p.SetState(150)
+		p.SetState(163)
 		p.Exp()
 	}
 	{
-		p.SetState(151)
+		p.SetState(164)
 		p.Match(BricksParserT__4)
 	}
 
@@ -2882,19 +2973,19 @@ func (p *BricksParser) Sort() (localctx ISortContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(153)
+		p.SetState(166)
 		p.Match(BricksParserT__18)
 	}
 	{
-		p.SetState(154)
+		p.SetState(167)
 		p.Match(BricksParserT__2)
 	}
 	{
-		p.SetState(155)
+		p.SetState(168)
 		p.Exp()
 	}
 	{
-		p.SetState(156)
+		p.SetState(169)
 		p.Match(BricksParserT__4)
 	}
 

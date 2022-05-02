@@ -334,14 +334,12 @@ func (c *Collection) recalculateQuantity(other *Collection, recalc func(int, int
 func MergeAllCollections(collections []*Collection) *Collection {
 	log.Println("Merging parts of collections")
 
-	collection := &Collection{}
+	mergedCollection := &Collection{}
 	for _, collection := range collections {
-		collection.Add(collection)
-		collection.IDs = append(collection.IDs, collection.IDs...)
-		collection.Names = append(collection.Names, collection.Names...)
+		mergedCollection.Add(collection)
 	}
 
-	return collection
+	return mergedCollection
 }
 
 func identity(k string) string {

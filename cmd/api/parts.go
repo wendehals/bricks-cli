@@ -20,9 +20,14 @@ const (
 	LOST_USAGE = "Get a list of the user's lost parts"
 
 	INC_NON_BUILDABLE_OPT   = "includeNonBuildable"
-	INC_NON_BUILDABLE_SOPT  = "i"
+	INC_NON_BUILDABLE_SOPT  = "b"
 	INC_NON_BUILDABLE_ARG   = "[-" + INC_NON_BUILDABLE_SOPT + "]"
 	INC_NON_BUILDABLE_USAGE = "Include non buildable lists from lists file."
+
+	INC_MINI_FIGS_OPT   = "includeMiniFigs"
+	INC_MINI_FIGS_SOPT  = "f"
+	INC_MINI_FIGS_ARG   = "[-" + INC_MINI_FIGS_SOPT + "]"
+	INC_MINI_FIGS_USAGE = "Include mini figures from sets."
 
 	MERGE_PARTS_OPT   = "mergeParts"
 	MERGE_PARTS_SOPT  = "m"
@@ -36,13 +41,14 @@ var (
 	partListsFile       string
 	lost                bool
 	includeNonBuildable bool
+	includeMiniFigs     bool
 	mergeParts          bool
 
 	partsCmd = &cobra.Command{
-		Use: fmt.Sprintf("parts %s %s {%s | %s | %s | %s | %s | %s} %s %s",
+		Use: fmt.Sprintf("parts %s %s {%s | %s | %s | %s | %s | %s} %s %s %s",
 			options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG,
 			ALL_ARG, SET_NUM_ARG, SET_LIST_ID_ARG, PART_LIST_ID_ARG, PART_LISTS_ARG, LOST_ARG,
-			INC_NON_BUILDABLE_ARG, MERGE_PARTS_ARG),
+			INC_NON_BUILDABLE_ARG, INC_MINI_FIGS_ARG, MERGE_PARTS_ARG),
 		Short: "Get a list of parts",
 		Long: `The parts command returns a list of parts.
 	
@@ -77,6 +83,7 @@ func init() {
 	partsCmd.Flags().BoolVarP(&lost, LOST_OPT, "", false, LOST_USAGE)
 
 	partsCmd.Flags().BoolVarP(&includeNonBuildable, INC_NON_BUILDABLE_OPT, INC_NON_BUILDABLE_SOPT, false, INC_NON_BUILDABLE_USAGE)
+	partsCmd.Flags().BoolVarP(&includeMiniFigs, INC_MINI_FIGS_OPT, INC_MINI_FIGS_SOPT, false, INC_MINI_FIGS_USAGE)
 	partsCmd.Flags().BoolVarP(&mergeParts, MERGE_PARTS_OPT, MERGE_PARTS_SOPT, false, MERGE_PARTS_USAGE)
 }
 
@@ -136,7 +143,7 @@ func executeAllParts() {
 }
 
 func executeSetParts() {
-	setParts := api.RetrieveSetParts(createBricksAPI(), setNum)
+	setParts := api.RetrieveSetParts(createBricksAPI(), setNum, includeMiniFigs)
 
 	if jsonFile == "" {
 		jsonFile = options.ReplaceIllegalCharsFromFileName(setNum) + PARTS_FILE_SUFFIX
@@ -146,7 +153,7 @@ func executeSetParts() {
 }
 
 func executeSetListParts() {
-	setListParts := api.RetrieveSetListParts(createBricksAPI(), createUsersAPI(), setListId)
+	setListParts := api.RetrieveSetListParts(createBricksAPI(), createUsersAPI(), setListId, includeMiniFigs)
 
 	if mergeParts {
 		mergeAndExport(setListParts)

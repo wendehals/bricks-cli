@@ -104,7 +104,7 @@ The following commands can be used in bricks scripts:
 
 These expressions are available in the bricks scripts:
 
-* *Identifier* - Identifiers denote a variable defined by an assignment in advance. Identifiers start with a lower or upper case letter and can contain letters (lower and upper case), digits, and underscore "_".
+* *Identifier* - Identifiers denote a variable defined by an assignment in advance. Identifiers start with a lower or upper case letter and can contain letters (lower and upper case), digits, and underscore `_`.
 * `load(FILE_NAME)` - Loads a collection from a file with the given FILE_NAME.
 * `allParts` - Denotes all parts owned by the user.
 * `lost` - Denotes all parts lost by the user.

@@ -32,7 +32,7 @@ const (
 	MERGE_PARTS_OPT   = "mergeParts"
 	MERGE_PARTS_SOPT  = "m"
 	MERGE_PARTS_ARG   = "[-" + MERGE_PARTS_SOPT + "]"
-	MERGE_PARTS_USAGE = "Merge the parts of the given lists to a single JSON file."
+	MERGE_PARTS_USAGE = "Merge the parts of the given lists to a single parts file."
 
 	PARTS_FILE_SUFFIX = "_parts.json"
 )

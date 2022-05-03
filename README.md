@@ -96,25 +96,25 @@ The script above first retrieves all parts owned by the user and subtracts those
 
 The following commands can be used in bricks scripts:
 
-* *Assignment*: `ID := exp` - assign a collection of parts defined by the given expression to a variable with name ID. The variable can be used in any expression later on.
-* *Save*: `save(exp, FILE_PATH)` - save the given collection defined by the expression to a JSON file with path FILE_PATH.
-* *export*: `export(exp, FILE_PATH)` - export the given collection defined by the expression to an HTML file with path FILE_PATH.
+* *Assignment*: `ID := exp` - assigns a collection of parts defined by the given expression to a variable with name ID. The variable can be used in any expression later on.
+* *save*: `save(exp, FILE_NAME)` - saves the given collection defined by the expression to a JSON file with the given FILE_NAME.
+* *export*: `export(exp, FILE_NAME)` - exports the given collection defined by the expression to an HTML file with the given FILE_NAME.
 
 ### Expressions
 
 These expressions are available in the bricks scripts:
 
-* *Identifier* - Identifiers denote a variable defined by an assignment in advance.
-* `load(FILE_PATH)` - Loads a collection from the given file with path FILE_PATH.
-* `allParts` - All parts owned by the user.
-* `lost` - All parts lost by the user.
-* `set(SET_NUM, BOOL?)` - All parts of set number SET_NUM (e.g. 8880-1). If the optional BOOL paramater is set to true, it includes all mini figures.
-* `setList(LIST_ID, BOOL?)` - All parts contained in the set list LIST_ID (a number). If the optional BOOL paramater is set to true, it includes all mini figures.
-* `partList(LIST_ID)` - All parts contained in the part list LIST_ID (a number).
-* `partLists(LIST_ID, BOOL?)` - All parts contained in the part list LIST_ID (a number). If the optional BOOL paramater is set to true, it also includes all part lists marked as non-buildable.
-* `sum(EXP, EXP, ...)` - Calculate the sum of all parts in the expression's results.
-* `subtract(EXP, EXP)` - Subtract all parts in the second expression's result from the parts in the first expression's result.
-* `max(EXP, EXP, ...)` - Calculate the maximum of all parts in the expression's results.
-* `mergeByColor(EXP)` - Merge all parts in the expression's result by ignoring their color.
-* `mergeByVariant(EXP)` - Merge all parts in the expression's result by replacing parts by their variants.
-* `sort(EXP)` - Sort parts in the expression's result.
+* *Identifier* - Identifiers denote a variable defined by an assignment in advance. Identifiers start with a lower or upper case letter and can contain letters (lower and upper case), digits, and underscore "_".
+* `load(FILE_NAME)` - Loads a collection from a file with the given FILE_NAME.
+* `allParts` - Denotes all parts owned by the user.
+* `lost` - Denotes all parts lost by the user.
+* `set(SET_NUM, BOOL?)` - Denotes all parts of set number SET_NUM (e.g. 8880-1). If the optional BOOL paramater is set to `true`, it includes all mini figures. If the BOOL parameter is not specified it defaults to `false`, which means that mini figures are not included.
+* `setList(LIST_ID, BOOL?)` - Denotes all parts contained in the set list LIST_ID (a number). If the optional BOOL paramater is set to `true`, it includes all mini figures. If the BOOL parameter is not specified it defaults to `false`, which means that mini figures are not included.
+* `partList(LIST_ID)` - Denotes all parts contained in the part list LIST_ID (a number).
+* `partLists(LIST_ID, BOOL?)` - Denotes all parts contained in the part list LIST_ID (a number). If the optional BOOL paramater is set to `true`, it also includes all part lists marked as non-buildable. If the BOOL parameter is not specified it defaults to `false`, which means that non-buildable part lists are not included.
+* `sum(EXP, EXP, ...)` - Calculates the sum of all parts in the expression's results.
+* `subtract(EXP, EXP)` - Subtracts all parts in the second expression's result from the parts in the first expression's result.
+* `max(EXP, EXP, ...)` - Calculates the maximum of all parts in the expression's results.
+* `mergeByColor(EXP)` - Merges all parts in the expression's result by ignoring their color.
+* `mergeByVariant(EXP)` - Merges all parts in the expression's result by replacing parts by their variants.
+* `sort(EXP)` - Sorts parts in the expression's result.

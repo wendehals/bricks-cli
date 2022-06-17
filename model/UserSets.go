@@ -18,19 +18,19 @@ type UserSets struct {
 func ImportUserSets(userSetsFile string) *UserSets {
 	jsonFile, err := os.Open(userSetsFile)
 	if err != nil {
-		log.Fatalf(err.Error())
+		log.Fatal(err)
 	}
 	defer jsonFile.Close()
 
 	data, err := ioutil.ReadAll(jsonFile)
 	if err != nil {
-		log.Fatalf(err.Error())
+		log.Fatal(err)
 	}
 
 	userSets := UserSets{}
 	err = json.Unmarshal(data, &userSets)
 	if err != nil {
-		log.Fatalf(err.Error())
+		log.Fatal(err)
 	}
 
 	return &userSets

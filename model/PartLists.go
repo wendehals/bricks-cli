@@ -16,19 +16,19 @@ type PartLists struct {
 func ImportPartLists(partListsFile string) *PartLists {
 	jsonFile, err := os.Open(partListsFile)
 	if err != nil {
-		log.Fatalf(err.Error())
+		log.Fatal(err)
 	}
 	defer jsonFile.Close()
 
 	data, err := ioutil.ReadAll(jsonFile)
 	if err != nil {
-		log.Fatalf(err.Error())
+		log.Fatal(err)
 	}
 
 	partLists := PartLists{}
 	err = json.Unmarshal(data, &partLists)
 	if err != nil {
-		log.Fatalf(err.Error())
+		log.Fatal(err)
 	}
 
 	return &partLists

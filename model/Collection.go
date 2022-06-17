@@ -38,18 +38,18 @@ func ImportCollection(fileName string) *Collection {
 
 	jsonFile, err := os.Open(fileName)
 	if err != nil {
-		log.Fatalf(err.Error())
+		log.Fatal(err)
 	}
 	defer jsonFile.Close()
 
 	data, err := ioutil.ReadAll(jsonFile)
 	if err != nil {
-		log.Fatalf(err.Error())
+		log.Fatal(err)
 	}
 
 	err = json.Unmarshal(data, collection)
 	if err != nil {
-		log.Fatalf(err.Error())
+		log.Fatal(err)
 	}
 
 	return collection
@@ -90,17 +90,7 @@ func (c *Collection) Subtract(other *Collection) *Collection {
 	c.IDs = []string{}
 	c.Names = []string{}
 
-	c.recalculateQuantity(other, subtract)
-
-	newParts := []PartEntry{}
-	for _, partEntry := range c.Parts {
-		if partEntry.Quantity != 0 {
-			newParts = append(newParts, partEntry)
-		}
-	}
-	c.Parts = newParts
-
-	return c
+	return c.recalculateQuantity(other, subtract)
 }
 
 // Max calculates the max quantity of each part in both collections.
@@ -257,10 +247,8 @@ func (c *Collection) mapPartsByPartNumber(partsMap map[string][]PartEntry, keyMa
 		partsMap = make(map[string][]PartEntry)
 	}
 
-	for i := range c.Parts {
-		currentPart := c.Parts[i]
+	for _, currentPart := range c.Parts {
 		currentPart.IsSpare = false
-
 		key := keyMapping(currentPart.Part.Number)
 
 		value, exists := partsMap[key]
@@ -328,7 +316,7 @@ func (c *Collection) recalculateQuantity(other *Collection, recalc func(int, int
 	c.setParts(partsMap)
 	c.Parts = append(c.Parts, missingParts...)
 
-	return c
+	return c.RemoveQuantityZero()
 }
 
 func MergeAllCollections(collections []*Collection) *Collection {

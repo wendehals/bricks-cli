@@ -84,13 +84,16 @@ The content of the `credentials.json` file looks like:
         "api_key": "<rebrickable api key>"
     }
 
+You need to obtain the Rebrickable API key from your profile's settings page on rebrickable.com. The login credentials will be send in a secured way.
+
 ## Scripting
 
 The bricks-cli supports executing scripts contained in *.bricks files. The scripts are made up of commands working with expressions describing part collections. Have a look at the following example:
 
-    save(sort(subtract(allParts, set(8880-1))))
+    a := set(8880-1)
+    save(sort(subtract(allParts, a)))
 
-The script above first retrieves all parts owned by the user and subtracts those parts contained in set 8880-1. After that it sorts the parts. The overall result of the expression is saved into a JSON file.
+The first command in the script above retrieves all parts of set 8880-1 and stores the resulting collection in the variable `a`. The next command first retrieves all parts owned by the user, subtracts those parts from the collection saved in `a`, and sorts the parts. The overall result of the expression is saved into a JSON file.
 
 ### Commands
 

@@ -30,7 +30,7 @@ the list of missing parts.`,
 func executeSubtract(args []string) {
 	minuend := model.ImportCollection(args[0])
 	subtrahend := model.ImportCollection(args[1])
-	result := minuend.Subtract(subtrahend).RemoveQuantityZero()
+	result := minuend.Subtract(subtrahend)
 
 	if jsonFile == "" {
 		jsonFile = options.FileNameFromArgs(args, "_subtracted_parts.json")

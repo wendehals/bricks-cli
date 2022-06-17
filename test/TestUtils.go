@@ -14,6 +14,12 @@ func AssertNoError(t *testing.T, e error) {
 	}
 }
 
+func AssertTrue(t *testing.T, b bool) {
+	if !b {
+		t.Error("Expected true but was false")
+	}
+}
+
 func AssertFalse(t *testing.T, b bool) {
 	if b {
 		t.Error("Expected false but was true")

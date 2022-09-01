@@ -64,6 +64,7 @@ func (l *lostPartsPageResult) convertToPartEntries() []model.PartEntry {
 		partEntry.Part = lostPart.InvPart.Part
 		partEntry.Color = lostPart.InvPart.Color
 		partEntry.IsSpare = lostPart.InvPart.IsSpare
+		partEntry.SetNum = lostPart.InvPart.SetNum
 		partEntries[i] = partEntry
 	}
 

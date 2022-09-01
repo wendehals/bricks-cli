@@ -10,7 +10,7 @@ import (
 
 var sortCmd = &cobra.Command{
 	Use:   fmt.Sprintf("sort %s JSON_FILE", options.JSON_OUTPUT_ARG),
-	Short: "Sorts the parts of a collection by their number.",
+	Short: "Sorts the parts of a collection by their number",
 	Long:  "The command sorts the parts of a collection in descending order by their part number.",
 
 	DisableFlagsInUseLine: true,
@@ -25,7 +25,7 @@ func executeSort(args []string) {
 	collection := model.ImportCollection(args[0])
 
 	if jsonFile == "" {
-		jsonFile = options.FileNameFromArgs(args, "_sorted_parts.json")
+		jsonFile = options.FileNameFromArgs(args, "_sorted.parts")
 	}
 
 	model.Save(collection.Sort(), jsonFile)

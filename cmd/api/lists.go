@@ -63,7 +63,7 @@ func executeSetLists() {
 	setLists := createUsersAPI().GetSetLists()
 
 	if jsonFile == "" {
-		jsonFile = fmt.Sprintf("%s_setLists.json",
+		jsonFile = fmt.Sprintf("%s.setLists",
 			options.ReplaceIllegalCharsFromFileName(credentials.UserName))
 	}
 
@@ -74,7 +74,7 @@ func executePartLists() {
 	partLists := createUsersAPI().GetPartLists()
 
 	if jsonFile == "" {
-		jsonFile = fmt.Sprintf("%s_partLists.json",
+		jsonFile = fmt.Sprintf("%s.partLists",
 			options.ReplaceIllegalCharsFromFileName(credentials.UserName))
 	}
 

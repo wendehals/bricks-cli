@@ -10,7 +10,7 @@ import (
 
 var sumCmd = &cobra.Command{
 	Use:   fmt.Sprintf("sum %s JSON_FILE1 JSON_FILE2 ...", options.JSON_OUTPUT_ARG),
-	Short: "Sums up the parts of multiple collections.",
+	Short: "Sums up the parts of multiple collections",
 	Long: `
 The command sums up all parts of multiple collections to a new collection by
 merging identical parts to single lots.`,
@@ -35,7 +35,7 @@ func executeSum(args []string) {
 	}
 
 	if jsonFile == "" {
-		jsonFile = options.FileNameFromArgs(args, "_parts.json")
+		jsonFile = options.FileNameFromArgs(args, "_sum.parts")
 	}
 
 	model.Save(sum, jsonFile)

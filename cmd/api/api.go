@@ -42,7 +42,7 @@ var (
 
 	ApiCmd = &cobra.Command{
 		Use:   "api",
-		Short: "Groups all commands for the Rebrickable API.",
+		Short: "Groups all commands for the Rebrickable API",
 		Long:  "The api command groups all commands for the Rebrickable API.",
 
 		DisableFlagsInUseLine: true,

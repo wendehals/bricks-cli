@@ -4,3 +4,7 @@ bricks
 /*.html
 /*.json
 /*.bricks
+/*.parts
+/*.sets
+/*.partLists
+/*.setLists

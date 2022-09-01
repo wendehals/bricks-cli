@@ -10,7 +10,7 @@ import (
 
 var subtractCmd = &cobra.Command{
 	Use:   fmt.Sprintf("subtract %s JSON_FILE_MINUEND JSON_FILE_SUBTRAHEND", options.JSON_OUTPUT_ARG),
-	Short: "Subtracts one collection of parts from another.",
+	Short: "Subtracts one collection of parts from another",
 	Long: `
 The command subtracts the second collection of parts given in the args from the
 first collection.
@@ -33,7 +33,7 @@ func executeSubtract(args []string) {
 	result := minuend.Subtract(subtrahend)
 
 	if jsonFile == "" {
-		jsonFile = options.FileNameFromArgs(args, "_subtracted_parts.json")
+		jsonFile = options.FileNameFromArgs(args, "_subtracted.parts")
 	}
 
 	model.Save(result, jsonFile)

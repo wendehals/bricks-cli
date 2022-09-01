@@ -64,7 +64,7 @@ func executeSetDetails() {
 	set := createBricksAPI().GetSet(setNum)
 
 	if jsonFile == "" {
-		jsonFile = fmt.Sprintf("%s_set.json", setNum)
+		jsonFile = fmt.Sprintf("%s.set", setNum)
 	}
 
 	model.Save(set, jsonFile)
@@ -74,7 +74,7 @@ func executeSetListDetails() {
 	setList := createUsersAPI().GetSetList(setListId)
 
 	if jsonFile == "" {
-		jsonFile = fmt.Sprintf("%d_setList.json", setListId)
+		jsonFile = fmt.Sprintf("%d.setList", setListId)
 	}
 
 	model.Save(setList, jsonFile)
@@ -84,7 +84,7 @@ func executePartListDetails() {
 	partList := createUsersAPI().GetPartList(partListId)
 
 	if jsonFile == "" {
-		jsonFile = fmt.Sprintf("%d_partList.json", partListId)
+		jsonFile = fmt.Sprintf("%d.partList", partListId)
 	}
 
 	model.Save(partList, jsonFile)

@@ -10,7 +10,7 @@ import (
 
 var maxCmd = &cobra.Command{
 	Use:   fmt.Sprintf("max %s JSON_FILE1 JSON_FILE2 ...", options.JSON_OUTPUT_ARG),
-	Short: "Calculates the maximum quantity of each part of at least two collections.",
+	Short: "Calculates the maximum quantity of each part of at least two collections",
 	Long:  "The command calculates the maximum quantity of each part of at least two collections.",
 
 	DisableFlagsInUseLine: true,
@@ -33,7 +33,7 @@ func executeMax(args []string) {
 	}
 
 	if jsonFile == "" {
-		jsonFile = options.FileNameFromArgs(args, "_max_parts.json")
+		jsonFile = options.FileNameFromArgs(args, "_max.parts")
 	}
 
 	model.Save(max, jsonFile)

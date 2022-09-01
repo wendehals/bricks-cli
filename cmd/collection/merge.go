@@ -14,7 +14,7 @@ var (
 
 	mergeCmd = &cobra.Command{
 		Use:   fmt.Sprintf("merge %s {--color | --variant} JSON_FILE", options.JSON_OUTPUT_ARG),
-		Short: "Merges the parts of a collection by their color or by their variant.",
+		Short: "Merges the parts of a collection by their color or by their variant",
 		Long:  "The command merges all parts of the same type and color or by variants.",
 
 		DisableFlagsInUseLine: true,
@@ -50,7 +50,7 @@ func executeMerge(args []string) {
 	}
 
 	if jsonFile == "" {
-		jsonFile = options.FileNameFromArgs(args, "_merged_parts.json")
+		jsonFile = options.FileNameFromArgs(args, "_merged.parts")
 	}
 
 	model.Save(merged, jsonFile)

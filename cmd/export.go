@@ -17,7 +17,7 @@ var (
 
 	exportCmd = &cobra.Command{
 		Use:   fmt.Sprintf("export %s [-o HTML_FILE] JSON_FILE", options.CREDENTIALS_ARG),
-		Short: "Exports the JSON input as HTML.",
+		Short: "Exports the JSON input as HTML",
 		Long:  "The command exports the JSON input file as an HTML file.",
 
 		DisableFlagsInUseLine: true,

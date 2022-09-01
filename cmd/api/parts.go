@@ -13,7 +13,7 @@ import (
 const (
 	PART_LISTS_OPT   = "partLists"
 	PART_LISTS_ARG   = "--" + PART_LISTS_OPT + " PART_LISTS_FILE"
-	PART_LISTS_USAGE = "A JSON file containing the user's part lists."
+	PART_LISTS_USAGE = "A JSON file containing the user's part lists"
 
 	LOST_OPT   = "lost"
 	LOST_ARG   = "--" + LOST_OPT
@@ -22,19 +22,19 @@ const (
 	INC_NON_BUILDABLE_OPT   = "includeNonBuildable"
 	INC_NON_BUILDABLE_SOPT  = "b"
 	INC_NON_BUILDABLE_ARG   = "[-" + INC_NON_BUILDABLE_SOPT + "]"
-	INC_NON_BUILDABLE_USAGE = "Include non buildable lists from lists file."
+	INC_NON_BUILDABLE_USAGE = "Include non buildable lists from lists file"
 
 	INC_MINI_FIGS_OPT   = "includeMiniFigs"
 	INC_MINI_FIGS_SOPT  = "f"
 	INC_MINI_FIGS_ARG   = "[-" + INC_MINI_FIGS_SOPT + "]"
-	INC_MINI_FIGS_USAGE = "Include mini figures from sets."
+	INC_MINI_FIGS_USAGE = "Include mini figures from sets"
 
 	MERGE_PARTS_OPT   = "mergeParts"
 	MERGE_PARTS_SOPT  = "m"
 	MERGE_PARTS_ARG   = "[-" + MERGE_PARTS_SOPT + "]"
-	MERGE_PARTS_USAGE = "Merge the parts of the given lists to a single parts file."
+	MERGE_PARTS_USAGE = "Merge the parts of the given lists to a single parts file"
 
-	PARTS_FILE_SUFFIX = "_parts.json"
+	PARTS_FILE_SUFFIX = ".parts"
 )
 
 var (
@@ -199,9 +199,11 @@ func mergeAndExport(collections []*model.Collection) {
 		var b strings.Builder
 		for i := 0; i < len(collection.IDs) && i < 5; i++ {
 			b.WriteString(collection.IDs[i])
-			b.WriteString("_")
+			if i < len(collection.IDs)-1 || i < 4 {
+				b.WriteString("_")
+			}
 		}
-		b.WriteString("parts.json")
+		b.WriteString(".parts")
 		jsonFile = b.String()
 	}
 

@@ -3,7 +3,7 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 )
 
@@ -24,7 +24,7 @@ func ImportCredentials(fileName string) (*Credentials, error) {
 	}
 	defer jsonFile.Close()
 
-	data, err := ioutil.ReadAll(jsonFile)
+	data, err := io.ReadAll(jsonFile)
 	if err != nil {
 		return nil, fmt.Errorf(CREDENTIALS_ERR_MSG, err)
 	}

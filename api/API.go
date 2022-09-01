@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -82,7 +81,7 @@ func (a *AbstractAPI) doRequest(reqest *http.Request, v interface{}) error {
 		defer result.Body.Close()
 	}
 
-	body, err = ioutil.ReadAll(result.Body)
+	body, err = io.ReadAll(result.Body)
 	if err != nil {
 		return err
 	}

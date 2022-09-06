@@ -16,6 +16,20 @@ func RetrieveSetParts(bricksAPI *BricksAPI, setNum string, includeMiniFigs bool)
 	return collection
 }
 
+func RetrieveSetPartsWithoutLost(bricksAPI *BricksAPI, usersAPI *UsersAPI, setNum string, includeMiniFigs bool) *model.Collection {
+	setParts := RetrieveSetParts(bricksAPI, setNum, includeMiniFigs)
+	lostParts := usersAPI.GetLostParts()
+	var setLostParts model.Collection
+	for _, partEntry := range lostParts.Parts {
+		if partEntry.SetNum == setNum {
+			setLostParts.Parts = append(setLostParts.Parts, partEntry)
+		}
+	}
+	setParts.Subtract(&setLostParts)
+
+	return setParts
+}
+
 func RetrieveSetListParts(bricksAPI *BricksAPI, usersAPI *UsersAPI, setListId uint, includeMiniFigs bool) []*model.Collection {
 	log.Printf("Retrieving parts of all sets from the set list %d\n", setListId)
 

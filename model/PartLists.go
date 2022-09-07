@@ -2,7 +2,7 @@ package model
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 )
@@ -20,7 +20,7 @@ func ImportPartLists(partListsFile string) *PartLists {
 	}
 	defer jsonFile.Close()
 
-	data, err := ioutil.ReadAll(jsonFile)
+	data, err := io.ReadAll(jsonFile)
 	if err != nil {
 		log.Fatal(err)
 	}

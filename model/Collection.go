@@ -5,7 +5,7 @@ import (
 	"embed"
 	"encoding/json"
 	"html/template"
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 	"regexp"
@@ -42,7 +42,7 @@ func ImportCollection(fileName string) *Collection {
 	}
 	defer jsonFile.Close()
 
-	data, err := ioutil.ReadAll(jsonFile)
+	data, err := io.ReadAll(jsonFile)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -363,7 +363,7 @@ func loadVariants() map[string]string {
 	}
 	defer jsonFile.Close()
 
-	data, err := ioutil.ReadAll(jsonFile)
+	data, err := io.ReadAll(jsonFile)
 	if err != nil {
 		log.Fatal(err.Error())
 	}

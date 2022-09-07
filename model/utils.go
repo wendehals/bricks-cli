@@ -2,7 +2,6 @@ package model
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"log"
 	"os"
 )
@@ -13,7 +12,7 @@ func Save(v interface{}, fileName string) {
 		log.Fatalf("serializing to JSON failed: %s", err.Error())
 	}
 
-	ioutil.WriteFile(fileName, data, os.ModePerm)
+	os.WriteFile(fileName, data, os.ModePerm)
 	if err != nil {
 		log.Fatalf("exporting collection to JSON file '%s' failed: %s", fileName, err.Error())
 	}

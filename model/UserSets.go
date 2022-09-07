@@ -2,7 +2,7 @@ package model
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 )
@@ -22,7 +22,7 @@ func ImportUserSets(userSetsFile string) *UserSets {
 	}
 	defer jsonFile.Close()
 
-	data, err := ioutil.ReadAll(jsonFile)
+	data, err := io.ReadAll(jsonFile)
 	if err != nil {
 		log.Fatal(err)
 	}

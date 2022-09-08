@@ -9,7 +9,7 @@ import (
 )
 
 var setsCmd = &cobra.Command{
-	Use:   fmt.Sprintf("sets %s %s {%s | %s}", options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG, ALL_ARG, SET_LIST_ID_ARG),
+	Use:   fmt.Sprintf("sets %s %s {%s | %s}", options.CREDENTIALS_ARG, options.OUTPUT_FILE_ARG, ALL_ARG, SET_LIST_ID_ARG),
 	Short: "Get details about sets owned by the user",
 	Long:  "The sets command returns details about all sets owned by the user or about sets of a certain set list.",
 
@@ -24,7 +24,7 @@ var setsCmd = &cobra.Command{
 }
 
 func init() {
-	setsCmd.Flags().BoolVarP(&all, ALL_OPT, ALL_SOPT, false, "Get all sets")
+	setsCmd.Flags().BoolVarP(&all, ALL_OPT, ALL_SOPT, false, "get all sets")
 	setsCmd.Flags().UintVarP(&setListId, SET_LIST_ID_OPT, SET_LIST_ID_SOPT, 0, SET_LIST_ID_USAGE)
 }
 

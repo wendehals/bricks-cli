@@ -9,7 +9,7 @@ import (
 )
 
 var sortCmd = &cobra.Command{
-	Use:   fmt.Sprintf("sort %s JSON_FILE", options.JSON_OUTPUT_ARG),
+	Use:   fmt.Sprintf("sort %s PARTS_FILE", options.OUTPUT_FILE_ARG),
 	Short: "Sorts the parts of a collection by their number",
 	Long:  "The command sorts the parts of a collection in descending order by their part number.",
 

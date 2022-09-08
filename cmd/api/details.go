@@ -10,7 +10,7 @@ import (
 
 var detailsCmd = &cobra.Command{
 	Use: fmt.Sprintf("details %s %s {%s | %s | %s}", options.CREDENTIALS_ARG,
-		options.JSON_OUTPUT_ARG, SET_NUM_ARG, SET_LIST_ID_ARG, PART_LIST_ID_ARG),
+		options.OUTPUT_FILE_ARG, SET_NUM_ARG, SET_LIST_ID_ARG, PART_LIST_ID_ARG),
 	Short: "Get details about a certain set, set list, or part list",
 	Long:  "The details command returns details about a certain set, set list, or part list.",
 

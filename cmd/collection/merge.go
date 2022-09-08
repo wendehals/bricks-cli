@@ -13,7 +13,7 @@ var (
 	variant bool
 
 	mergeCmd = &cobra.Command{
-		Use:   fmt.Sprintf("merge %s {--color | --variant} JSON_FILE", options.JSON_OUTPUT_ARG),
+		Use:   fmt.Sprintf("merge %s {--color | --variant} PARTS_FILE", options.OUTPUT_FILE_ARG),
 		Short: "Merges the parts of a collection by their color or by their variant",
 		Long:  "The command merges all parts of the same type and color or by variants.",
 
@@ -33,8 +33,8 @@ var (
 )
 
 func init() {
-	mergeCmd.Flags().BoolVarP(&color, "color", "", false, "Merge by color")
-	mergeCmd.Flags().BoolVarP(&variant, "variant", "", false, "Merge by variant")
+	mergeCmd.Flags().BoolVarP(&color, "color", "", false, "merge by color")
+	mergeCmd.Flags().BoolVarP(&variant, "variant", "", false, "merge by variant")
 }
 
 func executeMerge(args []string) {

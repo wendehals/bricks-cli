@@ -13,30 +13,30 @@ import (
 const (
 	SET_WO_LOST_NUM_OPT   = "usersSet"
 	SET_WO_LOST_NUM_ARG   = "--" + SET_WO_LOST_NUM_OPT + " SET_NUM"
-	SET_WO_LOST_NUM_USAGE = "All parts of a user's set without lost parts"
+	SET_WO_LOST_NUM_USAGE = "all parts of a user's set without lost parts"
 
 	PART_LISTS_OPT   = "partLists"
 	PART_LISTS_ARG   = "--" + PART_LISTS_OPT + " PART_LISTS_FILE"
-	PART_LISTS_USAGE = "A JSON file containing the user's part lists"
+	PART_LISTS_USAGE = "a JSON file containing the user's part lists"
 
 	LOST_OPT   = "lost"
 	LOST_ARG   = "--" + LOST_OPT
-	LOST_USAGE = "Get a list of the user's lost parts"
+	LOST_USAGE = "get a list of the user's lost parts"
 
 	INC_NON_BUILDABLE_OPT   = "includeNonBuildable"
 	INC_NON_BUILDABLE_SOPT  = "b"
 	INC_NON_BUILDABLE_ARG   = "[-" + INC_NON_BUILDABLE_SOPT + "]"
-	INC_NON_BUILDABLE_USAGE = "Include non buildable lists from lists file"
+	INC_NON_BUILDABLE_USAGE = "include non buildable lists from lists file"
 
 	INC_MINI_FIGS_OPT   = "includeMiniFigs"
 	INC_MINI_FIGS_SOPT  = "f"
 	INC_MINI_FIGS_ARG   = "[-" + INC_MINI_FIGS_SOPT + "]"
-	INC_MINI_FIGS_USAGE = "Include mini figures from sets"
+	INC_MINI_FIGS_USAGE = "include mini figures from sets"
 
 	MERGE_PARTS_OPT   = "mergeParts"
 	MERGE_PARTS_SOPT  = "m"
 	MERGE_PARTS_ARG   = "[-" + MERGE_PARTS_SOPT + "]"
-	MERGE_PARTS_USAGE = "Merge the parts of the given lists to a single parts file"
+	MERGE_PARTS_USAGE = "merge the parts of the given lists to a single parts file"
 
 	PARTS_FILE_SUFFIX = ".parts"
 )
@@ -51,7 +51,7 @@ var (
 
 	partsCmd = &cobra.Command{
 		Use: fmt.Sprintf("parts %s %s {%s | %s | %s | %s | %s | %s | %s} %s %s %s",
-			options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG,
+			options.CREDENTIALS_ARG, options.OUTPUT_FILE_ARG,
 			ALL_ARG, SET_NUM_ARG, SET_WO_LOST_NUM_ARG, SET_LIST_ID_ARG, PART_LIST_ID_ARG, PART_LISTS_ARG, LOST_ARG,
 			INC_NON_BUILDABLE_ARG, INC_MINI_FIGS_ARG, MERGE_PARTS_ARG),
 		Short: "Get a list of parts",

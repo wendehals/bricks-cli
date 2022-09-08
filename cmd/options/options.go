@@ -10,17 +10,17 @@ const (
 	CREDENTIALS_OPT   = "credentials"
 	CREDENTIALS_SOPT  = "c"
 	CREDENTIALS_ARG   = "[-" + CREDENTIALS_SOPT + " CREDENTIAL_FILE]"
-	CREDENTIALS_USAGE = "A JSON file containing the Rebrickable credentials"
+	CREDENTIALS_USAGE = "a JSON file containing the Rebrickable credentials"
 
-	JSON_OUTPUT_OPT   = "output"
-	JSON_OUTPUT_SOPT  = "o"
-	JSON_OUTPUT_ARG   = "[-" + JSON_OUTPUT_SOPT + " JSON_FILE]"
-	JSON_OUTPUT_USAGE = "A name for the JSON output file"
+	OUTPUT_FILE_OPT   = "output"
+	OUTPUT_FILE_SOPT  = "o"
+	OUTPUT_FILE_ARG   = "[-" + OUTPUT_FILE_SOPT + " OUTPUT_FILE]"
+	OUTPUT_FILE_USAGE = "a name for the output file"
 
-	HTML_OUTPUT_OPT   = "html"
-	HTML_OUTPUT_SOPT  = "o"
-	HTML_OUTPUT_ARG   = "[-" + HTML_OUTPUT_SOPT + " HTML_FILE]"
-	HTML_OUTPUT_USAGE = "A name for the HTML output file"
+	OUTPUT_DIR_OPT   = "dir"
+	OUTPUT_DIR_SOPT  = "d"
+	OUTPUT_DIR_ARG   = "[-" + OUTPUT_DIR_SOPT + " OUTPUT_DIR]"
+	OUTPUT_DIR_USAGE = "a name for the output directory"
 )
 
 var (

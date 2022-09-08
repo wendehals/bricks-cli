@@ -11,7 +11,7 @@ var (
 	CollectionCmd = &cobra.Command{
 		Use:   "collection",
 		Short: "Groups all commands for working with part collections",
-		Long:  "The collection command groups all commands for working with part collections.",
+		Long:  "The collection command groups all sub commands for working with part collections.",
 
 		DisableFlagsInUseLine: true,
 	}
@@ -24,6 +24,6 @@ func init() {
 	CollectionCmd.AddCommand(subtractCmd)
 	CollectionCmd.AddCommand(sumCmd)
 
-	CollectionCmd.PersistentFlags().StringVarP(&jsonFile, options.JSON_OUTPUT_OPT,
-		options.JSON_OUTPUT_SOPT, "", options.JSON_OUTPUT_USAGE)
+	CollectionCmd.PersistentFlags().StringVarP(&jsonFile, options.OUTPUT_FILE_OPT,
+		options.OUTPUT_FILE_SOPT, "", options.OUTPUT_FILE_USAGE)
 }

@@ -9,7 +9,7 @@ import (
 )
 
 var sumCmd = &cobra.Command{
-	Use:   fmt.Sprintf("sum %s JSON_FILE1 JSON_FILE2 ...", options.JSON_OUTPUT_ARG),
+	Use:   fmt.Sprintf("sum %s PARTS_FILE1 PARTS_FILE2 ...", options.OUTPUT_FILE_ARG),
 	Short: "Sums up the parts of multiple collections",
 	Long: `
 The command sums up all parts of multiple collections to a new collection by

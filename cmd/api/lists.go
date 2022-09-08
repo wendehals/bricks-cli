@@ -11,11 +11,11 @@ import (
 const (
 	SETS_OPT   = "sets"
 	SETS_ARG   = "--" + SETS_OPT
-	SETS_USAGE = "Get all set lists of the user"
+	SETS_USAGE = "get all set lists of the user"
 
 	PARTS_OPT   = "parts"
 	PARTS_ARG   = "--" + PARTS_OPT
-	PARTS_USAGE = "Get all part lists of the user"
+	PARTS_USAGE = "get all part lists of the user"
 )
 
 var (
@@ -23,7 +23,7 @@ var (
 	parts bool
 
 	listsCmd = &cobra.Command{
-		Use:   fmt.Sprintf("lists %s %s [%s | %s]", options.CREDENTIALS_ARG, options.JSON_OUTPUT_ARG, SETS_ARG, PARTS_ARG),
+		Use:   fmt.Sprintf("lists %s %s [%s | %s]", options.CREDENTIALS_ARG, options.OUTPUT_FILE_ARG, SETS_ARG, PARTS_ARG),
 		Short: "Get the user's set or part lists",
 		Long:  "The lists command returns all set or part lists of the user.",
 

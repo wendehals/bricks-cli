@@ -189,8 +189,8 @@ func (c *Collection) RemoveQuantityZero() *Collection {
 
 // ExportToHTML writes an HTML file with all parts of the collection.
 func (c *Collection) ExportToHTML(fileName string) {
-	t := template.New("parts")
-	t.Funcs(template.FuncMap{
+	templ := template.New("parts")
+	templ.Funcs(template.FuncMap{
 		"abs": func(i int) int {
 			if i < 0 {
 				return -i
@@ -199,12 +199,12 @@ func (c *Collection) ExportToHTML(fileName string) {
 		},
 	})
 
-	b, err := fs.ReadFile("resources/parts_html.gotpl")
+	bytes, err := fs.ReadFile("resources/parts_html.gotpl")
 	if err != nil {
 		log.Fatalf(EXPORT_FAILED_MSG, fileName, err.Error())
 	}
 
-	t, err = t.Parse(string(b))
+	templ, err = templ.Parse(string(bytes))
 	if err != nil {
 		log.Fatalf(EXPORT_FAILED_MSG, fileName, err.Error())
 	}
@@ -217,7 +217,7 @@ func (c *Collection) ExportToHTML(fileName string) {
 
 	writer := bufio.NewWriter(file)
 
-	err = t.Execute(writer, c)
+	err = templ.Execute(writer, c)
 	if err != nil {
 		log.Fatalf(EXPORT_FAILED_MSG, fileName, err.Error())
 	}

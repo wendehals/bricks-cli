@@ -101,7 +101,7 @@ The following commands can be used in bricks scripts:
 
 * *Assignment*: `ID := exp` - assigns a collection of parts defined by the given expression to a variable with name ID. The variable can be used in any expression later on.
 * *save*: `save(exp, FILE_NAME)` - saves the given collection defined by the expression to a JSON file with the given FILE_NAME.
-* *export*: `export(exp, FILE_NAME)` - exports the given collection defined by the expression to an HTML file with the given FILE_NAME.
+* *export*: `export(exp, EXPORT_DIR)` - exports the given collection defined by the expression to an HTML file into the given EXPORT_DIR.
 
 ### Expressions
 

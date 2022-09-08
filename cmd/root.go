@@ -4,6 +4,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/cmd/api"
 	"github.com/wendehals/bricks/cmd/collection"
+	"github.com/wendehals/bricks/cmd/download"
 	"github.com/wendehals/bricks/cmd/options"
 )
 
@@ -27,7 +28,7 @@ func init() {
 	RootCmd.AddCommand(collection.CollectionCmd)
 	RootCmd.AddCommand(exportCmd)
 	RootCmd.AddCommand(scriptCmd)
-	RootCmd.AddCommand(downloadCmd)
+	RootCmd.AddCommand(download.DownloadCmd)
 
-	RootCmd.PersistentFlags().BoolVarP(&options.Verbose, "verbose", "", false, "Verbose output")
+	RootCmd.PersistentFlags().BoolVarP(&options.Verbose, "verbose", "", false, "verbose output")
 }

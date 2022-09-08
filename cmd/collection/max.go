@@ -9,7 +9,7 @@ import (
 )
 
 var maxCmd = &cobra.Command{
-	Use:   fmt.Sprintf("max %s JSON_FILE1 JSON_FILE2 ...", options.JSON_OUTPUT_ARG),
+	Use:   fmt.Sprintf("max %s PARTS_FILE1 PARTS_FILE2 ...", options.OUTPUT_FILE_ARG),
 	Short: "Calculates the maximum quantity of each part of at least two collections",
 	Long:  "The command calculates the maximum quantity of each part of at least two collections.",
 

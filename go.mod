@@ -1,6 +1,6 @@
 module github.com/wendehals/bricks
 
-go 1.18
+go 1.19
 
 require (
 	github.com/antlr/antlr4/runtime/Go/antlr v0.0.0-20220826213629-cd8f367ca010

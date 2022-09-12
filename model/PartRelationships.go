@@ -3,12 +3,14 @@ package model
 import (
 	"compress/gzip"
 	"encoding/csv"
-	"errors"
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/wendehals/bricks/utils"
 )
 
 type PartRelationships struct {
@@ -17,13 +19,39 @@ type PartRelationships struct {
 	Prints       map[string][]string `json:"prints"`
 }
 
+func GetPartRelationshipsPath() string {
+	return filepath.FromSlash(fmt.Sprintf("%s/partRelationships.json", utils.GetBricksDir()))
+}
+
 func ImportPartRelationships() *PartRelationships {
+	partRelationships := &PartRelationships{}
+
+	jsonFile, err := os.Open(GetPartRelationshipsPath())
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer jsonFile.Close()
+
+	data, err := io.ReadAll(jsonFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = json.Unmarshal(data, partRelationships)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return partRelationships
+}
+
+func ConvertPartRelationships(csvFile string) *PartRelationships {
 	p := &PartRelationships{}
 	p.Alternatives = make(map[string][]string)
 	p.Molds = make(map[string][]string)
 	p.Prints = make(map[string][]string)
 
-	csvReader := csv.NewReader(getPartRelationshipsReader())
+	csvReader := csv.NewReader(getPartRelationshipsReader(csvFile))
 	_, err := csvReader.Read() // omit header
 	if err != nil {
 		log.Fatal(err.Error())
@@ -50,18 +78,8 @@ func ImportPartRelationships() *PartRelationships {
 	return p
 }
 
-func getPartRelationshipsReader() *gzip.Reader {
-	userHome, err := os.UserHomeDir()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fileName := filepath.FromSlash(fmt.Sprintf("%s/.bricks-cli/part_relationships.csv.gz", userHome))
-	if _, err := os.Stat(fileName); errors.Is(err, os.ErrNotExist) {
-		DownloadPartRelationships()
-	}
-
-	file, err := os.Open(fileName)
+func getPartRelationshipsReader(csvFile string) *gzip.Reader {
+	file, err := os.Open(csvFile)
 	if err != nil {
 		log.Fatal(err)
 	}

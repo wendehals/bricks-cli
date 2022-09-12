@@ -10,6 +10,8 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+
+	"github.com/wendehals/bricks/utils"
 )
 
 const (
@@ -18,7 +20,7 @@ const (
 	PART_IMAGES_REG_EXP        string = "<a href=\"(https://cdn\\.rebrickable\\.com/media/downloads/ldraw/parts_\\d+.zip)\">"
 )
 
-func DownloadPartRelationships() {
+func DownloadPartRelationships() string {
 	log.Print("Loading part relationships file from rebrickable.com... ")
 
 	downloadUrl := getPartRelationshipsURL()
@@ -32,24 +34,7 @@ func DownloadPartRelationships() {
 	}
 	defer response.Body.Close()
 
-	userHome, err := os.UserHomeDir()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	bricksDir := filepath.FromSlash(fmt.Sprintf("%s/.bricks-cli", userHome))
-	if _, err := os.Stat(bricksDir); os.IsNotExist(err) {
-		err = os.Mkdir(bricksDir, os.ModePerm)
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-
-	fileName := filepath.FromSlash(fmt.Sprintf("%s/part_relationships.csv.gz", bricksDir))
-	if err != nil {
-		log.Fatal(err)
-	}
-
+	fileName := filepath.FromSlash(fmt.Sprintf("%s/part_relationships.csv.gz", os.TempDir()))
 	file, err := os.Create(fileName)
 	if err != nil {
 		log.Fatal(err)
@@ -62,6 +47,8 @@ func DownloadPartRelationships() {
 	}
 
 	log.Println("done")
+
+	return fileName
 }
 
 func getPartRelationshipsURL() string {
@@ -88,13 +75,15 @@ func getPartRelationshipsURL() string {
 	return downloadUrl
 }
 
-func DownloadPartImages() {
+func DownloadPartImages(update bool) {
 	log.Print("Loading part images file from rebrickable.com...")
 
 	partImagesURLs := getPartImagesURLs()
 	if len(partImagesURLs) == 0 {
 		log.Fatalln("no URLs for part images found!")
 	}
+
+	bricksDir := utils.GetBricksDir()
 
 	for _, partImagesURL := range partImagesURLs {
 		log.Printf("Loading %s...", partImagesURL)
@@ -105,23 +94,11 @@ func DownloadPartImages() {
 		}
 		defer response.Body.Close()
 
-		userHome, err := os.UserHomeDir()
-		if err != nil {
-			log.Fatal(err)
-		}
+		splitURL := strings.Split(partImagesURL, "/")
+		fileName := filepath.FromSlash(fmt.Sprintf("%s/%s", bricksDir, splitURL[len(splitURL)-1]))
 
-		bricksDir := filepath.FromSlash(fmt.Sprintf("%s/.bricks-cli", userHome))
-		if _, err := os.Stat(bricksDir); os.IsNotExist(err) {
-			err = os.Mkdir(bricksDir, os.ModePerm)
-			if err != nil {
-				log.Fatal(err)
-			}
-		}
-
-		splittedURL := strings.Split(partImagesURL, "/")
-		fileName := filepath.FromSlash(fmt.Sprintf("%s/%s", bricksDir, splittedURL[len(splittedURL)-1]))
-		if err != nil {
-			log.Fatal(err)
+		if utils.FileExists(fileName) && !update {
+			continue
 		}
 
 		file, err := os.Create(fileName)

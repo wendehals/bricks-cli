@@ -20,5 +20,5 @@ Be aware that this download has an amount of more than 5GB.`,
 }
 
 func executeImagesDownload() {
-	model.DownloadPartImages()
+	model.DownloadPartImages(update)
 }

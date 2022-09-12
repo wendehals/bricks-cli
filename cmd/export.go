@@ -12,6 +12,7 @@ import (
 	"github.com/wendehals/bricks/api"
 	"github.com/wendehals/bricks/cmd/options"
 	"github.com/wendehals/bricks/model"
+	"github.com/wendehals/bricks/utils"
 )
 
 var (
@@ -118,12 +119,7 @@ func extractImage(partNumber string, colorId uint, exportDir string) (string, er
 }
 
 func findImagesFileForColor(colorId uint) (string, error) {
-	userHome, err := os.UserHomeDir()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	imagesFile := filepath.FromSlash(fmt.Sprintf("%s/.bricks-cli/parts_%d.zip", userHome, colorId))
+	imagesFile := filepath.FromSlash(fmt.Sprintf("%s/parts_%d.zip", utils.GetBricksDir(), colorId))
 	if _, err := os.Stat(imagesFile); os.IsNotExist(err) {
 		return "", err
 	}

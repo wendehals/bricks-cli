@@ -113,7 +113,7 @@ func TestMergeByColor(t *testing.T) {
 	part1 := collection.Parts[1]
 	test.AssertSameString(t, "2a", part1.Part.Number)
 	test.AssertSameInt(t, 1, part1.Quantity)
-	test.AssertSameInt(t, 0, int(part1.Color.ID))
+	test.AssertSameInt(t, -1, int(part1.Color.ID))
 	test.AssertSameString(t, "", part1.Color.Name)
 	test.AssertFalse(t, part1.IsSpare)
 

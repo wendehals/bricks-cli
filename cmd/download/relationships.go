@@ -21,7 +21,7 @@ var relationshipsCmd = &cobra.Command{
 }
 
 func executeRelationshipsDownload() {
-	partRelationshipsPath := model.GetPartRelationshipsPath()
+	partRelationshipsPath := utils.GetPartRelationshipsPath()
 	if utils.FileExists(partRelationshipsPath) && !update {
 		return
 	}

@@ -4,45 +4,15 @@ import (
 	"compress/gzip"
 	"encoding/csv"
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"os"
-	"path/filepath"
-
-	"github.com/wendehals/bricks/utils"
 )
 
 type PartRelationships struct {
 	Alternatives map[string][]string `json:"alternatives"`
 	Molds        map[string][]string `json:"molds"`
 	Prints       map[string][]string `json:"prints"`
-}
-
-func GetPartRelationshipsPath() string {
-	return filepath.FromSlash(fmt.Sprintf("%s/partRelationships.json", utils.GetBricksDir()))
-}
-
-func ImportPartRelationships() *PartRelationships {
-	partRelationships := &PartRelationships{}
-
-	jsonFile, err := os.Open(GetPartRelationshipsPath())
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer jsonFile.Close()
-
-	data, err := io.ReadAll(jsonFile)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	err = json.Unmarshal(data, partRelationships)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return partRelationships
 }
 
 func ConvertPartRelationships(csvFile string) *PartRelationships {
@@ -78,39 +48,26 @@ func ConvertPartRelationships(csvFile string) *PartRelationships {
 	return p
 }
 
-func getPartRelationshipsReader(csvFile string) *gzip.Reader {
-	file, err := os.Open(csvFile)
+func ImportPartRelationships(filePath string) *PartRelationships {
+	partRelationships := &PartRelationships{}
+
+	jsonFile, err := os.Open(filePath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer jsonFile.Close()
+
+	data, err := io.ReadAll(jsonFile)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	gzReader, err := gzip.NewReader(file)
+	err = json.Unmarshal(data, partRelationships)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return gzReader
-}
-
-func (p *PartRelationships) addToAlternatives(child, parent string) {
-	if p.Alternatives[child] == nil {
-		p.Alternatives[child] = []string{}
-	}
-	p.Alternatives[child] = append(p.Alternatives[child], parent)
-}
-
-func (p *PartRelationships) addToMolds(child, parent string) {
-	if p.Molds[child] == nil {
-		p.Molds[child] = []string{}
-	}
-	p.Molds[child] = append(p.Molds[child], parent)
-}
-
-func (p *PartRelationships) addToPrints(child, parent string) {
-	if p.Prints[child] == nil {
-		p.Prints[child] = []string{}
-	}
-	p.Prints[child] = append(p.Prints[child], parent)
+	return partRelationships
 }
 
 func (p *PartRelationships) IsAlternativeCompatible(part1, part2 string) bool {
@@ -159,4 +116,39 @@ func (p *PartRelationships) IsPrintCompatible(part1, part2 string) bool {
 	}
 
 	return false
+}
+
+func (p *PartRelationships) addToAlternatives(child, parent string) {
+	if p.Alternatives[child] == nil {
+		p.Alternatives[child] = []string{}
+	}
+	p.Alternatives[child] = append(p.Alternatives[child], parent)
+}
+
+func (p *PartRelationships) addToMolds(child, parent string) {
+	if p.Molds[child] == nil {
+		p.Molds[child] = []string{}
+	}
+	p.Molds[child] = append(p.Molds[child], parent)
+}
+
+func (p *PartRelationships) addToPrints(child, parent string) {
+	if p.Prints[child] == nil {
+		p.Prints[child] = []string{}
+	}
+	p.Prints[child] = append(p.Prints[child], parent)
+}
+
+func getPartRelationshipsReader(csvFile string) *gzip.Reader {
+	file, err := os.Open(csvFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	gzReader, err := gzip.NewReader(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return gzReader
 }

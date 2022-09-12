@@ -31,3 +31,7 @@ func GetBricksDir() string {
 
 	return bricksDir
 }
+
+func GetPartRelationshipsPath() string {
+	return filepath.FromSlash(fmt.Sprintf("%s/partRelationships.json", GetBricksDir()))
+}

@@ -46,7 +46,7 @@ func RetrieveSetListParts(bricksAPI *BricksAPI, usersAPI *UsersAPI, setListId ui
 func RetrievePartListParts(usersAPI *UsersAPI, partListsFile string, includeNonBuildable bool) []*model.Collection {
 	log.Printf("Retrieving parts of all part lists from the part lists file %s\n", partListsFile)
 
-	partLists := model.ImportPartLists(partListsFile)
+	partLists := model.Load(&model.PartLists{}, partListsFile)
 	var collections []*model.Collection
 	for _, partList := range partLists.PartLists {
 		if partList.IsBuildable || (includeNonBuildable && !partList.IsBuildable) {

@@ -1,4 +1,4 @@
-package model
+package utils
 
 import (
 	"bufio"
@@ -10,8 +10,6 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-
-	"github.com/wendehals/bricks/utils"
 )
 
 const (
@@ -83,7 +81,7 @@ func DownloadPartImages(update bool) {
 		log.Fatalln("no URLs for part images found!")
 	}
 
-	bricksDir := utils.GetBricksDir()
+	bricksDir := GetBricksDir()
 
 	for _, partImagesURL := range partImagesURLs {
 		log.Printf("Loading %s...", partImagesURL)
@@ -97,7 +95,7 @@ func DownloadPartImages(update bool) {
 		splitURL := strings.Split(partImagesURL, "/")
 		fileName := filepath.FromSlash(fmt.Sprintf("%s/%s", bricksDir, splitURL[len(splitURL)-1]))
 
-		if utils.FileExists(fileName) && !update {
+		if FileExists(fileName) && !update {
 			continue
 		}
 

@@ -2,11 +2,34 @@ package model
 
 import (
 	"encoding/json"
+	"io"
 	"log"
 	"os"
 )
 
-func Save(v interface{}, fileName string) {
+// Load reads a model from a JSON encoded file.
+func Load[V any](v V, fileName string) V {
+	jsonFile, err := os.Open(fileName)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer jsonFile.Close()
+
+	data, err := io.ReadAll(jsonFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = json.Unmarshal(data, v)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return v
+}
+
+// Save writes a model into a JSON encoded file.
+func Save(v any, fileName string) {
 	data, err := json.MarshalIndent(v, "", " ")
 	if err != nil {
 		log.Fatalf("serializing to JSON failed: %s", err.Error())

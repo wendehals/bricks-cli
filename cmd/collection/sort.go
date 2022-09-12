@@ -22,7 +22,7 @@ var sortCmd = &cobra.Command{
 }
 
 func executeSort(args []string) {
-	collection := model.ImportCollection(args[0])
+	collection := model.Load(&model.Collection{}, args[0])
 
 	if jsonFile == "" {
 		jsonFile = options.FileNameFromArgs(args, "_sorted.parts")

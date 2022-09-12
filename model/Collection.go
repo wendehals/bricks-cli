@@ -37,29 +37,6 @@ const (
 //go:embed resources/parts_html.gotpl
 var fs embed.FS
 
-// ImportCollection reads a collection from a JSON encoded file.
-func ImportCollection(fileName string) *Collection {
-	collection := &Collection{}
-
-	jsonFile, err := os.Open(fileName)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer jsonFile.Close()
-
-	data, err := io.ReadAll(jsonFile)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	err = json.Unmarshal(data, collection)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return collection
-}
-
 // Sort the Parts of a collection by their Part Number
 func (c *Collection) Sort() *Collection {
 	sort.Slice(c.Parts, func(i, j int) bool {

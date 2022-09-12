@@ -26,7 +26,7 @@ func executeRelationshipsDownload() {
 		return
 	}
 
-	csvFile := model.DownloadPartRelationships()
+	csvFile := utils.DownloadPartRelationships()
 	partRelationships := model.ConvertPartRelationships(csvFile)
 	model.Save(partRelationships, partRelationshipsPath)
 	os.Remove(csvFile)

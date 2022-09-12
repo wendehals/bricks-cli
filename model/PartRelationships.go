@@ -3,7 +3,6 @@ package model
 import (
 	"compress/gzip"
 	"encoding/csv"
-	"encoding/json"
 	"io"
 	"log"
 	"os"
@@ -46,28 +45,6 @@ func ConvertPartRelationships(csvFile string) *PartRelationships {
 	}
 
 	return p
-}
-
-func ImportPartRelationships(filePath string) *PartRelationships {
-	partRelationships := &PartRelationships{}
-
-	jsonFile, err := os.Open(filePath)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer jsonFile.Close()
-
-	data, err := io.ReadAll(jsonFile)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	err = json.Unmarshal(data, partRelationships)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return partRelationships
 }
 
 func (p *PartRelationships) IsAlternativeCompatible(part1, part2 string) bool {

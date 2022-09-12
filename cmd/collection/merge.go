@@ -38,7 +38,7 @@ func init() {
 }
 
 func executeMerge(args []string) {
-	collection := model.ImportCollection(args[0])
+	collection := model.Load(&model.Collection{}, args[0])
 
 	merged := collection
 	if color {

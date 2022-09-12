@@ -47,5 +47,5 @@ func executeExport(args []string) {
 
 	log.Printf("Exporting '%s' to directory '%s'", args[0], exportDir)
 
-	model.ImportCollection(args[0]).ExportToHTML(exportDir)
+	model.Load(&model.Collection{}, args[0]).ExportToHTML(exportDir)
 }

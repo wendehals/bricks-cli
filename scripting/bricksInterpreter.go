@@ -58,7 +58,7 @@ func (b *bricksInterpreter) ExitLoad(ctx *parser.LoadContext) {
 	filePath := strings.Trim(ctx.STRING().GetText(), "\"")
 
 	log.Printf("Loading collection from '%s'", filePath)
-	b.stack.push(model.ImportCollection(filePath))
+	b.stack.push(model.Load(&model.Collection{}, filePath))
 }
 
 func (b *bricksInterpreter) ExitAllParts(ctx *parser.AllPartsContext) {

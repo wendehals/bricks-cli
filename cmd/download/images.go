@@ -2,7 +2,7 @@ package download
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/wendehals/bricks/model"
+	"github.com/wendehals/bricks/utils"
 )
 
 var imagesCmd = &cobra.Command{
@@ -20,5 +20,5 @@ Be aware that this download has an amount of more than 5GB.`,
 }
 
 func executeImagesDownload() {
-	model.DownloadPartImages(update)
+	utils.DownloadPartImages(update)
 }

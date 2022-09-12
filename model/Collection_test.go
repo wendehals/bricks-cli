@@ -7,7 +7,7 @@ import (
 )
 
 func TestSort(t *testing.T) {
-	collection := ImportCollection("test_resources/testCollection1.parts")
+	collection := Load(&Collection{}, "test_resources/testCollection1.parts")
 
 	collection.Sort()
 
@@ -19,7 +19,7 @@ func TestSort(t *testing.T) {
 }
 
 func TestAdd(t *testing.T) {
-	collection := ImportCollection("test_resources/testCollection1.parts").Add(ImportCollection("test_resources/testCollection2.parts")).Sort()
+	collection := Load(&Collection{}, "test_resources/testCollection1.parts").Add(Load(&Collection{}, "test_resources/testCollection2.parts")).Sort()
 
 	assertSize(t, collection, 9)
 
@@ -46,7 +46,7 @@ func TestAdd(t *testing.T) {
 }
 
 func TestSubstract(t *testing.T) {
-	collection := ImportCollection("test_resources/testCollection1.parts").Subtract(ImportCollection("test_resources/testCollection2.parts")).Sort()
+	collection := Load(&Collection{}, "test_resources/testCollection1.parts").Subtract(Load(&Collection{}, "test_resources/testCollection2.parts")).Sort()
 
 	assertSize(t, collection, 9)
 
@@ -79,7 +79,7 @@ func TestSubstract(t *testing.T) {
 }
 
 func TestMax(t *testing.T) {
-	collection := ImportCollection("test_resources/testCollection1.parts").MergeByColor().Max(ImportCollection("test_resources/testCollection2.parts").MergeByColor()).Sort()
+	collection := Load(&Collection{}, "test_resources/testCollection1.parts").MergeByColor().Max(Load(&Collection{}, "test_resources/testCollection2.parts").MergeByColor()).Sort()
 
 	assertSize(t, collection, 6)
 
@@ -103,7 +103,7 @@ func TestMax(t *testing.T) {
 }
 
 func TestMergeByColor(t *testing.T) {
-	collection := ImportCollection("test_resources/testCollection1.parts").MergeByColor().Sort()
+	collection := Load(&Collection{}, "test_resources/testCollection1.parts").MergeByColor().Sort()
 
 	assertSize(t, collection, 4)
 
@@ -125,7 +125,7 @@ func TestMergeByColor(t *testing.T) {
 }
 
 func TestMergeByVariant(t *testing.T) {
-	collection := ImportCollection("test_resources/testCollection2.parts").MergeByVariant().Sort()
+	collection := Load(&Collection{}, "test_resources/testCollection2.parts").MergeByVariant().Sort()
 
 	assertSize(t, collection, 4)
 

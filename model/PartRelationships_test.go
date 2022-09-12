@@ -6,7 +6,7 @@ import (
 	"github.com/wendehals/bricks/test"
 )
 
-var p = ImportPartRelationships("test_resources/partRelationships.json")
+var p = Load(&PartRelationships{}, "test_resources/partRelationships.json")
 
 func TestIsAlternativeCompatible(t *testing.T) {
 	test.AssertTrue(t, p.IsAlternativeCompatible("3020", "3709"))

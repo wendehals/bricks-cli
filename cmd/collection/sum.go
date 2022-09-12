@@ -26,7 +26,7 @@ merging identical parts to single lots.`,
 func executeSum(args []string) {
 	var collections []model.Collection
 	for _, filename := range args {
-		collections = append(collections, *model.ImportCollection(filename))
+		collections = append(collections, *model.Load(&model.Collection{}, filename))
 	}
 
 	sum := model.Collection{}

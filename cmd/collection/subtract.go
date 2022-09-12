@@ -28,8 +28,8 @@ the list of missing parts.`,
 }
 
 func executeSubtract(args []string) {
-	minuend := model.ImportCollection(args[0])
-	subtrahend := model.ImportCollection(args[1])
+	minuend := model.Load(&model.Collection{}, args[0])
+	subtrahend := model.Load(&model.Collection{}, args[1])
 	result := minuend.Subtract(subtrahend)
 
 	if jsonFile == "" {

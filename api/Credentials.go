@@ -1,10 +1,9 @@
 package api
 
 import (
-	"encoding/json"
 	"fmt"
-	"io"
-	"os"
+
+	"github.com/wendehals/bricks/model"
 )
 
 const CREDENTIALS_ERR_MSG = "please provide a valid JSON file containing the Rebrickable credentials:\n   %s"
@@ -16,20 +15,7 @@ type Credentials struct {
 }
 
 func ImportCredentials(fileName string) (*Credentials, error) {
-	credentials := &Credentials{}
-
-	jsonFile, err := os.Open(fileName)
-	if err != nil {
-		return nil, fmt.Errorf(CREDENTIALS_ERR_MSG, err)
-	}
-	defer jsonFile.Close()
-
-	data, err := io.ReadAll(jsonFile)
-	if err != nil {
-		return nil, fmt.Errorf(CREDENTIALS_ERR_MSG, err)
-	}
-
-	err = json.Unmarshal(data, credentials)
+	credentials, err := model.LoadE(&Credentials{}, fileName)
 	if err != nil {
 		return nil, fmt.Errorf(CREDENTIALS_ERR_MSG, err)
 	}

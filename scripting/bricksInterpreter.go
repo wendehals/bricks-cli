@@ -42,8 +42,8 @@ func (b *bricksInterpreter) ExitSave(ctx *parser.SaveContext) {
 
 func (b *bricksInterpreter) ExitExport(ctx *parser.ExportContext) {
 	collection := b.stack.pop()
-	filePath := strings.Trim(ctx.STRING().GetText(), "\"")
-	collection.ExportToHTML(filePath)
+	exportDir := strings.Trim(ctx.STRING().GetText(), "\"")
+	collection.ExportToHTML(exportDir)
 }
 
 func (b *bricksInterpreter) ExitIdentifier(ctx *parser.IdentifierContext) {

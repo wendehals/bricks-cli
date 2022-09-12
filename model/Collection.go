@@ -1,18 +1,23 @@
 package model
 
 import (
+	"archive/zip"
 	"bufio"
 	"embed"
 	"encoding/json"
+	"fmt"
 	"html/template"
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 	"regexp"
 	"sort"
 	"strconv"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/wendehals/bricks/cmd/options"
+	"github.com/wendehals/bricks/utils"
 )
 
 // Collection represents any collection of parts (set, parts list, ...)
@@ -114,7 +119,7 @@ func (c *Collection) MergeByColor() *Collection {
 	newParts := []PartEntry{}
 	for _, value := range partsMap {
 		var currentPart = value[0]
-		currentPart.Color = Color{}
+		currentPart.Color = Color{-1, ""}
 
 		for i := 1; i < len(value); i++ {
 			currentPart.Quantity += value[i].Quantity
@@ -187,8 +192,17 @@ func (c *Collection) RemoveQuantityZero() *Collection {
 	return c.filter(func(part PartEntry) bool { return part.Quantity != 0 })
 }
 
-// ExportToHTML writes an HTML file with all parts of the collection.
-func (c *Collection) ExportToHTML(fileName string) {
+// ExportToHTML writes an HTML file with all parts of the collection into the given export directory.
+func (c *Collection) ExportToHTML(exportDir string) {
+	err := os.MkdirAll(exportDir, os.ModePerm)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	c.replaceImageURLs(exportDir)
+
+	htmlFileName := filepath.FromSlash(fmt.Sprintf("%s/%s.html", exportDir, exportDir))
+
 	templ := template.New("parts")
 	templ.Funcs(template.FuncMap{
 		"abs": func(i int) int {
@@ -201,17 +215,17 @@ func (c *Collection) ExportToHTML(fileName string) {
 
 	bytes, err := fs.ReadFile("resources/parts_html.gotpl")
 	if err != nil {
-		log.Fatalf(EXPORT_FAILED_MSG, fileName, err.Error())
+		log.Fatalf(EXPORT_FAILED_MSG, htmlFileName, err.Error())
 	}
 
 	templ, err = templ.Parse(string(bytes))
 	if err != nil {
-		log.Fatalf(EXPORT_FAILED_MSG, fileName, err.Error())
+		log.Fatalf(EXPORT_FAILED_MSG, htmlFileName, err.Error())
 	}
 
-	file, err := os.Create(fileName)
+	file, err := os.Create(htmlFileName)
 	if err != nil {
-		log.Fatalf(EXPORT_FAILED_MSG, fileName, err.Error())
+		log.Fatalf(EXPORT_FAILED_MSG, htmlFileName, err.Error())
 	}
 	defer file.Close()
 
@@ -219,7 +233,7 @@ func (c *Collection) ExportToHTML(fileName string) {
 
 	err = templ.Execute(writer, c)
 	if err != nil {
-		log.Fatalf(EXPORT_FAILED_MSG, fileName, err.Error())
+		log.Fatalf(EXPORT_FAILED_MSG, htmlFileName, err.Error())
 	}
 
 	writer.Flush()
@@ -285,6 +299,19 @@ func (c *Collection) setParts(partsMap map[string][]PartEntry) {
 	}
 
 	c.Parts = newParts
+}
+
+func (c *Collection) replaceImageURLs(exportDir string) {
+	for _, partEntry := range c.Parts {
+		if partEntry.Color.ID >= 0 {
+			imageUrl, err := extractImage(partEntry.Part.Number, partEntry.Color.ID, exportDir)
+			if err != nil {
+				partEntry.Part.ImageURL = imageUrl
+			} else if err != nil && options.Verbose {
+				log.Print(err)
+			}
+		}
+	}
 }
 
 func (c *Collection) recalculateQuantity(other *Collection, recalc func(int, int) int) *Collection {
@@ -379,4 +406,57 @@ func loadVariants() map[string]string {
 	}
 
 	return variantsMapping
+}
+
+func extractImage(partNumber string, colorId int, exportDir string) (string, error) {
+	imagesFile, err := findImagesFileForColor(colorId)
+	if err != nil {
+		return "", err
+	}
+
+	archive, err := zip.OpenReader(imagesFile)
+	if err != nil {
+		return "", err
+	}
+	defer archive.Close()
+
+	imageFileName := fmt.Sprintf("%s.png", partNumber)
+	for _, imageFile := range archive.File {
+		if imageFile.Name == imageFileName {
+			if options.Verbose {
+				log.Printf("Unzipping image file '%s'", imageFile.Name)
+			}
+
+			filePath := filepath.Join(exportDir, imageFile.Name)
+			dstFile, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, imageFile.Mode())
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			fileInArchive, err := imageFile.Open()
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			if _, err := io.Copy(dstFile, fileInArchive); err != nil {
+				log.Fatal(err)
+			}
+
+			dstFile.Close()
+			fileInArchive.Close()
+
+			return imageFile.Name, nil
+		}
+	}
+
+	return "", fmt.Errorf("no image file found for part number %s in color %d", partNumber, colorId)
+}
+
+func findImagesFileForColor(colorId int) (string, error) {
+	imagesFile := filepath.FromSlash(fmt.Sprintf("%s/parts_%d.zip", utils.GetBricksDir(), colorId))
+	if _, err := os.Stat(imagesFile); os.IsNotExist(err) {
+		return "", err
+	}
+
+	return imagesFile, nil
 }

@@ -107,16 +107,3 @@ func (b *BricksAPI) GetPartColors(partNum string) []model.PartColor {
 
 	return partColors
 }
-
-func (b *BricksAPI) ReplaceImagesByMatchingColor(collection *model.Collection) {
-	for _, partEntry := range collection.Parts {
-		partColors := b.GetPartColors(partEntry.Part.Number)
-
-		for _, color := range partColors {
-			if color.ColorId == partEntry.Color.ID {
-				partEntry.Part.ImageURL = color.ImageURL
-				break
-			}
-		}
-	}
-}

@@ -11,6 +11,7 @@ import (
 const (
 	BRICKS_URL string = REBRICKABLE_BASE_URL + "lego/%s"
 
+	COLORS_ERR_MSG      string = "list of colors could not be retrieved: %s"
 	SET_PARTS_ERR_MSG   string = "parts list of set number %s could not be retrieved: %s"
 	PART_COLORS_ERR_MSG string = "part colors could not be retrieved: %s"
 )
@@ -28,6 +29,34 @@ func NewBricksAPI(client *http.Client, apiKey string, verbose bool) *BricksAPI {
 	bricks.verbose = verbose
 
 	return &bricks
+}
+
+// GetSet returns the result of /api/v3/lego/colors/
+func (b *BricksAPI) GetColors() []model.Color {
+	log.Print("Retrieving a list of all colors...")
+
+	url := fmt.Sprintf(BRICKS_URL, "colors/?inc_color_details=0")
+	colors := []model.Color{}
+	colorsPage := colorsPageResult{}
+
+	err := b.requestPage(url, &colorsPage)
+	if err != nil {
+		log.Fatalf(COLORS_ERR_MSG, err.Error())
+	}
+
+	colors = append(colors, colorsPage.Results...)
+	for len(colorsPage.Next) > 0 {
+		url = colorsPage.Next
+		colorsPage = colorsPageResult{}
+		err = b.requestPage(url, &colorsPage)
+		if err != nil {
+			log.Fatalf(COLORS_ERR_MSG, err.Error())
+		}
+
+		colors = append(colors, colorsPage.Results...)
+	}
+
+	return colors
 }
 
 // GetSet returns the result of /api/v3/lego/sets/{set_num}/

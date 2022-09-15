@@ -14,40 +14,7 @@ type PartRelationships struct {
 	Prints       map[string][]string `json:"prints"`
 }
 
-func ConvertPartRelationships(csvFile string) *PartRelationships {
-	p := &PartRelationships{}
-	p.Alternatives = make(map[string][]string)
-	p.Molds = make(map[string][]string)
-	p.Prints = make(map[string][]string)
-
-	csvReader := csv.NewReader(getPartRelationshipsReader(csvFile))
-	_, err := csvReader.Read() // omit header
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-	for {
-		record, err := csvReader.Read()
-		if err != nil {
-			if err == io.EOF {
-				break
-			}
-			log.Fatal(err)
-		}
-
-		switch record[0] {
-		case "A":
-			p.addToAlternatives(record[1], record[2])
-		case "M":
-			p.addToMolds(record[1], record[2])
-		case "P":
-			p.addToPrints(record[1], record[2])
-		}
-	}
-
-	return p
-}
-
-func (p *PartRelationships) IsAlternativeCompatible(part1, part2 string) bool {
+func (p *PartRelationships) IsAlternative(part1, part2 string) bool {
 	for _, alternative := range p.Alternatives[part1] {
 		if part2 == alternative {
 			return true
@@ -63,7 +30,7 @@ func (p *PartRelationships) IsAlternativeCompatible(part1, part2 string) bool {
 	return false
 }
 
-func (p *PartRelationships) IsMoldCompatible(part1, part2 string) bool {
+func (p *PartRelationships) IsMold(part1, part2 string) bool {
 	for _, mold := range p.Molds[part1] {
 		if part2 == mold {
 			return true
@@ -79,7 +46,7 @@ func (p *PartRelationships) IsMoldCompatible(part1, part2 string) bool {
 	return false
 }
 
-func (p *PartRelationships) IsPrintCompatible(part1, part2 string) bool {
+func (p *PartRelationships) IsPrint(part1, part2 string) bool {
 	for _, print := range p.Prints[part1] {
 		if part2 == print {
 			return true
@@ -116,7 +83,36 @@ func (p *PartRelationships) addToPrints(child, parent string) {
 	p.Prints[child] = append(p.Prints[child], parent)
 }
 
-func getPartRelationshipsReader(csvFile string) *gzip.Reader {
+func ConvertPartRelationships(csvFile string) *PartRelationships {
+	p := &PartRelationships{}
+	p.Alternatives = make(map[string][]string)
+	p.Molds = make(map[string][]string)
+	p.Prints = make(map[string][]string)
+
+	csvReader := getCSVReader(csvFile)
+	for {
+		record, err := csvReader.Read()
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			log.Fatal(err)
+		}
+
+		switch record[0] {
+		case "A":
+			p.addToAlternatives(record[1], record[2])
+		case "M":
+			p.addToMolds(record[1], record[2])
+		case "P":
+			p.addToPrints(record[1], record[2])
+		}
+	}
+
+	return p
+}
+
+func getCSVReader(csvFile string) *csv.Reader {
 	file, err := os.Open(csvFile)
 	if err != nil {
 		log.Fatal(err)
@@ -127,5 +123,11 @@ func getPartRelationshipsReader(csvFile string) *gzip.Reader {
 		log.Fatal(err)
 	}
 
-	return gzReader
+	csvReader := csv.NewReader(gzReader)
+	_, err = csvReader.Read() // omit header
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return csvReader
 }

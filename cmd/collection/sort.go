@@ -24,9 +24,9 @@ var sortCmd = &cobra.Command{
 func executeSort(args []string) {
 	collection := model.Load(&model.Collection{}, args[0])
 
-	if jsonFile == "" {
-		jsonFile = options.FileNameFromArgs(args, "_sorted.parts")
+	if outputFile == "" {
+		outputFile = options.FileNameFromArgs(args, "_sorted.parts")
 	}
 
-	model.Save(collection.Sort(), jsonFile)
+	model.Save(collection.Sort(), outputFile)
 }

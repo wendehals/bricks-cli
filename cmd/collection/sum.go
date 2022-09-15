@@ -34,9 +34,9 @@ func executeSum(args []string) {
 		sum.Add(&collection)
 	}
 
-	if jsonFile == "" {
-		jsonFile = options.FileNameFromArgs(args, "_sum.parts")
+	if outputFile == "" {
+		outputFile = options.FileNameFromArgs(args, "_sum.parts")
 	}
 
-	model.Save(sum, jsonFile)
+	model.Save(sum, outputFile)
 }

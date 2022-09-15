@@ -32,9 +32,9 @@ func executeMax(args []string) {
 		max.Max(&collection)
 	}
 
-	if jsonFile == "" {
-		jsonFile = options.FileNameFromArgs(args, "_max.parts")
+	if outputFile == "" {
+		outputFile = options.FileNameFromArgs(args, "_max.parts")
 	}
 
-	model.Save(max, jsonFile)
+	model.Save(max, outputFile)
 }

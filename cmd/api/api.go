@@ -66,16 +66,16 @@ func init() {
 	ApiCmd.PersistentFlags().StringVarP(&outputFile, options.OUTPUT_FILE_OPT, options.OUTPUT_FILE_SOPT, "", options.OUTPUT_FILE_USAGE)
 }
 
-func CreateBricksAPI() *api.BricksAPI {
-	return api.NewBricksAPI(createClient(), credentials.APIKey, options.Verbose)
-}
-
-func CreateUsersAPI() *api.UsersAPI {
-	return api.NewUsersAPI(createClient(), credentials, options.Verbose)
-}
-
 func createClient() *http.Client {
 	return &http.Client{
 		Timeout: time.Second * 5,
 	}
+}
+
+func createBricksAPI() *api.BricksAPI {
+	return api.NewBricksAPI(createClient(), credentials.APIKey, options.Verbose)
+}
+
+func createUsersAPI() *api.UsersAPI {
+	return api.NewUsersAPI(createClient(), credentials, options.Verbose)
 }

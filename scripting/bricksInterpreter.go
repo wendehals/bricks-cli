@@ -51,7 +51,7 @@ func (b *bricksInterpreter) ExitIdentifier(ctx *parser.IdentifierContext) {
 	if !ok {
 		log.Fatalf("The variable '%s' is not defined", ctx.ID().GetText())
 	}
-	b.stack.push(value.Clone())
+	b.stack.push(model.DeepClone(value, &model.Collection{}))
 }
 
 func (b *bricksInterpreter) ExitLoad(ctx *parser.LoadContext) {

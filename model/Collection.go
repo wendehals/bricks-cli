@@ -20,6 +20,11 @@ import (
 	"github.com/wendehals/bricks/utils"
 )
 
+const (
+	EXPORT_FAILED_MSG  = "exporting collection to HTML file '%s' failed: %s"
+	CLONING_FAILED_MSG = "cloning collection failed: %s"
+)
+
 // Collection represents any collection of parts (set, parts list, ...)
 type Collection struct {
 	User  string      `json:"user"`
@@ -27,15 +32,6 @@ type Collection struct {
 	Names []string    `json:"names"`
 	Parts []PartEntry `json:"parts"`
 }
-
-const (
-	EXPORT_FAILED_MSG  = "exporting collection to HTML file '%s' failed: %s"
-	CLONING_FAILED_MSG = "cloning collection failed: %s"
-)
-
-//go:embed resources/variants.json
-//go:embed resources/parts_html.gotpl
-var fs embed.FS
 
 // Sort the Parts of a collection by their Part Number
 func (c *Collection) Sort() *Collection {
@@ -57,6 +53,20 @@ func (c *Collection) Sort() *Collection {
 	return c
 }
 
+func (c *Collection) Find(partNum string, colorId int) *PartEntry {
+	return c.find(partNum, colorId, func(s1, s2 string) bool { return s1 == s2 })
+}
+
+func (c *Collection) find(partNum string, colorId int, eq func(string, string) bool) *PartEntry {
+	for i := range c.Parts {
+		partEntry := &c.Parts[i]
+		if eq(partEntry.Part.Number, partNum) && partEntry.Color.ID == colorId {
+			return partEntry
+		}
+	}
+	return nil
+}
+
 // Add one collection to another.
 // The isSpare flag of PartEntry will be invalid afterwards and set to false for all entries.
 func (c *Collection) Add(other *Collection) *Collection {
@@ -66,7 +76,7 @@ func (c *Collection) Add(other *Collection) *Collection {
 	return c.recalculateQuantity(other, add)
 }
 
-// Subtract on collection from another.
+// Subtract one collection from another.
 // The isSpare flag of PartEntry will be invalid afterwards and set to false for all entries.
 func (c *Collection) Subtract(other *Collection) *Collection {
 	c.IDs = []string{}
@@ -149,21 +159,6 @@ func (c *Collection) HasNegativePartQuantity() bool {
 	return false
 }
 
-// filter applies function f on each part of the collection and removes those from the collection for which f returns false.
-func (c *Collection) filter(f func(PartEntry) bool) *Collection {
-	filteredParts := []PartEntry{}
-
-	for _, partEntry := range c.Parts {
-		if f(partEntry) {
-			filteredParts = append(filteredParts, partEntry)
-		}
-	}
-
-	c.Parts = filteredParts
-
-	return c
-}
-
 // RemoveQuantityZero removes all parts of the collection which quantity is zero.
 func (c *Collection) RemoveQuantityZero() *Collection {
 	return c.filter(func(part PartEntry) bool { return part.Quantity != 0 })
@@ -190,7 +185,7 @@ func (c *Collection) ExportToHTML(exportDir string) {
 		},
 	})
 
-	bytes, err := fs.ReadFile("resources/parts_html.gotpl")
+	bytes, err := embeddedFS.ReadFile("resources/parts_html.gotpl")
 	if err != nil {
 		log.Fatalf(EXPORT_FAILED_MSG, htmlFileName, err.Error())
 	}
@@ -218,19 +213,92 @@ func (c *Collection) ExportToHTML(exportDir string) {
 	log.Printf("Exported result to '%s'\n", file.Name())
 }
 
-func (c *Collection) Clone() *Collection {
-	origJSON, err := json.Marshal(c)
-	if err != nil {
-		log.Fatalf(CLONING_FAILED_MSG, err.Error())
+func (c *Collection) Build(providedParts *Collection, colors *[]Color, partRelationships *PartRelationships) *BuildMapping {
+	buildMapping := NewBuildMapping()
+
+	isMold := func(s1, s2 string) bool {
+		return partRelationships.IsMold(s1, s2)
 	}
 
-	clone := &Collection{}
-	err = json.Unmarshal(origJSON, clone)
-	if err != nil {
-		log.Fatalf(CLONING_FAILED_MSG, err.Error())
+	isPrint := func(s1, s2 string) bool {
+		return partRelationships.IsPrint(s1, s2)
 	}
 
-	return clone
+	isAlternative := func(s1, s2 string) bool {
+		return partRelationships.IsAlternative(s1, s2)
+	}
+
+	// search for same part type, same color
+	for i := range c.Parts {
+		neededPartEntry := &c.Parts[i]
+		providedPartEntry := providedParts.Find(neededPartEntry.Part.Number, neededPartEntry.Color.ID)
+		mapPartEntry(neededPartEntry, providedPartEntry, buildMapping)
+	}
+
+	// search for mold/print/alternative, same color
+	for i := range c.Parts {
+		neededPartEntry := &c.Parts[i]
+		number := neededPartEntry.Part.Number
+		colorId := neededPartEntry.Color.ID
+
+		mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isMold), buildMapping)
+		mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isPrint), buildMapping)
+		mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isAlternative), buildMapping)
+	}
+
+	// search for same part type but different color
+	for i := range c.Parts {
+		neededPartEntry := &c.Parts[i]
+		for j := 0; j < len(*colors) && neededPartEntry.Quantity > 0; j++ {
+			number := neededPartEntry.Part.Number
+			colorId := (*colors)[j].ID
+
+			mapPartEntry(neededPartEntry, providedParts.Find(number, colorId), buildMapping)
+			mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isMold), buildMapping)
+			mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isPrint), buildMapping)
+			mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isAlternative), buildMapping)
+		}
+	}
+
+	// if there are neededParts with quantity > 0, then they are missing in providedParts
+	for i := range c.Parts {
+		neededPartEntry := &c.Parts[i]
+		if neededPartEntry.Quantity > 0 {
+			neededPartEntry.Quantity = -1 * neededPartEntry.Quantity
+		}
+	}
+
+	return buildMapping
+}
+
+func mapPartEntry(neededPartEntry *PartEntry, providedPartEntry *PartEntry, buildMapping *BuildMapping) {
+	if providedPartEntry != nil {
+		mappedPartEntry := DeepClone(providedPartEntry, &PartEntry{})
+		if providedPartEntry.Quantity >= neededPartEntry.Quantity {
+			providedPartEntry.Quantity -= neededPartEntry.Quantity
+			mappedPartEntry.Quantity = neededPartEntry.Quantity
+			neededPartEntry.Quantity = 0
+		} else {
+			providedPartEntry.Quantity = 0
+			neededPartEntry.Quantity -= mappedPartEntry.Quantity
+		}
+		buildMapping.Parts[*neededPartEntry] = append(buildMapping.Parts[*neededPartEntry], *mappedPartEntry)
+	}
+}
+
+// filter applies function f on each part of the collection and removes those from the collection for which f returns false.
+func (c *Collection) filter(f func(PartEntry) bool) *Collection {
+	filteredParts := []PartEntry{}
+
+	for _, partEntry := range c.Parts {
+		if f(partEntry) {
+			filteredParts = append(filteredParts, partEntry)
+		}
+	}
+
+	c.Parts = filteredParts
+
+	return c
 }
 
 func (c *Collection) mapPartsByPartNumber(partsMap map[string][]PartEntry, keyMapping func(string) string) map[string][]PartEntry {
@@ -352,6 +420,9 @@ func max(x1, x2 int) int {
 	}
 	return x2
 }
+
+//go:embed resources/variants.json
+var fs embed.FS
 
 func loadVariants() map[string]string {
 	var v struct {

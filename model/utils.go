@@ -1,11 +1,15 @@
 package model
 
 import (
+	"embed"
 	"encoding/json"
 	"io"
 	"log"
 	"os"
 )
+
+//go:embed resources/parts_html.gotpl
+var embeddedFS embed.FS
 
 // Load reads a model from a JSON encoded file.
 func Load[V any](v V, fileName string) V {
@@ -62,4 +66,18 @@ func Save(v any, fileName string) {
 	}
 
 	log.Printf("Saved data to file '%s'\n", fileName)
+}
+
+func DeepClone[V any](v V, clone V) V {
+	origJSON, err := json.Marshal(v)
+	if err != nil {
+		log.Fatalf(CLONING_FAILED_MSG, err.Error())
+	}
+
+	err = json.Unmarshal(origJSON, clone)
+	if err != nil {
+		log.Fatalf(CLONING_FAILED_MSG, err.Error())
+	}
+
+	return clone
 }

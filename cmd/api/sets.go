@@ -45,7 +45,7 @@ func executeSets() {
 }
 
 func executeAllSets() {
-	sets := CreateUsersAPI().GetSets()
+	sets := createUsersAPI().GetSets()
 
 	if outputFile == "" {
 		outputFile = fmt.Sprintf("%s.sets",
@@ -56,7 +56,7 @@ func executeAllSets() {
 }
 
 func executeSetListSets() {
-	usersAPI := CreateUsersAPI()
+	usersAPI := createUsersAPI()
 	sets := usersAPI.GetSetListSets(setListId)
 	setList := usersAPI.GetSetList(setListId)
 	sets.Name = setList.Name

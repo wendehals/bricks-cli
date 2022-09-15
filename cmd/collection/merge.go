@@ -49,9 +49,9 @@ func executeMerge(args []string) {
 		merged = merged.MergeByVariant()
 	}
 
-	if jsonFile == "" {
-		jsonFile = options.FileNameFromArgs(args, "_merged.parts")
+	if outputFile == "" {
+		outputFile = options.FileNameFromArgs(args, "_merged.parts")
 	}
 
-	model.Save(merged, jsonFile)
+	model.Save(merged, outputFile)
 }

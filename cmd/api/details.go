@@ -61,7 +61,7 @@ func executeDetails() {
 }
 
 func executeSetDetails() {
-	set := CreateBricksAPI().GetSet(setNum)
+	set := createBricksAPI().GetSet(setNum)
 
 	if outputFile == "" {
 		outputFile = fmt.Sprintf("%s.set", setNum)
@@ -71,7 +71,7 @@ func executeSetDetails() {
 }
 
 func executeSetListDetails() {
-	setList := CreateUsersAPI().GetSetList(setListId)
+	setList := createUsersAPI().GetSetList(setListId)
 
 	if outputFile == "" {
 		outputFile = fmt.Sprintf("%d.setList", setListId)
@@ -81,7 +81,7 @@ func executeSetListDetails() {
 }
 
 func executePartListDetails() {
-	partList := CreateUsersAPI().GetPartList(partListId)
+	partList := createUsersAPI().GetPartList(partListId)
 
 	if outputFile == "" {
 		outputFile = fmt.Sprintf("%d.partList", partListId)

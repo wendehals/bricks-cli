@@ -60,7 +60,7 @@ func executeLists() {
 }
 
 func executeSetLists() {
-	setLists := CreateUsersAPI().GetSetLists()
+	setLists := createUsersAPI().GetSetLists()
 
 	if outputFile == "" {
 		outputFile = fmt.Sprintf("%s.setLists",
@@ -71,7 +71,7 @@ func executeSetLists() {
 }
 
 func executePartLists() {
-	partLists := CreateUsersAPI().GetPartLists()
+	partLists := createUsersAPI().GetPartLists()
 
 	if outputFile == "" {
 		outputFile = fmt.Sprintf("%s.partLists",

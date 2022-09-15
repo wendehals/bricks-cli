@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	jsonFile string
+	outputFile string
 
 	CollectionCmd = &cobra.Command{
 		Use:   "collection",
@@ -23,7 +23,8 @@ func init() {
 	CollectionCmd.AddCommand(sortCmd)
 	CollectionCmd.AddCommand(subtractCmd)
 	CollectionCmd.AddCommand(sumCmd)
+	CollectionCmd.AddCommand(buildCmd)
 
-	CollectionCmd.PersistentFlags().StringVarP(&jsonFile, options.OUTPUT_FILE_OPT,
+	CollectionCmd.PersistentFlags().StringVarP(&outputFile, options.OUTPUT_FILE_OPT,
 		options.OUTPUT_FILE_SOPT, "", options.OUTPUT_FILE_USAGE)
 }

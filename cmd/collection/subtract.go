@@ -32,9 +32,9 @@ func executeSubtract(args []string) {
 	subtrahend := model.Load(&model.Collection{}, args[1])
 	result := minuend.Subtract(subtrahend)
 
-	if jsonFile == "" {
-		jsonFile = options.FileNameFromArgs(args, "_subtracted.parts")
+	if outputFile == "" {
+		outputFile = options.FileNameFromArgs(args, "_subtracted.parts")
 	}
 
-	model.Save(result, jsonFile)
+	model.Save(result, outputFile)
 }

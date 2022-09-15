@@ -145,7 +145,7 @@ func executeParts() {
 }
 
 func executeAllParts() {
-	allParts := CreateUsersAPI().GetAllParts()
+	allParts := createUsersAPI().GetAllParts()
 
 	if outputFile == "" {
 		outputFile = options.ReplaceIllegalCharsFromFileName(credentials.UserName) + "_all" + PARTS_FILE_SUFFIX
@@ -155,7 +155,7 @@ func executeAllParts() {
 }
 
 func executeSetParts() {
-	setParts := api.RetrieveSetParts(CreateBricksAPI(), setNum, includeMiniFigs)
+	setParts := api.RetrieveSetParts(createBricksAPI(), setNum, includeMiniFigs)
 
 	if outputFile == "" {
 		outputFile = options.ReplaceIllegalCharsFromFileName(setNum) + PARTS_FILE_SUFFIX
@@ -165,7 +165,7 @@ func executeSetParts() {
 }
 
 func executeSetPartsWithoutLost() {
-	setPartsWithoutLost := api.RetrieveSetPartsWithoutLost(CreateBricksAPI(), CreateUsersAPI(), setWoLNum, includeMiniFigs)
+	setPartsWithoutLost := api.RetrieveSetPartsWithoutLost(createBricksAPI(), createUsersAPI(), setWoLNum, includeMiniFigs)
 
 	if outputFile == "" {
 		outputFile = options.ReplaceIllegalCharsFromFileName(setWoLNum) + "_wo_lost" + PARTS_FILE_SUFFIX
@@ -175,7 +175,7 @@ func executeSetPartsWithoutLost() {
 }
 
 func executeSetListParts() {
-	setListParts := api.RetrieveSetListParts(CreateBricksAPI(), CreateUsersAPI(), setListId, includeMiniFigs)
+	setListParts := api.RetrieveSetListParts(createBricksAPI(), createUsersAPI(), setListId, includeMiniFigs)
 
 	if mergeParts {
 		mergeAndExport(setListParts)
@@ -185,7 +185,7 @@ func executeSetListParts() {
 }
 
 func executePartListParts() {
-	partListParts := CreateUsersAPI().GetPartListParts(partListId)
+	partListParts := createUsersAPI().GetPartListParts(partListId)
 
 	if outputFile == "" {
 		outputFile = fmt.Sprint(partListId) + PARTS_FILE_SUFFIX
@@ -195,7 +195,7 @@ func executePartListParts() {
 }
 
 func executePartListsParts() {
-	partListsParts := api.RetrievePartListParts(CreateUsersAPI(), partListsFile, includeNonBuildable)
+	partListsParts := api.RetrievePartListParts(createUsersAPI(), partListsFile, includeNonBuildable)
 
 	if mergeParts {
 		mergeAndExport(partListsParts)
@@ -205,7 +205,7 @@ func executePartListsParts() {
 }
 
 func executeLostParts() {
-	lostParts := CreateUsersAPI().GetLostParts()
+	lostParts := createUsersAPI().GetLostParts()
 
 	if outputFile == "" {
 		outputFile = options.ReplaceIllegalCharsFromFileName(credentials.UserName) + "_lost" + PARTS_FILE_SUFFIX

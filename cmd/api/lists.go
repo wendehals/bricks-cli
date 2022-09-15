@@ -60,23 +60,23 @@ func executeLists() {
 }
 
 func executeSetLists() {
-	setLists := createUsersAPI().GetSetLists()
+	setLists := CreateUsersAPI().GetSetLists()
 
-	if jsonFile == "" {
-		jsonFile = fmt.Sprintf("%s.setLists",
+	if outputFile == "" {
+		outputFile = fmt.Sprintf("%s.setLists",
 			options.ReplaceIllegalCharsFromFileName(credentials.UserName))
 	}
 
-	model.Save(setLists, jsonFile)
+	model.Save(setLists, outputFile)
 }
 
 func executePartLists() {
-	partLists := createUsersAPI().GetPartLists()
+	partLists := CreateUsersAPI().GetPartLists()
 
-	if jsonFile == "" {
-		jsonFile = fmt.Sprintf("%s.partLists",
+	if outputFile == "" {
+		outputFile = fmt.Sprintf("%s.partLists",
 			options.ReplaceIllegalCharsFromFileName(credentials.UserName))
 	}
 
-	model.Save(partLists, jsonFile)
+	model.Save(partLists, outputFile)
 }

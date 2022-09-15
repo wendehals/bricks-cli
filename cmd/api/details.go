@@ -61,31 +61,31 @@ func executeDetails() {
 }
 
 func executeSetDetails() {
-	set := createBricksAPI().GetSet(setNum)
+	set := CreateBricksAPI().GetSet(setNum)
 
-	if jsonFile == "" {
-		jsonFile = fmt.Sprintf("%s.set", setNum)
+	if outputFile == "" {
+		outputFile = fmt.Sprintf("%s.set", setNum)
 	}
 
-	model.Save(set, jsonFile)
+	model.Save(set, outputFile)
 }
 
 func executeSetListDetails() {
-	setList := createUsersAPI().GetSetList(setListId)
+	setList := CreateUsersAPI().GetSetList(setListId)
 
-	if jsonFile == "" {
-		jsonFile = fmt.Sprintf("%d.setList", setListId)
+	if outputFile == "" {
+		outputFile = fmt.Sprintf("%d.setList", setListId)
 	}
 
-	model.Save(setList, jsonFile)
+	model.Save(setList, outputFile)
 }
 
 func executePartListDetails() {
-	partList := createUsersAPI().GetPartList(partListId)
+	partList := CreateUsersAPI().GetPartList(partListId)
 
-	if jsonFile == "" {
-		jsonFile = fmt.Sprintf("%d.partList", partListId)
+	if outputFile == "" {
+		outputFile = fmt.Sprintf("%d.partList", partListId)
 	}
 
-	model.Save(partList, jsonFile)
+	model.Save(partList, outputFile)
 }

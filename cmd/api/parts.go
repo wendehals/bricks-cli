@@ -145,37 +145,37 @@ func executeParts() {
 }
 
 func executeAllParts() {
-	allParts := createUsersAPI().GetAllParts()
+	allParts := CreateUsersAPI().GetAllParts()
 
-	if jsonFile == "" {
-		jsonFile = options.ReplaceIllegalCharsFromFileName(credentials.UserName) + "_all" + PARTS_FILE_SUFFIX
+	if outputFile == "" {
+		outputFile = options.ReplaceIllegalCharsFromFileName(credentials.UserName) + "_all" + PARTS_FILE_SUFFIX
 	}
 
-	model.Save(allParts, jsonFile)
+	model.Save(allParts, outputFile)
 }
 
 func executeSetParts() {
-	setParts := api.RetrieveSetParts(createBricksAPI(), setNum, includeMiniFigs)
+	setParts := api.RetrieveSetParts(CreateBricksAPI(), setNum, includeMiniFigs)
 
-	if jsonFile == "" {
-		jsonFile = options.ReplaceIllegalCharsFromFileName(setNum) + PARTS_FILE_SUFFIX
+	if outputFile == "" {
+		outputFile = options.ReplaceIllegalCharsFromFileName(setNum) + PARTS_FILE_SUFFIX
 	}
 
-	model.Save(setParts, jsonFile)
+	model.Save(setParts, outputFile)
 }
 
 func executeSetPartsWithoutLost() {
-	setPartsWithoutLost := api.RetrieveSetPartsWithoutLost(createBricksAPI(), createUsersAPI(), setWoLNum, includeMiniFigs)
+	setPartsWithoutLost := api.RetrieveSetPartsWithoutLost(CreateBricksAPI(), CreateUsersAPI(), setWoLNum, includeMiniFigs)
 
-	if jsonFile == "" {
-		jsonFile = options.ReplaceIllegalCharsFromFileName(setWoLNum) + "_wo_lost" + PARTS_FILE_SUFFIX
+	if outputFile == "" {
+		outputFile = options.ReplaceIllegalCharsFromFileName(setWoLNum) + "_wo_lost" + PARTS_FILE_SUFFIX
 	}
 
-	model.Save(setPartsWithoutLost, jsonFile)
+	model.Save(setPartsWithoutLost, outputFile)
 }
 
 func executeSetListParts() {
-	setListParts := api.RetrieveSetListParts(createBricksAPI(), createUsersAPI(), setListId, includeMiniFigs)
+	setListParts := api.RetrieveSetListParts(CreateBricksAPI(), CreateUsersAPI(), setListId, includeMiniFigs)
 
 	if mergeParts {
 		mergeAndExport(setListParts)
@@ -185,17 +185,17 @@ func executeSetListParts() {
 }
 
 func executePartListParts() {
-	partListParts := createUsersAPI().GetPartListParts(partListId)
+	partListParts := CreateUsersAPI().GetPartListParts(partListId)
 
-	if jsonFile == "" {
-		jsonFile = fmt.Sprint(partListId) + PARTS_FILE_SUFFIX
+	if outputFile == "" {
+		outputFile = fmt.Sprint(partListId) + PARTS_FILE_SUFFIX
 	}
 
-	model.Save(partListParts, jsonFile)
+	model.Save(partListParts, outputFile)
 }
 
 func executePartListsParts() {
-	partListsParts := api.RetrievePartListParts(createUsersAPI(), partListsFile, includeNonBuildable)
+	partListsParts := api.RetrievePartListParts(CreateUsersAPI(), partListsFile, includeNonBuildable)
 
 	if mergeParts {
 		mergeAndExport(partListsParts)
@@ -205,19 +205,19 @@ func executePartListsParts() {
 }
 
 func executeLostParts() {
-	lostParts := createUsersAPI().GetLostParts()
+	lostParts := CreateUsersAPI().GetLostParts()
 
-	if jsonFile == "" {
-		jsonFile = options.ReplaceIllegalCharsFromFileName(credentials.UserName) + "_lost" + PARTS_FILE_SUFFIX
+	if outputFile == "" {
+		outputFile = options.ReplaceIllegalCharsFromFileName(credentials.UserName) + "_lost" + PARTS_FILE_SUFFIX
 	}
 
-	model.Save(lostParts, jsonFile)
+	model.Save(lostParts, outputFile)
 }
 
 func mergeAndExport(collections []*model.Collection) {
 	collection := model.MergeAllCollections(collections)
 
-	if jsonFile == "" {
+	if outputFile == "" {
 		var b strings.Builder
 		for i := 0; i < len(collection.IDs) && i < 5; i++ {
 			b.WriteString(collection.IDs[i])
@@ -226,19 +226,19 @@ func mergeAndExport(collections []*model.Collection) {
 			}
 		}
 		b.WriteString(".parts")
-		jsonFile = b.String()
+		outputFile = b.String()
 	}
 
-	model.Save(collection, jsonFile)
+	model.Save(collection, outputFile)
 }
 
 func exportAll(collections []*model.Collection) {
 	for i, collection := range collections {
 		var fileName string
-		if jsonFile == "" {
+		if outputFile == "" {
 			fileName = collection.IDs[0] + PARTS_FILE_SUFFIX
 		} else {
-			fileName = fmt.Sprintf("%02d_%s", i+1, jsonFile)
+			fileName = fmt.Sprintf("%02d_%s", i+1, outputFile)
 		}
 
 		model.Save(collection, fileName)

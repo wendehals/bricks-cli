@@ -45,25 +45,25 @@ func executeSets() {
 }
 
 func executeAllSets() {
-	sets := createUsersAPI().GetSets()
+	sets := CreateUsersAPI().GetSets()
 
-	if jsonFile == "" {
-		jsonFile = fmt.Sprintf("%s.sets",
+	if outputFile == "" {
+		outputFile = fmt.Sprintf("%s.sets",
 			options.ReplaceIllegalCharsFromFileName(credentials.UserName))
 	}
 
-	model.Save(sets, jsonFile)
+	model.Save(sets, outputFile)
 }
 
 func executeSetListSets() {
-	usersAPI := createUsersAPI()
+	usersAPI := CreateUsersAPI()
 	sets := usersAPI.GetSetListSets(setListId)
 	setList := usersAPI.GetSetList(setListId)
 	sets.Name = setList.Name
 
-	if jsonFile == "" {
-		jsonFile = fmt.Sprintf("%d.sets", setListId)
+	if outputFile == "" {
+		outputFile = fmt.Sprintf("%d.sets", setListId)
 	}
 
-	model.Save(sets, jsonFile)
+	model.Save(sets, outputFile)
 }

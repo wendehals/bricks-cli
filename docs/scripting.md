@@ -30,6 +30,4 @@ These expressions are available in the bricks scripts:
 * `sum(EXP, EXP, ...)` - Calculates the sum of all parts in the expression's results.
 * `subtract(EXP, EXP)` - Subtracts all parts in the second expression's result from the parts in the first expression's result.
 * `max(EXP, EXP, ...)` - Calculates the maximum of all parts in the expression's results.
-* `mergeByColor(EXP)` - Merges all parts in the expression's result by ignoring their color.
-* `mergeByVariant(EXP)` - Merges all parts in the expression's result by replacing parts by their variants.
 * `sort(EXP)` - Sorts parts in the expression's result.

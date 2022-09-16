@@ -94,52 +94,6 @@ func (c *Collection) Max(other *Collection) *Collection {
 	return c.recalculateQuantity(other, max)
 }
 
-// MergeByColor merges all parts of the same type ignoring the color.
-// The Color field of PartEntry will be invalid afterwards.
-// The isSpare flag of PartEntry will be invalid afterwards and set to false for all entries.
-func (c *Collection) MergeByColor() *Collection {
-	c.IDs = []string{}
-	c.Names = []string{}
-
-	partsMap := c.mapPartsByPartNumber(nil, identity)
-
-	newParts := []PartEntry{}
-	for _, value := range partsMap {
-		var currentPart = value[0]
-		currentPart.Color = Color{-1, ""}
-
-		for i := 1; i < len(value); i++ {
-			currentPart.Quantity += value[i].Quantity
-		}
-
-		newParts = append(newParts, currentPart)
-	}
-
-	c.Parts = newParts
-
-	return c
-}
-
-// MergeByVariant merges all parts of compatible types (variants).
-// The isSpare flag of PartEntry will be invalid afterwards and set to false for all entries.
-func (c *Collection) MergeByVariant() *Collection {
-	c.IDs = []string{}
-	c.Names = []string{}
-
-	variantsMapping := loadVariants()
-
-	f := func(k string) string {
-		key, exists := variantsMapping[k]
-		if !exists {
-			return k
-		}
-		return key
-	}
-	c.setParts(c.mapPartsByPartNumber(nil, f))
-
-	return c
-}
-
 // CountParts sums up the quantity of all parts of a collection.
 func (c *Collection) CountParts() int {
 	var partsCounter int

@@ -11,7 +11,7 @@ save: 'save' '(' exp ',' STRING ')';
 export: 'export' '(' exp ',' STRING ')';
 
 
-exp: identifier | load | allParts | lost | set | setList | partList | partLists | sum | subtract | max | mergeByColor | mergeByVariant | sort;
+exp: identifier | load | allParts | lost | set | setList | partList | partLists | sum | subtract | max | sort;
 
 identifier: ID;
 
@@ -34,10 +34,6 @@ sum: 'sum' '(' exp (',' exp)+ ')';
 subtract: 'subtract' '(' exp ',' exp ')';
 
 max: 'max' '(' exp (',' exp)+ ')';
-
-mergeByColor: 'mergeByColor' '(' exp ')';
-
-mergeByVariant: 'mergeByVariant' '(' exp ')';
 
 sort: 'sort' '(' exp ')';
 

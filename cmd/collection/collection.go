@@ -19,7 +19,6 @@ var (
 
 func init() {
 	CollectionCmd.AddCommand(maxCmd)
-	CollectionCmd.AddCommand(mergeCmd)
 	CollectionCmd.AddCommand(sortCmd)
 	CollectionCmd.AddCommand(subtractCmd)
 	CollectionCmd.AddCommand(sumCmd)

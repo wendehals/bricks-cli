@@ -1,8 +1,8 @@
-// Code generated from .\scripting\parser\Bricks.g4 by ANTLR 4.10.1. DO NOT EDIT.
+// Code generated from java-escape by ANTLR 4.11.1. DO NOT EDIT.
 
 package parser // Bricks
 
-import "github.com/antlr/antlr4/runtime/Go/antlr"
+import "github.com/antlr/antlr4/runtime/Go/antlr/v4"
 
 // BaseBricksListener is a complete listener for a parse tree produced by BricksParser.
 type BaseBricksListener struct{}
@@ -122,18 +122,6 @@ func (s *BaseBricksListener) EnterMax(ctx *MaxContext) {}
 
 // ExitMax is called when production max is exited.
 func (s *BaseBricksListener) ExitMax(ctx *MaxContext) {}
-
-// EnterMergeByColor is called when production mergeByColor is entered.
-func (s *BaseBricksListener) EnterMergeByColor(ctx *MergeByColorContext) {}
-
-// ExitMergeByColor is called when production mergeByColor is exited.
-func (s *BaseBricksListener) ExitMergeByColor(ctx *MergeByColorContext) {}
-
-// EnterMergeByVariant is called when production mergeByVariant is entered.
-func (s *BaseBricksListener) EnterMergeByVariant(ctx *MergeByVariantContext) {}
-
-// ExitMergeByVariant is called when production mergeByVariant is exited.
-func (s *BaseBricksListener) ExitMergeByVariant(ctx *MergeByVariantContext) {}
 
 // EnterSort is called when production sort is entered.
 func (s *BaseBricksListener) EnterSort(ctx *SortContext) {}

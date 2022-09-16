@@ -1,8 +1,8 @@
-// Code generated from .\scripting\parser\Bricks.g4 by ANTLR 4.10.1. DO NOT EDIT.
+// Code generated from java-escape by ANTLR 4.11.1. DO NOT EDIT.
 
 package parser // Bricks
 
-import "github.com/antlr/antlr4/runtime/Go/antlr"
+import "github.com/antlr/antlr4/runtime/Go/antlr/v4"
 
 // BricksListener is a complete listener for a parse tree produced by BricksParser.
 type BricksListener interface {
@@ -59,12 +59,6 @@ type BricksListener interface {
 	// EnterMax is called when entering the max production.
 	EnterMax(c *MaxContext)
 
-	// EnterMergeByColor is called when entering the mergeByColor production.
-	EnterMergeByColor(c *MergeByColorContext)
-
-	// EnterMergeByVariant is called when entering the mergeByVariant production.
-	EnterMergeByVariant(c *MergeByVariantContext)
-
 	// EnterSort is called when entering the sort production.
 	EnterSort(c *SortContext)
 
@@ -118,12 +112,6 @@ type BricksListener interface {
 
 	// ExitMax is called when exiting the max production.
 	ExitMax(c *MaxContext)
-
-	// ExitMergeByColor is called when exiting the mergeByColor production.
-	ExitMergeByColor(c *MergeByColorContext)
-
-	// ExitMergeByVariant is called when exiting the mergeByVariant production.
-	ExitMergeByVariant(c *MergeByVariantContext)
 
 	// ExitSort is called when exiting the sort production.
 	ExitSort(c *SortContext)

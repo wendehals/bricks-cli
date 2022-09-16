@@ -57,7 +57,6 @@
 
     Available Commands:
     max         Calculates the maximum quantity of each part of at least two collections
-    merge       Merges the parts of a collection by their color or by their variant     
     sort        Sorts the parts of a collection by their number
     subtract    Subtracts one collection of parts from another
     sum         Sums up the parts of multiple collections

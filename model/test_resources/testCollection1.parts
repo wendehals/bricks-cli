@@ -69,6 +69,20 @@
                 "name": "gray"
             },
             "is_spare": true
+        },
+        {
+            "quantity": 5,
+            "part": {
+                "part_num": "2412a",
+                "name": "name2412a",
+                "part_url": "name2412a.url",
+                "part_img_url": "name2412a.image.url"
+            },
+            "color": {
+                "id": 1,
+                "name": "black"
+            },
+            "is_spare": false
         }
     ]
 }

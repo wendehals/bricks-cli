@@ -139,22 +139,6 @@ func (b *bricksInterpreter) ExitMax(ctx *parser.MaxContext) {
 	b.stack.push(max)
 }
 
-func (b *bricksInterpreter) ExitMergeByColor(ctx *parser.MergeByColorContext) {
-	log.Printf("Merging parts of collection by their color")
-
-	collection := b.stack.pop()
-	collection.MergeByColor()
-	b.stack.push(collection)
-}
-
-func (b *bricksInterpreter) ExitMergeByVariant(ctx *parser.MergeByVariantContext) {
-	log.Printf("Merging parts of collection by their variants")
-
-	collection := b.stack.pop()
-	collection.MergeByVariant()
-	b.stack.push(collection)
-}
-
 func (b *bricksInterpreter) ExitSort(ctx *parser.SortContext) {
 	log.Printf("Sorting collection")
 

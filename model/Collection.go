@@ -238,25 +238,30 @@ func (c *Collection) Build(providedParts *Collection, colors *[]Color, partRelat
 	// search for mold/print/alternative, same color
 	for i := range c.Parts {
 		neededPartEntry := &c.Parts[i]
-		number := neededPartEntry.Part.Number
-		colorId := neededPartEntry.Color.ID
+		if neededPartEntry.Quantity > 0 {
+			number := neededPartEntry.Part.Number
+			colorId := neededPartEntry.Color.ID
 
-		mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isMold), buildMapping)
-		mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isPrint), buildMapping)
-		mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isAlternative), buildMapping)
+			mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isMold), buildMapping)
+			mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isPrint), buildMapping)
+			mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isAlternative), buildMapping)
+		}
 	}
 
 	// search for same part type but different color
 	for i := range c.Parts {
 		neededPartEntry := &c.Parts[i]
 		for j := 0; j < len(*colors) && neededPartEntry.Quantity > 0; j++ {
-			number := neededPartEntry.Part.Number
 			colorId := (*colors)[j].ID
+			if neededPartEntry.Color.ID != colorId {
+				number := neededPartEntry.Part.Number
+				colorId := colorId
 
-			mapPartEntry(neededPartEntry, providedParts.Find(number, colorId), buildMapping)
-			mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isMold), buildMapping)
-			mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isPrint), buildMapping)
-			mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isAlternative), buildMapping)
+				mapPartEntry(neededPartEntry, providedParts.Find(number, colorId), buildMapping)
+				mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isMold), buildMapping)
+				mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isPrint), buildMapping)
+				mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isAlternative), buildMapping)
+			}
 		}
 	}
 

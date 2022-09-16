@@ -3,8 +3,6 @@ package model
 import (
 	"archive/zip"
 	"bufio"
-	"embed"
-	"encoding/json"
 	"fmt"
 	"html/template"
 	"io"
@@ -378,41 +376,6 @@ func max(x1, x2 int) int {
 		return x1
 	}
 	return x2
-}
-
-//go:embed resources/variants.json
-var fs embed.FS
-
-func loadVariants() map[string]string {
-	var v struct {
-		Variants []struct {
-			Original   string `json:"original"`
-			Substitute string `json:"substitute"`
-		} `json:"variants"`
-	}
-
-	jsonFile, err := fs.Open("resources/variants.json")
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-	defer jsonFile.Close()
-
-	data, err := io.ReadAll(jsonFile)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-
-	err = json.Unmarshal(data, &v)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-
-	var variantsMapping = make(map[string]string)
-	for _, variant := range v.Variants {
-		variantsMapping[variant.Original] = variant.Substitute
-	}
-
-	return variantsMapping
 }
 
 func extractImage(partNumber string, colorId int, exportDir string) (string, error) {

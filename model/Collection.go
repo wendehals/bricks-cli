@@ -1,11 +1,9 @@
 package model
 
 import (
-	"archive/zip"
 	"bufio"
 	"fmt"
 	"html/template"
-	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -15,6 +13,7 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/wendehals/bricks/cmd/options"
+	"github.com/wendehals/bricks/export"
 	"github.com/wendehals/bricks/utils"
 )
 
@@ -71,7 +70,7 @@ func (c *Collection) Add(other *Collection) *Collection {
 	c.IDs = append(c.IDs, other.IDs...)
 	c.Names = append(c.Names, other.Names...)
 
-	return c.recalculateQuantity(other, add)
+	return c.recalculateQuantity(other, utils.Add)
 }
 
 // Subtract one collection from another.
@@ -80,7 +79,7 @@ func (c *Collection) Subtract(other *Collection) *Collection {
 	c.IDs = []string{}
 	c.Names = []string{}
 
-	return c.recalculateQuantity(other, subtract)
+	return c.recalculateQuantity(other, utils.Subtract)
 }
 
 // Max calculates the max quantity of each part in both collections.
@@ -89,7 +88,7 @@ func (c *Collection) Max(other *Collection) *Collection {
 	c.IDs = []string{}
 	c.Names = []string{}
 
-	return c.recalculateQuantity(other, max)
+	return c.recalculateQuantity(other, utils.Max)
 }
 
 // CountParts sums up the quantity of all parts of a collection.
@@ -228,7 +227,7 @@ func (c *Collection) setParts(partsMap map[string][]PartEntry) {
 func (c *Collection) replaceImageURLs(exportDir string) {
 	for _, partEntry := range c.Parts {
 		if partEntry.Color.ID >= 0 {
-			imageUrl, err := extractImage(partEntry.Part.Number, partEntry.Color.ID, exportDir)
+			imageUrl, err := export.ExtractImage(partEntry.Part.Number, partEntry.Color.ID, exportDir)
 			if err != nil {
 				partEntry.Part.ImageURL = imageUrl
 			} else if err != nil && options.Verbose {
@@ -239,7 +238,7 @@ func (c *Collection) replaceImageURLs(exportDir string) {
 }
 
 func (c *Collection) recalculateQuantity(other *Collection, recalc func(int, int) int) *Collection {
-	partsMap := c.mapPartsByPartNumber(nil, identity)
+	partsMap := c.mapPartsByPartNumber(nil, utils.Identity)
 
 	missingParts := []PartEntry{}
 	for i := range other.Parts {
@@ -279,76 +278,4 @@ func MergeAllCollections(collections []*Collection) *Collection {
 	}
 
 	return mergedCollection
-}
-
-func identity(k string) string {
-	return k
-}
-
-func add(x1, x2 int) int {
-	return x1 + x2
-}
-
-func subtract(x1, x2 int) int {
-	return x1 - x2
-}
-
-func max(x1, x2 int) int {
-	if x1 >= x2 {
-		return x1
-	}
-	return x2
-}
-
-func extractImage(partNumber string, colorId int, exportDir string) (string, error) {
-	imagesFile, err := findImagesFileForColor(colorId)
-	if err != nil {
-		return "", err
-	}
-
-	archive, err := zip.OpenReader(imagesFile)
-	if err != nil {
-		return "", err
-	}
-	defer archive.Close()
-
-	imageFileName := fmt.Sprintf("%s.png", partNumber)
-	for _, imageFile := range archive.File {
-		if imageFile.Name == imageFileName {
-			if options.Verbose {
-				log.Printf("Unzipping image file '%s'", imageFile.Name)
-			}
-
-			filePath := filepath.Join(exportDir, imageFile.Name)
-			dstFile, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, imageFile.Mode())
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			fileInArchive, err := imageFile.Open()
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			if _, err := io.Copy(dstFile, fileInArchive); err != nil {
-				log.Fatal(err)
-			}
-
-			dstFile.Close()
-			fileInArchive.Close()
-
-			return imageFile.Name, nil
-		}
-	}
-
-	return "", fmt.Errorf("no image file found for part number %s in color %d", partNumber, colorId)
-}
-
-func findImagesFileForColor(colorId int) (string, error) {
-	imagesFile := filepath.FromSlash(fmt.Sprintf("%s/parts_%d.zip", utils.GetBricksDir(), colorId))
-	if _, err := os.Stat(imagesFile); os.IsNotExist(err) {
-		return "", err
-	}
-
-	return imagesFile, nil
 }

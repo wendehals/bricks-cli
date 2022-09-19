@@ -51,6 +51,12 @@ func (s *BaseBricksListener) EnterExport(ctx *ExportContext) {}
 // ExitExport is called when production export is exited.
 func (s *BaseBricksListener) ExitExport(ctx *ExportContext) {}
 
+// EnterBuild is called when production build is entered.
+func (s *BaseBricksListener) EnterBuild(ctx *BuildContext) {}
+
+// ExitBuild is called when production build is exited.
+func (s *BaseBricksListener) ExitBuild(ctx *BuildContext) {}
+
 // EnterExp is called when production exp is entered.
 func (s *BaseBricksListener) EnterExp(ctx *ExpContext) {}
 

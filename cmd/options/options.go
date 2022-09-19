@@ -21,6 +21,11 @@ const (
 	OUTPUT_DIR_SOPT  = "d"
 	OUTPUT_DIR_ARG   = "[-" + OUTPUT_DIR_SOPT + " OUTPUT_DIR]"
 	OUTPUT_DIR_USAGE = "a name for the output directory"
+
+	SET_NUM_OPT   = "set"
+	SET_NUM_SOPT  = "s"
+	SET_NUM_ARG   = "-" + SET_NUM_SOPT + " SET_NUMBER"
+	SET_NUM_USAGE = "the set number"
 )
 
 var (

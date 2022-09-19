@@ -10,7 +10,7 @@ import (
 
 var detailsCmd = &cobra.Command{
 	Use: fmt.Sprintf("details %s %s {%s | %s | %s}", options.CREDENTIALS_ARG,
-		options.OUTPUT_FILE_ARG, SET_NUM_ARG, SET_LIST_ID_ARG, PART_LIST_ID_ARG),
+		options.OUTPUT_FILE_ARG, options.SET_NUM_ARG, SET_LIST_ID_ARG, PART_LIST_ID_ARG),
 	Short: "Get details about a certain set, set list, or part list",
 	Long:  "The details command returns details about a certain set, set list, or part list.",
 
@@ -25,7 +25,7 @@ var detailsCmd = &cobra.Command{
 }
 
 func init() {
-	detailsCmd.Flags().StringVarP(&setNum, SET_NUM_OPT, SET_NUM_SOPT, "", SET_NUM_USAGE)
+	detailsCmd.Flags().StringVarP(&setNum, options.SET_NUM_OPT, options.SET_NUM_SOPT, "", options.SET_NUM_USAGE)
 	detailsCmd.Flags().UintVarP(&setListId, SET_LIST_ID_OPT, SET_LIST_ID_SOPT, 0, SET_LIST_ID_USAGE)
 	detailsCmd.Flags().UintVarP(&partListId, PART_LIST_ID_OPT, PART_LIST_ID_SOPT, 0, PART_LIST_ID_USAGE)
 }
@@ -44,7 +44,7 @@ func checkOptionsDetails() error {
 
 	if optionsProvided < 1 || optionsProvided > 1 {
 		return fmt.Errorf("please provide exactly one option of %s, %s, or %s",
-			SET_NUM_ARG, SET_LIST_ID_ARG, PART_LIST_ID_ARG)
+			options.SET_NUM_ARG, SET_LIST_ID_ARG, PART_LIST_ID_ARG)
 	}
 
 	return nil

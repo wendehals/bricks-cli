@@ -52,7 +52,7 @@ var (
 	partsCmd = &cobra.Command{
 		Use: fmt.Sprintf("parts %s %s {%s | %s | %s | %s | %s | %s | %s} %s %s %s",
 			options.CREDENTIALS_ARG, options.OUTPUT_FILE_ARG,
-			ALL_ARG, SET_NUM_ARG, SET_WO_LOST_NUM_ARG, SET_LIST_ID_ARG, PART_LIST_ID_ARG, PART_LISTS_ARG, LOST_ARG,
+			ALL_ARG, options.SET_NUM_ARG, SET_WO_LOST_NUM_ARG, SET_LIST_ID_ARG, PART_LIST_ID_ARG, PART_LISTS_ARG, LOST_ARG,
 			INC_NON_BUILDABLE_ARG, INC_MINI_FIGS_ARG, MERGE_PARTS_ARG),
 		Short: "Get a list of parts",
 		Long: `The parts command returns a list of parts.
@@ -80,7 +80,7 @@ This list contains either all parts
 func init() {
 	partsCmd.Flags().BoolVarP(&all, ALL_OPT, ALL_SOPT, false, "Get all parts")
 
-	partsCmd.Flags().StringVarP(&setNum, SET_NUM_OPT, SET_NUM_SOPT, "", SET_NUM_USAGE)
+	partsCmd.Flags().StringVarP(&setNum, options.SET_NUM_OPT, options.SET_NUM_SOPT, "", options.SET_NUM_USAGE)
 	partsCmd.Flags().StringVarP(&setWoLNum, SET_WO_LOST_NUM_OPT, "", "", SET_WO_LOST_NUM_USAGE)
 	partsCmd.Flags().UintVarP(&setListId, SET_LIST_ID_OPT, SET_LIST_ID_SOPT, 0, SET_LIST_ID_USAGE)
 
@@ -120,7 +120,8 @@ func checkOptionsParts() error {
 
 	if optionsProvided < 1 || optionsProvided > 1 {
 		return fmt.Errorf("please provide exactly one option of %s, %s, %s, %s, %s, %s, or %s",
-			ALL_ARG, SET_NUM_ARG, SET_WO_LOST_NUM_ARG, SET_LIST_ID_ARG, PART_LIST_ID_ARG, PART_LISTS_ARG, LOST_ARG)
+			ALL_ARG, options.SET_NUM_ARG, SET_WO_LOST_NUM_ARG, SET_LIST_ID_ARG, PART_LIST_ID_ARG,
+			PART_LISTS_ARG, LOST_ARG)
 	}
 
 	return nil

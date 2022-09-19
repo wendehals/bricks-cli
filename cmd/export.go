@@ -11,8 +11,6 @@ import (
 )
 
 var (
-	exportDir string
-
 	exportCmd = &cobra.Command{
 		Use:   fmt.Sprintf("export %s %s PARTS_FILE", options.CREDENTIALS_ARG, options.OUTPUT_DIR_ARG),
 		Short: "Exports the parts input file as HTML",
@@ -36,16 +34,16 @@ var (
 func init() {
 	exportCmd.Flags().StringVarP(&credentialsFile, options.CREDENTIALS_OPT, options.CREDENTIALS_SOPT,
 		"credentials.json", options.CREDENTIALS_USAGE)
-	exportCmd.Flags().StringVarP(&exportDir, options.OUTPUT_DIR_OPT, options.OUTPUT_DIR_SOPT,
+	exportCmd.Flags().StringVarP(&outputDir, options.OUTPUT_DIR_OPT, options.OUTPUT_DIR_SOPT,
 		"", options.OUTPUT_DIR_USAGE)
 }
 
 func executeExport(args []string) {
-	if exportDir == "" {
-		exportDir = options.FileNameFromArgs(args, "")
+	if outputDir == "" {
+		outputDir = options.FileNameFromArgs(args, "")
 	}
 
-	log.Printf("Exporting '%s' to directory '%s'", args[0], exportDir)
+	log.Printf("Exporting '%s' to directory '%s'", args[0], outputDir)
 
-	model.Load(&model.Collection{}, args[0]).ExportToHTML(exportDir)
+	model.Load(&model.Collection{}, args[0]).ExportToHTML(outputDir)
 }

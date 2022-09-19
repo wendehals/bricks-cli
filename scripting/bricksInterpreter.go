@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/wendehals/bricks/api"
+	"github.com/wendehals/bricks/build"
 	"github.com/wendehals/bricks/model"
 	"github.com/wendehals/bricks/scripting/parser"
 )
@@ -44,6 +45,14 @@ func (b *bricksInterpreter) ExitExport(ctx *parser.ExportContext) {
 	collection := b.stack.pop()
 	exportDir := strings.Trim(ctx.STRING().GetText(), "\"")
 	collection.ExportToHTML(exportDir)
+}
+
+func (b *bricksInterpreter) ExitBuild(ctx *parser.BuildContext) {
+	providedCollection := b.stack.pop()
+	neededCollection := b.stack.pop()
+	exportDir := strings.Trim(ctx.STRING().GetText(), "\"")
+
+	build.Build(neededCollection, providedCollection, exportDir, b.bricksAPI, false)
 }
 
 func (b *bricksInterpreter) ExitIdentifier(ctx *parser.IdentifierContext) {

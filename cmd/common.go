@@ -6,5 +6,7 @@ import (
 
 var (
 	credentialsFile string
-	credentials     *api.Credentials
+	outputDir       string
+
+	credentials *api.Credentials
 )

@@ -2,13 +2,15 @@ grammar Bricks;
 
 bricks: command+;
 
-command: assignment | save | export;
+command: assignment | save | export | build;
 
 assignment: ID ':=' exp;
 
 save: 'save' '(' exp ',' STRING ')';
 
 export: 'export' '(' exp ',' STRING ')';
+
+build: 'build' '(' exp ',' exp ',' STRING ')';
 
 
 exp: identifier | load | allParts | lost | set | setList | partList | partLists | sum | subtract | max | sort;

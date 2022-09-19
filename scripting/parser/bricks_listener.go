@@ -23,6 +23,9 @@ type BricksListener interface {
 	// EnterExport is called when entering the export production.
 	EnterExport(c *ExportContext)
 
+	// EnterBuild is called when entering the build production.
+	EnterBuild(c *BuildContext)
+
 	// EnterExp is called when entering the exp production.
 	EnterExp(c *ExpContext)
 
@@ -76,6 +79,9 @@ type BricksListener interface {
 
 	// ExitExport is called when exiting the export production.
 	ExitExport(c *ExportContext)
+
+	// ExitBuild is called when exiting the build production.
+	ExitBuild(c *BuildContext)
 
 	// ExitExp is called when exiting the exp production.
 	ExitExp(c *ExpContext)

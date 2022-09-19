@@ -52,10 +52,10 @@ func (c *Collection) Sort() *Collection {
 }
 
 func (c *Collection) Find(partNum string, colorId int) *PartEntry {
-	return c.find(partNum, colorId, func(s1, s2 string) bool { return s1 == s2 })
+	return c.FindByEquality(partNum, colorId, func(s1, s2 string) bool { return s1 == s2 })
 }
 
-func (c *Collection) find(partNum string, colorId int, eq func(string, string) bool) *PartEntry {
+func (c *Collection) FindByEquality(partNum string, colorId int, eq func(string, string) bool) *PartEntry {
 	for i := range c.Parts {
 		partEntry := &c.Parts[i]
 		if eq(partEntry.Part.Number, partNum) && partEntry.Color.ID == colorId {
@@ -113,7 +113,7 @@ func (c *Collection) HasNegativePartQuantity() bool {
 
 // RemoveQuantityZero removes all parts of the collection which quantity is zero.
 func (c *Collection) RemoveQuantityZero() *Collection {
-	return c.filter(func(part PartEntry) bool { return part.Quantity != 0 })
+	return c.Filter(func(part PartEntry) bool { return part.Quantity != 0 })
 }
 
 // ExportToHTML writes an HTML file with all parts of the collection into the given export directory.
@@ -165,86 +165,8 @@ func (c *Collection) ExportToHTML(exportDir string) {
 	log.Printf("Exported result to '%s'\n", file.Name())
 }
 
-func (c *Collection) Build(providedParts *Collection, colors *[]Color, partRelationships *PartRelationships) *BuildMapping {
-	buildMapping := NewBuildMapping()
-
-	isMold := func(s1, s2 string) bool {
-		return partRelationships.IsMold(s1, s2)
-	}
-
-	isPrint := func(s1, s2 string) bool {
-		return partRelationships.IsPrint(s1, s2)
-	}
-
-	isAlternative := func(s1, s2 string) bool {
-		return partRelationships.IsAlternative(s1, s2)
-	}
-
-	// search for same part type, same color
-	for i := range c.Parts {
-		neededPartEntry := &c.Parts[i]
-		providedPartEntry := providedParts.Find(neededPartEntry.Part.Number, neededPartEntry.Color.ID)
-		mapPartEntry(neededPartEntry, providedPartEntry, buildMapping)
-	}
-
-	// search for mold/print/alternative, same color
-	for i := range c.Parts {
-		neededPartEntry := &c.Parts[i]
-		if neededPartEntry.Quantity > 0 {
-			number := neededPartEntry.Part.Number
-			colorId := neededPartEntry.Color.ID
-
-			mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isMold), buildMapping)
-			mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isPrint), buildMapping)
-			mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isAlternative), buildMapping)
-		}
-	}
-
-	// search for same part type but different color
-	for i := range c.Parts {
-		neededPartEntry := &c.Parts[i]
-		for j := 0; j < len(*colors) && neededPartEntry.Quantity > 0; j++ {
-			colorId := (*colors)[j].ID
-			if neededPartEntry.Color.ID != colorId {
-				number := neededPartEntry.Part.Number
-				colorId := colorId
-
-				mapPartEntry(neededPartEntry, providedParts.Find(number, colorId), buildMapping)
-				mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isMold), buildMapping)
-				mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isPrint), buildMapping)
-				mapPartEntry(neededPartEntry, providedParts.find(number, colorId, isAlternative), buildMapping)
-			}
-		}
-	}
-
-	// if there are neededParts with quantity > 0, then they are missing in providedParts
-	for i := range c.Parts {
-		neededPartEntry := &c.Parts[i]
-		if neededPartEntry.Quantity > 0 {
-			neededPartEntry.Quantity = -1 * neededPartEntry.Quantity
-		}
-	}
-
-	return buildMapping
-}
-
-func mapPartEntry(neededPartEntry *PartEntry, providedPartEntry *PartEntry, buildMapping *BuildMapping) {
-	if providedPartEntry != nil {
-		mappedPartEntry := DeepClone(providedPartEntry, &PartEntry{})
-		if providedPartEntry.Quantity >= neededPartEntry.Quantity {
-			providedPartEntry.Quantity -= neededPartEntry.Quantity
-			mappedPartEntry.Quantity = neededPartEntry.Quantity
-			neededPartEntry.Quantity = 0
-		} else {
-			providedPartEntry.Quantity = 0
-			neededPartEntry.Quantity -= mappedPartEntry.Quantity
-		}
-		buildMapping.Parts[*neededPartEntry] = append(buildMapping.Parts[*neededPartEntry], *mappedPartEntry)
-	}
-}
-
-// filter applies function f on each part of the collection and removes those from the collection for which f returns false.
-func (c *Collection) filter(f func(PartEntry) bool) *Collection {
+// Filter applies function f on each part of the collection and removes those from the collection for which f returns false.
+func (c *Collection) Filter(f func(PartEntry) bool) *Collection {
 	filteredParts := []PartEntry{}
 
 	for _, partEntry := range c.Parts {

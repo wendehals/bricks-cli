@@ -26,6 +26,7 @@ to new collections.`,
 func init() {
 	RootCmd.AddCommand(api.ApiCmd)
 	RootCmd.AddCommand(collection.CollectionCmd)
+	RootCmd.AddCommand(buildCmd)
 	RootCmd.AddCommand(exportCmd)
 	RootCmd.AddCommand(scriptCmd)
 	RootCmd.AddCommand(download.DownloadCmd)

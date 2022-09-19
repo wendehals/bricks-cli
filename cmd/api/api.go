@@ -14,11 +14,6 @@ const (
 	ALL_SOPT = "a"
 	ALL_ARG  = "-" + ALL_SOPT
 
-	SET_NUM_OPT   = "set"
-	SET_NUM_SOPT  = "s"
-	SET_NUM_ARG   = "-" + SET_NUM_SOPT + " SET_NUMBER"
-	SET_NUM_USAGE = "the set number"
-
 	SET_LIST_ID_OPT   = "setList"
 	SET_LIST_ID_SOPT  = "l"
 	SET_LIST_ID_ARG   = "-" + SET_LIST_ID_SOPT + " SET_LIST_ID"

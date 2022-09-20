@@ -7,6 +7,13 @@ import (
 	"path/filepath"
 )
 
+func CreateFolder(folderName string) {
+	err := os.MkdirAll(folderName, os.ModePerm)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 func FileExists(filePath string) bool {
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
 		return false

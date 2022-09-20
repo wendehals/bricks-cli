@@ -1,24 +1,16 @@
 package model
 
 import (
-	"bufio"
-	"fmt"
-	"html/template"
 	"log"
-	"os"
-	"path/filepath"
 	"regexp"
 	"sort"
 	"strconv"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/wendehals/bricks/cmd/options"
-	"github.com/wendehals/bricks/export"
 	"github.com/wendehals/bricks/utils"
 )
 
 const (
-	EXPORT_FAILED_MSG  = "exporting collection to HTML file '%s' failed: %s"
 	CLONING_FAILED_MSG = "cloning collection failed: %s"
 )
 
@@ -50,18 +42,31 @@ func (c *Collection) Sort() *Collection {
 	return c
 }
 
+// Find returns a PartEntry with the given part number and color id.
 func (c *Collection) Find(partNum string, colorId int) *PartEntry {
-	return c.FindByEquality(partNum, colorId, func(s1, s2 string) bool { return s1 == s2 })
+	return c.FindByEquivalence(partNum, colorId, func(s1, s2 string) bool { return s1 == s2 })
 }
 
-func (c *Collection) FindByEquality(partNum string, colorId int, eq func(string, string) bool) *PartEntry {
+// FindByEquivalence returns a PartEntry with a part number that is equivalent to the given part number.
+// The given function defines the equivalance.
+func (c *Collection) FindByEquivalence(partNum string, colorId int, eqFunc func(string, string) bool) *PartEntry {
 	for i := range c.Parts {
 		partEntry := &c.Parts[i]
-		if eq(partEntry.Part.Number, partNum) && partEntry.Color.ID == colorId {
+		if eqFunc(partEntry.Part.Number, partNum) && partEntry.Color.ID == colorId {
 			return partEntry
 		}
 	}
 	return nil
+}
+
+// Remove removes the given quantity of parts with the given number and color id.
+func (c *Collection) Remove(partNum string, colorId int, quantity int) {
+	for i := range c.Parts {
+		if c.Parts[i].Part.Number == partNum && c.Parts[i].Color.ID == colorId {
+			c.Parts[i].Quantity -= quantity
+			return
+		}
+	}
 }
 
 // Add one collection to another.
@@ -100,6 +105,7 @@ func (c *Collection) CountParts() int {
 	return partsCounter
 }
 
+// HasNegativePartQuantity returns true if any part entry in the collection has quantity < 0
 func (c *Collection) HasNegativePartQuantity() bool {
 	for _, partEntry := range c.Parts {
 		if partEntry.Quantity < 0 {
@@ -113,55 +119,6 @@ func (c *Collection) HasNegativePartQuantity() bool {
 // RemoveQuantityZero removes all parts of the collection which quantity is zero.
 func (c *Collection) RemoveQuantityZero() *Collection {
 	return c.Filter(func(part PartEntry) bool { return part.Quantity != 0 })
-}
-
-// ExportToHTML writes an HTML file with all parts of the collection into the given export directory.
-func (c *Collection) ExportToHTML(exportDir string) {
-	err := os.MkdirAll(exportDir, os.ModePerm)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	c.replaceImageURLs(exportDir)
-
-	htmlFileName := filepath.FromSlash(fmt.Sprintf("%s/%s.html", exportDir, exportDir))
-
-	templ := template.New("parts")
-	templ.Funcs(template.FuncMap{
-		"abs": func(i int) int {
-			if i < 0 {
-				return -i
-			}
-			return i
-		},
-	})
-
-	bytes, err := embeddedFS.ReadFile("resources/parts_html.gotpl")
-	if err != nil {
-		log.Fatalf(EXPORT_FAILED_MSG, htmlFileName, err.Error())
-	}
-
-	templ, err = templ.Parse(string(bytes))
-	if err != nil {
-		log.Fatalf(EXPORT_FAILED_MSG, htmlFileName, err.Error())
-	}
-
-	file, err := os.Create(htmlFileName)
-	if err != nil {
-		log.Fatalf(EXPORT_FAILED_MSG, htmlFileName, err.Error())
-	}
-	defer file.Close()
-
-	writer := bufio.NewWriter(file)
-
-	err = templ.Execute(writer, c)
-	if err != nil {
-		log.Fatalf(EXPORT_FAILED_MSG, htmlFileName, err.Error())
-	}
-
-	writer.Flush()
-
-	log.Printf("Exported result to '%s'\n", file.Name())
 }
 
 // Filter applies function f on each part of the collection and removes those from the collection for which f returns false.
@@ -224,19 +181,6 @@ func (c *Collection) setParts(partsMap map[string][]PartEntry) {
 	c.Parts = newParts
 }
 
-func (c *Collection) replaceImageURLs(exportDir string) {
-	for _, partEntry := range c.Parts {
-		if partEntry.Color.ID >= 0 {
-			imageUrl, err := export.ExtractImage(partEntry.Part.Number, partEntry.Color.ID, exportDir)
-			if err != nil {
-				partEntry.Part.ImageURL = imageUrl
-			} else if err != nil && options.Verbose {
-				log.Print(err)
-			}
-		}
-	}
-}
-
 func (c *Collection) recalculateQuantity(other *Collection, recalc func(int, int) int) *Collection {
 	partsMap := c.mapPartsByPartNumber(nil, utils.Identity)
 
@@ -269,6 +213,7 @@ func (c *Collection) recalculateQuantity(other *Collection, recalc func(int, int
 	return c.RemoveQuantityZero()
 }
 
+// MergeAllCollections merges all given collections to a new single collection.
 func MergeAllCollections(collections []*Collection) *Collection {
 	log.Println("Merging parts of collections")
 

@@ -18,3 +18,7 @@ func Max(x1, x2 int) int {
 	}
 	return x2
 }
+
+func Equals(s1, s2 string) bool {
+	return s1 == s2
+}

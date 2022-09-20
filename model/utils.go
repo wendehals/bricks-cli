@@ -1,15 +1,11 @@
 package model
 
 import (
-	"embed"
 	"encoding/json"
 	"io"
 	"log"
 	"os"
 )
-
-//go:embed resources/parts_html.gotpl
-var embeddedFS embed.FS
 
 // Load reads a model from a JSON encoded file.
 func Load[V any](v V, fileName string) V {

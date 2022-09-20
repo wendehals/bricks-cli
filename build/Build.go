@@ -4,37 +4,36 @@ import (
 	"fmt"
 
 	"github.com/wendehals/bricks/api"
+	"github.com/wendehals/bricks/export"
 	"github.com/wendehals/bricks/model"
 	"github.com/wendehals/bricks/utils"
 )
 
-func Build(neededCollection *model.Collection, providedCollection *model.Collection, outputDir string, bricksAPI *api.BricksAPI, verbose bool) {
+func Build(neededCollection *model.Collection, providedCollection *model.Collection, outputDir string,
+	bricksAPI *api.BricksAPI, verbose bool) {
 	colors := bricksAPI.GetColors()
 	partRelationships := model.Load(&model.PartRelationships{}, utils.GetPartRelationshipsPath())
 	buildCollection := build(neededCollection, providedCollection, &colors, partRelationships)
-
-	neededCollection.RemoveQuantityZero()
 	providedCollection.RemoveQuantityZero()
 
-	partEntries := []model.PartEntry{}
-	for _, partEntry := range buildCollection.Parts {
-		partEntries = append(partEntries, partEntry...)
-	}
+	export.ExportBuildToHTML(buildCollection, outputDir, "build")
+	export.ExportCollectionToHTML(providedCollection, outputDir, "remaining")
 
-	resultCollection := model.Collection{}
-	resultCollection.Parts = partEntries
-
-	neededCollection.ExportToHTML(outputDir)
-	providedCollection.ExportToHTML(outputDir)
-	resultCollection.ExportToHTML(outputDir)
-
-	model.Save(neededCollection, fmt.Sprintf("%s/missing.parts", outputDir))
+	model.Save(buildCollection, fmt.Sprintf("%s/result.build", outputDir))
 	model.Save(providedCollection, fmt.Sprintf("%s/remaining.parts", outputDir))
-	model.Save(resultCollection, fmt.Sprintf("%s/result.parts", outputDir))
 }
 
-func build(neededParts *model.Collection, providedParts *model.Collection, colors *[]model.Color, partRelationships *model.PartRelationships) *BuildMapping {
-	buildMapping := NewBuildMapping()
+func build(neededCollection *model.Collection, providedCollection *model.Collection, colors *[]model.Color,
+	partRelationships *model.PartRelationships) *model.BuildCollection {
+
+	buildCollection := model.BuildCollection{}
+	if len(neededCollection.IDs) > 0 {
+		buildCollection.ID = neededCollection.IDs[0]
+	}
+	if len(neededCollection.Names) > 0 {
+		buildCollection.Name = neededCollection.Names[0]
+	}
+	buildCollection.Parts = []model.PartEntryMapping{}
 
 	isMold := func(s1, s2 string) bool {
 		return partRelationships.IsMold(s1, s2)
@@ -49,69 +48,69 @@ func build(neededParts *model.Collection, providedParts *model.Collection, color
 	}
 
 	// filter spare parts
-	neededParts.Filter(func(p model.PartEntry) bool {
+	neededCollection.Filter(func(p model.PartEntry) bool {
 		return !p.IsSpare
 	})
 
 	// search for same part type, same color
-	for i := range neededParts.Parts {
-		neededPartEntry := &neededParts.Parts[i]
-		providedPartEntry := providedParts.Find(neededPartEntry.Part.Number, neededPartEntry.Color.ID)
-		mapPartEntry(neededPartEntry, providedPartEntry, buildMapping)
+	for _, neededPartEntry := range neededCollection.Parts {
+		partEntryMapping := model.PartEntryMapping{}
+		partEntryMapping.Quantity = neededPartEntry.Quantity
+		partEntryMapping.Original = *model.DeepClone(&neededPartEntry, &model.PartEntry{})
+		partEntryMapping.Substitutes = []model.PartEntry{}
+
+		mapPartEntry(&partEntryMapping, providedCollection, neededPartEntry.Color.ID, utils.Equals)
+
+		buildCollection.Parts = append(buildCollection.Parts, partEntryMapping)
 	}
 
-	// search for mold/print/alternative, same color
-	for i := range neededParts.Parts {
-		neededPartEntry := &neededParts.Parts[i]
-		if neededPartEntry.Quantity > 0 {
-			number := neededPartEntry.Part.Number
-			colorId := neededPartEntry.Color.ID
+	// search for equivalent part type, same color
+	for i := range buildCollection.Parts {
+		partEntryMapping := &buildCollection.Parts[i]
 
-			mapPartEntry(neededPartEntry, providedParts.FindByEquality(number, colorId, isMold), buildMapping)
-			mapPartEntry(neededPartEntry, providedParts.FindByEquality(number, colorId, isPrint), buildMapping)
-			mapPartEntry(neededPartEntry, providedParts.FindByEquality(number, colorId, isAlternative), buildMapping)
-		}
+		mapPartEntry(partEntryMapping, providedCollection, partEntryMapping.Original.Color.ID, isMold)
+		mapPartEntry(partEntryMapping, providedCollection, partEntryMapping.Original.Color.ID, isPrint)
+		mapPartEntry(partEntryMapping, providedCollection, partEntryMapping.Original.Color.ID, isAlternative)
 	}
 
-	// search for same part type but different color
-	for i := range neededParts.Parts {
-		neededPartEntry := &neededParts.Parts[i]
-		for j := 0; j < len(*colors) && neededPartEntry.Quantity > 0; j++ {
+	// search for same or equivalent part type but different color
+	for i := range buildCollection.Parts {
+		partEntryMapping := &buildCollection.Parts[i]
+		for j := 0; j < len(*colors) && partEntryMapping.Quantity > 0; j++ {
 			colorId := (*colors)[j].ID
-			if neededPartEntry.Color.ID != colorId {
-				number := neededPartEntry.Part.Number
-				colorId := colorId
-
-				mapPartEntry(neededPartEntry, providedParts.Find(number, colorId), buildMapping)
-				mapPartEntry(neededPartEntry, providedParts.FindByEquality(number, colorId, isMold), buildMapping)
-				mapPartEntry(neededPartEntry, providedParts.FindByEquality(number, colorId, isPrint), buildMapping)
-				mapPartEntry(neededPartEntry, providedParts.FindByEquality(number, colorId, isAlternative), buildMapping)
+			if partEntryMapping.Original.Color.ID != colorId {
+				mapPartEntry(partEntryMapping, providedCollection, colorId, utils.Equals)
+				mapPartEntry(partEntryMapping, providedCollection, colorId, isMold)
+				mapPartEntry(partEntryMapping, providedCollection, colorId, isPrint)
+				mapPartEntry(partEntryMapping, providedCollection, colorId, isAlternative)
 			}
 		}
 	}
 
-	// if there are neededParts with quantity > 0, then they are missing in providedParts
-	for i := range neededParts.Parts {
-		neededPartEntry := &neededParts.Parts[i]
-		if neededPartEntry.Quantity > 0 {
-			neededPartEntry.Quantity = -1 * neededPartEntry.Quantity
-		}
-	}
-
-	return buildMapping
+	return &buildCollection
 }
 
-func mapPartEntry(neededPartEntry *model.PartEntry, providedPartEntry *model.PartEntry, buildMapping *BuildMapping) {
-	if providedPartEntry != nil {
-		mappedPartEntry := model.DeepClone(providedPartEntry, &model.PartEntry{})
-		if providedPartEntry.Quantity >= neededPartEntry.Quantity {
-			providedPartEntry.Quantity -= neededPartEntry.Quantity
-			mappedPartEntry.Quantity = neededPartEntry.Quantity
-			neededPartEntry.Quantity = 0
-		} else {
-			providedPartEntry.Quantity = 0
-			neededPartEntry.Quantity -= mappedPartEntry.Quantity
+func mapPartEntry(partEntryMapping *model.PartEntryMapping, providedCollection *model.Collection,
+	colorId int, eqFunc func(string, string) bool) {
+
+	if partEntryMapping.Quantity > 0 {
+		providedPartEntry := providedCollection.FindByEquivalence(
+			partEntryMapping.Original.Part.Number, colorId, eqFunc)
+
+		if providedPartEntry != nil && providedPartEntry.Quantity > 0 {
+			mappedPartEntry := model.DeepClone(providedPartEntry, &model.PartEntry{})
+			if providedPartEntry.Quantity >= partEntryMapping.Quantity {
+				providedPartEntry.Quantity -= partEntryMapping.Quantity
+				mappedPartEntry.Quantity = partEntryMapping.Quantity
+			} else {
+				providedPartEntry.Quantity = 0
+			}
+
+			partEntryMapping.Quantity -= mappedPartEntry.Quantity
+			partEntryMapping.Substitutes = append(partEntryMapping.Substitutes, *mappedPartEntry)
+
+			providedCollection.Remove(providedPartEntry.Part.Number,
+				providedPartEntry.Color.ID, providedPartEntry.Quantity)
 		}
-		buildMapping.Parts[*neededPartEntry] = append(buildMapping.Parts[*neededPartEntry], *mappedPartEntry)
 	}
 }

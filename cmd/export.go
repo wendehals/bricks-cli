@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/api"
 	"github.com/wendehals/bricks/cmd/options"
+	"github.com/wendehals/bricks/export"
 	"github.com/wendehals/bricks/model"
 )
 
@@ -45,5 +46,5 @@ func executeExport(args []string) {
 
 	log.Printf("Exporting '%s' to directory '%s'", args[0], outputDir)
 
-	model.Load(&model.Collection{}, args[0]).ExportToHTML(outputDir)
+	export.ExportCollectionToHTML(model.Load(&model.Collection{}, args[0]), outputDir, args[0])
 }

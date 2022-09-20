@@ -14,6 +14,7 @@ The following commands can be used in bricks scripts:
 * *Assignment*: `ID := exp` - assigns a collection of parts defined by the given expression to a variable with name ID. The variable can be used in any expression later on.
 * *save*: `save(exp, FILE_NAME)` - saves the given collection defined by the expression to a JSON file with the given FILE_NAME.
 * *export*: `export(exp, EXPORT_DIR)` - exports the given collection defined by the expression to an HTML file into the given EXPORT_DIR.
+* *build*: `build(EXP, EXP, DIR_NAME)` - Builds a set given by the first expression by using parts from the collection defined by the second expression. Exports the result to the given directory.
 
 ## Expressions
 
@@ -31,4 +32,3 @@ These expressions are available in the bricks scripts:
 * `subtract(EXP, EXP)` - Subtracts all parts in the second expression's result from the parts in the first expression's result.
 * `max(EXP, EXP, ...)` - Calculates the maximum of all parts in the expression's results.
 * `sort(EXP)` - Sorts parts in the expression's result.
-* `build(EXP, EXP, DIR_NAME)` - Builds a set given by the first expression by using parts from the collection defined by the second expression. Exports the result to the given directory.

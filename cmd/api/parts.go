@@ -179,9 +179,9 @@ func executeSetListParts() {
 	setListParts := api.RetrieveSetListParts(createBricksAPI(), createUsersAPI(), setListId, includeMiniFigs)
 
 	if mergeParts {
-		mergeAndExport(setListParts)
+		mergeAndSave(setListParts)
 	} else {
-		exportAll(setListParts)
+		saveAll(setListParts)
 	}
 }
 
@@ -199,9 +199,9 @@ func executePartListsParts() {
 	partListsParts := api.RetrievePartListParts(createUsersAPI(), partListsFile, includeNonBuildable)
 
 	if mergeParts {
-		mergeAndExport(partListsParts)
+		mergeAndSave(partListsParts)
 	} else {
-		exportAll(partListsParts)
+		saveAll(partListsParts)
 	}
 }
 
@@ -215,7 +215,7 @@ func executeLostParts() {
 	model.Save(lostParts, outputFile)
 }
 
-func mergeAndExport(collections []*model.Collection) {
+func mergeAndSave(collections []*model.Collection) {
 	collection := model.MergeAllCollections(collections)
 
 	if outputFile == "" {
@@ -233,7 +233,7 @@ func mergeAndExport(collections []*model.Collection) {
 	model.Save(collection, outputFile)
 }
 
-func exportAll(collections []*model.Collection) {
+func saveAll(collections []*model.Collection) {
 	for i, collection := range collections {
 		var fileName string
 		if outputFile == "" {

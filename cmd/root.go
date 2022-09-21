@@ -31,5 +31,5 @@ func init() {
 	RootCmd.AddCommand(scriptCmd)
 	RootCmd.AddCommand(download.DownloadCmd)
 
-	RootCmd.PersistentFlags().BoolVarP(&options.Verbose, "verbose", "", false, "verbose output")
+	RootCmd.PersistentFlags().BoolVarP(&options.Verbose, "verbose", "v", false, "verbose output")
 }

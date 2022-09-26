@@ -1,5 +1,7 @@
 package model
 
+import "sort"
+
 type BuildCollection struct {
 	ID    string             `json:"id"`
 	Name  string             `json:"name"`
@@ -10,6 +12,15 @@ type PartEntryMapping struct {
 	Quantity    int         `json:"quantity"`
 	Original    PartEntry   `json:"original"`
 	Substitutes []PartEntry `json:"substitutes"`
+}
+
+// Sort the Parts of a collection by their Part Number
+func (b *BuildCollection) Sort() *BuildCollection {
+	sort.Slice(b.Parts, func(i, j int) bool {
+		return b.Parts[i].Original.LessThan(&b.Parts[j].Original)
+	})
+
+	return b
 }
 
 func (b *BuildCollection) HasMissingParts() bool {

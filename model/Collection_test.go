@@ -11,11 +11,23 @@ func TestSort(t *testing.T) {
 
 	collection.Sort()
 
-	test.AssertSameString(t, "2", collection.Parts[0].Part.Number)
-	test.AssertSameString(t, "2a", collection.Parts[1].Part.Number)
-	test.AssertSameString(t, "2c", collection.Parts[2].Part.Number)
-	test.AssertSameString(t, "25", collection.Parts[3].Part.Number)
-	test.AssertSameString(t, "25", collection.Parts[4].Part.Number)
+	test.AssertSameString(t, "black", collection.Parts[0].Color.Name)
+	test.AssertSameString(t, "name2412a", collection.Parts[0].Part.Name)
+
+	test.AssertSameString(t, "black", collection.Parts[1].Color.Name)
+	test.AssertSameString(t, "name25", collection.Parts[1].Part.Name)
+
+	test.AssertSameString(t, "blue", collection.Parts[2].Color.Name)
+	test.AssertSameString(t, "name2", collection.Parts[2].Part.Name)
+
+	test.AssertSameString(t, "gray", collection.Parts[3].Color.Name)
+	test.AssertSameString(t, "name2a", collection.Parts[3].Part.Name)
+
+	test.AssertSameString(t, "red", collection.Parts[4].Color.Name)
+	test.AssertSameString(t, "name25", collection.Parts[4].Part.Name)
+
+	test.AssertSameString(t, "yellow", collection.Parts[5].Color.Name)
+	test.AssertSameString(t, "name2c", collection.Parts[5].Part.Name)
 }
 
 func TestAdd(t *testing.T) {

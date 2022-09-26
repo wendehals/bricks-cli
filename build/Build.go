@@ -13,14 +13,15 @@ func Build(neededCollection *model.Collection, providedCollection *model.Collect
 	bricksAPI *api.BricksAPI, verbose bool) {
 	colors := bricksAPI.GetColors()
 	partRelationships := model.Load(&model.PartRelationships{}, utils.GetPartRelationshipsPath())
+
 	buildCollection := build(neededCollection, providedCollection, &colors, partRelationships)
-	providedCollection.RemoveQuantityZero()
-
-	export.ExportBuildToHTML(buildCollection, outputDir, "build")
-	export.ExportCollectionToHTML(providedCollection, outputDir, "remaining")
-
+	buildCollection.Sort()
 	model.Save(buildCollection, fmt.Sprintf("%s/result.build", outputDir))
+	export.ExportBuildToHTML(buildCollection, outputDir, "build")
+
+	providedCollection.RemoveQuantityZero()
 	model.Save(providedCollection, fmt.Sprintf("%s/remaining.parts", outputDir))
+	export.ExportCollectionToHTML(providedCollection, outputDir, "remaining")
 }
 
 func build(neededCollection *model.Collection, providedCollection *model.Collection, colors *[]model.Color,

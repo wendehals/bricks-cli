@@ -2,9 +2,7 @@ package model
 
 import (
 	"log"
-	"regexp"
 	"sort"
-	"strconv"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/wendehals/bricks/utils"
@@ -25,18 +23,7 @@ type Collection struct {
 // Sort the Parts of a collection by their Part Number
 func (c *Collection) Sort() *Collection {
 	sort.Slice(c.Parts, func(i, j int) bool {
-		r := regexp.MustCompile(`(\d+)(.*)`)
-		matchi := r.FindStringSubmatch(c.Parts[i].Part.Number)
-		inti, _ := strconv.Atoi(matchi[1])
-
-		matchj := r.FindStringSubmatch(c.Parts[j].Part.Number)
-		intj, _ := strconv.Atoi(matchj[1])
-
-		if inti != intj {
-			return inti < intj
-		}
-
-		return matchi[2] < matchj[2]
+		return c.Parts[i].LessThan(&c.Parts[j])
 	})
 
 	return c

@@ -11,9 +11,18 @@ import (
 	"github.com/wendehals/bricks/model"
 )
 
+const (
+	SORT_OPT   = "sort"
+	SORT_SOPT  = "s"
+	SORT_ARG   = "[-" + SORT_SOPT + "]"
+	SORT_USAGE = "sort the parts in the list before exporting"
+)
+
 var (
+	sort bool
+
 	exportCmd = &cobra.Command{
-		Use:   fmt.Sprintf("export %s %s PARTS_FILE", options.CREDENTIALS_ARG, options.OUTPUT_DIR_ARG),
+		Use:   fmt.Sprintf("export %s %s %s PARTS_FILE", SORT_ARG, options.CREDENTIALS_ARG, options.OUTPUT_DIR_ARG),
 		Short: "Exports the parts input file as HTML",
 		Long:  "The command exports the parts input file as an HTML file to the given output directory.",
 
@@ -33,6 +42,7 @@ var (
 )
 
 func init() {
+	exportCmd.Flags().BoolVarP(&sort, SORT_OPT, SORT_SOPT, false, SORT_USAGE)
 	exportCmd.Flags().StringVarP(&credentialsFile, options.CREDENTIALS_OPT, options.CREDENTIALS_SOPT,
 		"credentials.json", options.CREDENTIALS_USAGE)
 	exportCmd.Flags().StringVarP(&outputDir, options.OUTPUT_DIR_OPT, options.OUTPUT_DIR_SOPT,
@@ -46,5 +56,10 @@ func executeExport(args []string) {
 
 	log.Printf("Exporting '%s' to directory '%s'", args[0], outputDir)
 
-	export.ExportCollectionToHTML(model.Load(&model.Collection{}, args[0]), outputDir, args[0])
+	collection := model.Load(&model.Collection{}, args[0])
+	if sort {
+		collection.Sort()
+	}
+
+	export.ExportCollectionToHTML(collection, outputDir, args[0])
 }

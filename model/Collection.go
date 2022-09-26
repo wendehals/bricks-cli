@@ -105,8 +105,8 @@ func (c *Collection) CountParts() int {
 	return partsCounter
 }
 
-// HasNegativePartQuantity returns true if any part entry in the collection has quantity < 0
-func (c *Collection) HasNegativePartQuantity() bool {
+// HasMissingParts returns true if any part entry in the collection has quantity < 0
+func (c *Collection) HasMissingParts() bool {
 	for _, partEntry := range c.Parts {
 		if partEntry.Quantity < 0 {
 			return true

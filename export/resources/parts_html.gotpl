@@ -41,55 +41,55 @@
 
 	<body>
 		<h1>Parts</h1>
-		<p>Total number of parts: {{.CountParts}}
-		</br>Total Number of distinct part: {{len .Parts}}</p>
+			<p>Total number of parts: {{.CountParts}}
+			<p>Total Number of distinct part: {{len .Parts}}</p>
 
 		<h2>Existing Parts</h2>
 		
-		<div class="container">
-		{{- range $index, $element := .Parts}}
-			{{- if (gt $element.Quantity 0)}}
-			<div class="part">
-				<div class="image">
-					<div>
-						<a href="{{$element.Part.PartURL}}">
-							<img src="{{$element.Part.ImageURL}}" title="{{$element.Part.Name}}, {{$element.Color.Name}}" alt="{{$element.Part.Name}}" width="100" height="100"/>
-						</a>
+			<div class="container">
+			{{- range $index, $element := .Parts}}
+				{{- if (gt $element.Quantity 0)}}
+				<div class="part">
+					<div class="image">
+						<div>
+							<a href="{{$element.Part.PartURL}}">
+								<img src="{{$element.Part.ImageURL}}" title="{{$element.Part.Name}}, {{$element.Color.Name}}" alt="{{$element.Part.Name}}" width="100" height="100"/>
+							</a>
+						</div>
+						{{- if not (eq $element.Part.Dimensions "")}}
+						<div class="top-right">{{$element.Part.Dimensions}}</div>
+						{{- end}}
 					</div>
-					{{- if not (eq $element.Part.Dimensions "")}}
-					<div class="top-right">{{$element.Part.Dimensions}}</div>
-					{{- end}}
+					<div class="caption">{{$element.Quantity}} x {{$element.Part.Number}}</div>
+					<div class="caption">{{$element.Color.Name}}</div>
 				</div>
-				<div class="caption">{{$element.Quantity}} x {{$element.Part.Number}}</div>
-				<div class="caption">{{$element.Color.Name}}</div>
-			</div>
+				{{- end}}
 			{{- end}}
-		{{- end}}
-		</div>
+			</div>
 
-		{{- if (.HasMissingParts)}}
+		{{if (.HasMissingParts)}}
 		<h2>Missing Parts</h2>
 
-		<div class="container">
-		{{- range $index, $element := .Parts}}
-			{{- if (lt $element.Quantity 0)}}
-			<div class="part">
-				<div class="image">
-					<div>
-						<a href="{{$element.Part.PartURL}}">
-							<img src="{{$element.Part.ImageURL}}" title="{{$element.Part.Name}}, {{$element.Color.Name}}" alt="{{$element.Part.Name}}" width="100" height="100"/>
-						</a>
+			<div class="container">
+			{{- range $index, $element := .Parts}}
+				{{- if (lt $element.Quantity 0)}}
+				<div class="part">
+					<div class="image">
+						<div>
+							<a href="{{$element.Part.PartURL}}">
+								<img src="{{$element.Part.ImageURL}}" title="{{$element.Part.Name}}, {{$element.Color.Name}}" alt="{{$element.Part.Name}}" width="100" height="100"/>
+							</a>
+						</div>
+						{{- if not (eq $element.Part.Dimensions "")}}
+						<div class="top-right">{{$element.Part.Dimensions}}</div>
+						{{- end}}
 					</div>
-					{{- if not (eq $element.Part.Dimensions "")}}
-					<div class="top-right">{{$element.Part.Dimensions}}</div>
-					{{- end}}
+					<div class="caption">{{abs $element.Quantity}} x {{$element.Part.Number}}</div>
+					<div class="caption">{{$element.Color.Name}}</div>
 				</div>
-				<div class="caption">{{abs $element.Quantity}} x {{$element.Part.Number}}</div>
-				<div class="caption">{{$element.Color.Name}}</div>
-			</div>
+				{{- end}}
 			{{- end}}
-		{{- end}}
-		</div>
+			</div>
 
 		{{- end}}
 	</body>

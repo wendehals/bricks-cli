@@ -10,7 +10,8 @@
 		.tableHead {
 			display: table-cell;
 			padding: 3px 10px;
-			border: 1px solid #999999;
+			border: 1px solid;
+			border-color: lightgrey;
 			font-weight: bold;
 		}
 		.tableRow {
@@ -18,8 +19,9 @@
 		}
 		.tableCell {
 			display: table-cell;
+			border: 1px solid;
+			border-color: lightgrey;
 			padding: 3px 10px;
-			border: 1px solid #999999;
 		}
 		.container {
 			display: grid;
@@ -27,64 +29,102 @@
 			grid-gap: 0.5em;
 		}
 		.part {
+			display: block;
+			padding: 3px;
+		}
+		.image {
+			position: relative;
+			text-align: center;
+		}
+		.top-right {
+			position: absolute;
+			top: 0px;
+			right: 3px;
+			background-color: white;
+			color: darkcyan;
 			border: 1px solid;
+			padding-left: 3px;
+			padding-right: 3px;
+		}
+		.caption {
+			text-align: center;
+		}
+		.missing {
+			color: red;
+			font-weight: bold;
+			text-align: center;
 		}
 	</style>
+
 	<head>
 		<meta charset="UTF-8">
 		<title>Building {{.ID}} - {{.Name}}</title>
 	</head>
+
 	<body>
 		<h1>Building {{.ID}} - {{.Name}}</h1>
-			Provided parts: {{.CountProvidedParts}}
-			<br/>
-			Missing parts: {{.CountMissingParts}}
+			<p>Provided parts: {{.CountProvidedParts}}
+			<p>Missing parts: {{.CountMissingParts}}
 
-		<h2>Existing Parts</h2>
-		<div class="table">
-			<div class="tableRow">
-				<div class="tableHead" style="width: 100px">Original Parts</div>
-				<div class="tableHead">Substitutes</div>
-			</div>
-			{{range $partEntryMapping := .Parts}}
-			<div class="tableRow">
-				<div class="tableCell">
-					<div>
-						<a href="{{$partEntryMapping.Original.Part.PartURL}}">
-							<center><img src="{{$partEntryMapping.Original.Part.ImageURL}}" title="{{$partEntryMapping.Original.Part.Name}}, {{$partEntryMapping.Original.Color.Name}}" alt="{{$partEntryMapping.Original.Part.Name}}, {{$partEntryMapping.Original.Color.Name}}" width="100" height="100"/></center>
-							<br/>
-							<center>{{$partEntryMapping.Original.Quantity}} x {{$partEntryMapping.Original.Part.Number}}</center>
-						</a>
-					</div>
-			</div>
-				<div class="tableCell">
-					<div class="container">
-						{{range $partEntry := $partEntryMapping.Substitutes}}
-						<div>
-							<a href="{{$partEntry.Part.PartURL}}">
-								<center><img src="{{$partEntry.Part.ImageURL}}" title="{{$partEntry.Part.Name}}, {{$partEntry.Color.Name}}" alt="{{$partEntry.Part.Name}}, {{$partEntry.Color.Name}}" width="100" height="100"/></center>
-								<br/>
-								<center>{{$partEntry.Quantity}} x {{$partEntry.Part.Number}}</center>
-							</a>
+			<div class="table">
+				<div class="tableRow">
+					<div class="tableHead" style="width: 100px">Original Parts</div>
+					<div class="tableHead" style="width: 100px">Missing Parts</div>
+					<div class="tableHead">Substitutes</div>
+				</div>
+
+				{{- range $partEntryMapping := .Parts}}
+				<div class="tableRow">
+					<div class="tableCell">
+						<div class="part">
+							<div class="image">
+								<div>
+									<a href="{{$partEntryMapping.Original.Part.PartURL}}">
+										<img src="{{$partEntryMapping.Original.Part.ImageURL}}" title="{{$partEntryMapping.Original.Part.Name}}, {{$partEntryMapping.Original.Color.Name}}" alt="{{$partEntryMapping.Original.Part.Name}}" width="100" height="100"/>
+									</a>
+								</div>
+								{{- if not (eq $partEntryMapping.Original.Part.Dimensions "")}}
+								<div class="top-right">{{$partEntryMapping.Original.Part.Dimensions}}</div>
+								{{- end}}
+							</div>
+							<div class="caption">{{$partEntryMapping.Original.Quantity}} x {{$partEntryMapping.Original.Part.Number}}</div>
+							<div class="caption">{{$partEntryMapping.Original.Color.Name}}</div>
 						</div>
-						{{end}}
+					</div>
+					<div class="tableCell">
+						{{- if (gt $partEntryMapping.Quantity 0)}}
+						<div class="part">
+							<div class="image">
+								<div>
+									<a href="{{$partEntryMapping.Original.Part.PartURL}}">
+										<img src="{{$partEntryMapping.Original.Part.ImageURL}}" title="{{$partEntryMapping.Original.Part.Name}}, {{$partEntryMapping.Original.Color.Name}}" alt="{{$partEntryMapping.Original.Part.Name}}" width="100" height="100"/>
+									</a>
+								</div>
+							</div>
+							<div class="missing">{{$partEntryMapping.Quantity}}</div>
+						</div>
+						{{- end}}
+					</div>
+					<div class="tableCell">
+						<div class="container">
+							{{- range $partEntry := $partEntryMapping.Substitutes}}
+							<div class="part">
+								<div class="image">
+									<div>
+										<a href="{{$partEntry.Part.PartURL}}">
+											<img src="{{$partEntry.Part.ImageURL}}" title="{{$partEntry.Part.Name}}, {{$partEntry.Color.Name}}" alt="{{$partEntry.Part.Name}}" width="100" height="100"/>
+										</a>
+									</div>
+								</div>
+								<div class="caption">{{$partEntry.Quantity}} x {{$partEntry.Part.Number}}</div>
+								<div class="caption">{{$partEntry.Color.Name}}</div>
+							</div>
+							{{- end}}
+						</div>
 					</div>
 				</div>
+				{{- end}}
 			</div>
-			{{end}}
-		</div>
 
-		{{if (.HasMissingParts)}}
-		<h2>Missing Parts</h2>
-		<div class="container" style="width: 95%; margin-left: auto; margin-right: auto;">{{range $partEntryMapping := .Parts}}{{if (gt $partEntryMapping.Quantity 0)}}
-			<div class="part">
-				<a href="{{$partEntryMapping.Original.Part.PartURL}}">
-					<center><img src="{{$partEntryMapping.Original.Part.ImageURL}}" title="{{$partEntryMapping.Original.Part.Name}}, {{$partEntryMapping.Original.Color.Name}}" alt="{{$partEntryMapping.Original.Part.Name}}, {{$partEntryMapping.Original.Color.Name}}" width="100" height="100"/></center>
-					<br/>
-					<center style="margin-bottom: 5px">{{$partEntryMapping.Quantity}} x {{$partEntryMapping.Original.Part.Number}}</center>
-				</a>
-			</div>{{end}}{{end}}
-		</div>
-		{{end}}
 	</body>
 </html>

@@ -15,7 +15,7 @@ func (p *Part) Dimensions() string {
 		return result
 	}
 
-	if found, result := p.match(`^(?:Technic )Plate (\d+ x \d+)`); found {
+	if found, result := p.match(`^(?:Technic )?Plate (\d+ x \d+)`); found {
 		return result
 	}
 

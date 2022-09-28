@@ -62,7 +62,9 @@
 	</head>
 
 	<body>
-		<h1>Building {{.ID}} - {{.Name}}</h1>
+		<h1>Building <a href="{{.SetURL}}">{{.ID}} - {{.Name}}</a></h1>
+			<div style="text-align: center;"><a href="{{.SetURL}}"><img style="width: 40%; object-fit: contain;" src="{{.ImageURL}}" title="{{.ID}} - {{.Name}}" alt="{{.Name}}"/></a></div>
+			<p>Total number of parts: {{.NumParts}}
 			<p>Provided parts: {{.CountProvidedParts}}
 			<p>Missing parts: {{.CountMissingParts}}
 

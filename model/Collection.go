@@ -15,8 +15,8 @@ const (
 // Collection represents any collection of parts (set, parts list, ...)
 type Collection struct {
 	User  string      `json:"user"`
-	IDs   []string    `json:"ids"`
 	Names []string    `json:"names"`
+	Sets  []Set       `json:"sets"`
 	Parts []PartEntry `json:"parts"`
 }
 
@@ -59,8 +59,8 @@ func (c *Collection) Remove(partNum string, colorId int, quantity int) {
 // Add one collection to another.
 // The isSpare flag of PartEntry will be invalid afterwards and set to false for all entries.
 func (c *Collection) Add(other *Collection) *Collection {
-	c.IDs = append(c.IDs, other.IDs...)
-	c.Names = append(c.Names, other.Names...)
+	c.Names = []string{"Sum"}
+	c.Sets = append(c.Sets, other.Sets...)
 
 	return c.recalculateQuantity(other, utils.Add)
 }
@@ -68,8 +68,8 @@ func (c *Collection) Add(other *Collection) *Collection {
 // Subtract one collection from another.
 // The isSpare flag of PartEntry will be invalid afterwards and set to false for all entries.
 func (c *Collection) Subtract(other *Collection) *Collection {
-	c.IDs = []string{}
-	c.Names = []string{}
+	c.Names = []string{"Subtraction"}
+	c.Sets = []Set{}
 
 	return c.recalculateQuantity(other, utils.Subtract)
 }
@@ -77,8 +77,8 @@ func (c *Collection) Subtract(other *Collection) *Collection {
 // Max calculates the max quantity of each part in both collections.
 // The isSpare flag of PartEntry will be invalid afterwards and set to false for all entries.
 func (c *Collection) Max(other *Collection) *Collection {
-	c.IDs = []string{}
-	c.Names = []string{}
+	c.Names = []string{"Maximum"}
+	c.Sets = append(c.Sets, other.Sets...)
 
 	return c.recalculateQuantity(other, utils.Max)
 }

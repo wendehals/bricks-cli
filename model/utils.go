@@ -61,7 +61,7 @@ func Save(v any, fileName string) {
 		log.Fatalf("exporting collection to JSON file '%s' failed: %s", fileName, err.Error())
 	}
 
-	log.Printf("Saved data to file '%s'\n", fileName)
+	log.Printf("Saved data to file '%s'", fileName)
 }
 
 func DeepClone[V any](v V, clone V) V {

@@ -49,11 +49,11 @@ func NewUsersAPI(client *http.Client, credentials *Credentials, verbose bool) *U
 
 // GetAllParts returns all parts owned by the user provided by /api/v3/users/{user_token}/allparts/
 func (u *UsersAPI) GetAllParts() *model.Collection {
-	log.Printf("Retrieving all parts owned by user %s\n", u.userName)
+	log.Printf("Retrieving all parts owned by user %s", u.userName)
 
 	collection := model.Collection{}
 	collection.User = u.userName
-	collection.IDs = []string{}
+	collection.Sets = []model.Set{}
 	collection.Names = []string{"All Parts"}
 
 	allPartsPage := partsPageResult{}
@@ -80,7 +80,7 @@ func (u *UsersAPI) GetAllParts() *model.Collection {
 
 // GetSets returns all sets of the user provided by /api/v3/users/{user_token}/sets/
 func (u *UsersAPI) GetSets() *model.UserSets {
-	log.Printf("Retrieving all sets owned by user %s\n", u.userName)
+	log.Printf("Retrieving all sets owned by user %s", u.userName)
 
 	usersSets := model.UserSets{}
 	usersSets.User = u.userName
@@ -111,7 +111,7 @@ func (u *UsersAPI) GetSets() *model.UserSets {
 // GetSetList returns details about a certain set list of the user provided by
 // /api/v3/users/{user_token}/setlists/{list_id}/
 func (u *UsersAPI) GetSetList(listId uint) *model.SetList {
-	log.Printf("Retrieving details about set list %d\n", listId)
+	log.Printf("Retrieving details about set list %d", listId)
 
 	var setList *model.SetList
 
@@ -126,7 +126,7 @@ func (u *UsersAPI) GetSetList(listId uint) *model.SetList {
 
 // GetSetLists returns all set lists of the user provided by /api/v3/users/{user_token}/setlists/
 func (u *UsersAPI) GetSetLists() *model.SetLists {
-	log.Printf("Retrieving set lists of user %s\n", u.userName)
+	log.Printf("Retrieving set lists of user %s", u.userName)
 
 	setLists := model.SetLists{}
 	setLists.User = u.userName
@@ -155,7 +155,7 @@ func (u *UsersAPI) GetSetLists() *model.SetLists {
 // GetSetListSets returns all sets of the user's set list provided by
 // /api/v3/users/{user_token}/setlists/{list_id}/sets/
 func (u *UsersAPI) GetSetListSets(listId uint) *model.UserSets {
-	log.Printf("Retrieving all sets of set list %d\n", listId)
+	log.Printf("Retrieving all sets of set list %d", listId)
 
 	usersSets := model.UserSets{}
 	usersSets.User = u.userName
@@ -186,7 +186,7 @@ func (u *UsersAPI) GetSetListSets(listId uint) *model.UserSets {
 // GetPartList returns details about a certain set list of the user provided by
 // /api/v3/users/{user_token}/partlists/{list_id}/
 func (u *UsersAPI) GetPartList(listId uint) *model.PartList {
-	log.Printf("Retrieving details about part list %d\n", listId)
+	log.Printf("Retrieving details about part list %d", listId)
 
 	var partList *model.PartList
 
@@ -201,7 +201,7 @@ func (u *UsersAPI) GetPartList(listId uint) *model.PartList {
 
 // GetPartLists returns all part lists of the user provided by /api/v3/users/{user_token}/partlists/
 func (u *UsersAPI) GetPartLists() *model.PartLists {
-	log.Printf("Retrieving part lists of user %s\n", u.userName)
+	log.Printf("Retrieving part lists of user %s", u.userName)
 
 	partLists := model.PartLists{}
 	partLists.User = u.userName
@@ -230,10 +230,11 @@ func (u *UsersAPI) GetPartLists() *model.PartLists {
 // GetPartListParts returns all parts of the user defined part list provided by
 // /api/v3/users/{user_token}/partlists/{list_id}/parts/
 func (u *UsersAPI) GetPartListParts(listId uint) *model.Collection {
-	log.Printf("Retrieving parts of part list %d\n", listId)
+	log.Printf("Retrieving parts of part list %d", listId)
 
 	collection := model.Collection{}
-	collection.IDs = append(collection.IDs, fmt.Sprint(listId))
+	collection.Sets = []model.Set{}
+	collection.Names = append(collection.Names, fmt.Sprint(listId))
 
 	partsPage := partsPageResult{}
 
@@ -260,11 +261,11 @@ func (u *UsersAPI) GetPartListParts(listId uint) *model.Collection {
 
 // GetLostParts returns all parts owned by the user provided by /api/v3/users/{user_token}/lost_parts/
 func (u *UsersAPI) GetLostParts() *model.Collection {
-	log.Printf("Retrieving lost parts of user %s\n", u.userName)
+	log.Printf("Retrieving lost parts of user %s", u.userName)
 
 	lostParts := model.Collection{}
 	lostParts.User = u.userName
-	lostParts.IDs = []string{}
+	lostParts.Sets = []model.Set{}
 	lostParts.Names = append(lostParts.Names, "Lost parts")
 
 	lostPartsPage := lostPartsPageResult{}
@@ -314,6 +315,6 @@ func (u *UsersAPI) postToken() {
 
 	u.token = token.Value
 	if u.verbose {
-		log.Printf("User token: %s\n", u.token)
+		log.Printf("User token: %s", u.token)
 	}
 }

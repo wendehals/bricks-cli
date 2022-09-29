@@ -2,6 +2,7 @@ package collection
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/cmd/options"
@@ -28,6 +29,8 @@ the list of missing parts.`,
 }
 
 func executeSubtract(args []string) {
+	log.Printf("Subtracting the parts of '%s' from the parts of '%s'", args[1], args[0])
+
 	minuend := model.Load(&model.Collection{}, args[0])
 	subtrahend := model.Load(&model.Collection{}, args[1])
 	result := minuend.Subtract(subtrahend)

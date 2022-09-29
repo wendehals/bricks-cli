@@ -65,7 +65,7 @@ func (a *AbstractAPI) createGetRequest(url string) (*http.Request, error) {
 // doRequest issues an HTTP request
 func (a *AbstractAPI) doRequest(reqest *http.Request, v interface{}) error {
 	if a.verbose {
-		log.Printf("Requesting %s\n", reqest.URL)
+		log.Printf("Requesting %s", reqest.URL)
 	}
 
 	var body []byte

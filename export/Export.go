@@ -36,7 +36,7 @@ func ExportCollectionToHTML(collection *model.Collection, folderName string, fil
 	exportFilePath := filepath.FromSlash(fmt.Sprintf("%s/%s.html", folderName, fileName))
 	exportTemplate("resources/parts_html.gotpl", exportFilePath, collection)
 
-	log.Printf("Exported result to '%s'\n", exportFilePath)
+	log.Printf("Exported result to '%s'", exportFilePath)
 }
 
 // ExportToHTML writes an HTML file with the build collection into the given export directory.
@@ -53,7 +53,7 @@ func ExportBuildToHTML(buildCollection *model.BuildCollection, folderName string
 	exportFilePath := filepath.FromSlash(fmt.Sprintf("%s/%s.html", folderName, fileName))
 	exportTemplate("resources/build_html.gotpl", exportFilePath, buildCollection)
 
-	log.Printf("Exported result to '%s'\n", exportFilePath)
+	log.Printf("Exported result to '%s'", exportFilePath)
 }
 
 func exportTemplate(templateFile string, exportFilePath string, data any) {

@@ -10,16 +10,14 @@ func RetrieveSetParts(bricksAPI *BricksAPI, setNum string, includeMiniFigs bool)
 	set := bricksAPI.GetSet(setNum)
 
 	collection := bricksAPI.GetSetParts(setNum, includeMiniFigs)
-	collection.IDs = append(collection.IDs, set.SetNum)
-	collection.Names = append(collection.Names, set.Name)
+	collection.Sets = append(collection.Sets, *set)
 
 	return collection
 }
 
 func RetrieveSetPartsWithoutLost(bricksAPI *BricksAPI, usersAPI *UsersAPI, setNum string, includeMiniFigs bool) *model.Collection {
 	setParts := RetrieveSetParts(bricksAPI, setNum, includeMiniFigs)
-	ids := setParts.IDs
-	names := setParts.Names
+	sets := setParts.Sets
 
 	lostParts := usersAPI.GetLostParts()
 	var setLostParts model.Collection
@@ -31,14 +29,13 @@ func RetrieveSetPartsWithoutLost(bricksAPI *BricksAPI, usersAPI *UsersAPI, setNu
 
 	setParts.Subtract(&setLostParts)
 	setParts.User = usersAPI.userName
-	setParts.IDs = ids
-	setParts.Names = names
+	setParts.Sets = sets
 
 	return setParts
 }
 
 func RetrieveSetListParts(bricksAPI *BricksAPI, usersAPI *UsersAPI, setListId uint, includeMiniFigs bool) []*model.Collection {
-	log.Printf("Retrieving parts of all sets from the set list %d\n", setListId)
+	log.Printf("Retrieving parts of all sets from the set list %d", setListId)
 
 	userSets := usersAPI.GetSetListSets(setListId)
 	collections := make([]*model.Collection, len(userSets.Sets))
@@ -51,7 +48,7 @@ func RetrieveSetListParts(bricksAPI *BricksAPI, usersAPI *UsersAPI, setListId ui
 }
 
 func RetrievePartListParts(usersAPI *UsersAPI, partListsFile string, includeNonBuildable bool) []*model.Collection {
-	log.Printf("Retrieving parts of all part lists from the part lists file %s\n", partListsFile)
+	log.Printf("Retrieving parts of all part lists from the part lists file %s", partListsFile)
 
 	partLists := model.Load(&model.PartLists{}, partListsFile)
 	var collections []*model.Collection

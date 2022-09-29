@@ -2,6 +2,7 @@ package collection
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/cmd/options"
@@ -24,6 +25,8 @@ merging identical parts to single lots.`,
 }
 
 func executeSum(args []string) {
+	log.Print("Summing up the parts of the given collections")
+
 	var collections []model.Collection
 	for _, filename := range args {
 		collections = append(collections, *model.Load(&model.Collection{}, filename))

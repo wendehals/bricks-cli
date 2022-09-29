@@ -61,7 +61,7 @@ func (b *BricksAPI) GetColors() []model.Color {
 
 // GetSet returns the result of /api/v3/lego/sets/{set_num}/
 func (b *BricksAPI) GetSet(setNum string) *model.Set {
-	log.Printf("Retrieving details about set %s\n", setNum)
+	log.Printf("Retrieving details about set %s", setNum)
 
 	set := model.Set{}
 
@@ -78,7 +78,7 @@ func (b *BricksAPI) GetSet(setNum string) *model.Set {
 
 // GetSetParts returns the result of /api/v3/lego/sets/{set_num}/parts/
 func (b *BricksAPI) GetSetParts(setNum string, includeMiniFigs bool) *model.Collection {
-	log.Printf("Retrieving parts of set %s\n", setNum)
+	log.Printf("Retrieving parts of set %s", setNum)
 
 	collection := model.Collection{}
 

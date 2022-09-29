@@ -35,7 +35,7 @@ func init() {
 }
 
 func executeScript(args []string) {
-	log.Printf("Executing script '%s'\n", args[0])
+	log.Printf("Executing script '%s'", args[0])
 
 	bricksScript := scripting.NewBricksScript(credentials, args[0], options.Verbose)
 	bricksScript.Execute()

@@ -3,12 +3,8 @@ package model
 import "sort"
 
 type BuildCollection struct {
-	ID       string             `json:"id"`
-	Name     string             `json:"name"`
-	NumParts uint               `json:"num_parts"`
-	SetURL   string             `json:"set_url"`
-	ImageURL string             `json:"set_img_url"`
-	Parts    []PartEntryMapping `json:"parts"`
+	Set   Set
+	Parts []PartEntryMapping `json:"parts"`
 }
 
 type PartEntryMapping struct {

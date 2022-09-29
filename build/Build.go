@@ -17,13 +17,6 @@ func Build(neededCollection *model.Collection, providedCollection *model.Collect
 	buildCollection := build(neededCollection, providedCollection, &colors, partRelationships)
 	buildCollection.Sort()
 
-	if len(neededCollection.IDs) > 0 {
-		set := bricksAPI.GetSet(neededCollection.IDs[0])
-		buildCollection.NumParts = set.NumParts
-		buildCollection.SetURL = set.SetURL
-		buildCollection.ImageURL = set.SetImageURL
-	}
-
 	model.Save(buildCollection, fmt.Sprintf("%s/result.build", outputDir))
 	export.ExportBuildToHTML(buildCollection, outputDir, "build")
 
@@ -36,11 +29,8 @@ func build(neededCollection *model.Collection, providedCollection *model.Collect
 	partRelationships *model.PartRelationships) *model.BuildCollection {
 
 	buildCollection := model.BuildCollection{}
-	if len(neededCollection.IDs) > 0 {
-		buildCollection.ID = neededCollection.IDs[0]
-	}
-	if len(neededCollection.Names) > 0 {
-		buildCollection.Name = neededCollection.Names[0]
+	if len(neededCollection.Sets) > 0 {
+		buildCollection.Set = neededCollection.Sets[0]
 	}
 	buildCollection.Parts = []model.PartEntryMapping{}
 

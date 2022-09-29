@@ -1,11 +1,23 @@
 <!DOCTYPE html>
 <html>
 	<style>
-		.container {
+		.sets {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(200px, 400px));
+			width: 98%;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		div.sets img {
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+		}
+		.parts {
 			display: grid;
 			grid-template-columns: repeat(auto-fit, minmax(100px, 120px));
-			grid-gap: 0.5em;
-			width: 95%;
+			grid-gap: 5px;
+			width: 98%;
 			margin-left: auto;
 			margin-right: auto;
 		}
@@ -40,28 +52,44 @@
 	</head>
 
 	<body>
-		<h1>Parts</h1>
+		<h1>Parts Collection</h1>
+
+		{{- if (gt (len .Sets) 0)}}
+		<h2>Sets</h2>
+			<div class="sets">
+			{{- range $set := .Sets}}
+				<div>
+					<a href="{{$set.SetURL}}">
+						<img src="{{$set.SetImageURL}}" title="{{$set.SetNum}} - {{$set.Name}}" alt="{{$set.Name}}"/>
+					</a>
+				</div>
+			{{- end}}
+			</div>
+		{{- end}}
+
+		<h2>Summary</h2>
+
 			<p>Total number of parts: {{.CountParts}}
 			<p>Total Number of distinct part: {{len .Parts}}</p>
 
 		<h2>Existing Parts</h2>
 		
-			<div class="container">
-			{{- range $index, $element := .Parts}}
-				{{- if (gt $element.Quantity 0)}}
+			<div class="parts">
+			{{- range $part := .Parts}}
+				{{- if (gt $part.Quantity 0)}}
 				<div class="part">
 					<div class="image">
 						<div>
-							<a href="{{$element.Part.PartURL}}">
-								<img src="{{$element.Part.ImageURL}}" title="{{$element.Part.Name}}, {{$element.Color.Name}}" alt="{{$element.Part.Name}}" width="100" height="100"/>
+							<a href="{{$part.Part.PartURL}}">
+								<img src="{{$part.Part.ImageURL}}" title="{{$part.Part.Name}}, {{$part.Color.Name}}" alt="{{$part.Part.Name}}" width="100" height="100"/>
 							</a>
 						</div>
-						{{- if not (eq $element.Part.Dimensions "")}}
-						<div class="top-right">{{$element.Part.Dimensions}}</div>
+						{{- if not (eq $part.Part.Dimensions "")}}
+						<div class="top-right">{{$part.Part.Dimensions}}</div>
 						{{- end}}
 					</div>
-					<div class="caption">{{$element.Quantity}} x {{$element.Part.Number}}</div>
-					<div class="caption">{{$element.Color.Name}}</div>
+					<div class="caption">{{$part.Quantity}} x {{$part.Part.Number}}</div>
+					<div class="caption">{{$part.Color.Name}}</div>
 				</div>
 				{{- end}}
 			{{- end}}
@@ -70,22 +98,22 @@
 		{{if (.HasMissingParts)}}
 		<h2>Missing Parts</h2>
 
-			<div class="container">
-			{{- range $index, $element := .Parts}}
-				{{- if (lt $element.Quantity 0)}}
+			<div class="parts">
+			{{- range $part := .Parts}}
+				{{- if (lt $part.Quantity 0)}}
 				<div class="part">
 					<div class="image">
 						<div>
-							<a href="{{$element.Part.PartURL}}">
-								<img src="{{$element.Part.ImageURL}}" title="{{$element.Part.Name}}, {{$element.Color.Name}}" alt="{{$element.Part.Name}}" width="100" height="100"/>
+							<a href="{{$part.Part.PartURL}}">
+								<img src="{{$part.Part.ImageURL}}" title="{{$part.Part.Name}}, {{$part.Color.Name}}" alt="{{$part.Part.Name}}" width="100" height="100"/>
 							</a>
 						</div>
-						{{- if not (eq $element.Part.Dimensions "")}}
-						<div class="top-right">{{$element.Part.Dimensions}}</div>
+						{{- if not (eq $part.Part.Dimensions "")}}
+						<div class="top-right">{{$part.Part.Dimensions}}</div>
 						{{- end}}
 					</div>
-					<div class="caption">{{abs $element.Quantity}} x {{$element.Part.Number}}</div>
-					<div class="caption">{{$element.Color.Name}}</div>
+					<div class="caption">{{abs $part.Quantity}} x {{$part.Part.Number}}</div>
+					<div class="caption">{{$part.Color.Name}}</div>
 				</div>
 				{{- end}}
 			{{- end}}

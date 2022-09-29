@@ -2,6 +2,7 @@ package collection
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/cmd/options"
@@ -22,6 +23,8 @@ var maxCmd = &cobra.Command{
 }
 
 func executeMax(args []string) {
+	log.Print("Calculating maximum of each part of the given collections")
+
 	var collections []model.Collection
 	for _, filename := range args {
 		collections = append(collections, *model.Load(&model.Collection{}, filename))

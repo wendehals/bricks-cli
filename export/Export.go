@@ -18,11 +18,13 @@ import (
 )
 
 const (
-	EXPORT_FAILED_MSG = "exporting collection to HTML file '%s' failed: %s"
+	PARSING_FAILED_MSG = "parsing template file '%s' failed: %s"
+	EXPORT_FAILED_MSG  = "exporting collection to HTML file '%s' failed: %s"
 )
 
-//go:embed resources/build_html.gotpl
-//go:embed resources/parts_html.gotpl
+//go:embed resources/build.gotpl
+//go:embed resources/collection.gotpl
+//go:embed resources/part.gotpl
 var embeddedFS embed.FS
 
 // ExportToHTML writes an HTML file with all parts of the collection into the given export directory.
@@ -34,7 +36,7 @@ func ExportCollectionToHTML(collection *model.Collection, folderName string, fil
 	}
 
 	exportFilePath := filepath.FromSlash(fmt.Sprintf("%s/%s.html", folderName, fileName))
-	exportTemplate("resources/parts_html.gotpl", exportFilePath, collection)
+	exportTemplate(collection, exportFilePath, "resources/collection.gotpl", "resources/part.gotpl")
 
 	log.Printf("Exported result to '%s'", exportFilePath)
 }
@@ -51,31 +53,13 @@ func ExportBuildToHTML(buildCollection *model.BuildCollection, folderName string
 	}
 
 	exportFilePath := filepath.FromSlash(fmt.Sprintf("%s/%s.html", folderName, fileName))
-	exportTemplate("resources/build_html.gotpl", exportFilePath, buildCollection)
+	exportTemplate(buildCollection, exportFilePath, "resources/build.gotpl", "resources/part.gotpl")
 
 	log.Printf("Exported result to '%s'", exportFilePath)
 }
 
-func exportTemplate(templateFile string, exportFilePath string, data any) {
-	templ := template.New("parts")
-	templ.Funcs(template.FuncMap{
-		"abs": func(i int) int {
-			if i < 0 {
-				return -i
-			}
-			return i
-		},
-	})
-
-	bytes, err := embeddedFS.ReadFile(templateFile)
-	if err != nil {
-		log.Fatalf(EXPORT_FAILED_MSG, exportFilePath, err.Error())
-	}
-
-	templ, err = templ.Parse(string(bytes))
-	if err != nil {
-		log.Fatalf(EXPORT_FAILED_MSG, exportFilePath, err.Error())
-	}
+func exportTemplate(data any, exportFilePath string, files ...string) {
+	templ := parseTemplates(files...)
 
 	file, err := os.Create(exportFilePath)
 	if err != nil {
@@ -91,6 +75,47 @@ func exportTemplate(templateFile string, exportFilePath string, data any) {
 	}
 
 	writer.Flush()
+}
+
+func parseTemplates(files ...string) *template.Template {
+	name, _ := utils.SplitFileName(files[0])
+	templ := template.New(name)
+
+	templ.Funcs(template.FuncMap{
+		"abs": func(i int) int {
+			if i < 0 {
+				return -i
+			}
+			return i
+		},
+	})
+
+	bytes, err := embeddedFS.ReadFile(files[0])
+	if err != nil {
+		log.Fatalf(PARSING_FAILED_MSG, files[0], err.Error())
+	}
+
+	templ, err = templ.Parse(string(bytes))
+	if err != nil {
+		log.Fatalf(PARSING_FAILED_MSG, files[0], err.Error())
+	}
+
+	for i := 1; i < len(files); i++ {
+		name, _ := utils.SplitFileName(files[i])
+		additional_templ := templ.New(name)
+
+		bytes, err := embeddedFS.ReadFile(files[i])
+		if err != nil {
+			log.Fatalf(PARSING_FAILED_MSG, files[i], err.Error())
+		}
+
+		_, err = additional_templ.Parse(string(bytes))
+		if err != nil {
+			log.Fatalf(PARSING_FAILED_MSG, files[i], err.Error())
+		}
+	}
+
+	return templ
 }
 
 func replaceImageURL(part *model.Part, exportDir string) {

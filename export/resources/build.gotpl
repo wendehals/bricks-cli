@@ -62,8 +62,8 @@
 	</head>
 
 	<body>
-		<h1>Building <a href="{{.Set.URL}}">{{.ID}} - {{.Name}}</a></h1>
-			<div style="text-align: center;"><a href="{{.Set.URL}}"><img style="width: 40%; object-fit: contain;" src="{{.ImageURL}}" title="{{.Set.Number}} - {{.Set.Name}}" alt="{{.Set.Name}}"/></a></div>
+		<h1>Building <a href="{{.Set.URL}}">{{.Set.Number}} - {{.Set.Name}}</a></h1>
+			<div style="text-align: center;"><a href="{{.Set.URL}}"><img style="width: 500px; object-fit: contain;" src="{{.Set.ImageURL}}" title="{{.Set.Number}} - {{.Set.Name}}" alt="{{.Set.Name}}"/></a></div>
 			<p>Total number of parts: {{.Set.NumParts}}
 			<p>Provided parts: {{.CountProvidedParts}}
 			<p>Missing parts: {{.CountMissingParts}}
@@ -78,28 +78,15 @@
 				{{- range $entry := .Mapping}}
 				<div class="tableRow">
 					<div class="tableCell">
-						<div class="part">
-							<div class="image">
-								<div>
-									<a href="{{$entry.Original.Part.URL}}">
-										<img src="{{$entry.Original.Part.ImageURL}}" title="{{$entry.Original.Part.Name}}, {{$entry.Original.Color.Name}}" alt="{{$entry.Original.Part.Name}}" width="100" height="100"/>
-									</a>
-								</div>
-								{{- if not (eq $entry.Original.Part.Dimensions "")}}
-								<div class="top-right">{{$entry.Original.Part.Dimensions}}</div>
-								{{- end}}
-							</div>
-							<div class="caption">{{$entry.Original.Quantity}} x {{$entry.Original.Part.Number}}</div>
-							<div class="caption">{{$entry.Original.Color.Name}}</div>
-						</div>
+					{{template "part" $entry.Original}}
 					</div>
 					<div class="tableCell">
 						{{- if (gt $entry.Quantity 0)}}
 						<div class="part">
 							<div class="image">
 								<div>
-									<a href="{{$entry.Original.Part.URL}}">
-										<img src="{{$entry.Original.Part.ImageURL}}" title="{{$entry.Original.Part.Name}}, {{$entry.Original.Color.Name}}" alt="{{$entry.Original.Part.Name}}" width="100" height="100"/>
+									<a href="{{$entry.Original.Shape.URL}}">
+										<img src="{{$entry.Original.Shape.ImageURL}}" title="{{$entry.Original.Shape.Name}}, {{$entry.Original.Color.Name}}" alt="{{$entry.Original.Shape.Name}}" width="100" height="100"/>
 									</a>
 								</div>
 							</div>
@@ -110,17 +97,7 @@
 					<div class="tableCell">
 						<div class="container">
 							{{- range $part := $entry.Substitutes}}
-							<div class="part">
-								<div class="image">
-									<div>
-										<a href="{{$part.Part.URL}}">
-											<img src="{{$part.Part.ImageURL}}" title="{{$part.Part.Name}}, {{$part.Color.Name}}" alt="{{$part.Part.Name}}" width="100" height="100"/>
-										</a>
-									</div>
-								</div>
-								<div class="caption">{{$part.Quantity}} x {{$part.Part.Number}}</div>
-								<div class="caption">{{$part.Color.Name}}</div>
-							</div>
+							{{template "part" $part}}
 							{{- end}}
 						</div>
 					</div>

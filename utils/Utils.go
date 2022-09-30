@@ -22,6 +22,16 @@ func FileExists(filePath string) bool {
 	return true
 }
 
+// SplitFileName returns the base file name and its extension.
+// Example: SplitFileName("example.txt") returns ("example", "txt")
+func SplitFileName(fileName string) (string, string) {
+	base := filepath.Base(fileName)
+	ext := filepath.Ext(base)
+	baseWoExt := base[:len(base)-len(ext)]
+
+	return baseWoExt, ext
+}
+
 func GetBricksDir() string {
 	userHome, err := os.UserHomeDir()
 	if err != nil {

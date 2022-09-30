@@ -1,9 +1,10 @@
 package options
 
 import (
-	"path/filepath"
 	"regexp"
 	"strings"
+
+	"github.com/wendehals/bricks/utils"
 )
 
 const (
@@ -36,15 +37,13 @@ func FileNameFromArgs(args []string, suffix string) string {
 	var builder strings.Builder
 
 	for i := 0; i < len(args) && i < 5; i++ {
-		base := filepath.Base(args[i])
-		ext := filepath.Ext(base)
-		baseWoExt := base[:len(base)-len(ext)]
+		base, _ := utils.SplitFileName(args[i])
 
-		index := strings.Index(baseWoExt, "_")
+		index := strings.Index(base, "_")
 		if index != -1 {
-			builder.WriteString(baseWoExt[:index])
+			builder.WriteString(base[:index])
 		} else {
-			builder.WriteString(baseWoExt)
+			builder.WriteString(base)
 		}
 
 		if i < len(args)-1 && i < 4 {

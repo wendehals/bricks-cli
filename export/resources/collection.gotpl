@@ -13,6 +13,10 @@
 			height: 100%;
 			object-fit: contain;
 		}
+		.set {
+			display: block;
+			padding: 3px;
+		}
 		.parts {
 			display: grid;
 			grid-template-columns: repeat(auto-fit, minmax(100px, 120px));
@@ -58,10 +62,11 @@
 		<h2>Sets</h2>
 			<div class="sets">
 			{{- range $set := .Sets}}
-				<div>
-					<a href="{{$set.URL}}">
+				<div class="set">
+					<div>
 						<img src="{{$set.ImageURL}}" title="{{$set.Number}} - {{$set.Name}}" alt="{{$set.Name}}"/>
-					</a>
+					</div>
+					<div class="caption"><a href="{{$set.URL}}">{{$set.Number}} - {{$set.Name}}</a></div>
 				</div>
 			{{- end}}
 			</div>
@@ -72,28 +77,28 @@
 			<p>Total number of parts: {{.CountParts}}
 			<p>Total Number of distinct part: {{len .Parts}}</p>
 
-		<h2>Existing Parts</h2>
+		<h2>Included Parts</h2>
 		
 			<div class="parts">
 			{{- range $part := .Parts}}
-				{{- if (gt $part.Quantity 0)}}
-				<div class="part">
-					<div class="image">
-						<div>
-							<a href="{{$part.Shape.URL}}">
-								<img src="{{$part.Shape.ImageURL}}" title="{{$part.Shape.Name}}, {{$part.Color.Name}}" alt="{{$part.Shape.Name}}" width="100" height="100"/>
-							</a>
-						</div>
-						{{- if not (eq $part.Shape.Dimensions "")}}
-						<div class="top-right">{{$part.Shape.Dimensions}}</div>
-						{{- end}}
-					</div>
-					<div class="caption">{{$part.Quantity}} x {{$part.Shape.Number}}</div>
-					<div class="caption">{{$part.Color.Name}}</div>
-				</div>
+				{{- if and (gt $part.Quantity 0) (not $part.IsSpare)}}
+				{{template "part" $part}}
 				{{- end}}
 			{{- end}}
 			</div>
+
+		{{if (.HasSpareParts)}}
+		<h2>Spare Parts</h2>
+
+			<div class="parts">
+			{{- range $part := .Parts}}
+				{{- if $part.IsSpare}}
+				{{template "part" $part}}
+				{{- end}}
+			{{- end}}
+			</div>
+
+		{{- end}}
 
 		{{if (.HasMissingParts)}}
 		<h2>Missing Parts</h2>
@@ -101,20 +106,7 @@
 			<div class="parts">
 			{{- range $part := .Parts}}
 				{{- if (lt $part.Quantity 0)}}
-				<div class="part">
-					<div class="image">
-						<div>
-							<a href="{{$part.Shape.URL}}">
-								<img src="{{$part.Shape.ImageURL}}" title="{{$part.Shape.Name}}, {{$part.Color.Name}}" alt="{{$part.Shape.Name}}" width="100" height="100"/>
-							</a>
-						</div>
-						{{- if not (eq $part.Shape.Dimensions "")}}
-						<div class="top-right">{{$part.Shape.Dimensions}}</div>
-						{{- end}}
-					</div>
-					<div class="caption">{{abs $part.Quantity}} x {{$part.Shape.Number}}</div>
-					<div class="caption">{{$part.Color.Name}}</div>
-				</div>
+				{{template "part" $part}}
 				{{- end}}
 			{{- end}}
 			</div>

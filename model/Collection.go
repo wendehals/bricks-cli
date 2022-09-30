@@ -61,7 +61,7 @@ func (c *Collection) Remove(partNum string, colorId int, quantity int) {
 }
 
 // Add one collection to another.
-// The isSpare flag of PartEntry will be invalid afterwards and set to false for all entries.
+// The isSpare flag of PartEntry will be invalid afterwards and set to false for all parts.
 func (c *Collection) Add(other *Collection) *Collection {
 	c.Names = []string{"Sum"}
 	c.Sets = append(c.Sets, other.Sets...)
@@ -70,7 +70,7 @@ func (c *Collection) Add(other *Collection) *Collection {
 }
 
 // Subtract one collection from another.
-// The isSpare flag of PartEntry will be invalid afterwards and set to false for all entries.
+// The isSpare flag of PartEntry will be invalid afterwards and set to false for all parts.
 func (c *Collection) Subtract(other *Collection) *Collection {
 	c.Names = []string{"Subtraction"}
 	c.Sets = []Set{}
@@ -79,7 +79,7 @@ func (c *Collection) Subtract(other *Collection) *Collection {
 }
 
 // Max calculates the max quantity of each part in both collections.
-// The isSpare flag of PartEntry will be invalid afterwards and set to false for all entries.
+// The isSpare flag of PartEntry will be invalid afterwards and set to false for all parts.
 func (c *Collection) Max(other *Collection) *Collection {
 	c.Names = []string{"Maximum"}
 	c.Sets = append(c.Sets, other.Sets...)
@@ -96,7 +96,18 @@ func (c *Collection) CountParts() int {
 	return partsCounter
 }
 
-// HasMissingParts returns true if any part entry in the collection has quantity < 0
+// HasSpareParts returns true if any part in the collection is a spare part
+func (c *Collection) HasSpareParts() bool {
+	for _, part := range c.Parts {
+		if part.IsSpare {
+			return true
+		}
+	}
+
+	return false
+}
+
+// HasMissingParts returns true if any part in the collection has quantity < 0
 func (c *Collection) HasMissingParts() bool {
 	for _, part := range c.Parts {
 		if part.Quantity < 0 {

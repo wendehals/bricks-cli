@@ -14,10 +14,10 @@ const (
 
 // Collection represents any collection of parts (set, parts list, ...)
 type Collection struct {
-	User  string      `json:"user"`
-	Names []string    `json:"names"`
-	Sets  []Set       `json:"sets"`
-	Parts []PartEntry `json:"parts"`
+	User  string   `json:"user"`
+	Names []string `json:"names"`
+	Sets  []Set    `json:"sets"`
+	Parts []Part   `json:"parts"`
 }
 
 // Sort the Parts of a collection by their Part Number
@@ -30,17 +30,17 @@ func (c *Collection) Sort() *Collection {
 }
 
 // Find returns a PartEntry with the given part number and color id.
-func (c *Collection) Find(partNum string, colorId int) *PartEntry {
+func (c *Collection) Find(partNum string, colorId int) *Part {
 	return c.FindByEquivalence(partNum, colorId, func(s1, s2 string) bool { return s1 == s2 })
 }
 
 // FindByEquivalence returns a PartEntry with a part number that is equivalent to the given part number.
 // The given function defines the equivalance.
-func (c *Collection) FindByEquivalence(partNum string, colorId int, eqFunc func(string, string) bool) *PartEntry {
+func (c *Collection) FindByEquivalence(partNum string, colorId int, eqFunc func(string, string) bool) *Part {
 	for i := range c.Parts {
-		partEntry := &c.Parts[i]
-		if eqFunc(partEntry.Part.Number, partNum) && partEntry.Color.ID == colorId {
-			return partEntry
+		part := &c.Parts[i]
+		if eqFunc(part.Shape.Number, partNum) && part.Color.ID == colorId {
+			return part
 		}
 	}
 	return nil
@@ -49,7 +49,7 @@ func (c *Collection) FindByEquivalence(partNum string, colorId int, eqFunc func(
 // Remove removes the given quantity of parts with the given number and color id.
 func (c *Collection) Remove(partNum string, colorId int, quantity int) {
 	for i := range c.Parts {
-		if c.Parts[i].Part.Number == partNum && c.Parts[i].Color.ID == colorId {
+		if c.Parts[i].Shape.Number == partNum && c.Parts[i].Color.ID == colorId {
 			c.Parts[i].Quantity -= quantity
 			return
 		}
@@ -86,16 +86,16 @@ func (c *Collection) Max(other *Collection) *Collection {
 // CountParts sums up the quantity of all parts of a collection.
 func (c *Collection) CountParts() int {
 	var partsCounter int
-	for _, partEntry := range c.Parts {
-		partsCounter += partEntry.Quantity
+	for _, part := range c.Parts {
+		partsCounter += part.Quantity
 	}
 	return partsCounter
 }
 
 // HasMissingParts returns true if any part entry in the collection has quantity < 0
 func (c *Collection) HasMissingParts() bool {
-	for _, partEntry := range c.Parts {
-		if partEntry.Quantity < 0 {
+	for _, part := range c.Parts {
+		if part.Quantity < 0 {
 			return true
 		}
 	}
@@ -105,16 +105,16 @@ func (c *Collection) HasMissingParts() bool {
 
 // RemoveQuantityZero removes all parts of the collection which quantity is zero.
 func (c *Collection) RemoveQuantityZero() *Collection {
-	return c.Filter(func(part PartEntry) bool { return part.Quantity != 0 })
+	return c.Filter(func(part Part) bool { return part.Quantity != 0 })
 }
 
 // Filter applies function f on each part of the collection and removes those from the collection for which f returns false.
-func (c *Collection) Filter(f func(PartEntry) bool) *Collection {
-	filteredParts := []PartEntry{}
+func (c *Collection) Filter(f func(Part) bool) *Collection {
+	filteredParts := []Part{}
 
-	for _, partEntry := range c.Parts {
-		if f(partEntry) {
-			filteredParts = append(filteredParts, partEntry)
+	for _, part := range c.Parts {
+		if f(part) {
+			filteredParts = append(filteredParts, part)
 		}
 	}
 
@@ -123,18 +123,18 @@ func (c *Collection) Filter(f func(PartEntry) bool) *Collection {
 	return c
 }
 
-func (c *Collection) mapPartsByPartNumber(partsMap map[string][]PartEntry, keyMapping func(string) string) map[string][]PartEntry {
+func (c *Collection) mapPartsByPartNumber(partsMap map[string][]Part, keyMapping func(string) string) map[string][]Part {
 	if partsMap == nil {
-		partsMap = make(map[string][]PartEntry)
+		partsMap = make(map[string][]Part)
 	}
 
 	for _, currentPart := range c.Parts {
 		currentPart.IsSpare = false
-		key := keyMapping(currentPart.Part.Number)
+		key := keyMapping(currentPart.Shape.Number)
 
 		value, exists := partsMap[key]
 		if !exists {
-			value = []PartEntry{}
+			value = []Part{}
 		}
 
 		found := false
@@ -156,11 +156,11 @@ func (c *Collection) mapPartsByPartNumber(partsMap map[string][]PartEntry, keyMa
 	return partsMap
 }
 
-func (c *Collection) setParts(partsMap map[string][]PartEntry) {
-	newParts := []PartEntry{}
+func (c *Collection) setParts(partsMap map[string][]Part) {
+	newParts := []Part{}
 	for key, value := range partsMap {
 		for i := 0; i < len(value); i++ {
-			value[i].Part.Number = key
+			value[i].Shape.Number = key
 			newParts = append(newParts, value[i])
 		}
 	}
@@ -171,12 +171,12 @@ func (c *Collection) setParts(partsMap map[string][]PartEntry) {
 func (c *Collection) recalculateQuantity(other *Collection, recalc func(int, int) int) *Collection {
 	partsMap := c.mapPartsByPartNumber(nil, utils.Identity)
 
-	missingParts := []PartEntry{}
+	missingParts := []Part{}
 	for i := range other.Parts {
 		found := false
 		currentPart := other.Parts[i]
 
-		values, exists := partsMap[currentPart.Part.Number]
+		values, exists := partsMap[currentPart.Shape.Number]
 		if exists {
 			for j := range values {
 				if cmp.Equal(values[j].Color, currentPart.Color) {

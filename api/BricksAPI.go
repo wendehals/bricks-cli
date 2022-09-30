@@ -108,31 +108,3 @@ func (b *BricksAPI) GetSetParts(setNum string, includeMiniFigs bool) *model.Coll
 
 	return &collection
 }
-
-// GetPartColors returns the result of /api/v3/lego/parts/{part_num}/colors/
-func (b *BricksAPI) GetPartColors(partNum string) []model.PartColor {
-	partColors := []model.PartColor{}
-	partColorsPage := partColorsPageResult{}
-
-	subPath := fmt.Sprintf("parts/%s/colors/", partNum)
-	url := fmt.Sprintf(BRICKS_URL, subPath)
-
-	err := b.requestPage(url, &partColorsPage)
-	if err != nil {
-		log.Fatalf(PART_COLORS_ERR_MSG, err.Error())
-	}
-
-	partColors = append(partColors, partColorsPage.Results...)
-	for len(partColorsPage.Next) > 0 {
-		url = partColorsPage.Next
-		partColorsPage = partColorsPageResult{}
-		err = b.requestPage(url, &partColorsPage)
-		if err != nil {
-			log.Fatalf(PART_COLORS_ERR_MSG, err.Error())
-		}
-
-		partColors = append(partColors, partColorsPage.Results...)
-	}
-
-	return partColors
-}

@@ -1,6 +1,6 @@
 package model
 
-// Color represents the Color of a Lego part.
+// Color represents the color of a Lego part.
 type Color struct {
 	ID   int    `json:"id"`
 	Name string `json:"name"`

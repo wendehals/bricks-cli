@@ -3,28 +3,28 @@ package model
 import "sort"
 
 type BuildCollection struct {
-	Set   Set
-	Parts []PartEntryMapping `json:"parts"`
+	Set     Set
+	Mapping []PartMapping `json:"mapping"`
 }
 
-type PartEntryMapping struct {
-	Quantity    int         `json:"quantity"`
-	Original    PartEntry   `json:"original"`
-	Substitutes []PartEntry `json:"substitutes"`
+type PartMapping struct {
+	Quantity    int    `json:"quantity"`
+	Original    Part   `json:"original"`
+	Substitutes []Part `json:"substitutes"`
 }
 
 // Sort the Parts of a collection by their Part Number
 func (b *BuildCollection) Sort() *BuildCollection {
-	sort.Slice(b.Parts, func(i, j int) bool {
-		return b.Parts[i].Original.LessThan(&b.Parts[j].Original)
+	sort.Slice(b.Mapping, func(i, j int) bool {
+		return b.Mapping[i].Original.LessThan(&b.Mapping[j].Original)
 	})
 
 	return b
 }
 
 func (b *BuildCollection) HasMissingParts() bool {
-	for i := range b.Parts {
-		if b.Parts[i].Quantity > 0 {
+	for _, entry := range b.Mapping {
+		if entry.Quantity > 0 {
 			return true
 		}
 	}
@@ -34,8 +34,8 @@ func (b *BuildCollection) HasMissingParts() bool {
 
 func (b *BuildCollection) CountMissingParts() int {
 	var missing int
-	for _, part := range b.Parts {
-		missing += part.Quantity
+	for _, entry := range b.Mapping {
+		missing += entry.Quantity
 	}
 
 	return missing
@@ -43,8 +43,8 @@ func (b *BuildCollection) CountMissingParts() int {
 
 func (b *BuildCollection) CountProvidedParts() int {
 	var provided int
-	for _, part := range b.Parts {
-		for _, substitute := range part.Substitutes {
+	for _, entry := range b.Mapping {
+		for _, substitute := range entry.Substitutes {
 			provided += substitute.Quantity
 		}
 	}

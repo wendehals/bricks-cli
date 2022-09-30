@@ -43,10 +43,10 @@ func ExportCollectionToHTML(collection *model.Collection, folderName string, fil
 func ExportBuildToHTML(buildCollection *model.BuildCollection, folderName string, fileName string) {
 	utils.CreateFolder(folderName)
 
-	for i := range buildCollection.Parts {
-		replaceImageURL(&buildCollection.Parts[i].Original, folderName)
-		for j := range buildCollection.Parts[i].Substitutes {
-			replaceImageURL(&buildCollection.Parts[i].Substitutes[j], folderName)
+	for i := range buildCollection.Mapping {
+		replaceImageURL(&buildCollection.Mapping[i].Original, folderName)
+		for j := range buildCollection.Mapping[i].Substitutes {
+			replaceImageURL(&buildCollection.Mapping[i].Substitutes[j], folderName)
 		}
 	}
 
@@ -93,11 +93,11 @@ func exportTemplate(templateFile string, exportFilePath string, data any) {
 	writer.Flush()
 }
 
-func replaceImageURL(partEntry *model.PartEntry, exportDir string) {
-	if partEntry.Color.ID >= 0 {
-		imageUrl, err := extractImage(partEntry.Part.Number, partEntry.Color.ID, exportDir)
+func replaceImageURL(part *model.Part, exportDir string) {
+	if part.Color.ID >= 0 {
+		imageUrl, err := extractImage(part.Shape.Number, part.Color.ID, exportDir)
 		if err == nil {
-			partEntry.Part.ImageURL = imageUrl
+			part.Shape.ImageURL = imageUrl
 		} else if err != nil && options.Verbose {
 			log.Print(err)
 		}

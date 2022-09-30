@@ -27,8 +27,8 @@ type partListsPageResult struct {
 	/api/v3/lego/sets/{set_num}/parts/
 */
 type partsPageResult struct {
-	Next    string            `json:"next"`
-	Results []model.PartEntry `json:"results"`
+	Next    string       `json:"next"`
+	Results []model.Part `json:"results"`
 }
 
 // colorsPageResult contains the result of /api/v3/lego/colors/?page={page}
@@ -37,14 +37,8 @@ type colorsPageResult struct {
 	Results []model.Color `json:"results"`
 }
 
-// partColorsPageResult contains the result of /api/v3/lego/parts/{part_num}/colors/
-type partColorsPageResult struct {
-	Next    string            `json:"next"`
-	Results []model.PartColor `json:"results"`
-}
-
 type invPart struct {
-	Part    model.Part  `json:"part"`
+	Part    model.Shape `json:"part"`
 	Color   model.Color `json:"color"`
 	SetNum  string      `json:"set_num"`
 	IsSpare bool        `json:"is_spare"`
@@ -62,16 +56,16 @@ type lostPartsPageResult struct {
 	Results []lostPart `json:"results"`
 }
 
-func (l *lostPartsPageResult) convertToPartEntries() []model.PartEntry {
-	partEntries := make([]model.PartEntry, len(l.Results))
+func (l *lostPartsPageResult) convertToPartEntries() []model.Part {
+	partEntries := make([]model.Part, len(l.Results))
 	for i, lostPart := range l.Results {
-		partEntry := model.PartEntry{}
-		partEntry.Quantity = lostPart.Quantity
-		partEntry.Part = lostPart.InvPart.Part
-		partEntry.Color = lostPart.InvPart.Color
-		partEntry.IsSpare = lostPart.InvPart.IsSpare
-		partEntry.SetNum = lostPart.InvPart.SetNum
-		partEntries[i] = partEntry
+		part := model.Part{}
+		part.Quantity = lostPart.Quantity
+		part.Shape = lostPart.InvPart.Part
+		part.Color = lostPart.InvPart.Color
+		part.IsSpare = lostPart.InvPart.IsSpare
+		part.SetNum = lostPart.InvPart.SetNum
+		partEntries[i] = part
 	}
 
 	return partEntries

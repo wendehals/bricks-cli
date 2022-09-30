@@ -21,9 +21,9 @@ func RetrieveSetPartsWithoutLost(bricksAPI *BricksAPI, usersAPI *UsersAPI, setNu
 
 	lostParts := usersAPI.GetLostParts()
 	var setLostParts model.Collection
-	for _, partEntry := range lostParts.Parts {
-		if partEntry.SetNum == setNum {
-			setLostParts.Parts = append(setLostParts.Parts, partEntry)
+	for _, part := range lostParts.Parts {
+		if part.SetNum == setNum {
+			setLostParts.Parts = append(setLostParts.Parts, part)
 		}
 	}
 
@@ -40,7 +40,7 @@ func RetrieveSetListParts(bricksAPI *BricksAPI, usersAPI *UsersAPI, setListId ui
 	userSets := usersAPI.GetSetListSets(setListId)
 	collections := make([]*model.Collection, len(userSets.Sets))
 	for i, userSet := range userSets.Sets {
-		collection := RetrieveSetParts(bricksAPI, userSet.Set.SetNum, includeMiniFigs)
+		collection := RetrieveSetParts(bricksAPI, userSet.Set.Number, includeMiniFigs)
 		collections[i] = collection
 	}
 

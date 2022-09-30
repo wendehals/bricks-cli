@@ -12,22 +12,22 @@ func TestSort(t *testing.T) {
 	collection.Sort()
 
 	test.AssertSameString(t, "black", collection.Parts[0].Color.Name)
-	test.AssertSameString(t, "name2412a", collection.Parts[0].Part.Name)
+	test.AssertSameString(t, "name2412a", collection.Parts[0].Shape.Name)
 
 	test.AssertSameString(t, "black", collection.Parts[1].Color.Name)
-	test.AssertSameString(t, "name25", collection.Parts[1].Part.Name)
+	test.AssertSameString(t, "name25", collection.Parts[1].Shape.Name)
 
 	test.AssertSameString(t, "blue", collection.Parts[2].Color.Name)
-	test.AssertSameString(t, "name2", collection.Parts[2].Part.Name)
+	test.AssertSameString(t, "name2", collection.Parts[2].Shape.Name)
 
 	test.AssertSameString(t, "gray", collection.Parts[3].Color.Name)
-	test.AssertSameString(t, "name2a", collection.Parts[3].Part.Name)
+	test.AssertSameString(t, "name2a", collection.Parts[3].Shape.Name)
 
 	test.AssertSameString(t, "red", collection.Parts[4].Color.Name)
-	test.AssertSameString(t, "name25", collection.Parts[4].Part.Name)
+	test.AssertSameString(t, "name25", collection.Parts[4].Shape.Name)
 
 	test.AssertSameString(t, "yellow", collection.Parts[5].Color.Name)
-	test.AssertSameString(t, "name2c", collection.Parts[5].Part.Name)
+	test.AssertSameString(t, "name2c", collection.Parts[5].Shape.Name)
 }
 
 func TestAdd(t *testing.T) {
@@ -35,37 +35,37 @@ func TestAdd(t *testing.T) {
 
 	assertSize(t, collection, 9)
 
-	test.AssertSameString(t, "2412a", collection.Parts[0].Part.Number)
+	test.AssertSameString(t, "2412a", collection.Parts[0].Shape.Number)
 	test.AssertSameInt(t, 6, collection.Parts[0].Quantity)
 	test.AssertSameInt(t, 1, collection.Parts[0].Color.ID)
 
-	test.AssertSameString(t, "2412b", collection.Parts[1].Part.Number)
+	test.AssertSameString(t, "2412b", collection.Parts[1].Shape.Number)
 	test.AssertSameInt(t, 1, collection.Parts[1].Quantity)
 	test.AssertSameInt(t, 1, collection.Parts[1].Color.ID)
 
-	test.AssertSameString(t, "25", collection.Parts[2].Part.Number)
+	test.AssertSameString(t, "25", collection.Parts[2].Shape.Number)
 	test.AssertSameInt(t, 10, collection.Parts[2].Quantity)
 	test.AssertSameInt(t, 1, collection.Parts[2].Color.ID)
 
-	test.AssertSameString(t, "2", collection.Parts[3].Part.Number)
+	test.AssertSameString(t, "2", collection.Parts[3].Shape.Number)
 	test.AssertSameInt(t, 101, collection.Parts[3].Quantity)
 
-	test.AssertSameString(t, "2a", collection.Parts[4].Part.Number)
+	test.AssertSameString(t, "2a", collection.Parts[4].Shape.Number)
 	test.AssertSameInt(t, 1, collection.Parts[4].Quantity)
 
-	test.AssertSameString(t, "25", collection.Parts[5].Part.Number)
+	test.AssertSameString(t, "25", collection.Parts[5].Shape.Number)
 	test.AssertSameInt(t, 3, collection.Parts[5].Quantity)
 	test.AssertSameInt(t, 2, collection.Parts[5].Color.ID)
 
-	test.AssertSameString(t, "2412a", collection.Parts[6].Part.Number)
+	test.AssertSameString(t, "2412a", collection.Parts[6].Shape.Number)
 	test.AssertSameInt(t, 1, collection.Parts[6].Quantity)
 	test.AssertSameInt(t, 3, collection.Parts[6].Color.ID)
 
-	test.AssertSameString(t, "25", collection.Parts[7].Part.Number)
+	test.AssertSameString(t, "25", collection.Parts[7].Shape.Number)
 	test.AssertSameInt(t, 20, collection.Parts[7].Quantity)
 	test.AssertSameInt(t, 3, collection.Parts[7].Color.ID)
 
-	test.AssertSameString(t, "2c", collection.Parts[8].Part.Number)
+	test.AssertSameString(t, "2c", collection.Parts[8].Shape.Number)
 	test.AssertSameInt(t, 5, collection.Parts[8].Quantity)
 }
 
@@ -74,31 +74,31 @@ func TestSubstract(t *testing.T) {
 
 	assertSize(t, collection, 9)
 
-	test.AssertSameString(t, "2412a", collection.Parts[0].Part.Number)
+	test.AssertSameString(t, "2412a", collection.Parts[0].Shape.Number)
 	test.AssertSameInt(t, 4, collection.Parts[0].Quantity)
 
-	test.AssertSameString(t, "2412b", collection.Parts[1].Part.Number)
+	test.AssertSameString(t, "2412b", collection.Parts[1].Shape.Number)
 	test.AssertSameInt(t, -1, collection.Parts[1].Quantity)
 
-	test.AssertSameString(t, "25", collection.Parts[2].Part.Number)
+	test.AssertSameString(t, "25", collection.Parts[2].Shape.Number)
 	test.AssertSameInt(t, 10, collection.Parts[2].Quantity)
 
-	test.AssertSameString(t, "2", collection.Parts[3].Part.Number)
+	test.AssertSameString(t, "2", collection.Parts[3].Shape.Number)
 	test.AssertSameInt(t, -99, collection.Parts[3].Quantity)
 
-	test.AssertSameString(t, "2a", collection.Parts[4].Part.Number)
+	test.AssertSameString(t, "2a", collection.Parts[4].Shape.Number)
 	test.AssertSameInt(t, 1, collection.Parts[4].Quantity)
 
-	test.AssertSameString(t, "25", collection.Parts[5].Part.Number)
+	test.AssertSameString(t, "25", collection.Parts[5].Shape.Number)
 	test.AssertSameInt(t, 3, collection.Parts[5].Quantity)
 
-	test.AssertSameString(t, "2412a", collection.Parts[6].Part.Number)
+	test.AssertSameString(t, "2412a", collection.Parts[6].Shape.Number)
 	test.AssertSameInt(t, -1, collection.Parts[6].Quantity)
 
-	test.AssertSameString(t, "25", collection.Parts[7].Part.Number)
+	test.AssertSameString(t, "25", collection.Parts[7].Shape.Number)
 	test.AssertSameInt(t, -20, collection.Parts[7].Quantity)
 
-	test.AssertSameString(t, "2c", collection.Parts[8].Part.Number)
+	test.AssertSameString(t, "2c", collection.Parts[8].Shape.Number)
 	test.AssertSameInt(t, 5, collection.Parts[8].Quantity)
 }
 
@@ -107,39 +107,39 @@ func TestMax(t *testing.T) {
 
 	assertSize(t, collection, 9)
 
-	test.AssertSameString(t, "2412a", collection.Parts[0].Part.Number)
+	test.AssertSameString(t, "2412a", collection.Parts[0].Shape.Number)
 	test.AssertSameInt(t, 5, collection.Parts[0].Quantity)
 	test.AssertSameInt(t, 1, collection.Parts[0].Color.ID)
 
-	test.AssertSameString(t, "2412b", collection.Parts[1].Part.Number)
+	test.AssertSameString(t, "2412b", collection.Parts[1].Shape.Number)
 	test.AssertSameInt(t, 1, collection.Parts[1].Quantity)
 	test.AssertSameInt(t, 1, collection.Parts[1].Color.ID)
 
-	test.AssertSameString(t, "25", collection.Parts[2].Part.Number)
+	test.AssertSameString(t, "25", collection.Parts[2].Shape.Number)
 	test.AssertSameInt(t, 10, collection.Parts[2].Quantity)
 	test.AssertSameInt(t, 1, collection.Parts[2].Color.ID)
 
-	test.AssertSameString(t, "2", collection.Parts[3].Part.Number)
+	test.AssertSameString(t, "2", collection.Parts[3].Shape.Number)
 	test.AssertSameInt(t, 100, collection.Parts[3].Quantity)
 	test.AssertSameInt(t, 5, collection.Parts[3].Color.ID)
 
-	test.AssertSameString(t, "2a", collection.Parts[4].Part.Number)
+	test.AssertSameString(t, "2a", collection.Parts[4].Shape.Number)
 	test.AssertSameInt(t, 1, collection.Parts[4].Quantity)
 	test.AssertSameInt(t, 4, collection.Parts[4].Color.ID)
 
-	test.AssertSameString(t, "25", collection.Parts[5].Part.Number)
+	test.AssertSameString(t, "25", collection.Parts[5].Shape.Number)
 	test.AssertSameInt(t, 3, collection.Parts[5].Quantity)
 	test.AssertSameInt(t, 2, collection.Parts[5].Color.ID)
 
-	test.AssertSameString(t, "2412a", collection.Parts[6].Part.Number)
+	test.AssertSameString(t, "2412a", collection.Parts[6].Shape.Number)
 	test.AssertSameInt(t, 1, collection.Parts[6].Quantity)
 	test.AssertSameInt(t, 3, collection.Parts[6].Color.ID)
 
-	test.AssertSameString(t, "25", collection.Parts[7].Part.Number)
+	test.AssertSameString(t, "25", collection.Parts[7].Shape.Number)
 	test.AssertSameInt(t, 20, collection.Parts[7].Quantity)
 	test.AssertSameInt(t, 3, collection.Parts[7].Color.ID)
 
-	test.AssertSameString(t, "2c", collection.Parts[8].Part.Number)
+	test.AssertSameString(t, "2c", collection.Parts[8].Shape.Number)
 	test.AssertSameInt(t, 5, collection.Parts[8].Quantity)
 	test.AssertSameInt(t, 3, collection.Parts[8].Color.ID)
 }

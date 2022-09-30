@@ -21,7 +21,7 @@ const (
 	GET_PART_LISTS_ERR_MSG      string = "the user's part lists could not be retrieved: %s"
 	GET_PART_LIST_PARTS_ERR_MSG string = "the parts of the user defined part list %d could not be retrieved: %s"
 	GET_LOST_PARTS_ERR_MSG      string = "the list of the user's lost parts could not be retrieved: %s"
-	TOKEN_ERR_MSG               string = "Could not log into Rebrickable API: %s"
+	TOKEN_ERR_MSG               string = "could not log into Rebrickable API: %s"
 )
 
 // UsersAPI provides API for accessing the user's data at Rebrickable
@@ -58,7 +58,7 @@ func (u *UsersAPI) GetAllParts() *model.Collection {
 
 	allPartsPage := partsPageResult{}
 
-	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "allparts"), &allPartsPage)
+	err := u.requestPage(fmt.Sprintf(USERS_URL, u.token, "allparts?page_size=200"), &allPartsPage)
 	if err != nil {
 		log.Fatalf(GET_ALL_PARTS_ERR_MSG, err.Error())
 	}

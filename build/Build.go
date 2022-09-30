@@ -32,7 +32,7 @@ func build(neededCollection *model.Collection, providedCollection *model.Collect
 	if len(neededCollection.Sets) > 0 {
 		buildCollection.Set = neededCollection.Sets[0]
 	}
-	buildCollection.Parts = []model.PartEntryMapping{}
+	buildCollection.Mapping = []model.PartMapping{}
 
 	isMold := func(s1, s2 string) bool {
 		return partRelationships.IsMold(s1, s2)
@@ -47,41 +47,41 @@ func build(neededCollection *model.Collection, providedCollection *model.Collect
 	}
 
 	// filter spare parts
-	neededCollection.Filter(func(p model.PartEntry) bool {
+	neededCollection.Filter(func(p model.Part) bool {
 		return !p.IsSpare
 	})
 
 	// search for same part type, same color
 	for _, neededPartEntry := range neededCollection.Parts {
-		partEntryMapping := model.PartEntryMapping{}
-		partEntryMapping.Quantity = neededPartEntry.Quantity
-		partEntryMapping.Original = *model.DeepClone(&neededPartEntry, &model.PartEntry{})
-		partEntryMapping.Substitutes = []model.PartEntry{}
+		mapping := model.PartMapping{}
+		mapping.Quantity = neededPartEntry.Quantity
+		mapping.Original = *model.DeepClone(&neededPartEntry, &model.Part{})
+		mapping.Substitutes = []model.Part{}
 
-		mapPartEntry(&partEntryMapping, providedCollection, neededPartEntry.Color.ID, utils.Equals)
+		mapPartEntry(&mapping, providedCollection, neededPartEntry.Color.ID, utils.Equals)
 
-		buildCollection.Parts = append(buildCollection.Parts, partEntryMapping)
+		buildCollection.Mapping = append(buildCollection.Mapping, mapping)
 	}
 
 	// search for equivalent part type, same color
-	for i := range buildCollection.Parts {
-		partEntryMapping := &buildCollection.Parts[i]
+	for i := range buildCollection.Mapping {
+		mapping := &buildCollection.Mapping[i]
 
-		mapPartEntry(partEntryMapping, providedCollection, partEntryMapping.Original.Color.ID, isMold)
-		mapPartEntry(partEntryMapping, providedCollection, partEntryMapping.Original.Color.ID, isPrint)
-		mapPartEntry(partEntryMapping, providedCollection, partEntryMapping.Original.Color.ID, isAlternative)
+		mapPartEntry(mapping, providedCollection, mapping.Original.Color.ID, isMold)
+		mapPartEntry(mapping, providedCollection, mapping.Original.Color.ID, isPrint)
+		mapPartEntry(mapping, providedCollection, mapping.Original.Color.ID, isAlternative)
 	}
 
 	// search for same or equivalent part type but different color
-	for i := range buildCollection.Parts {
-		partEntryMapping := &buildCollection.Parts[i]
-		for j := 0; j < len(*colors) && partEntryMapping.Quantity > 0; j++ {
+	for i := range buildCollection.Mapping {
+		mapping := &buildCollection.Mapping[i]
+		for j := 0; j < len(*colors) && mapping.Quantity > 0; j++ {
 			colorId := (*colors)[j].ID
-			if partEntryMapping.Original.Color.ID != colorId {
-				mapPartEntry(partEntryMapping, providedCollection, colorId, utils.Equals)
-				mapPartEntry(partEntryMapping, providedCollection, colorId, isMold)
-				mapPartEntry(partEntryMapping, providedCollection, colorId, isPrint)
-				mapPartEntry(partEntryMapping, providedCollection, colorId, isAlternative)
+			if mapping.Original.Color.ID != colorId {
+				mapPartEntry(mapping, providedCollection, colorId, utils.Equals)
+				mapPartEntry(mapping, providedCollection, colorId, isMold)
+				mapPartEntry(mapping, providedCollection, colorId, isPrint)
+				mapPartEntry(mapping, providedCollection, colorId, isAlternative)
 			}
 		}
 	}
@@ -89,26 +89,26 @@ func build(neededCollection *model.Collection, providedCollection *model.Collect
 	return &buildCollection
 }
 
-func mapPartEntry(partEntryMapping *model.PartEntryMapping, providedCollection *model.Collection,
+func mapPartEntry(mapping *model.PartMapping, providedCollection *model.Collection,
 	colorId int, eqFunc func(string, string) bool) {
 
-	if partEntryMapping.Quantity > 0 {
+	if mapping.Quantity > 0 {
 		providedPartEntry := providedCollection.FindByEquivalence(
-			partEntryMapping.Original.Part.Number, colorId, eqFunc)
+			mapping.Original.Shape.Number, colorId, eqFunc)
 
 		if providedPartEntry != nil && providedPartEntry.Quantity > 0 {
-			mappedPartEntry := model.DeepClone(providedPartEntry, &model.PartEntry{})
-			if providedPartEntry.Quantity >= partEntryMapping.Quantity {
-				providedPartEntry.Quantity -= partEntryMapping.Quantity
-				mappedPartEntry.Quantity = partEntryMapping.Quantity
+			mappedPartEntry := model.DeepClone(providedPartEntry, &model.Part{})
+			if providedPartEntry.Quantity >= mapping.Quantity {
+				providedPartEntry.Quantity -= mapping.Quantity
+				mappedPartEntry.Quantity = mapping.Quantity
 			} else {
 				providedPartEntry.Quantity = 0
 			}
 
-			partEntryMapping.Quantity -= mappedPartEntry.Quantity
-			partEntryMapping.Substitutes = append(partEntryMapping.Substitutes, *mappedPartEntry)
+			mapping.Quantity -= mappedPartEntry.Quantity
+			mapping.Substitutes = append(mapping.Substitutes, *mappedPartEntry)
 
-			providedCollection.Remove(providedPartEntry.Part.Number,
+			providedCollection.Remove(providedPartEntry.Shape.Number,
 				providedPartEntry.Color.ID, providedPartEntry.Quantity)
 		}
 	}

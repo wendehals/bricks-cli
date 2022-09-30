@@ -58,12 +58,12 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>Building {{.Set.SetNum}} - {{.Set.Name}}</title>
+		<title>Building {{.Set.Number}} - {{.Set.Name}}</title>
 	</head>
 
 	<body>
-		<h1>Building <a href="{{.Set.SetURL}}">{{.ID}} - {{.Name}}</a></h1>
-			<div style="text-align: center;"><a href="{{.Set.SetURL}}"><img style="width: 40%; object-fit: contain;" src="{{.ImageURL}}" title="{{.Set.SetNum}} - {{.Set.Name}}" alt="{{.Set.Name}}"/></a></div>
+		<h1>Building <a href="{{.Set.URL}}">{{.ID}} - {{.Name}}</a></h1>
+			<div style="text-align: center;"><a href="{{.Set.URL}}"><img style="width: 40%; object-fit: contain;" src="{{.ImageURL}}" title="{{.Set.Number}} - {{.Set.Name}}" alt="{{.Set.Name}}"/></a></div>
 			<p>Total number of parts: {{.Set.NumParts}}
 			<p>Provided parts: {{.CountProvidedParts}}
 			<p>Missing parts: {{.CountMissingParts}}
@@ -75,51 +75,51 @@
 					<div class="tableHead">Substitutes</div>
 				</div>
 
-				{{- range $partEntryMapping := .Parts}}
+				{{- range $entry := .Mapping}}
 				<div class="tableRow">
 					<div class="tableCell">
 						<div class="part">
 							<div class="image">
 								<div>
-									<a href="{{$partEntryMapping.Original.Part.PartURL}}">
-										<img src="{{$partEntryMapping.Original.Part.ImageURL}}" title="{{$partEntryMapping.Original.Part.Name}}, {{$partEntryMapping.Original.Color.Name}}" alt="{{$partEntryMapping.Original.Part.Name}}" width="100" height="100"/>
+									<a href="{{$entry.Original.Part.URL}}">
+										<img src="{{$entry.Original.Part.ImageURL}}" title="{{$entry.Original.Part.Name}}, {{$entry.Original.Color.Name}}" alt="{{$entry.Original.Part.Name}}" width="100" height="100"/>
 									</a>
 								</div>
-								{{- if not (eq $partEntryMapping.Original.Part.Dimensions "")}}
-								<div class="top-right">{{$partEntryMapping.Original.Part.Dimensions}}</div>
+								{{- if not (eq $entry.Original.Part.Dimensions "")}}
+								<div class="top-right">{{$entry.Original.Part.Dimensions}}</div>
 								{{- end}}
 							</div>
-							<div class="caption">{{$partEntryMapping.Original.Quantity}} x {{$partEntryMapping.Original.Part.Number}}</div>
-							<div class="caption">{{$partEntryMapping.Original.Color.Name}}</div>
+							<div class="caption">{{$entry.Original.Quantity}} x {{$entry.Original.Part.Number}}</div>
+							<div class="caption">{{$entry.Original.Color.Name}}</div>
 						</div>
 					</div>
 					<div class="tableCell">
-						{{- if (gt $partEntryMapping.Quantity 0)}}
+						{{- if (gt $entry.Quantity 0)}}
 						<div class="part">
 							<div class="image">
 								<div>
-									<a href="{{$partEntryMapping.Original.Part.PartURL}}">
-										<img src="{{$partEntryMapping.Original.Part.ImageURL}}" title="{{$partEntryMapping.Original.Part.Name}}, {{$partEntryMapping.Original.Color.Name}}" alt="{{$partEntryMapping.Original.Part.Name}}" width="100" height="100"/>
+									<a href="{{$entry.Original.Part.URL}}">
+										<img src="{{$entry.Original.Part.ImageURL}}" title="{{$entry.Original.Part.Name}}, {{$entry.Original.Color.Name}}" alt="{{$entry.Original.Part.Name}}" width="100" height="100"/>
 									</a>
 								</div>
 							</div>
-							<div class="missing">{{$partEntryMapping.Quantity}}</div>
+							<div class="missing">{{$entry.Quantity}}</div>
 						</div>
 						{{- end}}
 					</div>
 					<div class="tableCell">
 						<div class="container">
-							{{- range $partEntry := $partEntryMapping.Substitutes}}
+							{{- range $part := $entry.Substitutes}}
 							<div class="part">
 								<div class="image">
 									<div>
-										<a href="{{$partEntry.Part.PartURL}}">
-											<img src="{{$partEntry.Part.ImageURL}}" title="{{$partEntry.Part.Name}}, {{$partEntry.Color.Name}}" alt="{{$partEntry.Part.Name}}" width="100" height="100"/>
+										<a href="{{$part.Part.URL}}">
+											<img src="{{$part.Part.ImageURL}}" title="{{$part.Part.Name}}, {{$part.Color.Name}}" alt="{{$part.Part.Name}}" width="100" height="100"/>
 										</a>
 									</div>
 								</div>
-								<div class="caption">{{$partEntry.Quantity}} x {{$partEntry.Part.Number}}</div>
-								<div class="caption">{{$partEntry.Color.Name}}</div>
+								<div class="caption">{{$part.Quantity}} x {{$part.Part.Number}}</div>
+								<div class="caption">{{$part.Color.Name}}</div>
 							</div>
 							{{- end}}
 						</div>

@@ -226,7 +226,7 @@ func mergeAndSave(collections []*model.Collection) {
 	if outputFile == "" {
 		var b strings.Builder
 		for i := 0; i < len(collection.Sets) && i < 5; i++ {
-			b.WriteString(collection.Sets[i].SetNum)
+			b.WriteString(collection.Sets[i].Number)
 			if i < len(collection.Sets)-1 || i < 4 {
 				b.WriteString("_")
 			}
@@ -242,7 +242,7 @@ func saveAll(collections []*model.Collection) {
 	for i, collection := range collections {
 		var fileName string
 		if outputFile == "" {
-			fileName = collection.Sets[0].SetNum + PARTS_FILE_SUFFIX
+			fileName = collection.Sets[0].Number + PARTS_FILE_SUFFIX
 		} else {
 			fileName = fmt.Sprintf("%02d_%s", i+1, outputFile)
 		}

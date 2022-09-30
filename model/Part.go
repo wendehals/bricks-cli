@@ -1,69 +1,28 @@
 package model
 
-import "regexp"
+import "strings"
 
-// Part represents the type (shape) of a Lego part.
+// Part represents an entry of a single part in a collection with its quantity, shape, and color.
 type Part struct {
-	Number   string `json:"part_num"`
-	Name     string `json:"name"`
-	PartURL  string `json:"part_url"`
-	ImageURL string `json:"part_img_url"`
+	Quantity int    `json:"quantity"`
+	Shape    Shape  `json:"part"`
+	Color    Color  `json:"color"`
+	IsSpare  bool   `json:"is_spare"`
+	SetNum   string `json:"set_num"`
 }
 
-func (p *Part) Dimensions() string {
-	if found, result := p.match(`^(?:Technic )?Brick (\d+ x \d+)`); found {
-		return result
-	}
-
-	if found, result := p.match(`^(?:Technic )?Plate (\d+ x \d+)`); found {
-		return result
-	}
-
-	if found, result := p.match(`^Tile (\d+ x \d+)`); found {
-		return result
-	}
-
-	if found, result := p.match(`Technic Axle (\d+(?:\.\d)?)`); found {
-		return result
-	}
-
-	if found, result := p.match(`Technic Panel Fairing (# ?\d+)`); found {
-		return result
-	}
-
-	if found, result := p.match(`Technic Beam 1 x (\d+)`); found {
-		r := regexp.MustCompile(`Bent`)
-		match := r.FindStringSubmatch(p.Name)
-		if match == nil {
-			return result
+func (p *Part) LessThan(other *Part) bool {
+	resultColor := strings.Compare(p.Color.Name, other.Color.Name)
+	if resultColor < 0 {
+		return true
+	} else if resultColor > 0 {
+		return false
+	} else {
+		resultName := strings.Compare(p.Shape.Name, other.Shape.Name)
+		if resultName < 0 {
+			return true
+		} else {
+			return false
 		}
 	}
-
-	if found, result := p.match(`Hose.* (\d+(?:\.\d)?(?:cm|mm))`); found {
-		return result
-	}
-
-	if found, result := p.match(`^Dish (\d+) x \d+`); found {
-		return result
-	}
-
-	if found, result := p.match(` (\d+)L`); found {
-		return result
-	}
-
-	if found, result := p.match(` (\d+(?:\.\d)?(?:cm|mm))`); found {
-		return result
-	}
-
-	return ""
-}
-
-func (p *Part) match(regex string) (bool, string) {
-	r := regexp.MustCompile(regex)
-	match := r.FindStringSubmatch(p.Name)
-	if match != nil {
-		return true, match[1]
-	}
-
-	return false, ""
 }

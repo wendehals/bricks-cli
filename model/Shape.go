@@ -1,6 +1,9 @@
 package model
 
-import "regexp"
+import (
+	"regexp"
+	"strings"
+)
 
 // Shape represents the shape of a Lego part.
 type Shape struct {
@@ -10,57 +13,61 @@ type Shape struct {
 	ImageURL string `json:"part_img_url"`
 }
 
-func (p *Shape) Dimensions() string {
-	if found, result := p.match(`^(?:Technic )?Brick (\d+ x \d+)`); found {
+func (s *Shape) Compare(other *Shape) int {
+	return strings.Compare(s.Name, other.Name)
+}
+
+func (s *Shape) Dimensions() string {
+	if found, result := s.match(`^(?:Technic )?Brick (\d+ x \d+)`); found {
 		return result
 	}
 
-	if found, result := p.match(`^(?:Technic )?Plate (\d+ x \d+)`); found {
+	if found, result := s.match(`^(?:Technic )?Plate (\d+ x \d+)`); found {
 		return result
 	}
 
-	if found, result := p.match(`^Tile (\d+ x \d+)`); found {
+	if found, result := s.match(`^Tile (\d+ x \d+)`); found {
 		return result
 	}
 
-	if found, result := p.match(`Technic Axle (\d+(?:\.\d)?)`); found {
+	if found, result := s.match(`Technic Axle (\d+(?:\.\d)?)`); found {
 		return result
 	}
 
-	if found, result := p.match(`Technic Panel Fairing (# ?\d+)`); found {
+	if found, result := s.match(`Technic Panel Fairing (# ?\d+)`); found {
 		return result
 	}
 
-	if found, result := p.match(`Technic Beam 1 x (\d+)`); found {
+	if found, result := s.match(`Technic Beam 1 x (\d+)`); found {
 		r := regexp.MustCompile(`Bent`)
-		match := r.FindStringSubmatch(p.Name)
+		match := r.FindStringSubmatch(s.Name)
 		if match == nil {
 			return result
 		}
 	}
 
-	if found, result := p.match(`Hose.* (\d+(?:\.\d)?(?:cm|mm))`); found {
+	if found, result := s.match(`Hose.* (\d+(?:\.\d)?(?:cm|mm))`); found {
 		return result
 	}
 
-	if found, result := p.match(`^Dish (\d+) x \d+`); found {
+	if found, result := s.match(`^Dish (\d+) x \d+`); found {
 		return result
 	}
 
-	if found, result := p.match(` (\d+)L`); found {
+	if found, result := s.match(` (\d+)L`); found {
 		return result
 	}
 
-	if found, result := p.match(` (\d+(?:\.\d)?(?:cm|mm))`); found {
+	if found, result := s.match(` (\d+(?:\.\d)?(?:cm|mm))`); found {
 		return result
 	}
 
 	return ""
 }
 
-func (p *Shape) match(regex string) (bool, string) {
+func (s *Shape) match(regex string) (bool, string) {
 	r := regexp.MustCompile(regex)
-	match := r.FindStringSubmatch(p.Name)
+	match := r.FindStringSubmatch(s.Name)
 	if match != nil {
 		return true, match[1]
 	}

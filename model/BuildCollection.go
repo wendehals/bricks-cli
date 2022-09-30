@@ -16,7 +16,7 @@ type PartMapping struct {
 // Sort the Parts of a collection by their Part Number
 func (b *BuildCollection) Sort() *BuildCollection {
 	sort.Slice(b.Mapping, func(i, j int) bool {
-		return b.Mapping[i].Original.LessThan(&b.Mapping[j].Original)
+		return b.Mapping[i].Original.Compare(&b.Mapping[j].Original) < 0
 	})
 
 	return b

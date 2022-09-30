@@ -3,7 +3,7 @@
 	<style>
 		.sets {
 			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(200px, 400px));
+			grid-template-columns: repeat(auto-fit, minmax(200px, 250px));
 			width: 98%;
 			margin-left: auto;
 			margin-right: auto;

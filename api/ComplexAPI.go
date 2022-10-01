@@ -38,10 +38,12 @@ func RetrieveSetListParts(bricksAPI *BricksAPI, usersAPI *UsersAPI, setListId ui
 	log.Printf("Retrieving parts of all sets from the set list %d", setListId)
 
 	userSets := usersAPI.GetSetListSets(setListId)
-	collections := make([]*model.Collection, len(userSets.Sets))
-	for i, userSet := range userSets.Sets {
+	collections := []*model.Collection{}
+	for _, userSet := range userSets.Sets {
 		collection := RetrieveSetParts(bricksAPI, userSet.Set.Number, includeMiniFigs)
-		collections[i] = collection
+		for i := 0; i < int(userSet.Quantity); i++ {
+			collections = append(collections, collection)
+		}
 	}
 
 	return collections

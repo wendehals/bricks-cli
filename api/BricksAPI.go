@@ -82,7 +82,7 @@ func (b *BricksAPI) GetSetParts(setNum string, includeMiniFigs bool) *model.Coll
 
 	collection := model.Collection{}
 
-	subPath := fmt.Sprintf("sets/%s/parts/", setNum)
+	subPath := fmt.Sprintf("sets/%s/parts/?inc_color_details=0", setNum)
 	if includeMiniFigs {
 		subPath += "?inc_minifig_parts=1"
 	}

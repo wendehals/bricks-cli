@@ -64,9 +64,9 @@
 			{{- range $set := .Sets}}
 				<div class="set">
 					<div>
-						<img src="{{$set.ImageURL}}" title="{{$set.Number}} - {{$set.Name}}" alt="{{$set.Name}}"/>
+						<a href="{{$set.URL}}"><img src="{{$set.ImageURL}}" title="{{$set.Number}} {{$set.Name}}" alt="{{$set.Name}}"/></a>
 					</div>
-					<div class="caption"><a href="{{$set.URL}}">{{$set.Number}} - {{$set.Name}}</a></div>
+					<div class="caption"><a href="{{$set.URL}}">{{$set.Number}} {{$set.Name}}</a></div>
 				</div>
 			{{- end}}
 			</div>

@@ -92,9 +92,13 @@ func (b *bricksInterpreter) ExitSetList(ctx *parser.SetListContext) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	includeMiniFigs := ctx.BOOL() != nil && ctx.BOOL().GetText() == "true"
 	setListParts := api.RetrieveSetListParts(b.bricksAPI, b.usersAPI, uint(setListId), includeMiniFigs)
-	b.stack.push(model.MergeAllCollections(setListParts))
+	collection := model.MergeAllCollections(setListParts)
+	collection.Sort()
+
+	b.stack.push(collection)
 }
 
 func (b *bricksInterpreter) ExitPartList(ctx *parser.PartListContext) {

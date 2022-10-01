@@ -58,12 +58,12 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>Building {{.Set.Number}} - {{.Set.Name}}</title>
+		<title>Building {{.Set.Number}} {{.Set.Name}}</title>
 	</head>
 
 	<body>
-		<h1>Building <a href="{{.Set.URL}}">{{.Set.Number}} - {{.Set.Name}}</a></h1>
-			<div style="text-align: center;"><a href="{{.Set.URL}}"><img style="width: 500px; object-fit: contain;" src="{{.Set.ImageURL}}" title="{{.Set.Number}} - {{.Set.Name}}" alt="{{.Set.Name}}"/></a></div>
+		<h1>Building <a href="{{.Set.URL}}">{{.Set.Number}} {{.Set.Name}}</a></h1>
+			<div style="text-align: center;"><a href="{{.Set.URL}}"><img style="width: 500px; object-fit: contain;" src="{{.Set.ImageURL}}" title="{{.Set.Number}} {{.Set.Name}}" alt="{{.Set.Name}}"/></a></div>
 			<p>Total number of parts: {{.Set.NumParts}}
 			<p>Provided parts: {{.CountProvidedParts}}
 			<p>Missing parts: {{.CountMissingParts}}

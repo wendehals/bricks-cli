@@ -38,13 +38,7 @@ func FileNameFromArgs(args []string, suffix string) string {
 
 	for i := 0; i < len(args) && i < 5; i++ {
 		base, _ := utils.SplitFileName(args[i])
-
-		index := strings.Index(base, "_")
-		if index != -1 {
-			builder.WriteString(base[:index])
-		} else {
-			builder.WriteString(base)
-		}
+		builder.WriteString(base)
 
 		if i < len(args)-1 && i < 4 {
 			builder.WriteString("_")

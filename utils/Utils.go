@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"compress/gzip"
+	"encoding/csv"
 	"fmt"
 	"log"
 	"os"
@@ -51,4 +53,39 @@ func GetBricksDir() string {
 
 func GetPartRelationshipsPath() string {
 	return filepath.FromSlash(fmt.Sprintf("%s/partRelationships.json", GetBricksDir()))
+}
+
+func CSVReader(csvFile string) *csv.Reader {
+	file, err := os.Open(csvFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	csvReader := csv.NewReader(file)
+	_, err = csvReader.Read() // omit header
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return csvReader
+}
+
+func GzipCSVReader(csvFile string) *csv.Reader {
+	file, err := os.Open(csvFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	gzReader, err := gzip.NewReader(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	csvReader := csv.NewReader(gzReader)
+	_, err = csvReader.Read() // omit header
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return csvReader
 }

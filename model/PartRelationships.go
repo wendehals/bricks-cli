@@ -1,11 +1,10 @@
 package model
 
 import (
-	"compress/gzip"
-	"encoding/csv"
 	"io"
 	"log"
-	"os"
+
+	"github.com/wendehals/bricks/utils"
 )
 
 type PartRelationships struct {
@@ -89,7 +88,7 @@ func ConvertPartRelationships(csvFile string) *PartRelationships {
 	p.Molds = make(map[string][]string)
 	p.Prints = make(map[string][]string)
 
-	csvReader := getCSVReader(csvFile)
+	csvReader := utils.GzipCSVReader(csvFile)
 	for {
 		record, err := csvReader.Read()
 		if err != nil {
@@ -110,24 +109,4 @@ func ConvertPartRelationships(csvFile string) *PartRelationships {
 	}
 
 	return p
-}
-
-func getCSVReader(csvFile string) *csv.Reader {
-	file, err := os.Open(csvFile)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	gzReader, err := gzip.NewReader(file)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	csvReader := csv.NewReader(gzReader)
-	_, err = csvReader.Read() // omit header
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return csvReader
 }

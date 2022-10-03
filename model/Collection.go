@@ -1,8 +1,10 @@
 package model
 
 import (
+	"io"
 	"log"
 	"sort"
+	"strconv"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/wendehals/bricks/utils"
@@ -225,4 +227,35 @@ func MergeAllCollections(collections []*Collection) *Collection {
 	}
 
 	return mergedCollection
+}
+
+func ImportCSVCollection(csvFile string) *Collection {
+	collection := Collection{}
+	collection.Names = []string{}
+	collection.Sets = []Set{}
+	collection.Parts = []Part{}
+
+	csvReader := utils.CSVReader(csvFile)
+	for {
+		record, err := csvReader.Read()
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			log.Fatal(err)
+		}
+
+		part := Part{}
+		part.Quantity, _ = strconv.Atoi(record[2])
+
+		part.Shape = Shape{}
+		part.Shape.Number = record[0]
+
+		part.Color = Color{}
+		part.Color.ID, _ = strconv.Atoi(record[1])
+
+		collection.Parts = append(collection.Parts, part)
+	}
+
+	return &collection
 }

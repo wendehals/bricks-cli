@@ -41,6 +41,10 @@ func (s *Shape) Dimensions() string {
 		return result[0]
 	}
 
+	if found, result := s.match(`Technic Axle and Pin Connector Angled (#\d)`); found {
+		return result[0]
+	}
+
 	if found, result := s.match(`Technic Panel Fairing # ?(\d+)`); found {
 		return "#" + result[0]
 	}

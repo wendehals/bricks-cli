@@ -4,7 +4,7 @@
             "quantity": 2,
             "part": {
                 "part_num": "42",
-                "name": "",
+                "name": "name 42",
                 "part_url": "",
                 "part_img_url": ""
             },
@@ -18,7 +18,7 @@
             "quantity": 1,
             "part": {
                 "part_num": "42",
-                "name": "",
+                "name": "name 42",
                 "part_url": "",
                 "part_img_url": ""
             },

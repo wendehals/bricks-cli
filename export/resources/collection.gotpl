@@ -75,7 +75,7 @@
 		<h2>Summary</h2>
 
 			<p>Total number of parts: {{.CountParts}}
-			<p>Total Number of distinct part: {{len .Parts}}</p>
+			<p>Total Number of distinct parts: {{len .Parts}}</p>
 
 		<h2>Included Parts</h2>
 		

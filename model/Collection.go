@@ -188,7 +188,6 @@ func (c *Collection) setParts(partsMap map[string][]Part) {
 func (c *Collection) recalculateQuantity(other *Collection, recalc func(int, int) int) *Collection {
 	partsMap := c.mapPartsByPartNumber(nil, utils.Identity)
 
-	missingParts := []Part{}
 	for i := range other.Parts {
 		found := false
 		currentPart := other.Parts[i]
@@ -196,23 +195,27 @@ func (c *Collection) recalculateQuantity(other *Collection, recalc func(int, int
 		values, exists := partsMap[currentPart.Shape.Number]
 		if exists {
 			for j := range values {
-				if cmp.Equal(values[j].Color, currentPart.Color) {
+				if values[j].Color.ID == currentPart.Color.ID {
 					values[j].Quantity = recalc(values[j].Quantity, currentPart.Quantity)
 					found = true
 					break
 				}
 			}
-		}
-
-		if !found {
+			if !found {
+				currentPart.Quantity = recalc(0, currentPart.Quantity)
+				currentPart.IsSpare = false
+				values = append(values, currentPart)
+				partsMap[currentPart.Shape.Number] = values
+			}
+		} else {
 			currentPart.Quantity = recalc(0, currentPart.Quantity)
 			currentPart.IsSpare = false
-			missingParts = append(missingParts, currentPart)
+			values := []Part{currentPart}
+			partsMap[currentPart.Shape.Number] = values
 		}
 	}
 
 	c.setParts(partsMap)
-	c.Parts = append(c.Parts, missingParts...)
 
 	return c.RemoveQuantityZero()
 }

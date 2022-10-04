@@ -69,6 +69,18 @@ func TestAdd(t *testing.T) {
 	test.AssertSameInt(t, 5, collection.Parts[8].Quantity)
 }
 
+func TestAddSpareParts(t *testing.T) {
+	collection := Load(&Collection{}, "test_resources/addSpareParts1.parts").Add(Load(&Collection{}, "test_resources/addSpareParts2.parts")).Sort()
+
+	assertSize(t, collection, 2)
+
+	test.AssertSameString(t, "42", collection.Parts[0].Shape.Number)
+	test.AssertSameInt(t, 6, collection.Parts[0].Quantity)
+
+	test.AssertSameString(t, "99", collection.Parts[1].Shape.Number)
+	test.AssertSameInt(t, 7, collection.Parts[1].Quantity)
+}
+
 func TestSubstract(t *testing.T) {
 	collection := Load(&Collection{}, "test_resources/testCollection1.parts").Subtract(Load(&Collection{}, "test_resources/testCollection2.parts")).Sort()
 

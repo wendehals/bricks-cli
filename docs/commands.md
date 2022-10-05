@@ -80,8 +80,8 @@
 		bricks download [command]
 
 	Available Commands:
-		images        Downloads part images
-		relationships Downloads part relationships
+		images      Downloads part images
+		updates     Updates locally cached data
 
 	Flags:
 		-h, --help     help for download

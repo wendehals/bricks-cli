@@ -57,7 +57,7 @@ type lostPartsPageResult struct {
 }
 
 func (l *lostPartsPageResult) convertToPartEntries() []model.Part {
-	partEntries := make([]model.Part, len(l.Results))
+	parts := make([]model.Part, len(l.Results))
 	for i, lostPart := range l.Results {
 		part := model.Part{}
 		part.Quantity = lostPart.Quantity
@@ -65,8 +65,8 @@ func (l *lostPartsPageResult) convertToPartEntries() []model.Part {
 		part.Color = lostPart.InvPart.Color
 		part.IsSpare = lostPart.InvPart.IsSpare
 		part.SetNum = lostPart.InvPart.SetNum
-		partEntries[i] = part
+		parts[i] = part
 	}
 
-	return partEntries
+	return parts
 }

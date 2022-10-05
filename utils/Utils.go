@@ -59,6 +59,10 @@ func PartRelationshipsPath() string {
 	return filepath.FromSlash(fmt.Sprintf("%s/partRelationships.json", GetBricksDir()))
 }
 
+func ShapesPath() string {
+	return filepath.FromSlash(fmt.Sprintf("%s/shapes.json", GetBricksDir()))
+}
+
 func CSVReader(csvFile string) *csv.Reader {
 	file, err := os.Open(csvFile)
 	if err != nil {

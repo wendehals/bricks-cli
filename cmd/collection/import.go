@@ -34,6 +34,7 @@ func executeImport(args []string) {
 
 	collection := model.ImportCSVCollection(args[0])
 	addColorNames(collection)
+	addShapeNames(collection)
 
 	model.Save(collection, outputFile)
 }
@@ -46,5 +47,16 @@ func addColorNames(collection *model.Collection) {
 
 	for i := range collection.Parts {
 		collection.Parts[i].Color.Name = names[collection.Parts[i].Color.ID]
+	}
+}
+
+func addShapeNames(collection *model.Collection) {
+	names := make(map[string]string)
+	for _, shape := range model.GetShapes().Shapes {
+		names[shape.Number] = shape.Name
+	}
+
+	for i := range collection.Parts {
+		collection.Parts[i].Shape.Name = names[collection.Parts[i].Shape.Number]
 	}
 }

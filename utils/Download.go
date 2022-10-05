@@ -17,6 +17,7 @@ const (
 	COLORS_REG_EXP             string = "<a href=\"(https://cdn\\.rebrickable\\.com/media/downloads/colors\\.csv\\.gz.*)\">"
 	PART_RELATIONSHIPS_REG_EXP string = "<a href=\"(https://cdn\\.rebrickable\\.com/media/downloads/part_relationships\\.csv\\.gz.*)\">"
 	PART_IMAGES_REG_EXP        string = "<a href=\"(https://cdn\\.rebrickable\\.com/media/downloads/ldraw/parts_\\d+.zip)\">"
+	SHAPES_REG_EXP             string = "<a href=\"(https://cdn\\.rebrickable\\.com/media/downloads/parts\\.csv\\.gz.*)\">"
 )
 
 func DownloadColors() string {
@@ -39,6 +40,17 @@ func DownloadPartRelationships() string {
 	}
 
 	return downloadFileFromURL(downloadUrls[0], "part_relationships.csv.gz")
+}
+
+func DownloadShapes() string {
+	log.Print("Loading parts file from rebrickable.com... ")
+
+	downloadUrls := findDownloadURLs(SHAPES_REG_EXP)
+	if len(downloadUrls) == 0 {
+		log.Fatal("no URL for parts.csv.gz found!")
+	}
+
+	return downloadFileFromURL(downloadUrls[0], "parts.csv.gz")
 }
 
 func DownloadPartImages(update bool) {

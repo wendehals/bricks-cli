@@ -56,7 +56,7 @@ type lostPartsPageResult struct {
 	Results []lostPart `json:"results"`
 }
 
-func (l *lostPartsPageResult) convertToPartEntries() []model.Part {
+func (l *lostPartsPageResult) convertToParts() []model.Part {
 	parts := make([]model.Part, len(l.Results))
 	for i, lostPart := range l.Results {
 		part := model.Part{}

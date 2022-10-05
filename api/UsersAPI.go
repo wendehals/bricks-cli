@@ -275,7 +275,7 @@ func (u *UsersAPI) GetLostParts() *model.Collection {
 		log.Fatalf(GET_LOST_PARTS_ERR_MSG, err.Error())
 	}
 
-	lostParts.Parts = append(lostParts.Parts, lostPartsPage.convertToPartEntries()...)
+	lostParts.Parts = append(lostParts.Parts, lostPartsPage.convertToParts()...)
 	for len(lostPartsPage.Next) > 0 {
 		url := lostPartsPage.Next
 		lostPartsPage = lostPartsPageResult{}
@@ -284,7 +284,7 @@ func (u *UsersAPI) GetLostParts() *model.Collection {
 			log.Fatalf(GET_LOST_PARTS_ERR_MSG, err.Error())
 		}
 
-		lostParts.Parts = append(lostParts.Parts, lostPartsPage.convertToPartEntries()...)
+		lostParts.Parts = append(lostParts.Parts, lostPartsPage.convertToParts()...)
 	}
 
 	return &lostParts

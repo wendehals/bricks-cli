@@ -86,5 +86,5 @@ func executeBuild(args []string) {
 
 	providedCollection := model.Load(&model.Collection{}, args[0])
 
-	build.Build(neededCollection, providedCollection, outputDir, bricksAPI, options.Verbose)
+	build.Build(neededCollection, providedCollection, outputDir, options.Verbose)
 }

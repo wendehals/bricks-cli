@@ -3,6 +3,7 @@ package model
 import (
 	"io"
 	"log"
+	"os"
 
 	"github.com/wendehals/bricks/utils"
 )
@@ -11,6 +12,52 @@ type PartRelationships struct {
 	Alternatives map[string][]string `json:"alternatives"`
 	Molds        map[string][]string `json:"molds"`
 	Prints       map[string][]string `json:"prints"`
+}
+
+var (
+	partRelationships *PartRelationships
+)
+
+func GetPartRelationships() *PartRelationships {
+	if partRelationships != nil {
+		return partRelationships
+	}
+
+	partRelationshipsPath := utils.PartRelationshipsPath()
+	if utils.FileExists(partRelationshipsPath) {
+		partRelationships = Load(&PartRelationships{}, partRelationshipsPath)
+		return partRelationships
+	}
+
+	partRelationships := &PartRelationships{}
+	partRelationships.Alternatives = make(map[string][]string)
+	partRelationships.Molds = make(map[string][]string)
+	partRelationships.Prints = make(map[string][]string)
+
+	csvFile := utils.DownloadPartRelationships()
+	csvReader := utils.GzipCSVReader(csvFile)
+	for {
+		record, err := csvReader.Read()
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			log.Fatal(err)
+		}
+
+		switch record[0] {
+		case "A":
+			partRelationships.addToAlternatives(record[1], record[2])
+		case "M":
+			partRelationships.addToMolds(record[1], record[2])
+		case "P":
+			partRelationships.addToPrints(record[1], record[2])
+		}
+	}
+	Save(partRelationships, partRelationshipsPath)
+	os.Remove(csvFile)
+
+	return partRelationships
 }
 
 func (p *PartRelationships) IsAlternative(part1, part2 string) bool {
@@ -80,33 +127,4 @@ func (p *PartRelationships) addToPrints(child, parent string) {
 		p.Prints[child] = []string{}
 	}
 	p.Prints[child] = append(p.Prints[child], parent)
-}
-
-func ConvertPartRelationships(csvFile string) *PartRelationships {
-	p := &PartRelationships{}
-	p.Alternatives = make(map[string][]string)
-	p.Molds = make(map[string][]string)
-	p.Prints = make(map[string][]string)
-
-	csvReader := utils.GzipCSVReader(csvFile)
-	for {
-		record, err := csvReader.Read()
-		if err != nil {
-			if err == io.EOF {
-				break
-			}
-			log.Fatal(err)
-		}
-
-		switch record[0] {
-		case "A":
-			p.addToAlternatives(record[1], record[2])
-		case "M":
-			p.addToMolds(record[1], record[2])
-		case "P":
-			p.addToPrints(record[1], record[2])
-		}
-	}
-
-	return p
 }

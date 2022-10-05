@@ -1,8 +1,6 @@
 package download
 
 import (
-	"os"
-
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/model"
 	"github.com/wendehals/bricks/utils"
@@ -21,13 +19,10 @@ var relationshipsCmd = &cobra.Command{
 }
 
 func executeRelationshipsDownload() {
-	partRelationshipsPath := utils.GetPartRelationshipsPath()
+	partRelationshipsPath := utils.PartRelationshipsPath()
 	if utils.FileExists(partRelationshipsPath) && !update {
 		return
 	}
 
-	csvFile := utils.DownloadPartRelationships()
-	partRelationships := model.ConvertPartRelationships(csvFile)
-	model.Save(partRelationships, partRelationshipsPath)
-	os.Remove(csvFile)
+	model.GetPartRelationships()
 }

@@ -53,7 +53,7 @@ func (b *bricksInterpreter) ExitBuild(ctx *parser.BuildContext) {
 	neededCollection := b.stack.pop()
 	exportDir := strings.Trim(ctx.STRING().GetText(), "\"")
 
-	build.Build(neededCollection, providedCollection, exportDir, b.bricksAPI, false)
+	build.Build(neededCollection, providedCollection, exportDir, false)
 }
 
 func (b *bricksInterpreter) ExitIdentifier(ctx *parser.IdentifierContext) {

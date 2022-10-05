@@ -33,6 +33,18 @@ func executeImport(args []string) {
 	log.Printf("Importing parts from '%s'", args[0])
 
 	collection := model.ImportCSVCollection(args[0])
+	addColorNames(collection)
 
 	model.Save(collection, outputFile)
+}
+
+func addColorNames(collection *model.Collection) {
+	names := make(map[int]string)
+	for _, color := range model.GetColors().Colors {
+		names[color.ID] = color.Name
+	}
+
+	for i := range collection.Parts {
+		collection.Parts[i].Color.Name = names[collection.Parts[i].Color.ID]
+	}
 }

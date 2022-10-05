@@ -3,18 +3,16 @@ package build
 import (
 	"fmt"
 
-	"github.com/wendehals/bricks/api"
 	"github.com/wendehals/bricks/export"
 	"github.com/wendehals/bricks/model"
 	"github.com/wendehals/bricks/utils"
 )
 
-func Build(neededCollection *model.Collection, providedCollection *model.Collection, outputDir string,
-	bricksAPI *api.BricksAPI, verbose bool) {
-	colors := bricksAPI.GetColors()
-	partRelationships := model.Load(&model.PartRelationships{}, utils.GetPartRelationshipsPath())
+func Build(neededCollection *model.Collection, providedCollection *model.Collection, outputDir string, verbose bool) {
+	colors := model.GetColors()
+	partRelationships := model.GetPartRelationships()
 
-	buildCollection := build(neededCollection, providedCollection, &colors, partRelationships)
+	buildCollection := build(neededCollection, providedCollection, colors, partRelationships)
 	buildCollection.Sort()
 
 	model.Save(buildCollection, fmt.Sprintf("%s/result.build", outputDir))
@@ -25,7 +23,7 @@ func Build(neededCollection *model.Collection, providedCollection *model.Collect
 	export.ExportCollectionToHTML(providedCollection, outputDir, "remaining")
 }
 
-func build(neededCollection *model.Collection, providedCollection *model.Collection, colors *[]model.Color,
+func build(neededCollection *model.Collection, providedCollection *model.Collection, colors *model.Colors,
 	partRelationships *model.PartRelationships) *model.BuildCollection {
 
 	buildCollection := model.BuildCollection{}
@@ -75,8 +73,8 @@ func build(neededCollection *model.Collection, providedCollection *model.Collect
 	// search for same or equivalent part type but different color
 	for i := range buildCollection.Mapping {
 		mapping := &buildCollection.Mapping[i]
-		for j := 0; j < len(*colors) && mapping.Quantity > 0; j++ {
-			colorId := (*colors)[j].ID
+		for j := 0; j < len(colors.Colors) && mapping.Quantity > 0; j++ {
+			colorId := colors.Colors[j].ID
 			if mapping.Original.Color.ID != colorId {
 				mapPartEntry(mapping, providedCollection, colorId, utils.Equals)
 				mapPartEntry(mapping, providedCollection, colorId, isMold)

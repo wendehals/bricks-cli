@@ -17,13 +17,13 @@ var (
 	colors *Colors
 )
 
-func GetColors() *Colors {
+func GetColors(update bool) *Colors {
 	if colors != nil {
 		return colors
 	}
 
 	colorsPath := utils.ColorsPath()
-	if utils.FileExists(colorsPath) {
+	if utils.FileExists(colorsPath) && !update {
 		colors = Load(&Colors{}, colorsPath)
 		return colors
 	}

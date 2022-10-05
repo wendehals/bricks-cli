@@ -18,13 +18,13 @@ var (
 	partRelationships *PartRelationships
 )
 
-func GetPartRelationships() *PartRelationships {
+func GetPartRelationships(update bool) *PartRelationships {
 	if partRelationships != nil {
 		return partRelationships
 	}
 
 	partRelationshipsPath := utils.PartRelationshipsPath()
-	if utils.FileExists(partRelationshipsPath) {
+	if utils.FileExists(partRelationshipsPath) && !update {
 		partRelationships = Load(&PartRelationships{}, partRelationshipsPath)
 		return partRelationships
 	}

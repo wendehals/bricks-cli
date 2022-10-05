@@ -9,8 +9,8 @@ import (
 )
 
 func Build(neededCollection *model.Collection, providedCollection *model.Collection, outputDir string, verbose bool) {
-	colors := model.GetColors()
-	partRelationships := model.GetPartRelationships()
+	colors := model.GetColors(false)
+	partRelationships := model.GetPartRelationships(false)
 
 	buildCollection := build(neededCollection, providedCollection, colors, partRelationships)
 	buildCollection.Sort()

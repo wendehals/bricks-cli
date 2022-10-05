@@ -14,13 +14,13 @@ type Shapes struct {
 
 var shapes *Shapes
 
-func GetShapes() *Shapes {
+func GetShapes(update bool) *Shapes {
 	if shapes != nil {
 		return shapes
 	}
 
 	shapesPath := utils.ShapesPath()
-	if utils.FileExists(shapesPath) {
+	if utils.FileExists(shapesPath) && !update {
 		shapes = Load(&Shapes{}, shapesPath)
 		return shapes
 	}

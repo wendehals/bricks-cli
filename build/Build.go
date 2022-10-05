@@ -8,11 +8,18 @@ import (
 	"github.com/wendehals/bricks/utils"
 )
 
-func Build(neededCollection *model.Collection, providedCollection *model.Collection, outputDir string, verbose bool) {
+const (
+	COLOR      uint8 = 1
+	ALTERNATES uint8 = 2
+	MOLDS      uint8 = 4
+	PRINTS     uint8 = 8
+)
+
+func Build(neededCollection *model.Collection, providedCollection *model.Collection, mode uint8, outputDir string, verbose bool) {
 	colors := model.GetColors(false)
 	partRelationships := model.GetPartRelationships(false)
 
-	buildCollection := build(neededCollection, providedCollection, colors, partRelationships)
+	buildCollection := build(neededCollection, providedCollection, colors, partRelationships, mode)
 	buildCollection.Sort()
 
 	model.Save(buildCollection, fmt.Sprintf("%s/result.build", outputDir))
@@ -24,7 +31,7 @@ func Build(neededCollection *model.Collection, providedCollection *model.Collect
 }
 
 func build(neededCollection *model.Collection, providedCollection *model.Collection, colors *model.Colors,
-	partRelationships *model.PartRelationships) *model.BuildCollection {
+	partRelationships *model.PartRelationships, mode uint8) *model.BuildCollection {
 
 	buildCollection := model.BuildCollection{}
 	if len(neededCollection.Sets) > 0 {
@@ -62,24 +69,40 @@ func build(neededCollection *model.Collection, providedCollection *model.Collect
 	}
 
 	// search for equivalent part type, same color
-	for i := range buildCollection.Mapping {
-		mapping := &buildCollection.Mapping[i]
+	if mode&MOLDS != 0 || mode&PRINTS != 0 || mode&ALTERNATES != 0 {
+		for i := range buildCollection.Mapping {
+			mapping := &buildCollection.Mapping[i]
 
-		mapPartEntry(mapping, providedCollection, mapping.Original.Color.ID, isMold)
-		mapPartEntry(mapping, providedCollection, mapping.Original.Color.ID, isPrint)
-		mapPartEntry(mapping, providedCollection, mapping.Original.Color.ID, isAlternative)
+			if mode&MOLDS != 0 {
+				mapPartEntry(mapping, providedCollection, mapping.Original.Color.ID, isMold)
+			}
+			if mode&PRINTS != 0 {
+				mapPartEntry(mapping, providedCollection, mapping.Original.Color.ID, isPrint)
+			}
+			if mode&ALTERNATES != 0 {
+				mapPartEntry(mapping, providedCollection, mapping.Original.Color.ID, isAlternative)
+			}
+		}
 	}
 
 	// search for same or equivalent part type but different color
-	for i := range buildCollection.Mapping {
-		mapping := &buildCollection.Mapping[i]
-		for j := 0; j < len(colors.Colors) && mapping.Quantity > 0; j++ {
-			colorId := colors.Colors[j].ID
-			if mapping.Original.Color.ID != colorId {
-				mapPartEntry(mapping, providedCollection, colorId, utils.Equals)
-				mapPartEntry(mapping, providedCollection, colorId, isMold)
-				mapPartEntry(mapping, providedCollection, colorId, isPrint)
-				mapPartEntry(mapping, providedCollection, colorId, isAlternative)
+	if mode&COLOR != 0 {
+		for i := range buildCollection.Mapping {
+			mapping := &buildCollection.Mapping[i]
+			for j := 0; j < len(colors.Colors) && mapping.Quantity > 0; j++ {
+				colorId := colors.Colors[j].ID
+				if mapping.Original.Color.ID != colorId {
+					mapPartEntry(mapping, providedCollection, colorId, utils.Equals)
+					if mode&MOLDS != 0 {
+						mapPartEntry(mapping, providedCollection, colorId, isMold)
+					}
+					if mode&PRINTS != 0 {
+						mapPartEntry(mapping, providedCollection, colorId, isPrint)
+					}
+					if mode&ALTERNATES != 0 {
+						mapPartEntry(mapping, providedCollection, colorId, isAlternative)
+					}
+				}
 			}
 		}
 	}

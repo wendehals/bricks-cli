@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"regexp"
+	"strings"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -18,16 +20,26 @@ const (
 	NEEDED_PARTS_FILE_SOPT  = "p"
 	NEEDED_PARTS_FILE_ARG   = "-" + NEEDED_PARTS_FILE_SOPT + " NEEDED_PARTS_FILE"
 	NEEDED_PARTS_FILE_USAGE = "a parts file containing the parts needed for the build"
+
+	BUILD_MODE_OPT   = "mode"
+	BUILD_MODE_SOPT  = "m"
+	BUILD_MODE_ARG   = "-" + BUILD_MODE_SOPT + " MODES"
+	BUILD_MODE_USAGE = "a combination of c(olor), a(lternatives), m(olds), and p(rints) for calculating usable parts"
 )
 
 var (
 	setNum          string
+	buildMode       string
 	neededPartsFile string
 
 	buildCmd = &cobra.Command{
-		Use:   fmt.Sprintf("build PROVIDED_PARTS_FILE { %s | %s } %s %s", options.SET_NUM_ARG, NEEDED_PARTS_FILE_ARG, options.CREDENTIALS_ARG, options.OUTPUT_DIR_ARG),
+		Use: fmt.Sprintf("build PROVIDED_PARTS_FILE { %s | %s } %s %s %s", options.SET_NUM_ARG, NEEDED_PARTS_FILE_ARG,
+			BUILD_MODE_ARG, options.CREDENTIALS_ARG, options.OUTPUT_DIR_ARG),
 		Short: "Calculates needed parts from a given collection to build a set",
-		Long:  "The command build calculates which parts from a given collection are needed to build the given set.",
+		Long: fmt.Sprintf(`The command build calculates which parts from a given collection are needed to build the given set.
+
+By default, it considers only parts of the same type and color. If also parts with a different color, alternative parts,
+molds, or prints should be considered, use the '%s' option to provide any combination of those.`, BUILD_MODE_ARG),
 
 		DisableFlagsInUseLine: true,
 
@@ -47,18 +59,23 @@ var (
 	}
 )
 
+func init() {
+	buildCmd.Flags().StringVarP(&setNum, options.SET_NUM_OPT, options.SET_NUM_SOPT, "", options.SET_NUM_USAGE)
+	buildCmd.Flags().StringVarP(&neededPartsFile, NEEDED_PARTS_FILE_OPT, NEEDED_PARTS_FILE_SOPT, "", NEEDED_PARTS_FILE_USAGE)
+	buildCmd.Flags().StringVarP(&buildMode, BUILD_MODE_OPT, BUILD_MODE_SOPT, "", BUILD_MODE_USAGE)
+	buildCmd.Flags().StringVarP(&credentialsFile, options.CREDENTIALS_OPT, options.CREDENTIALS_SOPT, "credentials.json", options.CREDENTIALS_USAGE)
+	buildCmd.Flags().StringVarP(&outputDir, options.OUTPUT_DIR_OPT, options.OUTPUT_DIR_SOPT, "", options.OUTPUT_DIR_USAGE)
+}
+
 func checkOptionsBuild() error {
 	if (setNum == "" && neededPartsFile == "") || (setNum != "" && neededPartsFile != "") {
 		return fmt.Errorf("please provide either %s or %s", options.SET_NUM_ARG, NEEDED_PARTS_FILE_ARG)
 	}
+	_, err := regexp.MatchString(`[camp]*`, buildMode)
+	if err != nil {
+		return fmt.Errorf("please provide only a combination of c(olor), a(lternatives), m(olds), and p(rints) for %s", BUILD_MODE_ARG)
+	}
 	return nil
-}
-
-func init() {
-	buildCmd.Flags().StringVarP(&setNum, options.SET_NUM_OPT, options.SET_NUM_SOPT, "", options.SET_NUM_USAGE)
-	buildCmd.Flags().StringVarP(&neededPartsFile, NEEDED_PARTS_FILE_OPT, NEEDED_PARTS_FILE_SOPT, "", NEEDED_PARTS_FILE_USAGE)
-	buildCmd.Flags().StringVarP(&credentialsFile, options.CREDENTIALS_OPT, options.CREDENTIALS_SOPT, "credentials.json", options.CREDENTIALS_USAGE)
-	buildCmd.Flags().StringVarP(&outputDir, options.OUTPUT_DIR_OPT, options.OUTPUT_DIR_SOPT, "", options.OUTPUT_DIR_USAGE)
 }
 
 func executeBuild(args []string) {
@@ -86,5 +103,19 @@ func executeBuild(args []string) {
 
 	providedCollection := model.Load(&model.Collection{}, args[0])
 
-	build.Build(neededCollection, providedCollection, outputDir, options.Verbose)
+	var mode uint8 = 0
+	if strings.Contains(buildMode, "c") {
+		mode = mode ^ build.COLOR
+	}
+	if strings.Contains(buildMode, "a") {
+		mode = mode ^ build.ALTERNATES
+	}
+	if strings.Contains(buildMode, "m") {
+		mode = mode ^ build.MOLDS
+	}
+	if strings.Contains(buildMode, "p") {
+		mode = mode ^ build.PRINTS
+	}
+
+	build.Build(neededCollection, providedCollection, mode, outputDir, options.Verbose)
 }

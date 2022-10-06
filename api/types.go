@@ -31,12 +31,6 @@ type partsPageResult struct {
 	Results []model.Part `json:"results"`
 }
 
-// colorsPageResult contains the result of /api/v3/lego/colors/?page={page}
-type colorsPageResult struct {
-	Next    string        `json:"next"`
-	Results []model.Color `json:"results"`
-}
-
 type invPart struct {
 	Part    model.Shape `json:"part"`
 	Color   model.Color `json:"color"`

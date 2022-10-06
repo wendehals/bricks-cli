@@ -56,81 +56,92 @@ func build(neededCollection *model.Collection, providedCollection *model.Collect
 		return !p.IsSpare
 	})
 
-	// search for same part type, same color
-	for _, neededPartEntry := range neededCollection.Parts {
+	mapSameShapeSameColor(neededCollection, providedCollection, buildCollection)
+	mapEquivalentShapeSameColor(mode, buildCollection, providedCollection, isMold, isPrint, isAlternative)
+	mapEquivalentShapeDifferentColor(mode, buildCollection, colors, providedCollection, isMold, isPrint, isAlternative)
+
+	return &buildCollection
+}
+
+func mapSameShapeSameColor(neededCollection *model.Collection, providedCollection *model.Collection, buildCollection model.BuildCollection) {
+	for _, neededPart := range neededCollection.Parts {
 		mapping := model.PartMapping{}
-		mapping.Quantity = neededPartEntry.Quantity
-		mapping.Original = *model.DeepClone(&neededPartEntry, &model.Part{})
+		mapping.Quantity = neededPart.Quantity
+		mapping.Original = *model.DeepClone(&neededPart, &model.Part{})
 		mapping.Substitutes = []model.Part{}
 
-		mapPartEntry(&mapping, providedCollection, neededPartEntry.Color.ID, utils.Equals)
+		mapPart(&mapping, providedCollection, neededPart.Color.ID, utils.Equals)
 
 		buildCollection.Mapping = append(buildCollection.Mapping, mapping)
 	}
+}
 
-	// search for equivalent part type, same color
+func mapEquivalentShapeSameColor(mode uint8, buildCollection model.BuildCollection, providedCollection *model.Collection,
+	isMold func(s1 string, s2 string) bool, isPrint func(s1 string, s2 string) bool, isAlternative func(s1 string, s2 string) bool) {
+
 	if mode&MOLDS != 0 || mode&PRINTS != 0 || mode&ALTERNATES != 0 {
 		for i := range buildCollection.Mapping {
 			mapping := &buildCollection.Mapping[i]
 
 			if mode&MOLDS != 0 {
-				mapPartEntry(mapping, providedCollection, mapping.Original.Color.ID, isMold)
+				mapPart(mapping, providedCollection, mapping.Original.Color.ID, isMold)
 			}
 			if mode&PRINTS != 0 {
-				mapPartEntry(mapping, providedCollection, mapping.Original.Color.ID, isPrint)
+				mapPart(mapping, providedCollection, mapping.Original.Color.ID, isPrint)
 			}
 			if mode&ALTERNATES != 0 {
-				mapPartEntry(mapping, providedCollection, mapping.Original.Color.ID, isAlternative)
+				mapPart(mapping, providedCollection, mapping.Original.Color.ID, isAlternative)
 			}
 		}
 	}
+}
 
-	// search for same or equivalent part type but different color
+func mapEquivalentShapeDifferentColor(mode uint8, buildCollection model.BuildCollection, colors *model.Colors, providedCollection *model.Collection,
+	isMold func(s1 string, s2 string) bool, isPrint func(s1 string, s2 string) bool, isAlternative func(s1 string, s2 string) bool) {
+
 	if mode&COLOR != 0 {
 		for i := range buildCollection.Mapping {
 			mapping := &buildCollection.Mapping[i]
 			for j := 0; j < len(colors.Colors) && mapping.Quantity > 0; j++ {
 				colorId := colors.Colors[j].ID
 				if mapping.Original.Color.ID != colorId {
-					mapPartEntry(mapping, providedCollection, colorId, utils.Equals)
+					mapPart(mapping, providedCollection, colorId, utils.Equals)
 					if mode&MOLDS != 0 {
-						mapPartEntry(mapping, providedCollection, colorId, isMold)
+						mapPart(mapping, providedCollection, colorId, isMold)
 					}
 					if mode&PRINTS != 0 {
-						mapPartEntry(mapping, providedCollection, colorId, isPrint)
+						mapPart(mapping, providedCollection, colorId, isPrint)
 					}
 					if mode&ALTERNATES != 0 {
-						mapPartEntry(mapping, providedCollection, colorId, isAlternative)
+						mapPart(mapping, providedCollection, colorId, isAlternative)
 					}
 				}
 			}
 		}
 	}
-
-	return &buildCollection
 }
 
-func mapPartEntry(mapping *model.PartMapping, providedCollection *model.Collection,
+func mapPart(mapping *model.PartMapping, providedCollection *model.Collection,
 	colorId int, eqFunc func(string, string) bool) {
 
 	if mapping.Quantity > 0 {
-		providedPartEntry := providedCollection.FindByEquivalence(
+		providedPart := providedCollection.FindByEquivalence(
 			mapping.Original.Shape.Number, colorId, eqFunc)
 
-		if providedPartEntry != nil && providedPartEntry.Quantity > 0 {
-			mappedPartEntry := model.DeepClone(providedPartEntry, &model.Part{})
-			if providedPartEntry.Quantity >= mapping.Quantity {
-				providedPartEntry.Quantity -= mapping.Quantity
+		if providedPart != nil && providedPart.Quantity > 0 {
+			mappedPartEntry := model.DeepClone(providedPart, &model.Part{})
+			if providedPart.Quantity >= mapping.Quantity {
+				providedPart.Quantity -= mapping.Quantity
 				mappedPartEntry.Quantity = mapping.Quantity
 			} else {
-				providedPartEntry.Quantity = 0
+				providedPart.Quantity = 0
 			}
 
 			mapping.Quantity -= mappedPartEntry.Quantity
 			mapping.Substitutes = append(mapping.Substitutes, *mappedPartEntry)
 
-			providedCollection.Remove(providedPartEntry.Shape.Number,
-				providedPartEntry.Color.ID, providedPartEntry.Quantity)
+			providedCollection.Remove(providedPart.Shape.Number,
+				providedPart.Color.ID, providedPart.Quantity)
 		}
 	}
 }

@@ -63,7 +63,7 @@ func init() {
 
 func createClient() *http.Client {
 	return &http.Client{
-		Timeout: time.Second * 5,
+		Timeout: time.Second * 15,
 	}
 }
 

@@ -31,34 +31,6 @@ func NewBricksAPI(client *http.Client, apiKey string, verbose bool) *BricksAPI {
 	return &bricks
 }
 
-// GetSet returns the result of /api/v3/lego/colors/
-func (b *BricksAPI) GetColors() []model.Color {
-	log.Print("Retrieving a list of all colors...")
-
-	url := fmt.Sprintf(BRICKS_URL, "colors/?inc_color_details=0")
-	colors := []model.Color{}
-	colorsPage := colorsPageResult{}
-
-	err := b.requestPage(url, &colorsPage)
-	if err != nil {
-		log.Fatalf(COLORS_ERR_MSG, err.Error())
-	}
-
-	colors = append(colors, colorsPage.Results...)
-	for len(colorsPage.Next) > 0 {
-		url = colorsPage.Next
-		colorsPage = colorsPageResult{}
-		err = b.requestPage(url, &colorsPage)
-		if err != nil {
-			log.Fatalf(COLORS_ERR_MSG, err.Error())
-		}
-
-		colors = append(colors, colorsPage.Results...)
-	}
-
-	return colors
-}
-
 // GetSet returns the result of /api/v3/lego/sets/{set_num}/
 func (b *BricksAPI) GetSet(setNum string) *model.Set {
 	log.Printf("Retrieving details about set %s", setNum)

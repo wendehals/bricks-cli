@@ -103,19 +103,16 @@ func mapPart(providedCollection *model.Collection, mapping *model.PartMapping, c
 			mapping.Original.Shape.Number, colorId, eqFunc)
 
 		if providedPart != nil && providedPart.Quantity > 0 {
-			mappedPartEntry := model.DeepClone(providedPart, &model.Part{})
+			mappedPart := model.DeepClone(providedPart, &model.Part{})
 			if providedPart.Quantity >= mapping.Quantity {
 				providedPart.Quantity -= mapping.Quantity
-				mappedPartEntry.Quantity = mapping.Quantity
+				mappedPart.Quantity = mapping.Quantity
 			} else {
 				providedPart.Quantity = 0
 			}
 
-			mapping.Quantity -= mappedPartEntry.Quantity
-			mapping.Substitutes = append(mapping.Substitutes, *mappedPartEntry)
-
-			providedCollection.Remove(providedPart.Shape.Number,
-				providedPart.Color.ID, providedPart.Quantity)
+			mapping.Quantity -= mappedPart.Quantity
+			mapping.Substitutes = append(mapping.Substitutes, *mappedPart)
 		}
 	}
 }

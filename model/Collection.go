@@ -52,16 +52,6 @@ func (c *Collection) FindByEquivalence(partNum string, colorId int, eqFunc func(
 	return nil
 }
 
-// Remove removes the given quantity of parts with the given number and color id.
-func (c *Collection) Remove(partNum string, colorId int, quantity int) {
-	for i := range c.Parts {
-		if c.Parts[i].Shape.Number == partNum && c.Parts[i].Color.ID == colorId {
-			c.Parts[i].Quantity -= quantity
-			return
-		}
-	}
-}
-
 // Add one collection to another.
 // The isSpare flag of PartEntry will be invalid afterwards and set to false for all parts.
 func (c *Collection) Add(other *Collection) *Collection {

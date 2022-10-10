@@ -130,6 +130,32 @@ func (c *Collection) Filter(f func(Part) bool) *Collection {
 	return c
 }
 
+// MergeByColor merges all parts of the same shape ignoring the color.
+// The Color field of Part will be invalid afterwards.
+// The isSpare flag of Part will be invalid afterwards and set to false for all parts.
+func (c *Collection) MergeByColor() *Collection {
+	c.Sets = []Set{}
+	c.Names = []string{}
+
+	partsMap := c.mapPartsByPartNumber(nil, utils.Identity)
+
+	newParts := []Part{}
+	for _, value := range partsMap {
+		var currentPart = value[0]
+		currentPart.Color = Color{-1, ""}
+
+		for i := 1; i < len(value); i++ {
+			currentPart.Quantity += value[i].Quantity
+		}
+
+		newParts = append(newParts, currentPart)
+	}
+
+	c.Parts = newParts
+
+	return c
+}
+
 func (c *Collection) mapPartsByPartNumber(partsMap map[string][]Part, keyMapping func(string) string) map[string][]Part {
 	if partsMap == nil {
 		partsMap = make(map[string][]Part)

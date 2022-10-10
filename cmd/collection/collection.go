@@ -22,6 +22,7 @@ func init() {
 	CollectionCmd.AddCommand(sortCmd)
 	CollectionCmd.AddCommand(subtractCmd)
 	CollectionCmd.AddCommand(sumCmd)
+	CollectionCmd.AddCommand(mergeCmd)
 	CollectionCmd.AddCommand(importCmd)
 
 	CollectionCmd.PersistentFlags().StringVarP(&outputFile, options.OUTPUT_FILE_OPT,

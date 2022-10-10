@@ -156,6 +156,16 @@ func TestMax(t *testing.T) {
 	test.AssertSameInt(t, 3, collection.Parts[8].Color.ID)
 }
 
+func TestMergeByColor(t *testing.T) {
+	collection := Load(&Collection{}, "test_resources/testCollection1.parts").MergeByColor().Sort()
+
+	assertSize(t, collection, 5)
+
+	test.AssertSameString(t, "25", collection.Parts[2].Shape.Number)
+	test.AssertSameInt(t, 13, collection.Parts[2].Quantity)
+	test.AssertSameInt(t, -1, collection.Parts[2].Color.ID)
+}
+
 func assertSize(t *testing.T, collection *Collection, expected int) {
 	if len(collection.Parts) != expected {
 		t.Errorf("Too many/less distinct part types in collection. Expected: %d, actual: %d", expected, len(collection.Parts))

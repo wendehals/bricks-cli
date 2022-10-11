@@ -9,6 +9,13 @@ type Part struct {
 	SetNum   string `json:"set_num"`
 }
 
+func NewPart() *Part {
+	return &Part{
+		Shape: Shape{},
+		Color: Color{},
+	}
+}
+
 func (p *Part) Compare(other *Part) int {
 	resultColor := p.Color.Compare(&other.Color)
 	if resultColor == 0 {

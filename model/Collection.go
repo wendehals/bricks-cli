@@ -289,16 +289,12 @@ func ImportCSVCollection(csvFile string) *Collection {
 			log.Fatal(err)
 		}
 
-		part := Part{}
+		part := NewPart()
 		part.Quantity, _ = strconv.Atoi(record[2])
-
-		part.Shape = Shape{}
 		part.Shape.Number = record[0]
-
-		part.Color = Color{}
 		part.Color.ID, _ = strconv.Atoi(record[1])
 
-		collection.Parts = append(collection.Parts, part)
+		collection.Parts = append(collection.Parts, *part)
 	}
 
 	return collection

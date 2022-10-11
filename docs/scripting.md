@@ -31,4 +31,4 @@ These expressions are available in the bricks scripts:
 * `sum(EXP, EXP, ...)` - Calculates the sum of all parts in the expression's results.
 * `subtract(EXP, EXP)` - Subtracts all parts in the second expression's result from the parts in the first expression's result.
 * `max(EXP, EXP, ...)` - Calculates the maximum of all parts in the expression's results.
-* `sort(EXP)` - Sorts parts in the expression's result.
+* `sort(EXP, quantity?, descending?)` - Sorts parts in the expression's result in ascending order by their color and name. If sorting should be done by quantity and name, add `quantity` to the argument list. For sorting in descending order, add `descending` as last argument.

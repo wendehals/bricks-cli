@@ -37,7 +37,7 @@ subtract: 'subtract' '(' exp ',' exp ')';
 
 max: 'max' '(' exp (',' exp)+ ')';
 
-sort: 'sort' '(' exp ')';
+sort: 'sort' '(' exp (',' quantity='quantity')? (',' descending='descending')? ')';
 
 
 fragment DIGIT: [0–9];

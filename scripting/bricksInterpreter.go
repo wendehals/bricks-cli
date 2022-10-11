@@ -162,6 +162,12 @@ func (b *bricksInterpreter) ExitSort(ctx *parser.SortContext) {
 	log.Printf("Sorting collection")
 
 	collection := b.stack.pop()
-	collection.SortByColorAndName(false)
+
+	if ctx.GetQuantity() == nil {
+		collection.SortByColorAndName(ctx.GetDescending() != nil)
+	} else {
+		collection.SortByQuantityAndName(ctx.GetDescending() != nil)
+	}
+
 	b.stack.push(collection)
 }

@@ -52,7 +52,7 @@ func (b *BricksAPI) GetSet(setNum string) *model.Set {
 func (b *BricksAPI) GetSetParts(setNum string, includeMiniFigs bool) *model.Collection {
 	log.Printf("Retrieving parts of set %s", setNum)
 
-	collection := model.Collection{}
+	collection := model.NewCollection()
 
 	subPath := fmt.Sprintf("sets/%s/parts/?inc_color_details=0", setNum)
 	if includeMiniFigs {
@@ -78,5 +78,5 @@ func (b *BricksAPI) GetSetParts(setNum string, includeMiniFigs bool) *model.Coll
 		collection.Parts = append(collection.Parts, setParts.Results...)
 	}
 
-	return &collection
+	return collection
 }

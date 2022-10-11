@@ -13,6 +13,14 @@ type PartMapping struct {
 	Substitutes []Part `json:"substitutes"`
 }
 
+func NewBuildCollection() *BuildCollection {
+	b := &BuildCollection{}
+	b.Set = Set{}
+	b.Mapping = []PartMapping{}
+
+	return b
+}
+
 // Sort the Parts of a collection by their Part Number
 func (b *BuildCollection) Sort() *BuildCollection {
 	sort.Slice(b.Mapping, func(i, j int) bool {

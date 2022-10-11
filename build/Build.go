@@ -16,11 +16,10 @@ const (
 )
 
 func Build(neededCollection *model.Collection, providedCollection *model.Collection, mode uint8, outputDir string, verbose bool) {
-	buildCollection := &model.BuildCollection{}
+	buildCollection := model.NewBuildCollection()
 	if len(neededCollection.Sets) > 0 {
 		buildCollection.Set = neededCollection.Sets[0]
 	}
-	buildCollection.Mapping = []model.PartMapping{}
 
 	// filter spare parts
 	neededCollection.Filter(func(p model.Part) bool {

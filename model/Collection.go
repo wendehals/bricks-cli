@@ -22,6 +22,15 @@ type Collection struct {
 	Parts []Part   `json:"parts"`
 }
 
+func NewCollection() *Collection {
+	c := &Collection{}
+	c.Names = []string{}
+	c.Sets = []Set{}
+	c.Parts = []Part{}
+
+	return c
+}
+
 // SortByColorAndName the sets by their number and the parts their color and name.
 func (c *Collection) SortByColorAndName(descending bool) *Collection {
 	sort.Slice(c.Sets, func(i, j int) bool {
@@ -259,7 +268,7 @@ func (c *Collection) recalculateQuantity(other *Collection, recalc func(int, int
 func MergeAllCollections(collections []*Collection) *Collection {
 	log.Println("Merging parts of collections")
 
-	mergedCollection := &Collection{}
+	mergedCollection := NewCollection()
 	for _, collection := range collections {
 		mergedCollection.Add(collection)
 	}
@@ -268,10 +277,7 @@ func MergeAllCollections(collections []*Collection) *Collection {
 }
 
 func ImportCSVCollection(csvFile string) *Collection {
-	collection := Collection{}
-	collection.Names = []string{}
-	collection.Sets = []Set{}
-	collection.Parts = []Part{}
+	collection := NewCollection()
 
 	csvReader := utils.CSVReader(csvFile)
 	for {
@@ -295,5 +301,5 @@ func ImportCSVCollection(csvFile string) *Collection {
 		collection.Parts = append(collection.Parts, part)
 	}
 
-	return &collection
+	return collection
 }

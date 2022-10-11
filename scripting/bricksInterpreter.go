@@ -126,7 +126,7 @@ func (b *bricksInterpreter) ExitPartLists(ctx *parser.PartListsContext) {
 func (b *bricksInterpreter) ExitSum(ctx *parser.SumContext) {
 	log.Printf("Calculating sum")
 
-	sum := &model.Collection{}
+	sum := model.NewCollection()
 
 	for range ctx.AllExp() {
 		summand := b.stack.pop()
@@ -148,7 +148,7 @@ func (b *bricksInterpreter) ExitSubtract(ctx *parser.SubtractContext) {
 func (b *bricksInterpreter) ExitMax(ctx *parser.MaxContext) {
 	log.Printf("Calculating maximum")
 
-	max := &model.Collection{}
+	max := model.NewCollection()
 
 	for range ctx.AllExp() {
 		collection := b.stack.pop()

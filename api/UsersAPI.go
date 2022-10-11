@@ -51,9 +51,8 @@ func NewUsersAPI(client *http.Client, credentials *Credentials, verbose bool) *U
 func (u *UsersAPI) GetAllParts() *model.Collection {
 	log.Printf("Retrieving all parts owned by user %s", u.userName)
 
-	collection := model.Collection{}
+	collection := model.NewCollection()
 	collection.User = u.userName
-	collection.Sets = []model.Set{}
 	collection.Names = []string{"All Parts"}
 
 	allPartsPage := partsPageResult{}
@@ -75,7 +74,7 @@ func (u *UsersAPI) GetAllParts() *model.Collection {
 		collection.Parts = append(collection.Parts, allPartsPage.Results...)
 	}
 
-	return &collection
+	return collection
 }
 
 // GetSets returns all sets of the user provided by /api/v3/users/{user_token}/sets/
@@ -232,8 +231,7 @@ func (u *UsersAPI) GetPartLists() *model.PartLists {
 func (u *UsersAPI) GetPartListParts(listId uint) *model.Collection {
 	log.Printf("Retrieving parts of part list %d", listId)
 
-	collection := model.Collection{}
-	collection.Sets = []model.Set{}
+	collection := model.NewCollection()
 	collection.Names = append(collection.Names, fmt.Sprint(listId))
 
 	partsPage := partsPageResult{}
@@ -256,16 +254,15 @@ func (u *UsersAPI) GetPartListParts(listId uint) *model.Collection {
 		collection.Parts = append(collection.Parts, partsPage.Results...)
 	}
 
-	return &collection
+	return collection
 }
 
 // GetLostParts returns all parts owned by the user provided by /api/v3/users/{user_token}/lost_parts/
 func (u *UsersAPI) GetLostParts() *model.Collection {
 	log.Printf("Retrieving lost parts of user %s", u.userName)
 
-	lostParts := model.Collection{}
+	lostParts := model.NewCollection()
 	lostParts.User = u.userName
-	lostParts.Sets = []model.Set{}
 	lostParts.Names = append(lostParts.Names, "Lost parts")
 
 	lostPartsPage := lostPartsPageResult{}
@@ -287,7 +284,7 @@ func (u *UsersAPI) GetLostParts() *model.Collection {
 		lostParts.Parts = append(lostParts.Parts, lostPartsPage.convertToParts()...)
 	}
 
-	return &lostParts
+	return lostParts
 }
 
 // postToken posts /api/v3/users/_token/

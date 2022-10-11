@@ -2,7 +2,7 @@
 	<div class="image">
 		<div>
 			<a href="{{.Shape.URL}}">
-				<img src="{{.Shape.ImageURL}}" title="{{.Shape.Name}}, {{.Color.Name}}" alt="{{.Shape.Name}}" width="100" height="100"/>
+				<img src="{{.Shape.ImageURL}}" title="{{.Shape.Name}}{{if not (eq .Color.Name "")}}, {{.Color.Name}}{{end}}" alt="{{.Shape.Name}}" width="100" height="100"/>
 			</a>
 		</div>
 		{{- if not (eq .Shape.Dimensions "")}}

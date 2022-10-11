@@ -101,7 +101,7 @@ func (b *bricksInterpreter) ExitSetList(ctx *parser.SetListContext) {
 	includeMiniFigs := ctx.BOOL() != nil && ctx.BOOL().GetText() == "true"
 	setListParts := api.RetrieveSetListParts(b.bricksAPI, b.usersAPI, uint(setListId), includeMiniFigs)
 	collection := model.MergeAllCollections(setListParts)
-	collection.Sort()
+	collection.SortByColorAndName(false)
 
 	b.stack.push(collection)
 }
@@ -162,6 +162,6 @@ func (b *bricksInterpreter) ExitSort(ctx *parser.SortContext) {
 	log.Printf("Sorting collection")
 
 	collection := b.stack.pop()
-	collection.Sort()
+	collection.SortByColorAndName(false)
 	b.stack.push(collection)
 }

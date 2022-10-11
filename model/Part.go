@@ -16,3 +16,17 @@ func (p *Part) Compare(other *Part) int {
 	}
 	return resultColor
 }
+
+func (p *Part) CompareByQuantity(other *Part) int {
+	resultColor := 0
+	if p.Quantity > other.Quantity {
+		resultColor = 1
+	} else if p.Quantity < other.Quantity {
+		resultColor = -1
+	}
+
+	if resultColor == 0 {
+		return p.Shape.Compare(&other.Shape)
+	}
+	return resultColor
+}

@@ -22,14 +22,33 @@ type Collection struct {
 	Parts []Part   `json:"parts"`
 }
 
-// Sort the sets by their number and the parts their color and name
-func (c *Collection) Sort() *Collection {
+// SortByColorAndName the sets by their number and the parts their color and name.
+func (c *Collection) SortByColorAndName(descending bool) *Collection {
 	sort.Slice(c.Sets, func(i, j int) bool {
 		return c.Sets[i].Compare(&c.Sets[j]) < 0
 	})
 
 	sort.Slice(c.Parts, func(i, j int) bool {
+		if descending {
+			return c.Parts[i].Compare(&c.Parts[j]) > 0
+		}
 		return c.Parts[i].Compare(&c.Parts[j]) < 0
+	})
+
+	return c
+}
+
+// Sort the sets by their number and the parts their quantity and name.
+func (c *Collection) SortByQuantityAndName(descending bool) *Collection {
+	sort.Slice(c.Sets, func(i, j int) bool {
+		return c.Sets[i].Compare(&c.Sets[j]) < 0
+	})
+
+	sort.Slice(c.Parts, func(i, j int) bool {
+		if descending {
+			return c.Parts[i].CompareByQuantity(&c.Parts[j]) > 0
+		}
+		return c.Parts[i].CompareByQuantity(&c.Parts[j]) < 0
 	})
 
 	return c

@@ -9,7 +9,7 @@ import (
 func TestSort(t *testing.T) {
 	collection := Load(&Collection{}, "test_resources/testCollection1.parts")
 
-	collection.Sort()
+	collection.SortByColorAndName(false)
 
 	test.AssertSameString(t, "black", collection.Parts[0].Color.Name)
 	test.AssertSameString(t, "name2412a", collection.Parts[0].Shape.Name)
@@ -31,7 +31,7 @@ func TestSort(t *testing.T) {
 }
 
 func TestAdd(t *testing.T) {
-	collection := Load(&Collection{}, "test_resources/testCollection1.parts").Add(Load(&Collection{}, "test_resources/testCollection2.parts")).Sort()
+	collection := Load(&Collection{}, "test_resources/testCollection1.parts").Add(Load(&Collection{}, "test_resources/testCollection2.parts")).SortByColorAndName(false)
 
 	assertSize(t, collection, 9)
 
@@ -70,7 +70,7 @@ func TestAdd(t *testing.T) {
 }
 
 func TestAddSpareParts(t *testing.T) {
-	collection := Load(&Collection{}, "test_resources/addSpareParts1.parts").Add(Load(&Collection{}, "test_resources/addSpareParts2.parts")).Sort()
+	collection := Load(&Collection{}, "test_resources/addSpareParts1.parts").Add(Load(&Collection{}, "test_resources/addSpareParts2.parts")).SortByColorAndName(false)
 
 	assertSize(t, collection, 2)
 
@@ -82,7 +82,7 @@ func TestAddSpareParts(t *testing.T) {
 }
 
 func TestSubstract(t *testing.T) {
-	collection := Load(&Collection{}, "test_resources/testCollection1.parts").Subtract(Load(&Collection{}, "test_resources/testCollection2.parts")).Sort()
+	collection := Load(&Collection{}, "test_resources/testCollection1.parts").Subtract(Load(&Collection{}, "test_resources/testCollection2.parts")).SortByColorAndName(false)
 
 	assertSize(t, collection, 9)
 
@@ -115,7 +115,7 @@ func TestSubstract(t *testing.T) {
 }
 
 func TestMax(t *testing.T) {
-	collection := Load(&Collection{}, "test_resources/testCollection1.parts").Max(Load(&Collection{}, "test_resources/testCollection2.parts")).Sort()
+	collection := Load(&Collection{}, "test_resources/testCollection1.parts").Max(Load(&Collection{}, "test_resources/testCollection2.parts")).SortByColorAndName(false)
 
 	assertSize(t, collection, 9)
 
@@ -157,7 +157,7 @@ func TestMax(t *testing.T) {
 }
 
 func TestMergeByColor(t *testing.T) {
-	collection := Load(&Collection{}, "test_resources/testCollection1.parts").MergeByColor().Sort()
+	collection := Load(&Collection{}, "test_resources/testCollection1.parts").MergeByColor().SortByColorAndName(false)
 
 	assertSize(t, collection, 5)
 

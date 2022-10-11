@@ -10,7 +10,7 @@ import (
 )
 
 var subtractCmd = &cobra.Command{
-	Use:   fmt.Sprintf("subtract %s PARTS_FILE_MINUEND PARTS_FILE_SUBTRAHEND", options.OUTPUT_FILE_ARG),
+	Use:   fmt.Sprintf("subtract PARTS_FILE_MINUEND PARTS_FILE_SUBTRAHEND %s", options.OUTPUT_FILE_ARG),
 	Short: "Subtracts one collection of parts from another",
 	Long: `
 The command subtracts the second collection of parts given in the args from the

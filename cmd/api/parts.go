@@ -222,7 +222,7 @@ func executeLostParts() {
 
 func mergeAndSave(collections []*model.Collection) {
 	collection := model.MergeAllCollections(collections)
-	collection.Sort()
+	collection.SortByColorAndName(false)
 
 	if outputFile == "" {
 		var b strings.Builder

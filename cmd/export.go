@@ -15,7 +15,7 @@ const (
 	SORT_OPT   = "sort"
 	SORT_SOPT  = "s"
 	SORT_ARG   = "[-" + SORT_SOPT + "]"
-	SORT_USAGE = "sort the parts in the list before exporting"
+	SORT_USAGE = "sort the parts in ascending order by color and name before exporting"
 )
 
 var (
@@ -58,7 +58,7 @@ func executeExport(args []string) {
 
 	collection := model.Load(&model.Collection{}, args[0])
 	if sort {
-		collection.Sort()
+		collection.SortByColorAndName(false)
 	}
 
 	export.ExportCollectionToHTML(collection, outputDir, args[0])

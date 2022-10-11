@@ -9,17 +9,40 @@ import (
 	"github.com/wendehals/bricks/model"
 )
 
-var sortCmd = &cobra.Command{
-	Use:   fmt.Sprintf("sort %s PARTS_FILE", options.OUTPUT_FILE_ARG),
-	Short: "Sorts the parts of a collection by their color and name",
-	Long:  "The command sorts the parts of a collection in descending order by their color and name.",
+const (
+	DESCENDING_OPT   = "descending"
+	DESCENDING_SOPT  = "d"
+	DESCENDING_ARG   = "[-" + DESCENDING_SOPT + "]"
+	DESCENDING_USAGE = "sort in descending order"
 
-	DisableFlagsInUseLine: true,
+	QUANTITY_OPT   = "quantity"
+	QUANTITY_SOPT  = "q"
+	QUANTITY_ARG   = "[-" + QUANTITY_SOPT + "]"
+	QUANTITY_USAGE = "sort by quantity and name"
+)
 
-	Args: cobra.ExactArgs(1),
-	Run: func(cmd *cobra.Command, args []string) {
-		executeSort(args)
-	},
+var (
+	descending     bool
+	sortByQuantity bool
+
+	sortCmd = &cobra.Command{
+		Use:   fmt.Sprintf("sort PARTS_FILE %s %s %s", options.OUTPUT_FILE_ARG, QUANTITY_ARG, DESCENDING_ARG),
+		Short: "Sorts the parts of a collection",
+		Long: `The command sorts the parts of a collection by default in ascending order by their color and name.
+It could also sort the parts by their quantity and name.`,
+
+		DisableFlagsInUseLine: true,
+
+		Args: cobra.ExactArgs(1),
+		Run: func(cmd *cobra.Command, args []string) {
+			executeSort(args)
+		},
+	}
+)
+
+func init() {
+	sortCmd.Flags().BoolVarP(&sortByQuantity, QUANTITY_OPT, QUANTITY_SOPT, false, QUANTITY_USAGE)
+	sortCmd.Flags().BoolVarP(&descending, DESCENDING_OPT, DESCENDING_SOPT, false, DESCENDING_USAGE)
 }
 
 func executeSort(args []string) {
@@ -31,5 +54,11 @@ func executeSort(args []string) {
 		outputFile = options.FileNameFromArgs(args, "_sorted.parts")
 	}
 
-	model.Save(collection.Sort(), outputFile)
+	if sortByQuantity {
+		collection.SortByQuantityAndName(descending)
+	} else {
+		collection.SortByColorAndName(descending)
+	}
+
+	model.Save(collection, outputFile)
 }

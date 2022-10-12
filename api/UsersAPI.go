@@ -35,12 +35,11 @@ type UsersAPI struct {
 // NewUsersAPI creates a new object of UsersAPI and initializes it with a token by
 // issueing a request to the Rebrickable API
 func NewUsersAPI(client *http.Client, credentials *Credentials, verbose bool) *UsersAPI {
-	usersAPI := UsersAPI{}
-	usersAPI.client = client
-	usersAPI.apiKey = credentials.APIKey
-	usersAPI.userName = credentials.UserName
-	usersAPI.password = credentials.Password
-	usersAPI.verbose = verbose
+	usersAPI := UsersAPI{
+		AbstractAPI: *NewAbstractAPI(client, credentials.APIKey, verbose),
+		userName:    credentials.UserName,
+		password:    credentials.Password,
+	}
 
 	usersAPI.postToken()
 

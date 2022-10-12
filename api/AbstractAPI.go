@@ -25,6 +25,14 @@ type AbstractAPI struct {
 	verbose bool
 }
 
+func NewAbstractAPI(client *http.Client, apiKey string, verbose bool) *AbstractAPI {
+	return &AbstractAPI{
+		client:  client,
+		apiKey:  apiKey,
+		verbose: verbose,
+	}
+}
+
 func (a *AbstractAPI) requestPage(url string, v interface{}) error {
 	reqest, err := a.createGetRequest(url)
 	if err != nil {

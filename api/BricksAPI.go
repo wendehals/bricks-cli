@@ -23,12 +23,9 @@ type BricksAPI struct {
 
 // NewBricksAPI creates a new object of BricksAPI
 func NewBricksAPI(client *http.Client, apiKey string, verbose bool) *BricksAPI {
-	bricks := BricksAPI{}
-	bricks.client = client
-	bricks.apiKey = apiKey
-	bricks.verbose = verbose
-
-	return &bricks
+	return &BricksAPI{
+		AbstractAPI: *NewAbstractAPI(client, apiKey, verbose),
+	}
 }
 
 // GetSet returns the result of /api/v3/lego/sets/{set_num}/

@@ -5,15 +5,15 @@ import (
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 )
 
-// Load reads a model from a JSON encoded file.
+// Load reads a model from a JSON ecoded file.
 func Load[V any](v V, fileName string) V {
 	jsonFile, err := os.Open(fileName)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer jsonFile.Close()
 
 	data, err := io.ReadAll(jsonFile)
 	if err != nil {

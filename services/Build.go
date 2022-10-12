@@ -1,18 +1,17 @@
-package build
+package services
 
 import (
 	"fmt"
 
-	"github.com/wendehals/bricks/export"
 	"github.com/wendehals/bricks/model"
 	"github.com/wendehals/bricks/utils"
 )
 
 const (
-	COLOR      uint8 = 1
-	ALTERNATES uint8 = 2
-	MOLDS      uint8 = 4
-	PRINTS     uint8 = 8
+	MODE_COLOR      uint8 = 1
+	MODE_ALTERNATES uint8 = 2
+	MODE_MOLDS      uint8 = 4
+	MODE_PRINTS     uint8 = 8
 )
 
 func Build(neededCollection *model.Collection, providedCollection *model.Collection, mode uint8, outputDir string, verbose bool) {
@@ -33,11 +32,11 @@ func Build(neededCollection *model.Collection, providedCollection *model.Collect
 	buildCollection.Sort()
 
 	model.Save(buildCollection, fmt.Sprintf("%s/result.build", outputDir))
-	export.ExportBuildToHTML(buildCollection, outputDir, "build")
+	ExportBuildToHTML(buildCollection, outputDir, "build")
 
 	providedCollection.RemoveQuantityZero()
 	model.Save(providedCollection, fmt.Sprintf("%s/remaining.parts", outputDir))
-	export.ExportCollectionToHTML(providedCollection, outputDir, "remaining")
+	ExportCollectionToHTML(providedCollection, outputDir, "remaining")
 }
 
 func mapSameShapeSameColor(neededCollection *model.Collection, providedCollection *model.Collection, buildCollection *model.BuildCollection) {
@@ -54,17 +53,17 @@ func mapSameShapeSameColor(neededCollection *model.Collection, providedCollectio
 }
 
 func mapEquivalentShapeSameColor(providedCollection *model.Collection, buildCollection *model.BuildCollection, mode uint8) {
-	if mode&MOLDS != 0 || mode&PRINTS != 0 || mode&ALTERNATES != 0 {
+	if mode&MODE_MOLDS != 0 || mode&MODE_PRINTS != 0 || mode&MODE_ALTERNATES != 0 {
 		for i := range buildCollection.Mapping {
 			mapping := &buildCollection.Mapping[i]
 
-			if mode&MOLDS != 0 {
+			if mode&MODE_MOLDS != 0 {
 				mapPart(providedCollection, mapping, mapping.Original.Color.ID, isMold)
 			}
-			if mode&PRINTS != 0 {
+			if mode&MODE_PRINTS != 0 {
 				mapPart(providedCollection, mapping, mapping.Original.Color.ID, isPrint)
 			}
-			if mode&ALTERNATES != 0 {
+			if mode&MODE_ALTERNATES != 0 {
 				mapPart(providedCollection, mapping, mapping.Original.Color.ID, isAlternative)
 			}
 		}
@@ -72,8 +71,8 @@ func mapEquivalentShapeSameColor(providedCollection *model.Collection, buildColl
 }
 
 func mapEquivalentShapeDifferentColor(providedCollection *model.Collection, buildCollection *model.BuildCollection, mode uint8) {
-	if mode&COLOR != 0 {
-		colors := model.GetColors(false)
+	if mode&MODE_COLOR != 0 {
+		colors := GetColors(false)
 
 		for i := range buildCollection.Mapping {
 			mapping := &buildCollection.Mapping[i]
@@ -81,13 +80,13 @@ func mapEquivalentShapeDifferentColor(providedCollection *model.Collection, buil
 				colorId := colors.Colors[j].ID
 				if mapping.Original.Color.ID != colorId {
 					mapPart(providedCollection, mapping, colorId, utils.Equals)
-					if mode&MOLDS != 0 {
+					if mode&MODE_MOLDS != 0 {
 						mapPart(providedCollection, mapping, colorId, isMold)
 					}
-					if mode&PRINTS != 0 {
+					if mode&MODE_PRINTS != 0 {
 						mapPart(providedCollection, mapping, colorId, isPrint)
 					}
-					if mode&ALTERNATES != 0 {
+					if mode&MODE_ALTERNATES != 0 {
 						mapPart(providedCollection, mapping, colorId, isAlternative)
 					}
 				}
@@ -116,14 +115,14 @@ func mapPart(providedCollection *model.Collection, mapping *model.PartMapping, c
 	}
 }
 
+func isAlternative(s1, s2 string) bool {
+	return GetAlternates(false).IsCompatible(s1, s2)
+}
+
 func isMold(s1, s2 string) bool {
-	return model.GetPartRelationships(false).IsMold(s1, s2)
+	return GetMolds(false).IsCompatible(s1, s2)
 }
 
 func isPrint(s1, s2 string) bool {
-	return model.GetPartRelationships(false).IsPrint(s1, s2)
-}
-
-func isAlternative(s1, s2 string) bool {
-	return model.GetPartRelationships(false).IsAlternative(s1, s2)
+	return GetPrints(false).IsCompatible(s1, s2)
 }

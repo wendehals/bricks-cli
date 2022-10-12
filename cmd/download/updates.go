@@ -2,7 +2,7 @@ package download
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/wendehals/bricks/model"
+	"github.com/wendehals/bricks/services"
 )
 
 var updateCmd = &cobra.Command{
@@ -10,7 +10,7 @@ var updateCmd = &cobra.Command{
 	Short: "Updates locally cached data",
 	Long: `The updates command downloads various files from the rebrickable.com server to update
 locally cached data. This data comprises the part relationships based on
-alternatives, molds, and prints, as well as a color and parts database.`,
+alternates, molds, and prints, as well as a colors and parts database.`,
 
 	DisableFlagsInUseLine: true,
 
@@ -20,7 +20,7 @@ alternatives, molds, and prints, as well as a color and parts database.`,
 }
 
 func executeUpdatesDownload() {
-	model.GetColors(true)
-	model.GetPartRelationships(true)
-	model.GetShapes(true)
+	services.GetAlternates(true) // also updates Molds and Prints
+	services.GetColors(true)
+	services.GetShapes(true)
 }

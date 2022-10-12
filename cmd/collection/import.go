@@ -2,11 +2,10 @@ package collection
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/cmd/options"
-	"github.com/wendehals/bricks/model"
+	"github.com/wendehals/bricks/services"
 )
 
 var (
@@ -30,41 +29,5 @@ func executeImport(args []string) {
 		outputFile = options.FileNameFromArgs(args, ".parts")
 	}
 
-	log.Printf("Importing parts from '%s'", args[0])
-
-	collection := model.ImportCSVCollection(args[0])
-	addColorNames(collection)
-	addShapeNames(collection)
-	deducePartURLs(collection)
-
-	model.Save(collection, outputFile)
-}
-
-func addColorNames(collection *model.Collection) {
-	names := make(map[int]string)
-	for _, color := range model.GetColors(false).Colors {
-		names[color.ID] = color.Name
-	}
-
-	for i := range collection.Parts {
-		collection.Parts[i].Color.Name = names[collection.Parts[i].Color.ID]
-	}
-}
-
-func addShapeNames(collection *model.Collection) {
-	names := make(map[string]string)
-	for _, shape := range model.GetShapes(false).Shapes {
-		names[shape.Number] = shape.Name
-	}
-
-	for i := range collection.Parts {
-		collection.Parts[i].Shape.Name = names[collection.Parts[i].Shape.Number]
-	}
-}
-
-func deducePartURLs(collection *model.Collection) {
-	for i := range collection.Parts {
-		url := fmt.Sprintf("https://rebrickable.com/parts/%s", collection.Parts[i].Shape.Number)
-		collection.Parts[i].Shape.URL = url
-	}
+	services.ImportCSVCollection(args[0], outputFile)
 }

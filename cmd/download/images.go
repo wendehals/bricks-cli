@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/wendehals/bricks/utils"
+	"github.com/wendehals/bricks/services"
 )
 
 const (
@@ -34,5 +34,5 @@ func init() {
 }
 
 func executeImagesDownload() {
-	utils.DownloadPartImages(update)
+	services.DownloadPartImages(update)
 }

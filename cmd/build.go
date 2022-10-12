@@ -10,9 +10,9 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/api"
-	"github.com/wendehals/bricks/build"
 	"github.com/wendehals/bricks/cmd/options"
 	"github.com/wendehals/bricks/model"
+	"github.com/wendehals/bricks/services"
 )
 
 const (
@@ -105,17 +105,17 @@ func executeBuild(args []string) {
 
 	var mode uint8 = 0
 	if strings.Contains(buildMode, "c") {
-		mode = mode ^ build.COLOR
+		mode = mode ^ services.MODE_COLOR
 	}
 	if strings.Contains(buildMode, "a") {
-		mode = mode ^ build.ALTERNATES
+		mode = mode ^ services.MODE_ALTERNATES
 	}
 	if strings.Contains(buildMode, "m") {
-		mode = mode ^ build.MOLDS
+		mode = mode ^ services.MODE_MOLDS
 	}
 	if strings.Contains(buildMode, "p") {
-		mode = mode ^ build.PRINTS
+		mode = mode ^ services.MODE_PRINTS
 	}
 
-	build.Build(neededCollection, providedCollection, mode, outputDir, options.Verbose)
+	services.Build(neededCollection, providedCollection, mode, outputDir, options.Verbose)
 }

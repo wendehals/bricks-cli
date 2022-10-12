@@ -6,10 +6,9 @@ import (
 	"strings"
 
 	"github.com/wendehals/bricks/api"
-	"github.com/wendehals/bricks/build"
-	"github.com/wendehals/bricks/export"
 	"github.com/wendehals/bricks/model"
 	"github.com/wendehals/bricks/scripting/parser"
+	"github.com/wendehals/bricks/services"
 )
 
 type bricksInterpreter struct {
@@ -44,7 +43,7 @@ func (b *bricksInterpreter) ExitSave(ctx *parser.SaveContext) {
 func (b *bricksInterpreter) ExitExport(ctx *parser.ExportContext) {
 	collection := b.stack.pop()
 	exportDir := strings.Trim(ctx.STRING().GetText(), "\"")
-	export.ExportCollectionToHTML(collection, exportDir, exportDir)
+	services.ExportCollectionToHTML(collection, exportDir, exportDir)
 }
 
 func (b *bricksInterpreter) ExitBuild(ctx *parser.BuildContext) {
@@ -52,12 +51,12 @@ func (b *bricksInterpreter) ExitBuild(ctx *parser.BuildContext) {
 	neededCollection := b.stack.pop()
 	exportDir := strings.Trim(ctx.STRING().GetText(), "\"")
 
-	mode := 0 & build.COLOR
-	mode = mode & build.ALTERNATES
-	mode = mode & build.MOLDS
-	mode = mode & build.PRINTS
+	mode := 0 & services.MODE_COLOR
+	mode = mode & services.MODE_ALTERNATES
+	mode = mode & services.MODE_MOLDS
+	mode = mode & services.MODE_PRINTS
 
-	build.Build(neededCollection, providedCollection, mode, exportDir, false)
+	services.Build(neededCollection, providedCollection, mode, exportDir, false)
 }
 
 func (b *bricksInterpreter) ExitIdentifier(ctx *parser.IdentifierContext) {

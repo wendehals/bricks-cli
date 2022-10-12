@@ -59,6 +59,18 @@ func PartRelationshipsPath() string {
 	return filepath.FromSlash(fmt.Sprintf("%s/partRelationships.json", GetBricksDir()))
 }
 
+func AlternatesPath() string {
+	return filepath.FromSlash(fmt.Sprintf("%s/alternates.json", GetBricksDir()))
+}
+
+func MoldsPath() string {
+	return filepath.FromSlash(fmt.Sprintf("%s/molds.json", GetBricksDir()))
+}
+
+func PrintsPath() string {
+	return filepath.FromSlash(fmt.Sprintf("%s/prints.json", GetBricksDir()))
+}
+
 func ShapesPath() string {
 	return filepath.FromSlash(fmt.Sprintf("%s/shapes.json", GetBricksDir()))
 }

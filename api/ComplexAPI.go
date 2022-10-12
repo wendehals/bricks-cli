@@ -50,7 +50,7 @@ func RetrieveSetListParts(bricksAPI *BricksAPI, usersAPI *UsersAPI, setListId ui
 }
 
 func RetrievePartListParts(usersAPI *UsersAPI, partListsFile string, includeNonBuildable bool) []*model.Collection {
-	log.Printf("Retrieving parts of all part lists from the part lists file %s", partListsFile)
+	log.Printf("Retrieving parts from all part lists from the part lists file %s", partListsFile)
 
 	partLists := model.Load(&model.PartLists{}, partListsFile)
 	var collections []*model.Collection

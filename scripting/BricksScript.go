@@ -21,12 +21,11 @@ type BricksScript struct {
 }
 
 func NewBricksScript(credentials *api.Credentials, scriptPath string, verbose bool) *BricksScript {
-	b := &BricksScript{}
-	b.scriptPath = scriptPath
-	b.credentials = credentials
-	b.verbose = verbose
-
-	return b
+	return &BricksScript{
+		scriptPath:  scriptPath,
+		credentials: credentials,
+		verbose:     verbose,
+	}
 }
 
 func (b *BricksScript) Execute() {

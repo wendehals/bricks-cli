@@ -2,6 +2,7 @@ package collection
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/cmd/options"
@@ -24,6 +25,8 @@ var (
 )
 
 func executeMerge(args []string) {
+	log.Print("Merging the parts of the same shape regardless of their color")
+
 	collection := model.Load(&model.Collection{}, args[0])
 
 	merged := collection.MergeByColor()

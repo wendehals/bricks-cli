@@ -46,7 +46,16 @@ func init() {
 }
 
 func executeSort(args []string) {
-	log.Print("Sorting the parts of the given collection")
+	order := "ascending"
+	if descending {
+		order = "descending"
+	}
+	criterion := "color"
+	if sortByQuantity {
+		criterion = "quantity"
+	}
+
+	log.Printf("Sorting the parts of the given collection in %s order by their %s and name.", order, criterion)
 
 	collection := model.Load(&model.Collection{}, args[0])
 

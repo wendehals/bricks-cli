@@ -35,7 +35,7 @@ func executeImport(args []string) {
 	collection := model.ImportCSVCollection(args[0])
 	addColorNames(collection)
 	addShapeNames(collection)
-	deducePartURL(collection)
+	deducePartURLs(collection)
 
 	model.Save(collection, outputFile)
 }
@@ -62,7 +62,7 @@ func addShapeNames(collection *model.Collection) {
 	}
 }
 
-func deducePartURL(collection *model.Collection) {
+func deducePartURLs(collection *model.Collection) {
 	for i := range collection.Parts {
 		url := fmt.Sprintf("https://rebrickable.com/parts/%s", collection.Parts[i].Shape.Number)
 		collection.Parts[i].Shape.URL = url

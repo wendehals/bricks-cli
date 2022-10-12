@@ -2,7 +2,6 @@ package api
 
 import (
 	"fmt"
-	"log"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -197,8 +196,6 @@ func executePartListParts() {
 }
 
 func executePartListsParts() {
-	log.Printf("Retrieving all parts within part lists of user '%s'", credentials.UserName)
-
 	partListsParts := api.RetrievePartListParts(createUsersAPI(), partListsFile, includeNonBuildable)
 
 	if mergeParts {
@@ -209,8 +206,6 @@ func executePartListsParts() {
 }
 
 func executeLostParts() {
-	log.Printf("Retrieving lost parts of user '%s'", credentials.UserName)
-
 	lostParts := createUsersAPI().GetLostParts()
 
 	if outputFile == "" {

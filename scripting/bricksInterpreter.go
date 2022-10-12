@@ -23,13 +23,12 @@ type bricksInterpreter struct {
 }
 
 func newBricksInterpreter(usersAPI *api.UsersAPI, bricksAPI *api.BricksAPI) *bricksInterpreter {
-	b := &bricksInterpreter{}
-	b.usersAPI = usersAPI
-	b.bricksAPI = bricksAPI
-	b.heap = make(map[string]*model.Collection)
-	b.stack = *newStack()
-
-	return b
+	return &bricksInterpreter{
+		usersAPI:  usersAPI,
+		bricksAPI: bricksAPI,
+		heap:      make(map[string]*model.Collection),
+		stack:     *newStack(),
+	}
 }
 
 func (b *bricksInterpreter) ExitAssignment(ctx *parser.AssignmentContext) {

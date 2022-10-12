@@ -56,6 +56,7 @@ func Save(v any, fileName string) {
 		log.Fatalf("serializing to JSON failed: %s", err.Error())
 	}
 
+	fileName = filepath.FromSlash(fileName)
 	os.WriteFile(fileName, data, os.ModePerm)
 	if err != nil {
 		log.Fatalf("exporting collection to JSON file '%s' failed: %s", fileName, err.Error())

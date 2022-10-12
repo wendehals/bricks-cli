@@ -29,9 +29,7 @@ const (
 	SET_NUM_USAGE = "the set number"
 )
 
-var (
-	Verbose bool
-)
+var Verbose bool
 
 func FileNameFromArgs(args []string, suffix string) string {
 	var builder strings.Builder

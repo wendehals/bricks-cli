@@ -1,6 +1,7 @@
 package scripting
 
 import (
+	"fmt"
 	"log"
 	"strconv"
 	"strings"
@@ -56,7 +57,12 @@ func (b *bricksInterpreter) ExitBuild(ctx *parser.BuildContext) {
 	mode = mode & services.MODE_MOLDS
 	mode = mode & services.MODE_PRINTS
 
-	services.Build(neededCollection, providedCollection, mode, exportDir, false)
+	buildCollection := services.Build(neededCollection, providedCollection, mode)
+	model.Save(buildCollection, fmt.Sprintf("%s/result.build", exportDir))
+	services.ExportBuildCollectionToHTML(buildCollection, exportDir, "build")
+
+	model.Save(providedCollection, fmt.Sprintf("%s/remaining.parts", exportDir))
+	services.ExportCollectionToHTML(providedCollection, exportDir, "remaining")
 }
 
 func (b *bricksInterpreter) ExitIdentifier(ctx *parser.IdentifierContext) {

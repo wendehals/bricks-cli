@@ -25,7 +25,7 @@ func Test_ExportCollectionToHTML(t *testing.T) {
 	content, err := os.ReadFile(htmlPath)
 	html := string(content)
 
-	test.AssertTrue(t, err == nil)
+	test.AssertNoError(t, err)
 	test.AssertTrue(t, matches(html, "<title>Parts Collection</title>"))
 	test.AssertTrue(t, matches(html, "<a href=\"https://rebrickable.com/sets/886-1/space-buggy/\">886-1 Space Buggy</a>"))
 	test.AssertTrue(t, matches(html, "<p>Total number of parts: 15"))
@@ -47,7 +47,7 @@ func Test_ExportBuildCollectionToHTML(t *testing.T) {
 	content, err := os.ReadFile(htmlPath)
 	html := string(content)
 
-	test.AssertTrue(t, err == nil)
+	test.AssertNoError(t, err)
 	test.AssertTrue(t, matches(html, "<title>Building 886-1 Space Buggy</title>"))
 	test.AssertTrue(t, matches(html, "<h1>Building <a href=\"https://rebrickable.com/sets/886-1/space-buggy/\">886-1 Space Buggy</a></h1>"))
 	test.AssertTrue(t, matches(html, "<p>Total number of parts: 20"))

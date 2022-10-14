@@ -1,8 +1,6 @@
 package services
 
 import (
-	"fmt"
-
 	"github.com/wendehals/bricks/model"
 	"github.com/wendehals/bricks/utils"
 )
@@ -14,7 +12,7 @@ const (
 	MODE_PRINTS     uint8 = 8
 )
 
-func Build(neededCollection *model.Collection, providedCollection *model.Collection, mode uint8, outputDir string, verbose bool) {
+func Build(neededCollection *model.Collection, providedCollection *model.Collection, mode uint8) *model.BuildCollection {
 	buildCollection := model.NewBuildCollection()
 	if len(neededCollection.Sets) > 0 {
 		buildCollection.Set = neededCollection.Sets[0]
@@ -30,13 +28,9 @@ func Build(neededCollection *model.Collection, providedCollection *model.Collect
 	mapEquivalentShapeDifferentColor(providedCollection, buildCollection, mode)
 
 	buildCollection.Sort()
-
-	model.Save(buildCollection, fmt.Sprintf("%s/result.build", outputDir))
-	ExportBuildCollectionToHTML(buildCollection, outputDir, "build")
-
 	providedCollection.RemoveQuantityZero()
-	model.Save(providedCollection, fmt.Sprintf("%s/remaining.parts", outputDir))
-	ExportCollectionToHTML(providedCollection, outputDir, "remaining")
+
+	return buildCollection
 }
 
 func mapSameShapeSameColor(neededCollection *model.Collection, providedCollection *model.Collection, buildCollection *model.BuildCollection) {

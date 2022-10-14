@@ -117,5 +117,10 @@ func executeBuild(args []string) {
 		mode = mode ^ services.MODE_PRINTS
 	}
 
-	services.Build(neededCollection, providedCollection, mode, outputDir, options.Verbose)
+	buildCollection := services.Build(neededCollection, providedCollection, mode)
+	model.Save(buildCollection, fmt.Sprintf("%s/result.build", outputDir))
+	services.ExportBuildCollectionToHTML(buildCollection, outputDir, "build")
+
+	model.Save(providedCollection, fmt.Sprintf("%s/remaining.parts", outputDir))
+	services.ExportCollectionToHTML(providedCollection, outputDir, "remaining")
 }

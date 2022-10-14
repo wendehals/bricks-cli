@@ -41,8 +41,8 @@ func ExportCollectionToHTML(collection *model.Collection, folderName string, fil
 	log.Printf("Exported result to '%s'", exportFilePath)
 }
 
-// ExportToHTML writes an HTML file with the build collection into the given export directory.
-func ExportBuildToHTML(buildCollection *model.BuildCollection, folderName string, fileName string) {
+// ExportBuildCollectionToHTML writes an HTML file with the build collection into the given export directory.
+func ExportBuildCollectionToHTML(buildCollection *model.BuildCollection, folderName string, fileName string) {
 	utils.CreateFolder(folderName)
 
 	for i := range buildCollection.Mapping {

@@ -1,0 +1,381 @@
+{
+ "Set": {
+  "set_num": "886-1",
+  "name": "Space Buggy",
+  "year": 1979,
+  "num_parts": 20,
+  "set_url": "https://rebrickable.com/sets/886-1/space-buggy/",
+  "set_img_url": "https://cdn.rebrickable.com/media/sets/886-1/9466.jpg"
+ },
+ "mapping": [
+  {
+   "quantity": 2,
+   "original": {
+    "quantity": 4,
+    "part": {
+     "part_num": "3641",
+     "name": "Tyre 15 x 6 Offset Tread Small",
+     "part_url": "https://rebrickable.com/parts/3641/tyre-15-x-6-offset-tread-small/",
+     "part_img_url": "https://cdn.rebrickable.com/media/parts/elements/364126.jpg"
+    },
+    "color": {
+     "id": 0,
+     "name": "Black"
+    },
+    "is_spare": false,
+    "set_num": "886-1"
+   },
+   "substitutes": [
+    {
+     "quantity": 2,
+     "part": {
+      "part_num": "3641",
+      "name": "Tyre 15 x 6 Offset Tread Small",
+      "part_url": "https://rebrickable.com/parts/3641/tyre-15-x-6-offset-tread-small/",
+      "part_img_url": "https://cdn.rebrickable.com/media/parts/elements/364126.jpg"
+     },
+     "color": {
+      "id": 0,
+      "name": "Black"
+     },
+     "is_spare": false,
+     "set_num": "886-1"
+    }
+   ]
+  },
+  {
+   "quantity": 0,
+   "original": {
+    "quantity": 1,
+    "part": {
+     "part_num": "3957a",
+     "name": "Antenna 1 x 4 with Rounded Top",
+     "part_url": "https://rebrickable.com/parts/3957a/antenna-1-x-4-with-rounded-top/",
+     "part_img_url": "https://cdn.rebrickable.com/media/parts/elements/395702.jpg"
+    },
+    "color": {
+     "id": 7,
+     "name": "Light Gray"
+    },
+    "is_spare": false,
+    "set_num": "886-1"
+   },
+   "substitutes": [
+    {
+     "quantity": 1,
+     "part": {
+      "part_num": "3957a",
+      "name": "Antenna 1 x 4 with Rounded Top",
+      "part_url": "https://rebrickable.com/parts/3957a/antenna-1-x-4-with-rounded-top/",
+      "part_img_url": "https://cdn.rebrickable.com/media/parts/elements/395702.jpg"
+     },
+     "color": {
+      "id": 0,
+      "name": "Black"
+     },
+     "is_spare": false,
+     "set_num": "886-1"
+    }
+   ]
+  },
+  {
+   "quantity": 0,
+   "original": {
+    "quantity": 1,
+    "part": {
+     "part_num": "3838",
+     "name": "Minifig Neckwear Airtanks",
+     "part_url": "https://rebrickable.com/parts/3838/minifig-neckwear-airtanks/",
+     "part_img_url": "https://cdn.rebrickable.com/media/parts/ldraw/7/3838.png"
+    },
+    "color": {
+     "id": 7,
+     "name": "Light Gray"
+    },
+    "is_spare": false,
+    "set_num": "886-1"
+   },
+   "substitutes": [
+    {
+     "quantity": 1,
+     "part": {
+      "part_num": "3838",
+      "name": "Minifig Neckwear Airtanks",
+      "part_url": "https://rebrickable.com/parts/3838/minifig-neckwear-airtanks/",
+      "part_img_url": "https://cdn.rebrickable.com/media/parts/ldraw/7/3838.png"
+     },
+     "color": {
+      "id": 7,
+      "name": "Light Gray"
+     },
+     "is_spare": false,
+     "set_num": "886-1"
+    }
+   ]
+  },
+  {
+   "quantity": 0,
+   "original": {
+    "quantity": 1,
+    "part": {
+     "part_num": "3020",
+     "name": "Plate 2 x 4",
+     "part_url": "https://rebrickable.com/parts/3020/plate-2-x-4/",
+     "part_img_url": "https://cdn.rebrickable.com/media/parts/elements/302002.jpg"
+    },
+    "color": {
+     "id": 7,
+     "name": "Light Gray"
+    },
+    "is_spare": false,
+    "set_num": "886-1"
+   },
+   "substitutes": [
+    {
+     "quantity": 1,
+     "part": {
+      "part_num": "3709",
+      "name": "Technic Plate 2 x 4 [3 Holes]",
+      "part_url": "https://rebrickable.com/parts/3709/technic-plate-2-x-4-3-holes/",
+      "part_img_url": "https://cdn.rebrickable.com/media/parts/elements/370902.jpg"
+     },
+     "color": {
+      "id": 0,
+      "name": "Black"
+     },
+     "is_spare": false,
+     "set_num": "886-1"
+    }
+   ]
+  },
+  {
+   "quantity": 0,
+   "original": {
+    "quantity": 1,
+    "part": {
+     "part_num": "3795",
+     "name": "Plate 2 x 6",
+     "part_url": "https://rebrickable.com/parts/3795/plate-2-x-6/",
+     "part_img_url": "https://cdn.rebrickable.com/media/parts/elements/379502.jpg"
+    },
+    "color": {
+     "id": 7,
+     "name": "Light Gray"
+    },
+    "is_spare": false,
+    "set_num": "886-1"
+   },
+   "substitutes": [
+    {
+     "quantity": 1,
+     "part": {
+      "part_num": "3795",
+      "name": "Plate 2 x 6",
+      "part_url": "https://rebrickable.com/parts/3795/plate-2-x-6/",
+      "part_img_url": "https://cdn.rebrickable.com/media/parts/elements/379502.jpg"
+     },
+     "color": {
+      "id": 7,
+      "name": "Light Gray"
+     },
+     "is_spare": false,
+     "set_num": "886-1"
+    }
+   ]
+  },
+  {
+   "quantity": 0,
+   "original": {
+    "quantity": 1,
+    "part": {
+     "part_num": "3794a",
+     "name": "Plate Special 1 x 2 with 1 Stud without Groove (Jumper)",
+     "part_url": "https://rebrickable.com/parts/3794a/plate-special-1-x-2-with-1-stud-without-groove-jumper/",
+     "part_img_url": "https://cdn.rebrickable.com/media/parts/elements/379402.jpg"
+    },
+    "color": {
+     "id": 7,
+     "name": "Light Gray"
+    },
+    "is_spare": false,
+    "set_num": "886-1"
+   },
+   "substitutes": [
+    {
+     "quantity": 1,
+     "part": {
+      "part_num": "3794a",
+      "name": "Plate Special 1 x 2 with 1 Stud without Groove (Jumper)",
+      "part_url": "https://rebrickable.com/parts/3794a/plate-special-1-x-2-with-1-stud-without-groove-jumper/",
+      "part_img_url": "https://cdn.rebrickable.com/media/parts/elements/379402.jpg"
+     },
+     "color": {
+      "id": 7,
+      "name": "Light Gray"
+     },
+     "is_spare": false,
+     "set_num": "886-1"
+    }
+   ]
+  },
+  {
+   "quantity": 0,
+   "original": {
+    "quantity": 2,
+    "part": {
+     "part_num": "122c01",
+     "name": "Plate Special 2 x 2 with Wheels Red",
+     "part_url": "https://rebrickable.com/parts/122c01/plate-special-2-x-2-with-wheels-red/",
+     "part_img_url": "https://cdn.rebrickable.com/media/parts/ldraw/7/122c01.png"
+    },
+    "color": {
+     "id": 7,
+     "name": "Light Gray"
+    },
+    "is_spare": false,
+    "set_num": "886-1"
+   },
+   "substitutes": [
+    {
+     "quantity": 2,
+     "part": {
+      "part_num": "122c01",
+      "name": "Plate Special 2 x 2 with Wheels Red",
+      "part_url": "https://rebrickable.com/parts/122c01/plate-special-2-x-2-with-wheels-red/",
+      "part_img_url": "https://cdn.rebrickable.com/media/parts/ldraw/7/122c01.png"
+     },
+     "color": {
+      "id": 7,
+      "name": "Light Gray"
+     },
+     "is_spare": false,
+     "set_num": "886-1"
+    }
+   ]
+  },
+  {
+   "quantity": 0,
+   "original": {
+    "quantity": 1,
+    "part": {
+     "part_num": "3039",
+     "name": "Slope 45° 2 x 2",
+     "part_url": "https://rebrickable.com/parts/3039/slope-45-2-x-2/",
+     "part_img_url": "https://cdn.rebrickable.com/media/parts/elements/303902.jpg"
+    },
+    "color": {
+     "id": 7,
+     "name": "Light Gray"
+    },
+    "is_spare": false,
+    "set_num": "886-1"
+   },
+   "substitutes": [
+    {
+     "quantity": 1,
+     "part": {
+      "part_num": "3039",
+      "name": "Slope 45° 2 x 2",
+      "part_url": "https://rebrickable.com/parts/3039/slope-45-2-x-2/",
+      "part_img_url": "https://cdn.rebrickable.com/media/parts/elements/303902.jpg"
+     },
+     "color": {
+      "id": 7,
+      "name": "Light Gray"
+     },
+     "is_spare": false,
+     "set_num": "886-1"
+    }
+   ]
+  },
+  {
+   "quantity": 0,
+   "original": {
+    "quantity": 1,
+    "part": {
+     "part_num": "3829c01",
+     "name": "Steering Stand 1 x 2 with Black Steering Wheel",
+     "part_url": "https://rebrickable.com/parts/3829c01/steering-stand-1-x-2-with-black-steering-wheel/",
+     "part_img_url": "https://cdn.rebrickable.com/media/parts/ldraw/7/3829c01.png"
+    },
+    "color": {
+     "id": 7,
+     "name": "Light Gray"
+    },
+    "is_spare": false,
+    "set_num": "886-1"
+   },
+   "substitutes": [
+    {
+     "quantity": 1,
+     "part": {
+      "part_num": "3829c01",
+      "name": "Steering Stand 1 x 2 with Black Steering Wheel",
+      "part_url": "https://rebrickable.com/parts/3829c01/steering-stand-1-x-2-with-black-steering-wheel/",
+      "part_img_url": "https://cdn.rebrickable.com/media/parts/ldraw/7/3829c01.png"
+     },
+     "color": {
+      "id": 7,
+      "name": "Light Gray"
+     },
+     "is_spare": false,
+     "set_num": "886-1"
+    }
+   ]
+  },
+  {
+   "quantity": 0,
+   "original": {
+    "quantity": 1,
+    "part": {
+     "part_num": "3959",
+     "name": "Weapon Gun / Torch (Space) [with Grooves]",
+     "part_url": "https://rebrickable.com/parts/3959/weapon-gun-torch-space-with-grooves/",
+     "part_img_url": "https://cdn.rebrickable.com/media/parts/ldraw/7/3959.png"
+    },
+    "color": {
+     "id": 7,
+     "name": "Light Gray"
+    },
+    "is_spare": false,
+    "set_num": "886-1"
+   },
+   "substitutes": [
+    {
+     "quantity": 1,
+     "part": {
+      "part_num": "3959",
+      "name": "Weapon Gun / Torch (Space) [with Grooves]",
+      "part_url": "https://rebrickable.com/parts/3959/weapon-gun-torch-space-with-grooves/",
+      "part_img_url": "https://cdn.rebrickable.com/media/parts/ldraw/7/3959.png"
+     },
+     "color": {
+      "id": 7,
+      "name": "Light Gray"
+     },
+     "is_spare": false,
+     "set_num": "886-1"
+    }
+   ]
+  },
+  {
+   "quantity": 1,
+   "original": {
+    "quantity": 1,
+    "part": {
+     "part_num": "3062b",
+     "name": "Brick Round 1 x 1 Open Stud",
+     "part_url": "https://rebrickable.com/parts/3062b/brick-round-1-x-1-open-stud/",
+     "part_img_url": "https://cdn.rebrickable.com/media/parts/elements/3006848.jpg"
+    },
+    "color": {
+     "id": 34,
+     "name": "Trans-Green"
+    },
+    "is_spare": false,
+    "set_num": "886-1"
+   },
+   "substitutes": []
+  }
+ ]
+}

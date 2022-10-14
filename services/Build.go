@@ -32,7 +32,7 @@ func Build(neededCollection *model.Collection, providedCollection *model.Collect
 	buildCollection.Sort()
 
 	model.Save(buildCollection, fmt.Sprintf("%s/result.build", outputDir))
-	ExportBuildToHTML(buildCollection, outputDir, "build")
+	ExportBuildCollectionToHTML(buildCollection, outputDir, "build")
 
 	providedCollection.RemoveQuantityZero()
 	model.Save(providedCollection, fmt.Sprintf("%s/remaining.parts", outputDir))

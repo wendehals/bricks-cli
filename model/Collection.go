@@ -21,12 +21,11 @@ type Collection struct {
 }
 
 func NewCollection() *Collection {
-	c := &Collection{}
-	c.Names = []string{}
-	c.Sets = []Set{}
-	c.Parts = []Part{}
-
-	return c
+	return &Collection{
+		Names: []string{},
+		Sets:  []Set{},
+		Parts: []Part{},
+	}
 }
 
 // SortByColorAndName the sets by their number and the parts their color and name.
@@ -37,9 +36,9 @@ func (c *Collection) SortByColorAndName(descending bool) *Collection {
 
 	sort.Slice(c.Parts, func(i, j int) bool {
 		if descending {
-			return c.Parts[i].Compare(&c.Parts[j]) > 0
+			return c.Parts[i].CompareByColorAndName(&c.Parts[j]) > 0
 		}
-		return c.Parts[i].Compare(&c.Parts[j]) < 0
+		return c.Parts[i].CompareByColorAndName(&c.Parts[j]) < 0
 	})
 
 	return c
@@ -53,17 +52,12 @@ func (c *Collection) SortByQuantityAndName(descending bool) *Collection {
 
 	sort.Slice(c.Parts, func(i, j int) bool {
 		if descending {
-			return c.Parts[i].CompareByQuantity(&c.Parts[j]) > 0
+			return c.Parts[i].CompareByQuantityAndName(&c.Parts[j]) > 0
 		}
-		return c.Parts[i].CompareByQuantity(&c.Parts[j]) < 0
+		return c.Parts[i].CompareByQuantityAndName(&c.Parts[j]) < 0
 	})
 
 	return c
-}
-
-// Find returns a PartEntry with the given part number and color id.
-func (c *Collection) Find(partNum string, colorId int) *Part {
-	return c.FindByEquivalence(partNum, colorId, func(s1, s2 string) bool { return s1 == s2 })
 }
 
 // FindByEquivalence returns a PartEntry with a part number that is equivalent to the given part number.
@@ -263,12 +257,12 @@ func (c *Collection) recalculateQuantity(other *Collection, recalc func(int, int
 }
 
 // MergeAllCollections merges all given collections to a new single collection.
-func MergeAllCollections(collections []*Collection) *Collection {
+func MergeAllCollections(collections []Collection) *Collection {
 	log.Println("Merging parts of collections")
 
 	mergedCollection := NewCollection()
 	for _, collection := range collections {
-		mergedCollection.Add(collection)
+		mergedCollection.Add(&collection)
 	}
 
 	return mergedCollection

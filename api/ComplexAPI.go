@@ -34,32 +34,32 @@ func RetrieveSetPartsWithoutLost(bricksAPI *BricksAPI, usersAPI *UsersAPI, setNu
 	return setParts
 }
 
-func RetrieveSetListParts(bricksAPI *BricksAPI, usersAPI *UsersAPI, setListId uint, includeMiniFigs bool) []*model.Collection {
+func RetrieveSetListParts(bricksAPI *BricksAPI, usersAPI *UsersAPI, setListId uint, includeMiniFigs bool) []model.Collection {
 	log.Printf("Retrieving parts of all sets from the set list %d", setListId)
 
 	userSets := usersAPI.GetSetListSets(setListId)
-	collections := []*model.Collection{}
+	collections := []model.Collection{}
 	for _, userSet := range userSets.Sets {
 		collection := RetrieveSetParts(bricksAPI, userSet.Set.Number, includeMiniFigs)
 		for i := 0; i < int(userSet.Quantity); i++ {
-			collections = append(collections, collection)
+			collections = append(collections, *collection)
 		}
 	}
 
 	return collections
 }
 
-func RetrievePartListParts(usersAPI *UsersAPI, partListsFile string, includeNonBuildable bool) []*model.Collection {
+func RetrievePartListParts(usersAPI *UsersAPI, partListsFile string, includeNonBuildable bool) []model.Collection {
 	log.Printf("Retrieving parts from all part lists from the part lists file %s", partListsFile)
 
 	partLists := model.Load(&model.PartLists{}, partListsFile)
-	var collections []*model.Collection
+	var collections []model.Collection
 	for _, partList := range partLists.PartLists {
 		if partList.IsBuildable || (includeNonBuildable && !partList.IsBuildable) {
 			partListParts := usersAPI.GetPartListParts(partList.ID)
 			partList := usersAPI.GetPartList(partList.ID)
 			partListParts.Names = append(partListParts.Names, partList.Name)
-			collections = append(collections, partListParts)
+			collections = append(collections, *partListParts)
 		}
 	}
 

@@ -20,21 +20,15 @@ func (s *Shape) Compare(other *Shape) int {
 
 func (s *Shape) Dimensions() string {
 	if found, result := s.match(`^(?:Technic )?Brick (\d+) x (\d+)`); found {
-		if i, err := strconv.Atoi(result[1]); err == nil && i > 4 {
-			return result[0] + " x " + result[1]
-		}
+		return twoDimensions(result)
 	}
 
 	if found, result := s.match(`^(?:Technic )?Plate (\d+) x (\d+)`); found {
-		if i, err := strconv.Atoi(result[1]); err == nil && i > 4 {
-			return result[0] + " x " + result[1]
-		}
+		return twoDimensions(result)
 	}
 
 	if found, result := s.match(`^Tile (\d+) x (\d+)`); found {
-		if i, err := strconv.Atoi(result[1]); err == nil && i > 4 {
-			return result[0] + " x " + result[1]
-		}
+		return result[0] + " x " + result[1]
 	}
 
 	if found, result := s.match(`Technic Axle (\d+(?:\.\d)?)`); found {
@@ -57,6 +51,7 @@ func (s *Shape) Dimensions() string {
 				return result[0]
 			}
 		}
+		return ""
 	}
 
 	if found, result := s.match(`Hose.* (\d+(?:\.\d)?(?:cm|mm))`); found {
@@ -86,4 +81,14 @@ func (s *Shape) match(regex string) (bool, []string) {
 	}
 
 	return false, []string{}
+}
+
+func twoDimensions(result []string) string {
+	if y, err := strconv.Atoi(result[1]); err == nil && y > 4 {
+		if x, err := strconv.Atoi(result[0]); err == nil && x > 1 {
+			return result[0] + " x " + result[1]
+		}
+		return result[1]
+	}
+	return ""
 }

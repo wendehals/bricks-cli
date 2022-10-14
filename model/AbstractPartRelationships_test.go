@@ -6,7 +6,7 @@ import (
 	"github.com/wendehals/bricks/test"
 )
 
-func TestTransitiveClosure(t *testing.T) {
+func Test_AbstractPartRelationships_TransitiveClosure(t *testing.T) {
 	alternates := NewAlternates()
 
 	alternates.Add("3709", "3020")

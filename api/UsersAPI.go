@@ -80,9 +80,8 @@ func (u *UsersAPI) GetAllParts() *model.Collection {
 func (u *UsersAPI) GetSets() *model.UserSets {
 	log.Printf("Retrieving all sets owned by user %s", u.userName)
 
-	usersSets := model.UserSets{}
+	usersSets := model.NewUserSets()
 	usersSets.User = u.userName
-	usersSets.ID = 0
 	usersSets.Name = "All sets"
 
 	var setsPage *setsPageResult
@@ -103,7 +102,7 @@ func (u *UsersAPI) GetSets() *model.UserSets {
 		usersSets.Sets = append(usersSets.Sets, setsPage.Results...)
 	}
 
-	return &usersSets
+	return usersSets
 }
 
 // GetSetList returns details about a certain set list of the user provided by
@@ -126,7 +125,7 @@ func (u *UsersAPI) GetSetList(listId uint) *model.SetList {
 func (u *UsersAPI) GetSetLists() *model.SetLists {
 	log.Printf("Retrieving set lists of user %s", u.userName)
 
-	setLists := model.SetLists{}
+	setLists := model.NewSetLists()
 	setLists.User = u.userName
 
 	var setListsPage *setListsPageResult
@@ -147,7 +146,7 @@ func (u *UsersAPI) GetSetLists() *model.SetLists {
 		setLists.SetLists = append(setLists.SetLists, setListsPage.Results...)
 	}
 
-	return &setLists
+	return setLists
 }
 
 // GetSetListSets returns all sets of the user's set list provided by
@@ -155,7 +154,7 @@ func (u *UsersAPI) GetSetLists() *model.SetLists {
 func (u *UsersAPI) GetSetListSets(listId uint) *model.UserSets {
 	log.Printf("Retrieving all sets of set list %d", listId)
 
-	usersSets := model.UserSets{}
+	usersSets := model.NewUserSets()
 	usersSets.User = u.userName
 	usersSets.ID = listId
 
@@ -178,7 +177,7 @@ func (u *UsersAPI) GetSetListSets(listId uint) *model.UserSets {
 		usersSets.Sets = append(usersSets.Sets, setsPage.Results...)
 	}
 
-	return &usersSets
+	return usersSets
 }
 
 // GetPartList returns details about a certain set list of the user provided by
@@ -201,7 +200,7 @@ func (u *UsersAPI) GetPartList(listId uint) *model.PartList {
 func (u *UsersAPI) GetPartLists() *model.PartLists {
 	log.Printf("Retrieving part lists of user %s", u.userName)
 
-	partLists := model.PartLists{}
+	partLists := model.NewPartLists()
 	partLists.User = u.userName
 
 	var partListsPage *partListsPageResult
@@ -222,7 +221,7 @@ func (u *UsersAPI) GetPartLists() *model.PartLists {
 		partLists.PartLists = append(partLists.PartLists, partListsPage.Results...)
 	}
 
-	return &partLists
+	return partLists
 }
 
 // GetPartListParts returns all parts of the user defined part list provided by

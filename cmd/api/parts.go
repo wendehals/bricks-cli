@@ -215,7 +215,7 @@ func executeLostParts() {
 	model.Save(lostParts, outputFile)
 }
 
-func mergeAndSave(collections []*model.Collection) {
+func mergeAndSave(collections []model.Collection) {
 	collection := model.MergeAllCollections(collections)
 	collection.SortByColorAndName(false)
 
@@ -234,7 +234,7 @@ func mergeAndSave(collections []*model.Collection) {
 	model.Save(collection, outputFile)
 }
 
-func saveAll(collections []*model.Collection) {
+func saveAll(collections []model.Collection) {
 	for i, collection := range collections {
 		var fileName string
 		if outputFile == "" {

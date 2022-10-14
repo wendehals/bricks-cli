@@ -1,0 +1,147 @@
+{
+	"Set": {
+		"set_num": "",
+		"name": "",
+		"year": 0,
+		"num_parts": 0,
+		"set_url": "",
+		"set_img_url": ""
+	},
+	"mapping": [
+		{
+			"quantity": 0,
+			"original": {
+				"quantity": 3,
+				"part": {
+					"part_num": "3001",
+					"name": "Brick 2 x 4",
+					"part_url": "https://rebrickable.com/parts/3001/brick-2-x-4/",
+					"part_img_url": ""
+				},
+				"color": {
+					"id": 0,
+					"name": "Black"
+				},
+				"is_spare": false,
+				"set_num": ""
+			},
+			"substitutes": [
+				{
+					"quantity": 1,
+					"part": {
+						"part_num": "3001",
+						"name": "Brick 2 x 4",
+						"part_url": "https://rebrickable.com/parts/3001/brick-2-x-4/",
+						"part_img_url": ""
+					},
+					"color": {
+						"id": 0,
+						"name": "Black"
+					},
+					"is_spare": false,
+					"set_num": ""
+				},
+				{
+					"quantity": 1,
+					"part": {
+						"part_num": "3001",
+						"name": "Brick 2 x 4",
+						"part_url": "https://rebrickable.com/parts/3001/brick-2-x-4/",
+						"part_img_url": ""
+					},
+					"color": {
+						"id": 4,
+						"name": "Red"
+					},
+					"is_spare": false,
+					"set_num": ""
+				},
+				{
+					"quantity": 1,
+					"part": {
+						"part_num": "3001pr0007",
+						"name": "Brick 2 x 4 with White Diagonal Stripes Print on Both Sides",
+						"part_url": "https://rebrickable.com/parts/3001pr0007/brick-2-x-4-with-white-diagonal-stripes-print-on-both-sides/",
+						"part_img_url": ""
+					},
+					"color": {
+						"id": 4,
+						"name": "Red"
+					},
+					"is_spare": false,
+					"set_num": ""
+				}
+			]
+		},
+		{
+			"quantity": 7,
+			"original": {
+				"quantity": 10,
+				"part": {
+					"part_num": "3005",
+					"name": "Brick 1 x 1",
+					"part_url": "https://rebrickable.com/parts/3005",
+					"part_img_url": ""
+				},
+				"color": {
+					"id": 0,
+					"name": "Black"
+				},
+				"is_spare": false,
+				"set_num": ""
+			},
+			"substitutes": [
+				{
+					"quantity": 3,
+					"part": {
+						"part_num": "3005",
+						"name": "Brick 1 x 1",
+						"part_url": "https://rebrickable.com/parts/3005/",
+						"part_img_url": ""
+					},
+					"color": {
+						"id": 0,
+						"name": "Black"
+					},
+					"is_spare": false,
+					"set_num": ""
+				}
+			]
+		},
+		{
+			"quantity": 2,
+			"original": {
+				"quantity": 4,
+				"part": {
+					"part_num": "3003",
+					"name": "Brick 2 x 2",
+					"part_url": "https://rebrickable.com/parts/3003",
+					"part_img_url": ""
+				},
+				"color": {
+					"id": 0,
+					"name": "Black"
+				},
+				"is_spare": false,
+				"set_num": ""
+			},
+			"substitutes": [
+				{
+					"quantity": 2,
+					"part": {
+						"part_num": "3003",
+						"name": "Brick 2 x 2",
+						"part_url": "https://rebrickable.com/parts/3003/",
+						"part_img_url": ""
+					},
+					"color": {
+						"id": 0,
+						"name": "Black"
+					},
+					"is_spare": false,
+					"set_num": ""
+				}
+			]
+		}
+	]
+}

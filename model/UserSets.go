@@ -7,3 +7,9 @@ type UserSets struct {
 	Name string    `json:"set_list_name"`
 	Sets []UserSet `json:"sets"`
 }
+
+func NewUserSets() *UserSets {
+	return &UserSets{
+		Sets: []UserSet{},
+	}
+}

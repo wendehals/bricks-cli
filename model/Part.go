@@ -16,24 +16,24 @@ func NewPart() *Part {
 	}
 }
 
-func (p *Part) Compare(other *Part) int {
-	resultColor := p.Color.Compare(&other.Color)
-	if resultColor == 0 {
+func (p *Part) CompareByColorAndName(other *Part) int {
+	result := p.Color.Compare(&other.Color)
+	if result == 0 {
 		return p.Shape.Compare(&other.Shape)
 	}
-	return resultColor
+	return result
 }
 
-func (p *Part) CompareByQuantity(other *Part) int {
-	resultColor := 0
+func (p *Part) CompareByQuantityAndName(other *Part) int {
+	result := 0
 	if p.Quantity > other.Quantity {
-		resultColor = 1
+		result = 1
 	} else if p.Quantity < other.Quantity {
-		resultColor = -1
+		result = -1
 	}
 
-	if resultColor == 0 {
+	if result == 0 {
 		return p.Shape.Compare(&other.Shape)
 	}
-	return resultColor
+	return result
 }

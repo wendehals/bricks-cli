@@ -68,7 +68,7 @@
                 "id": 5,
                 "name": "blue"
             },
-            "is_spare": true
+            "is_spare": false
         }
     ]
 }

@@ -41,14 +41,13 @@ func Build(neededCollection *model.Collection, providedCollection *model.Collect
 
 func mapSameShapeSameColor(neededCollection *model.Collection, providedCollection *model.Collection, buildCollection *model.BuildCollection) {
 	for _, neededPart := range neededCollection.Parts {
-		mapping := model.PartMapping{}
+		mapping := model.NewPartMapping()
 		mapping.Quantity = neededPart.Quantity
 		mapping.Original = *model.DeepClone(&neededPart, &model.Part{})
-		mapping.Substitutes = []model.Part{}
 
-		mapPart(providedCollection, &mapping, neededPart.Color.ID, utils.Equals)
+		mapPart(providedCollection, mapping, neededPart.Color.ID, utils.Equals)
 
-		buildCollection.Mapping = append(buildCollection.Mapping, mapping)
+		buildCollection.Mapping = append(buildCollection.Mapping, *mapping)
 	}
 }
 

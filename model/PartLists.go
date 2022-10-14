@@ -5,3 +5,9 @@ type PartLists struct {
 	User      string     `json:"user"`
 	PartLists []PartList `json:"part_lists"`
 }
+
+func NewPartLists() *PartLists {
+	return &PartLists{
+		PartLists: []PartList{},
+	}
+}

@@ -31,8 +31,8 @@ the list of missing parts.`,
 func executeSubtract(args []string) {
 	log.Printf("Subtracting the parts of '%s' from the parts of '%s'", args[1], args[0])
 
-	minuend := model.Load(&model.Collection{}, args[0])
-	subtrahend := model.Load(&model.Collection{}, args[1])
+	minuend := model.Load(model.NewCollection(), args[0])
+	subtrahend := model.Load(model.NewCollection(), args[1])
 	result := minuend.Subtract(subtrahend)
 
 	if outputFile == "" {

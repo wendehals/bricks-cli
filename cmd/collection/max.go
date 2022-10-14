@@ -27,7 +27,7 @@ func executeMax(args []string) {
 
 	var collections []model.Collection
 	for _, filename := range args {
-		collections = append(collections, *model.Load(&model.Collection{}, filename))
+		collections = append(collections, *model.Load(model.NewCollection(), filename))
 	}
 
 	max := model.NewCollection()

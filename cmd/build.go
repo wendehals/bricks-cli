@@ -93,7 +93,7 @@ func executeBuild(args []string) {
 		}
 	} else {
 		log.Printf("Building '%s' from provided parts '%s'", neededPartsFile, args[0])
-		neededCollection = model.Load(&model.Collection{}, neededPartsFile)
+		neededCollection = model.Load(model.NewCollection(), neededPartsFile)
 		if outputDir == "" {
 			arg := []string{}
 			arg = append(arg, neededPartsFile)
@@ -101,7 +101,7 @@ func executeBuild(args []string) {
 		}
 	}
 
-	providedCollection := model.Load(&model.Collection{}, args[0])
+	providedCollection := model.Load(model.NewCollection(), args[0])
 
 	var mode uint8 = 0
 	if strings.Contains(buildMode, "c") {

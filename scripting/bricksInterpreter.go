@@ -70,14 +70,14 @@ func (b *bricksInterpreter) ExitIdentifier(ctx *parser.IdentifierContext) {
 	if !ok {
 		log.Fatalf("The variable '%s' is not defined", ctx.ID().GetText())
 	}
-	b.stack.push(model.DeepClone(value, &model.Collection{}))
+	b.stack.push(model.DeepClone(value, model.NewCollection()))
 }
 
 func (b *bricksInterpreter) ExitLoad(ctx *parser.LoadContext) {
 	filePath := strings.Trim(ctx.STRING().GetText(), "\"")
 
 	log.Printf("Loading collection from '%s'", filePath)
-	b.stack.push(model.Load(&model.Collection{}, filePath))
+	b.stack.push(model.Load(model.NewCollection(), filePath))
 }
 
 func (b *bricksInterpreter) ExitAllParts(ctx *parser.AllPartsContext) {

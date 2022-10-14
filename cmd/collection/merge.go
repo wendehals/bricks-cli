@@ -27,7 +27,7 @@ var (
 func executeMerge(args []string) {
 	log.Print("Merging the parts of the same shape regardless of their color")
 
-	collection := model.Load(&model.Collection{}, args[0])
+	collection := model.Load(model.NewCollection(), args[0])
 
 	merged := collection.MergeByColor()
 

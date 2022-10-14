@@ -57,7 +57,7 @@ func executeSort(args []string) {
 
 	log.Printf("Sorting the parts of the given collection in %s order by their %s and name.", order, criterion)
 
-	collection := model.Load(&model.Collection{}, args[0])
+	collection := model.Load(model.NewCollection(), args[0])
 
 	if outputFile == "" {
 		outputFile = options.FileNameFromArgs(args, "_sorted.parts")

@@ -10,7 +10,7 @@ import (
 	"github.com/wendehals/bricks/utils"
 )
 
-func ImportCSVCollection(csvFile, outputFile string) *model.Collection {
+func ImportCSVCollection(csvFile string) *model.Collection {
 	log.Printf("Importing parts from '%s'", csvFile)
 
 	collection := model.NewCollection()
@@ -36,8 +36,6 @@ func ImportCSVCollection(csvFile, outputFile string) *model.Collection {
 	addColorNames(collection)
 	addShapeNames(collection)
 	deducePartURLs(collection)
-
-	model.Save(collection, outputFile)
 
 	return collection
 }

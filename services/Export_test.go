@@ -2,7 +2,6 @@ package services
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -23,7 +22,7 @@ func Test_ExportCollectionToHTML(t *testing.T) {
 
 	test.AssertTrue(t, utils.FileExists(htmlPath))
 
-	content, err := ioutil.ReadFile(htmlPath)
+	content, err := os.ReadFile(htmlPath)
 	html := string(content)
 
 	test.AssertTrue(t, err == nil)
@@ -45,7 +44,7 @@ func Test_ExportBuildCollectionToHTML(t *testing.T) {
 
 	test.AssertTrue(t, utils.FileExists(htmlPath))
 
-	content, err := ioutil.ReadFile(htmlPath)
+	content, err := os.ReadFile(htmlPath)
 	html := string(content)
 
 	test.AssertTrue(t, err == nil)

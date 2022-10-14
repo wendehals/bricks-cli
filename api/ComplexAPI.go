@@ -2,6 +2,7 @@ package api
 
 import (
 	"log"
+	"strings"
 
 	"github.com/wendehals/bricks/model"
 )
@@ -58,7 +59,7 @@ func RetrievePartListParts(usersAPI *UsersAPI, partListsFile string, includeNonB
 		if partList.IsBuildable || (includeNonBuildable && !partList.IsBuildable) {
 			partListParts := usersAPI.GetPartListParts(partList.ID)
 			partList := usersAPI.GetPartList(partList.ID)
-			partListParts.Names = append(partListParts.Names, partList.Name)
+			partListParts.Comment = strings.Join([]string{partListParts.Comment, partList.Name}, " ")
 			collections = append(collections, *partListParts)
 		}
 	}

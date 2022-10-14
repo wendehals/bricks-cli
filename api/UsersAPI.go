@@ -52,7 +52,7 @@ func (u *UsersAPI) GetAllParts() *model.Collection {
 
 	collection := model.NewCollection()
 	collection.User = u.userName
-	collection.Names = []string{"All Parts"}
+	collection.Comment = "All Parts"
 
 	allPartsPage := partsPageResult{}
 
@@ -230,7 +230,7 @@ func (u *UsersAPI) GetPartListParts(listId uint) *model.Collection {
 	log.Printf("Retrieving parts of part list %d", listId)
 
 	collection := model.NewCollection()
-	collection.Names = append(collection.Names, fmt.Sprint(listId))
+	collection.Comment = fmt.Sprintf("Part list %d", listId)
 
 	partsPage := partsPageResult{}
 
@@ -261,7 +261,7 @@ func (u *UsersAPI) GetLostParts() *model.Collection {
 
 	lostParts := model.NewCollection()
 	lostParts.User = u.userName
-	lostParts.Names = append(lostParts.Names, "Lost parts")
+	lostParts.Comment = "Lost parts"
 
 	lostPartsPage := lostPartsPageResult{}
 

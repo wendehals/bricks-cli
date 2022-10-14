@@ -14,15 +14,14 @@ const (
 
 // Collection represents any collection of parts (set, parts list, ...)
 type Collection struct {
-	User  string   `json:"user"`
-	Names []string `json:"names"`
-	Sets  []Set    `json:"sets"`
-	Parts []Part   `json:"parts"`
+	User    string `json:"user"`
+	Comment string `json:"comment"`
+	Sets    []Set  `json:"sets"`
+	Parts   []Part `json:"parts"`
 }
 
 func NewCollection() *Collection {
 	return &Collection{
-		Names: []string{},
 		Sets:  []Set{},
 		Parts: []Part{},
 	}
@@ -75,7 +74,7 @@ func (c *Collection) FindByEquivalence(partNum string, colorId int, eqFunc func(
 // Add one collection to another.
 // The isSpare flag of PartEntry will be invalid afterwards and set to false for all parts.
 func (c *Collection) Add(other *Collection) *Collection {
-	c.Names = []string{"Sum"}
+	c.Comment = "Sum"
 	c.Sets = append(c.Sets, other.Sets...)
 
 	return c.recalculateQuantity(other, utils.Add)
@@ -84,7 +83,7 @@ func (c *Collection) Add(other *Collection) *Collection {
 // Subtract one collection from another.
 // The isSpare flag of PartEntry will be invalid afterwards and set to false for all parts.
 func (c *Collection) Subtract(other *Collection) *Collection {
-	c.Names = []string{"Subtraction"}
+	c.Comment = "Subtraction"
 	c.Sets = []Set{}
 
 	return c.recalculateQuantity(other, utils.Subtract)
@@ -93,7 +92,7 @@ func (c *Collection) Subtract(other *Collection) *Collection {
 // Max calculates the max quantity of each part in both collections.
 // The isSpare flag of PartEntry will be invalid afterwards and set to false for all parts.
 func (c *Collection) Max(other *Collection) *Collection {
-	c.Names = []string{"Maximum"}
+	c.Comment = "Maximum"
 	c.Sets = append(c.Sets, other.Sets...)
 
 	return c.recalculateQuantity(other, utils.Max)
@@ -155,7 +154,7 @@ func (c *Collection) Filter(f func(Part) bool) *Collection {
 // The isSpare flag of Part will be invalid afterwards and set to false for all parts.
 func (c *Collection) MergeByColor() *Collection {
 	c.Sets = []Set{}
-	c.Names = []string{}
+	c.Comment = "Merged by color"
 
 	partsMap := c.mapPartsByPartNumber(nil, utils.Identity)
 

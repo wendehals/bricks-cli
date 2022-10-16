@@ -5,13 +5,6 @@ import (
 	"github.com/wendehals/bricks/utils"
 )
 
-const (
-	MODE_COLOR      uint8 = 1
-	MODE_ALTERNATES uint8 = 2
-	MODE_MOLDS      uint8 = 4
-	MODE_PRINTS     uint8 = 8
-)
-
 func Build(neededCollection *model.Collection, providedCollection *model.Collection, mode uint8) *model.BuildCollection {
 	buildCollection := model.NewBuildCollection()
 	if len(neededCollection.Sets) > 0 {
@@ -46,17 +39,17 @@ func mapSameShapeSameColor(neededCollection *model.Collection, providedCollectio
 }
 
 func mapEquivalentShapeSameColor(providedCollection *model.Collection, buildCollection *model.BuildCollection, mode uint8) {
-	if mode&MODE_MOLDS != 0 || mode&MODE_PRINTS != 0 || mode&MODE_ALTERNATES != 0 {
+	if MoldsMode(mode) || PrintsMode(mode) || AlternatesMode(mode) {
 		for i := range buildCollection.Mapping {
 			mapping := &buildCollection.Mapping[i]
 
-			if mode&MODE_MOLDS != 0 {
+			if MoldsMode(mode) {
 				mapPart(providedCollection, mapping, mapping.Original.Color.ID, isMold)
 			}
-			if mode&MODE_PRINTS != 0 {
+			if PrintsMode(mode) {
 				mapPart(providedCollection, mapping, mapping.Original.Color.ID, isPrint)
 			}
-			if mode&MODE_ALTERNATES != 0 {
+			if AlternatesMode(mode) {
 				mapPart(providedCollection, mapping, mapping.Original.Color.ID, isAlternative)
 			}
 		}
@@ -64,7 +57,7 @@ func mapEquivalentShapeSameColor(providedCollection *model.Collection, buildColl
 }
 
 func mapEquivalentShapeDifferentColor(providedCollection *model.Collection, buildCollection *model.BuildCollection, mode uint8) {
-	if mode&MODE_COLOR != 0 {
+	if ColorMode(mode) {
 		colors := GetColors(false)
 
 		for i := range buildCollection.Mapping {
@@ -73,13 +66,13 @@ func mapEquivalentShapeDifferentColor(providedCollection *model.Collection, buil
 				colorId := colors.Colors[j].ID
 				if mapping.Original.Color.ID != colorId {
 					mapPart(providedCollection, mapping, colorId, utils.Equals)
-					if mode&MODE_MOLDS != 0 {
+					if MoldsMode(mode) {
 						mapPart(providedCollection, mapping, colorId, isMold)
 					}
-					if mode&MODE_PRINTS != 0 {
+					if PrintsMode(mode) {
 						mapPart(providedCollection, mapping, colorId, isPrint)
 					}
-					if mode&MODE_ALTERNATES != 0 {
+					if AlternatesMode(mode) {
 						mapPart(providedCollection, mapping, colorId, isAlternative)
 					}
 				}

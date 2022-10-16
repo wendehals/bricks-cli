@@ -19,6 +19,22 @@ func MergeAllCollections(collections []model.Collection) *model.Collection {
 	return mergedCollection
 }
 
+func Merge(collection *model.Collection, mode uint8) {
+	if mode == MODE_COLOR {
+		MergeByColor(collection)
+	} else {
+		if MoldsMode(mode) {
+			MergeByPrint(collection)
+		}
+		if PrintsMode(mode) {
+			MergeByPrint(collection)
+		}
+		if AlternatesMode(mode) {
+			MergeByAlternate(collection)
+		}
+	}
+}
+
 // MergeByColor merges all parts of the same shape ignoring the color.
 // The Color field of Part will be invalid afterwards and set to unknown color.
 // The IsSpare flag of Part will be invalid afterwards and set to false for all parts.

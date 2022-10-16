@@ -27,6 +27,11 @@ const (
 	SET_NUM_SOPT  = "s"
 	SET_NUM_ARG   = "-" + SET_NUM_SOPT + " SET_NUMBER"
 	SET_NUM_USAGE = "the set number"
+
+	MODE_OPT   = "mode"
+	MODE_SOPT  = "m"
+	MODE_ARG   = "-" + MODE_SOPT + " MODES"
+	MODE_USAGE = "a combination of c(olor), a(lternatives), m(olds), and p(rints) for calculating usable parts"
 )
 
 var Verbose bool

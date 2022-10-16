@@ -8,6 +8,7 @@ import (
 	"github.com/wendehals/bricks/api"
 	"github.com/wendehals/bricks/cmd/options"
 	"github.com/wendehals/bricks/model"
+	"github.com/wendehals/bricks/services"
 )
 
 const (
@@ -216,7 +217,7 @@ func executeLostParts() {
 }
 
 func mergeAndSave(collections []model.Collection) {
-	collection := model.MergeAllCollections(collections)
+	collection := services.MergeAllCollections(collections)
 	collection.SortByColorAndName(false)
 
 	if outputFile == "" {

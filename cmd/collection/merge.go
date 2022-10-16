@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/cmd/options"
 	"github.com/wendehals/bricks/model"
+	"github.com/wendehals/bricks/services"
 )
 
 var (
@@ -29,11 +30,11 @@ func executeMerge(args []string) {
 
 	collection := model.Load(model.NewCollection(), args[0])
 
-	merged := collection.MergeByColor()
+	services.MergeByColor(collection)
 
 	if outputFile == "" {
 		outputFile = options.FileNameFromArgs(args, "_merged.parts")
 	}
 
-	model.Save(merged, outputFile)
+	model.Save(collection, outputFile)
 }

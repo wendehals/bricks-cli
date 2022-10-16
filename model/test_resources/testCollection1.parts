@@ -1,8 +1,6 @@
 {
 	"user": "",
-	"names": [
-		"Sum"
-	],
+	"comment": "Sum",
 	"sets": [
 		{
 			"set_num": "42093-1",

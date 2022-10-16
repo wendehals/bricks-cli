@@ -1,7 +1,6 @@
 package model
 
 import (
-	"log"
 	"sort"
 
 	"github.com/google/go-cmp/cmp"
@@ -149,36 +148,8 @@ func (c *Collection) Filter(f func(Part) bool) *Collection {
 	return c
 }
 
-// MergeByColor merges all parts of the same shape ignoring the color.
-// The Color field of Part will be invalid afterwards.
-// The isSpare flag of Part will be invalid afterwards and set to false for all parts.
-func (c *Collection) MergeByColor() *Collection {
-	c.Sets = []Set{}
-	c.Comment = "Merged by color"
-
-	partsMap := c.mapPartsByPartNumber(nil, utils.Identity)
-
-	newParts := []Part{}
-	for _, value := range partsMap {
-		var currentPart = value[0]
-		currentPart.Color = Color{-1, ""}
-
-		for i := 1; i < len(value); i++ {
-			currentPart.Quantity += value[i].Quantity
-		}
-
-		newParts = append(newParts, currentPart)
-	}
-
-	c.Parts = newParts
-
-	return c
-}
-
-func (c *Collection) mapPartsByPartNumber(partsMap map[string][]Part, keyMapping func(string) string) map[string][]Part {
-	if partsMap == nil {
-		partsMap = make(map[string][]Part)
-	}
+func (c *Collection) MapPartsByPartNumber(keyMapping func(string) string) map[string][]Part {
+	partsMap := make(map[string][]Part)
 
 	for _, currentPart := range c.Parts {
 		currentPart.IsSpare = false
@@ -221,7 +192,7 @@ func (c *Collection) setParts(partsMap map[string][]Part) {
 }
 
 func (c *Collection) recalculateQuantity(other *Collection, recalc func(int, int) int) *Collection {
-	partsMap := c.mapPartsByPartNumber(nil, utils.Identity)
+	partsMap := c.MapPartsByPartNumber(utils.Identity)
 
 	for i := range other.Parts {
 		found := false
@@ -253,16 +224,4 @@ func (c *Collection) recalculateQuantity(other *Collection, recalc func(int, int
 	c.setParts(partsMap)
 
 	return c.RemoveQuantityZero()
-}
-
-// MergeAllCollections merges all given collections to a new single collection.
-func MergeAllCollections(collections []Collection) *Collection {
-	log.Println("Merging parts of collections")
-
-	mergedCollection := NewCollection()
-	for _, collection := range collections {
-		mergedCollection.Add(&collection)
-	}
-
-	return mergedCollection
 }

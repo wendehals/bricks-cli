@@ -295,31 +295,6 @@ func Test_Collection_HasMissingParts(t *testing.T) {
 	test.AssertTrue(t, collection.HasMissingParts())
 }
 
-func Test_Collection_MergeByColor(t *testing.T) {
-	collection := Load(&Collection{}, "test_resources/testCollection1.parts").MergeByColor().SortByColorAndName(false)
-
-	assertSize(t, collection, 5)
-
-	test.AssertSameString(t, "25", collection.Parts[2].Shape.Number)
-	test.AssertSameInt(t, 13, collection.Parts[2].Quantity)
-	test.AssertSameInt(t, -1, collection.Parts[2].Color.ID)
-}
-
-func Test_MergeAllCollections(t *testing.T) {
-	collections := []Collection{}
-	collections = append(collections, *Load(&Collection{}, "test_resources/testCollection1.parts"))
-	collections = append(collections, *Load(&Collection{}, "test_resources/testCollection2.parts"))
-
-	collection := MergeAllCollections(collections)
-
-	assertSize(t, collection, 9)
-
-	test.AssertSameString(t, "42093-1", collection.Sets[0].Number)
-	test.AssertSameString(t, "42005-1", collection.Sets[1].Number)
-
-	test.AssertSameInt(t, 148, collection.CountParts())
-}
-
 func assertSize(t *testing.T, collection *Collection, expected int) {
 	if len(collection.Parts) != expected {
 		t.Errorf("Too many/less distinct part types in collection. Expected: %d, actual: %d", expected, len(collection.Parts))

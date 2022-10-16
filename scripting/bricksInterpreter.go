@@ -104,7 +104,7 @@ func (b *bricksInterpreter) ExitSetList(ctx *parser.SetListContext) {
 
 	includeMiniFigs := ctx.BOOL() != nil && ctx.BOOL().GetText() == "true"
 	setListParts := api.RetrieveSetListParts(b.bricksAPI, b.usersAPI, uint(setListId), includeMiniFigs)
-	collection := model.MergeAllCollections(setListParts)
+	collection := services.MergeAllCollections(setListParts)
 	collection.SortByColorAndName(false)
 
 	b.stack.push(collection)
@@ -123,7 +123,7 @@ func (b *bricksInterpreter) ExitPartLists(ctx *parser.PartListsContext) {
 	filePath := strings.Trim(ctx.STRING().GetText(), "\"")
 	includeNonBuildable := ctx.BOOL() != nil && ctx.BOOL().GetText() == "true"
 	collections := api.RetrievePartListParts(b.usersAPI, filePath, includeNonBuildable)
-	collection := model.MergeAllCollections(collections)
+	collection := services.MergeAllCollections(collections)
 	b.stack.push(collection)
 }
 

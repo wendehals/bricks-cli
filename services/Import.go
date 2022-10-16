@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"io"
 	"log"
 	"strconv"
@@ -33,38 +32,23 @@ func ImportCSVCollection(csvFile string) *model.Collection {
 		collection.Parts = append(collection.Parts, *part)
 	}
 
-	addColorNames(collection)
-	addShapeNames(collection)
-	deducePartURLs(collection)
+	addMissingData(collection)
 
 	return collection
 }
 
-func addColorNames(collection *model.Collection) {
-	names := make(map[int]string)
+func addMissingData(collection *model.Collection) {
+	shapes := GetShapes(false)
+	colorNames := make(map[int]string)
+
 	for _, color := range GetColors(false).Colors {
-		names[color.ID] = color.Name
+		colorNames[color.ID] = color.Name
 	}
 
 	for i := range collection.Parts {
-		collection.Parts[i].Color.Name = names[collection.Parts[i].Color.ID]
-	}
-}
-
-func addShapeNames(collection *model.Collection) {
-	names := make(map[string]string)
-	for _, shape := range GetShapes(false).Shapes {
-		names[shape.Number] = shape.Name
-	}
-
-	for i := range collection.Parts {
-		collection.Parts[i].Shape.Name = names[collection.Parts[i].Shape.Number]
-	}
-}
-
-func deducePartURLs(collection *model.Collection) {
-	for i := range collection.Parts {
-		url := fmt.Sprintf("https://rebrickable.com/parts/%s", collection.Parts[i].Shape.Number)
-		collection.Parts[i].Shape.URL = url
+		shape := shapes.Shapes[collection.Parts[i].Shape.Number]
+		collection.Parts[i].Color.Name = colorNames[collection.Parts[i].Color.ID]
+		collection.Parts[i].Shape.Name = shape.Name
+		collection.Parts[i].Shape.URL = shape.URL
 	}
 }

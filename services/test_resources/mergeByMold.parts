@@ -1,0 +1,67 @@
+{
+	"user": "",
+	"comment": "",
+	"sets": [],
+	"parts": [
+		{
+			"quantity": 1,
+			"part": {
+				"part_num": "3709",
+				"name": "Technic Plate 2 x 4 [3 Holes]",
+				"part_url": "https://rebrickable.com/parts/3709/technic-plate-2-x-4-3-holes/",
+				"part_img_url": "https://cdn.rebrickable.com/media/parts/elements/370902.jpg"
+			},
+			"color": {
+				"id": 0,
+				"name": "Black"
+			},
+			"is_spare": false,
+			"set_num": ""
+		},
+		{
+			"quantity": 1,
+			"part": {
+				"part_num": "3957a",
+				"name": "Antenna 1 x 4 with Rounded Top",
+				"part_url": "https://rebrickable.com/parts/3957a/antenna-1-x-4-with-rounded-top/",
+				"part_img_url": "https://cdn.rebrickable.com/media/parts/elements/395702.jpg"
+			},
+			"color": {
+				"id": 7,
+				"name": "Light Gray"
+			},
+			"is_spare": false,
+			"set_num": ""
+		},
+		{
+			"quantity": 1,
+			"part": {
+				"part_num": "3957b",
+				"name": "Antenna 1 x 4 with Flat Top",
+				"part_url": "https://rebrickable.com/parts/3957b/antenna-1-x-4-with-flat-top/",
+				"part_img_url": "https://cdn.rebrickable.com/media/parts/ldraw/7/3957b.png"
+			},
+			"color": {
+				"id": 7,
+				"name": "Light Gray"
+			},
+			"is_spare": false,
+			"set_num": ""
+		},
+		{
+			"quantity": 1,
+			"part": {
+				"part_num": "3001a",
+				"name": "Brick 2 x 4 without Cross Supports",
+				"part_url": "https://rebrickable.com/parts/3001a/brick-2-x-4-without-cross-supports/",
+				"part_img_url": "https://cdn.rebrickable.com/media/thumbs/parts/ldraw/4/3001.png/250x250p.png"
+			},
+			"color": {
+				"id": 4,
+				"name": "Red"
+			},
+			"is_spare": false,
+			"set_num": ""
+		}
+	]
+}

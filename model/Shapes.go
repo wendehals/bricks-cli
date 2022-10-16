@@ -1,11 +1,11 @@
 package model
 
 type Shapes struct {
-	Shapes []Shape `json:"shapes"`
+	Shapes map[string]Shape `json:"shapes"`
 }
 
 func NewShapes() *Shapes {
 	return &Shapes{
-		Shapes: []Shape{},
+		Shapes: make(map[string]Shape, 0),
 	}
 }

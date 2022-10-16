@@ -1,0 +1,52 @@
+{
+	"user": "",
+	"comment": "",
+	"sets": [],
+	"parts": [
+		{
+			"quantity": 1,
+			"part": {
+				"part_num": "3709",
+				"name": "Technic Plate 2 x 4 [3 Holes]",
+				"part_url": "https://rebrickable.com/parts/3709/technic-plate-2-x-4-3-holes/",
+				"part_img_url": "https://cdn.rebrickable.com/media/parts/elements/370902.jpg"
+			},
+			"color": {
+				"id": 0,
+				"name": "Black"
+			},
+			"is_spare": false,
+			"set_num": ""
+		},
+		{
+			"quantity": 1,
+			"part": {
+				"part_num": "3039pr0026",
+				"name": "Slope 45° 2 x 2 with Computer Screen Print",
+				"part_url": "https://rebrickable.com/parts/3039/slope-45-2-x-2/",
+				"part_img_url": "https://cdn.rebrickable.com/media/thumbs/parts/ldraw/1/3039p23.png/250x250p.png"
+			},
+			"color": {
+				"id": 1,
+				"name": "Blue"
+			},
+			"is_spare": false,
+			"set_num": ""
+		},
+		{
+			"quantity": 1,
+			"part": {
+				"part_num": "3957b",
+				"name": "Antenna 1 x 4 with Flat Top",
+				"part_url": "https://rebrickable.com/parts/3957b/antenna-1-x-4-with-flat-top/",
+				"part_img_url": "https://cdn.rebrickable.com/media/parts/ldraw/7/3957b.png"
+			},
+			"color": {
+				"id": 7,
+				"name": "Light Gray"
+			},
+			"is_spare": false,
+			"set_num": ""
+		}
+	]
+}

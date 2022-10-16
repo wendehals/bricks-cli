@@ -15,7 +15,7 @@ var (
 	mode string
 
 	mergeCmd = &cobra.Command{
-		Use:   fmt.Sprintf("merge PARTS_FILE %s %s", options.OUTPUT_FILE_ARG, options.MODE_ARG),
+		Use:   fmt.Sprintf("merge PARTS_FILE [%s] %s", options.MODE_ARG, options.OUTPUT_FILE_ARG),
 		Short: "Merges parts based on color, prints, molds, or alternates",
 		Long:  "The command merges all parts by regards of their shape or color.",
 

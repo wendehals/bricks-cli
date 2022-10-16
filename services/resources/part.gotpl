@@ -10,5 +10,5 @@
 		{{- end}}
 	</div>
 	<div class="caption">{{abs .Quantity}} x {{.Shape.Number}}</div>
-	<div class="caption">{{.Color.Name}}</div>
+	{{if not (eq .Color.ID -1)}}<div class="caption">{{.Color.Name}}</div>{{end}}
 </div>

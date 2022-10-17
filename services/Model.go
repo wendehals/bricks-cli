@@ -20,7 +20,7 @@ func GetColors(update bool) *model.Colors {
 
 	colorsPath := utils.ColorsPath()
 	if utils.FileExists(colorsPath) && !update {
-		colors = model.Load(&model.Colors{}, colorsPath)
+		colors = model.Load(model.NewColors(), colorsPath)
 		return colors
 	}
 
@@ -36,7 +36,7 @@ func GetShapes(update bool) *model.Shapes {
 
 	shapesPath := utils.ShapesPath()
 	if utils.FileExists(shapesPath) && !update {
-		shapes = model.Load(&model.Shapes{}, shapesPath)
+		shapes = model.Load(model.NewShapes(), shapesPath)
 		return shapes
 	}
 
@@ -52,7 +52,7 @@ func GetAlternates(update bool) *model.Alternates {
 
 	alternatesPath := utils.AlternatesPath()
 	if utils.FileExists(alternatesPath) && !update {
-		alternates = model.Load(&model.Alternates{}, alternatesPath)
+		alternates = model.Load(model.NewAlternates(), alternatesPath)
 		return alternates
 	}
 
@@ -68,7 +68,7 @@ func GetMolds(update bool) *model.Molds {
 
 	moldsPath := utils.MoldsPath()
 	if utils.FileExists(moldsPath) && !update {
-		molds = model.Load(&model.Molds{}, moldsPath)
+		molds = model.Load(model.NewMolds(), moldsPath)
 		return molds
 	}
 
@@ -84,7 +84,7 @@ func GetPrints(update bool) *model.Prints {
 
 	printsPath := utils.PrintsPath()
 	if utils.FileExists(printsPath) && !update {
-		prints = model.Load(&model.Prints{}, printsPath)
+		prints = model.Load(model.NewPrints(), printsPath)
 		return prints
 	}
 

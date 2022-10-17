@@ -3,7 +3,6 @@ package utils
 import (
 	"compress/gzip"
 	"encoding/csv"
-	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -40,7 +39,7 @@ func GetBricksDir() string {
 		log.Fatal(err)
 	}
 
-	bricksDir := filepath.FromSlash(fmt.Sprintf("%s/.bricks-cli", userHome))
+	bricksDir := filepath.Join(userHome, ".bricks-cli")
 	if _, err := os.Stat(bricksDir); os.IsNotExist(err) {
 		err = os.Mkdir(bricksDir, os.ModePerm)
 		if err != nil {
@@ -52,27 +51,31 @@ func GetBricksDir() string {
 }
 
 func ColorsPath() string {
-	return filepath.FromSlash(fmt.Sprintf("%s/colors.json", GetBricksDir()))
+	return filepath.Join(GetBricksDir(), "colors.json")
 }
 
 func PartRelationshipsPath() string {
-	return filepath.FromSlash(fmt.Sprintf("%s/partRelationships.json", GetBricksDir()))
+	return filepath.Join(GetBricksDir(), "partRelationships.json")
 }
 
 func AlternatesPath() string {
-	return filepath.FromSlash(fmt.Sprintf("%s/alternates.json", GetBricksDir()))
+	return filepath.Join(GetBricksDir(), "alternates.json")
 }
 
 func MoldsPath() string {
-	return filepath.FromSlash(fmt.Sprintf("%s/molds.json", GetBricksDir()))
+	return filepath.Join(GetBricksDir(), "molds.json")
 }
 
 func PrintsPath() string {
-	return filepath.FromSlash(fmt.Sprintf("%s/prints.json", GetBricksDir()))
+	return filepath.Join(GetBricksDir(), "prints.json")
 }
 
 func ShapesPath() string {
-	return filepath.FromSlash(fmt.Sprintf("%s/shapes.json", GetBricksDir()))
+	return filepath.Join(GetBricksDir(), "shapes.json")
+}
+
+func ImageIndexPath() string {
+	return filepath.Join(GetBricksDir(), "image_index.json")
 }
 
 func CSVReader(csvFile string) *csv.Reader {

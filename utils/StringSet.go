@@ -3,7 +3,7 @@ package utils
 import "golang.org/x/exp/slices"
 
 type StringSet struct {
-	Values map[string]struct{}
+	Values map[string]struct{} `json:"values"`
 }
 
 func NewStringSet() StringSet {

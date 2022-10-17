@@ -100,6 +100,7 @@ func DownloadShapes() *model.Shapes {
 	log.Print("Loading parts file from rebrickable.com... ")
 
 	shapes := model.NewShapes()
+	imageIndex := GetImageIndex()
 
 	csvFile := downloadShapesCSVFile()
 	csvReader := utils.GzipCSVReader(csvFile)
@@ -116,7 +117,10 @@ func DownloadShapes() *model.Shapes {
 		shape.Number = record[0]
 		shape.Name = record[1]
 		shape.URL = fmt.Sprintf("https://rebrickable.com/parts/%s", shape.Number)
-
+		color := imageIndex.FindBestColor(shape.Number)
+		if color != "-1" {
+			shape.ImageURL = fmt.Sprintf("https://cdn.rebrickable.com/media/thumbs/parts/ldraw/%s/%s.png/250x250p.png", color, shape.Number)
+		}
 		shapes.Shapes[shape.Number] = shape
 	}
 	model.Save(shapes, utils.ShapesPath())
@@ -138,16 +142,11 @@ func DownloadPartImages(update bool) {
 	for _, partImagesURL := range partImagesURLs {
 		log.Printf("Loading %s...", partImagesURL)
 
-		response, err := http.Get(partImagesURL)
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer response.Body.Close()
-
 		splitURL := strings.Split(partImagesURL, "/")
-		fileName := filepath.FromSlash(fmt.Sprintf("%s/%s", bricksDir, splitURL[len(splitURL)-1]))
+		fileName := filepath.Join(bricksDir, splitURL[len(splitURL)-1])
 
 		if utils.FileExists(fileName) && !update {
+			log.Print("Skipping download, it's already there")
 			continue
 		}
 
@@ -157,15 +156,21 @@ func DownloadPartImages(update bool) {
 		}
 		defer file.Close()
 
+		response, err := http.Get(partImagesURL)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer response.Body.Close()
+
 		_, err = io.Copy(file, response.Body)
 		if err != nil {
 			log.Fatal(err)
 		}
-
-		log.Println("done")
 	}
 
-	log.Println("finished")
+	imageIndex := CreateImageIndex()
+
+	model.Save(imageIndex, utils.ImageIndexPath())
 }
 
 func downloadColorsCSVFile() string {
@@ -225,7 +230,7 @@ func downloadFileFromURL(url, fileName string) string {
 	}
 	defer response.Body.Close()
 
-	path := filepath.FromSlash(fmt.Sprintf("%s/%s", os.TempDir(), fileName))
+	path := filepath.Join(os.TempDir(), fileName)
 	file, err := os.Create(path)
 	if err != nil {
 		log.Fatal(err)
@@ -236,8 +241,6 @@ func downloadFileFromURL(url, fileName string) string {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	log.Println("done")
 
 	return path
 }

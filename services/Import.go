@@ -50,5 +50,6 @@ func addMissingData(collection *model.Collection) {
 		collection.Parts[i].Color.Name = colorNames[collection.Parts[i].Color.ID]
 		collection.Parts[i].Shape.Name = shape.Name
 		collection.Parts[i].Shape.URL = shape.URL
+		collection.Parts[i].Shape.ImageURL = shape.ImageURL
 	}
 }

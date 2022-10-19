@@ -100,7 +100,7 @@ func DownloadShapes() *model.Shapes {
 	log.Print("Loading parts file from rebrickable.com... ")
 
 	shapes := model.NewShapes()
-	imageIndex := GetImageIndex()
+	// imageIndex := GetImageIndex()
 
 	csvFile := downloadShapesCSVFile()
 	csvReader := utils.GzipCSVReader(csvFile)
@@ -117,13 +117,17 @@ func DownloadShapes() *model.Shapes {
 		shape.Number = record[0]
 		shape.Name = record[1]
 		shape.URL = fmt.Sprintf("https://rebrickable.com/parts/%s", shape.Number)
-		color := imageIndex.FindBestColor(shape.Number)
-		if color != "-1" {
-			shape.ImageURL = fmt.Sprintf("https://cdn.rebrickable.com/media/thumbs/parts/ldraw/%s/%s.png/250x250p.png", color, shape.Number)
-		}
+
+		// if imageIndex != nil {
+		// 	color := imageIndex.FindBestColor(shape.Number)
+		// 	if color != "-1" {
+		// 		shape.ImageURL = fmt.Sprintf("https://cdn.rebrickable.com/media/thumbs/parts/ldraw/%s/%s.png/250x250p.png", color, shape.Number)
+		// 	}
+		// }
+
 		shapes.Shapes[shape.Number] = shape
 	}
-	model.Save(shapes, utils.ShapesPath())
+	shapes.Save()
 	os.Remove(csvFile)
 
 	return shapes

@@ -45,6 +45,23 @@ func (b *BricksAPI) GetSet(setNum string) *model.Set {
 	return &set
 }
 
+// GetPart returns the result of /api/v3/lego/parts/{part_num}/
+func (b *BricksAPI) GetPart(partNum string) *model.Shape {
+	log.Printf("Retrieving details about part %s", partNum)
+
+	shape := model.Shape{}
+
+	subPath := fmt.Sprintf("parts/%s/", partNum)
+	url := fmt.Sprintf(BRICKS_URL, subPath)
+
+	err := b.requestPage(url, &shape)
+	if err != nil {
+		log.Fatalf("details of part %s could not be retrieved: %s", partNum, err.Error())
+	}
+
+	return &shape
+}
+
 // GetSetParts returns the result of /api/v3/lego/sets/{set_num}/parts/
 func (b *BricksAPI) GetSetParts(setNum string, includeMiniFigs bool) *model.Collection {
 	log.Printf("Retrieving parts of set %s", setNum)

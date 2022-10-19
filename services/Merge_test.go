@@ -37,7 +37,7 @@ func Test_MergeByColor(t *testing.T) {
 
 func Test_MergeByPrint(t *testing.T) {
 	collection := model.Load(model.NewCollection(), "test_resources/mergeByPrint.parts")
-	MergeByPrint(collection)
+	MergeByPrint(collection, nil)
 	collection.SortByColorAndName(false)
 
 	test.AssertSameInt(t, 3, len(collection.Parts))
@@ -61,7 +61,7 @@ func Test_MergeByPrint(t *testing.T) {
 
 func Test_MergeByMold(t *testing.T) {
 	collection := model.Load(model.NewCollection(), "test_resources/mergeByMold.parts")
-	MergeByMold(collection)
+	MergeByMold(collection, nil)
 	collection.SortByColorAndName(false)
 
 	test.AssertSameInt(t, 3, len(collection.Parts))
@@ -85,7 +85,7 @@ func Test_MergeByMold(t *testing.T) {
 
 func Test_MergeByAlternate(t *testing.T) {
 	collection := model.Load(model.NewCollection(), "test_resources/mergeByAlternate.parts")
-	MergeByAlternate(collection)
+	MergeByAlternate(collection, nil)
 	collection.SortByColorAndName(false)
 
 	test.AssertSameInt(t, 3, len(collection.Parts))

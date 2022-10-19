@@ -1,6 +1,7 @@
 package services
 
 import (
+	"github.com/wendehals/bricks/api"
 	"github.com/wendehals/bricks/model"
 	"github.com/wendehals/bricks/utils"
 )
@@ -91,4 +92,21 @@ func GetPrints(update bool) *model.Prints {
 	alternates, molds, prints = DownloadPartRelationships()
 
 	return prints
+}
+
+func GetPartImageURL(part string, bricksAPI *api.BricksAPI) string {
+	shapes := GetShapes(false)
+
+	if shape, found := shapes.Shapes[part]; found {
+		if shape.ImageURL != "" {
+			return shape.ImageURL
+		}
+		if bricksAPI != nil {
+			details := bricksAPI.GetPart(part)
+			shape.ImageURL = details.ImageURL
+			shapes.Shapes[part] = shape
+		}
+	}
+
+	return ""
 }

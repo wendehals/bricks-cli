@@ -25,7 +25,7 @@ func Merge(collection *model.Collection, bricksAPI *api.BricksAPI, mode uint8) {
 		MergeByColor(collection)
 	} else {
 		if MoldsMode(mode) {
-			MergeByPrint(collection, bricksAPI)
+			MergeByMold(collection, bricksAPI)
 		}
 		if PrintsMode(mode) {
 			MergeByPrint(collection, bricksAPI)

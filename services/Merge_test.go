@@ -23,16 +23,28 @@ func Test_MergeAllCollections(t *testing.T) {
 	test.AssertSameInt(t, 148, collection.CountParts())
 }
 
+func Test_Merge_C(t *testing.T) {
+	collection := model.Load(model.NewCollection(), "../model/test_resources/testCollection1.parts")
+	Merge(collection, nil, ModeToUInt8("c"))
+	collection.SortByColorAndName(false)
+
+	assertMergeByColor(t, collection)
+}
+
 func Test_MergeByColor(t *testing.T) {
 	collection := model.Load(model.NewCollection(), "../model/test_resources/testCollection1.parts")
 	MergeByColor(collection)
 	collection.SortByColorAndName(false)
 
-	test.AssertSameInt(t, 5, len(collection.Parts))
+	assertMergeByColor(t, collection)
+}
 
-	test.AssertSameString(t, "25", collection.Parts[2].Shape.Number)
-	test.AssertSameInt(t, 13, collection.Parts[2].Quantity)
-	test.AssertSameInt(t, -1, collection.Parts[2].Color.ID)
+func Test_Merge_P(t *testing.T) {
+	collection := model.Load(model.NewCollection(), "test_resources/mergeByPrint.parts")
+	Merge(collection, nil, ModeToUInt8("p"))
+	collection.SortByColorAndName(false)
+
+	assertMergeByPrint(t, collection)
 }
 
 func Test_MergeByPrint(t *testing.T) {
@@ -40,6 +52,50 @@ func Test_MergeByPrint(t *testing.T) {
 	MergeByPrint(collection, nil)
 	collection.SortByColorAndName(false)
 
+	assertMergeByPrint(t, collection)
+}
+
+func Test_Merge_M(t *testing.T) {
+	collection := model.Load(model.NewCollection(), "test_resources/mergeByMold.parts")
+	Merge(collection, nil, ModeToUInt8("m"))
+	collection.SortByColorAndName(false)
+
+	assertMergeByMold(t, collection)
+}
+
+func Test_MergeByMold(t *testing.T) {
+	collection := model.Load(model.NewCollection(), "test_resources/mergeByMold.parts")
+	MergeByMold(collection, nil)
+	collection.SortByColorAndName(false)
+
+	assertMergeByMold(t, collection)
+}
+
+func Test_Merge_A(t *testing.T) {
+	collection := model.Load(model.NewCollection(), "test_resources/mergeByAlternate.parts")
+	Merge(collection, nil, ModeToUInt8("a"))
+	collection.SortByColorAndName(false)
+
+	assertMergeByAlternate(t, collection)
+}
+
+func Test_MergeByAlternate(t *testing.T) {
+	collection := model.Load(model.NewCollection(), "test_resources/mergeByAlternate.parts")
+	MergeByAlternate(collection, nil)
+	collection.SortByColorAndName(false)
+
+	assertMergeByAlternate(t, collection)
+}
+
+func assertMergeByColor(t *testing.T, collection *model.Collection) {
+	test.AssertSameInt(t, 5, len(collection.Parts))
+
+	test.AssertSameString(t, "25", collection.Parts[2].Shape.Number)
+	test.AssertSameInt(t, 13, collection.Parts[2].Quantity)
+	test.AssertSameInt(t, -1, collection.Parts[2].Color.ID)
+}
+
+func assertMergeByPrint(t *testing.T, collection *model.Collection) {
 	test.AssertSameInt(t, 3, len(collection.Parts))
 	test.AssertSameInt(t, 6, collection.CountParts())
 
@@ -59,11 +115,7 @@ func Test_MergeByPrint(t *testing.T) {
 	test.AssertSameString(t, "Technic Plate 2 x 4 [3 Holes]", collection.Parts[2].Shape.Name)
 }
 
-func Test_MergeByMold(t *testing.T) {
-	collection := model.Load(model.NewCollection(), "test_resources/mergeByMold.parts")
-	MergeByMold(collection, nil)
-	collection.SortByColorAndName(false)
-
+func assertMergeByMold(t *testing.T, collection *model.Collection) {
 	test.AssertSameInt(t, 3, len(collection.Parts))
 	test.AssertSameInt(t, 4, collection.CountParts())
 
@@ -83,11 +135,7 @@ func Test_MergeByMold(t *testing.T) {
 	test.AssertSameString(t, "Technic Plate 2 x 4 [3 Holes]", collection.Parts[2].Shape.Name)
 }
 
-func Test_MergeByAlternate(t *testing.T) {
-	collection := model.Load(model.NewCollection(), "test_resources/mergeByAlternate.parts")
-	MergeByAlternate(collection, nil)
-	collection.SortByColorAndName(false)
-
+func assertMergeByAlternate(t *testing.T, collection *model.Collection) {
 	test.AssertSameInt(t, 3, len(collection.Parts))
 	test.AssertSameInt(t, 3, collection.CountParts())
 

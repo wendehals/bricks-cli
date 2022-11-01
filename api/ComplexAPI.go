@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"log"
 	"strings"
 
@@ -16,7 +17,7 @@ func RetrieveSetParts(bricksAPI *BricksAPI, setNum string, includeMiniFigs bool)
 	return collection
 }
 
-func RetrieveSetPartsWithoutLost(bricksAPI *BricksAPI, usersAPI *UsersAPI, setNum string, includeMiniFigs bool) *model.Collection {
+func RetrieveUserSetParts(bricksAPI *BricksAPI, usersAPI *UsersAPI, setNum string, includeMiniFigs bool) *model.Collection {
 	setParts := RetrieveSetParts(bricksAPI, setNum, includeMiniFigs)
 	sets := setParts.Sets
 
@@ -30,6 +31,7 @@ func RetrieveSetPartsWithoutLost(bricksAPI *BricksAPI, usersAPI *UsersAPI, setNu
 
 	setParts.Subtract(&setLostParts)
 	setParts.User = usersAPI.userName
+	setParts.Comment = "User set parts"
 	setParts.Sets = sets
 
 	return setParts
@@ -50,7 +52,15 @@ func RetrieveSetListParts(bricksAPI *BricksAPI, usersAPI *UsersAPI, setListId ui
 	return collections
 }
 
-func RetrievePartListParts(usersAPI *UsersAPI, partListsFile string, includeNonBuildable bool) []model.Collection {
+func RetrievePartListParts(usersAPI *UsersAPI, listId uint) *model.Collection {
+	partList := usersAPI.GetPartList(listId)
+	collection := usersAPI.GetPartListParts(listId)
+	collection.Comment = fmt.Sprintf("Part list %d - %s", listId, partList.Name)
+
+	return collection
+}
+
+func RetrievePartListsParts(usersAPI *UsersAPI, partListsFile string, includeNonBuildable bool) []model.Collection {
 	log.Printf("Retrieving parts from all part lists from the part lists file %s", partListsFile)
 
 	partLists := model.Load(&model.PartLists{}, partListsFile)

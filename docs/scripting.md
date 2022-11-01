@@ -15,6 +15,7 @@ The following commands can be used in bricks scripts:
 * *save*: `save(exp, FILE_NAME)` - saves the given collection defined by the expression to a JSON file with the given FILE_NAME.
 * *export*: `export(exp, EXPORT_DIR)` - exports the given collection defined by the expression to an HTML file into the given EXPORT_DIR.
 * *build*: `build(EXP, EXP, DIR_NAME)` - Builds a set given by the first expression by using parts from the collection defined by the second expression. Exports the result to the given directory.
+* *pause*: `pause(INT)` - Pauses the script for the given time in seconds. Sometimes it's neccessary to pause the script between API requests to avoid a "Too many requests" error message from the rebrickable.com server.
 
 ## Expressions
 
@@ -25,6 +26,7 @@ These expressions are available in the bricks scripts:
 * `allParts` - Denotes all parts owned by the user.
 * `lost` - Denotes all parts lost by the user.
 * `set(SET_NUM, BOOL?)` - Denotes all parts of set number SET_NUM (e.g. 8880-1). If the optional BOOL paramater is set to `true`, it includes all mini figures. If the BOOL parameter is not specified it defaults to `false`, which means that mini figures are not included.
+* `userSet(SET_NUM, BOOL?)` - Denotes all parts of set number SET_NUM (e.g. 8880-1) owned by the user excluding lost parts of this set. If the optional BOOL paramater is set to `true`, it includes all mini figures. If the BOOL parameter is not specified it defaults to `false`, which means that mini figures are not included.
 * `setList(LIST_ID, BOOL?)` - Denotes all parts contained in the set list LIST_ID (a number). If the optional BOOL paramater is set to `true`, it includes all mini figures. If the BOOL parameter is not specified it defaults to `false`, which means that mini figures are not included.
 * `partList(LIST_ID)` - Denotes all parts contained in the part list LIST_ID (a number).
 * `partLists(LIST_ID, BOOL?)` - Denotes all parts contained in the part list LIST_ID (a number). If the optional BOOL paramater is set to `true`, it also includes all part lists marked as non-buildable. If the BOOL parameter is not specified it defaults to `false`, which means that non-buildable part lists are not included.

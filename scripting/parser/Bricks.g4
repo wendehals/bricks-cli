@@ -2,7 +2,7 @@ grammar Bricks;
 
 bricks: command+;
 
-command: assignment | save | export | build;
+command: assignment | save | export | build | pause;
 
 assignment: ID ':=' exp;
 
@@ -12,8 +12,10 @@ export: 'export' '(' exp ',' STRING ')';
 
 build: 'build' '(' exp ',' exp ',' STRING ')';
 
+pause: 'pause' '(' seconds=INT ')';
 
-exp: identifier | load | allParts | lost | set | setList | partList | partLists | sum | subtract | max | sort;
+
+exp: identifier | load | allParts | lost | set | userSet | setList | partList | partLists | sum | subtract | max | sort;
 
 identifier: ID;
 
@@ -24,6 +26,8 @@ allParts: 'allParts';
 lost: 'lost';
 
 set: 'set' '(' SET_NUM (',' BOOL)?')';
+
+userSet: 'userSet' '(' SET_NUM (',' BOOL)?')';
 
 setList: 'setList' '(' INT (',' BOOL)?')';
 
@@ -40,7 +44,7 @@ max: 'max' '(' exp (',' exp)+ ')';
 sort: 'sort' '(' exp (',' quantity='quantity')? (',' descending='descending')? ')';
 
 
-fragment DIGIT: [0–9];
+fragment DIGIT: ('0'..'9');
 
 INT: DIGIT+;
 
@@ -50,6 +54,6 @@ STRING : '"' ( '\\"' | . )*? '"' ;
 
 ID: [a-zA-Z][a-zA-Z0-9_]*;
 
-SET_NUM: [0-9]+'-'[0-9];
+SET_NUM: DIGIT+'-'DIGIT;
 
 WS: [ \t\r\n]+ -> skip;

@@ -26,6 +26,9 @@ type BricksListener interface {
 	// EnterBuild is called when entering the build production.
 	EnterBuild(c *BuildContext)
 
+	// EnterPause is called when entering the pause production.
+	EnterPause(c *PauseContext)
+
 	// EnterExp is called when entering the exp production.
 	EnterExp(c *ExpContext)
 
@@ -43,6 +46,9 @@ type BricksListener interface {
 
 	// EnterSet is called when entering the set production.
 	EnterSet(c *SetContext)
+
+	// EnterUserSet is called when entering the userSet production.
+	EnterUserSet(c *UserSetContext)
 
 	// EnterSetList is called when entering the setList production.
 	EnterSetList(c *SetListContext)
@@ -83,6 +89,9 @@ type BricksListener interface {
 	// ExitBuild is called when exiting the build production.
 	ExitBuild(c *BuildContext)
 
+	// ExitPause is called when exiting the pause production.
+	ExitPause(c *PauseContext)
+
 	// ExitExp is called when exiting the exp production.
 	ExitExp(c *ExpContext)
 
@@ -100,6 +109,9 @@ type BricksListener interface {
 
 	// ExitSet is called when exiting the set production.
 	ExitSet(c *SetContext)
+
+	// ExitUserSet is called when exiting the userSet production.
+	ExitUserSet(c *UserSetContext)
 
 	// ExitSetList is called when exiting the setList production.
 	ExitSetList(c *SetListContext)

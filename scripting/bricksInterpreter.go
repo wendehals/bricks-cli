@@ -5,6 +5,7 @@ import (
 	"log"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/wendehals/bricks/api"
 	"github.com/wendehals/bricks/model"
@@ -65,6 +66,17 @@ func (b *bricksInterpreter) ExitBuild(ctx *parser.BuildContext) {
 	services.ExportCollectionToHTML(providedCollection, exportDir, "remaining")
 }
 
+// ExitPause is called when production pause is exited.
+func (b *bricksInterpreter) ExitPause(ctx *parser.PauseContext) {
+	seconds, err := strconv.Atoi(ctx.GetSeconds().GetText())
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Printf("Pausing for %d seconds...", seconds)
+	time.Sleep(time.Duration(seconds) * time.Second)
+}
+
 func (b *bricksInterpreter) ExitIdentifier(ctx *parser.IdentifierContext) {
 	value, ok := b.heap[ctx.ID().GetText()]
 	if !ok {
@@ -96,6 +108,12 @@ func (b *bricksInterpreter) ExitSet(ctx *parser.SetContext) {
 	b.stack.push(setParts)
 }
 
+func (b *bricksInterpreter) ExitUserSet(ctx *parser.UserSetContext) {
+	includeMiniFigs := ctx.BOOL() != nil && ctx.BOOL().GetText() == "true"
+	userSetParts := api.RetrieveUserSetParts(b.bricksAPI, b.usersAPI, ctx.SET_NUM().GetText(), includeMiniFigs)
+	b.stack.push(userSetParts)
+}
+
 func (b *bricksInterpreter) ExitSetList(ctx *parser.SetListContext) {
 	setListId, err := strconv.Atoi(ctx.INT().GetText())
 	if err != nil {
@@ -122,7 +140,7 @@ func (b *bricksInterpreter) ExitPartList(ctx *parser.PartListContext) {
 func (b *bricksInterpreter) ExitPartLists(ctx *parser.PartListsContext) {
 	filePath := strings.Trim(ctx.STRING().GetText(), "\"")
 	includeNonBuildable := ctx.BOOL() != nil && ctx.BOOL().GetText() == "true"
-	collections := api.RetrievePartListParts(b.usersAPI, filePath, includeNonBuildable)
+	collections := api.RetrievePartListsParts(b.usersAPI, filePath, includeNonBuildable)
 	collection := services.MergeAllCollections(collections)
 	b.stack.push(collection)
 }

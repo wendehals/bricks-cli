@@ -57,6 +57,12 @@ func (s *BaseBricksListener) EnterBuild(ctx *BuildContext) {}
 // ExitBuild is called when production build is exited.
 func (s *BaseBricksListener) ExitBuild(ctx *BuildContext) {}
 
+// EnterPause is called when production pause is entered.
+func (s *BaseBricksListener) EnterPause(ctx *PauseContext) {}
+
+// ExitPause is called when production pause is exited.
+func (s *BaseBricksListener) ExitPause(ctx *PauseContext) {}
+
 // EnterExp is called when production exp is entered.
 func (s *BaseBricksListener) EnterExp(ctx *ExpContext) {}
 
@@ -92,6 +98,12 @@ func (s *BaseBricksListener) EnterSet(ctx *SetContext) {}
 
 // ExitSet is called when production set is exited.
 func (s *BaseBricksListener) ExitSet(ctx *SetContext) {}
+
+// EnterUserSet is called when production userSet is entered.
+func (s *BaseBricksListener) EnterUserSet(ctx *UserSetContext) {}
+
+// ExitUserSet is called when production userSet is exited.
+func (s *BaseBricksListener) ExitUserSet(ctx *UserSetContext) {}
 
 // EnterSetList is called when production setList is entered.
 func (s *BaseBricksListener) EnterSetList(ctx *SetListContext) {}

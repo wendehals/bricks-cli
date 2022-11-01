@@ -230,6 +230,7 @@ func (u *UsersAPI) GetPartListParts(listId uint) *model.Collection {
 	log.Printf("Retrieving parts of part list %d", listId)
 
 	collection := model.NewCollection()
+	collection.User = u.userName
 	collection.Comment = fmt.Sprintf("Part list %d", listId)
 
 	partsPage := partsPageResult{}

@@ -53,10 +53,12 @@ func (b *bricksInterpreter) ExitBuild(ctx *parser.BuildContext) {
 	neededCollection := b.stack.pop()
 	exportDir := strings.Trim(ctx.STRING().GetText(), "\"")
 
-	mode := 0 & services.MODE_COLOR
-	mode = mode & services.MODE_ALTERNATES
-	mode = mode & services.MODE_MOLDS
-	mode = mode & services.MODE_PRINTS
+	var mode uint8 = 0
+	if ctx.GetBuild_mode() != nil {
+		mode = services.ModeToUInt8(ctx.GetBuild_mode().GetText())
+	}
+
+	log.Printf("mode = %d", mode)
 
 	buildCollection := services.Build(neededCollection, providedCollection, mode)
 	model.Save(buildCollection, fmt.Sprintf("%s/result.build", exportDir))

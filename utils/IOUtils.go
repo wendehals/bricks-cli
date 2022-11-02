@@ -24,7 +24,7 @@ func FileExists(filePath string) bool {
 }
 
 // SplitFileName returns the base file name and its extension.
-// Example: SplitFileName("example.txt") returns ("example", "txt")
+// Example: SplitFileName("example.txt") returns ("example", ".txt")
 func SplitFileName(fileName string) (string, string) {
 	base := filepath.Base(fileName)
 	ext := filepath.Ext(base)
@@ -52,10 +52,6 @@ func GetBricksDir() string {
 
 func ColorsPath() string {
 	return filepath.Join(GetBricksDir(), "colors.json")
-}
-
-func PartRelationshipsPath() string {
-	return filepath.Join(GetBricksDir(), "partRelationships.json")
 }
 
 func AlternatesPath() string {

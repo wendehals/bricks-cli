@@ -14,7 +14,7 @@ The following commands can be used in bricks scripts:
 * *Assignment*: `ID := exp` - assigns a collection of parts defined by the given expression to a variable with name ID. The variable can be used in any expression later on.
 * *save*: `save(exp, FILE_NAME)` - saves the given collection defined by the expression to a JSON file with the given FILE_NAME.
 * *export*: `export(exp, EXPORT_DIR)` - exports the given collection defined by the expression to an HTML file into the given EXPORT_DIR.
-* *build*: `build(EXP, EXP, DIR_NAME)` - Builds a set given by the first expression by using parts from the collection defined by the second expression. Exports the result to the given directory.
+* *build*: `build(EXP, EXP, DIR_NAME, MODE?)` - Builds a set given by the first expression by using parts from the collection defined by the second expression. MODE is a combination of any of the following characters: C(olor), A(lternates), M(olds), and P(rints). If for example CAMP is provided, the build substitutes missing parts by parts of different color, alternates, molds, and prints. If no MODE is provided, no missing parts will be replaced. Exports the result to the given directory.
 * *pause*: `pause(INT)` - Pauses the script for the given time in seconds. Sometimes it's neccessary to pause the script between API requests to avoid a "Too many requests" error message from the rebrickable.com server.
 
 ## Expressions

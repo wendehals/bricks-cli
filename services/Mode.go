@@ -27,16 +27,16 @@ func AlternatesMode(mode uint8) bool {
 
 func ModeToUInt8(mode string) uint8 {
 	var modeUInt8 uint8 = 0
-	if strings.Contains(mode, "c") {
+	if strings.Contains(mode, "c") || strings.Contains(mode, "C") {
 		modeUInt8 = modeUInt8 ^ MODE_COLOR
 	}
-	if strings.Contains(mode, "a") {
+	if strings.Contains(mode, "a") || strings.Contains(mode, "A") {
 		modeUInt8 = modeUInt8 ^ MODE_ALTERNATES
 	}
-	if strings.Contains(mode, "m") {
+	if strings.Contains(mode, "m") || strings.Contains(mode, "M") {
 		modeUInt8 = modeUInt8 ^ MODE_MOLDS
 	}
-	if strings.Contains(mode, "p") {
+	if strings.Contains(mode, "p") || strings.Contains(mode, "P") {
 		modeUInt8 = modeUInt8 ^ MODE_PRINTS
 	}
 

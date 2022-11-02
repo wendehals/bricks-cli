@@ -10,7 +10,7 @@ save: 'save' '(' exp ',' STRING ')';
 
 export: 'export' '(' exp ',' STRING ')';
 
-build: 'build' '(' exp ',' exp ',' STRING ')';
+build: 'build' '(' exp ',' exp ',' STRING (',' build_mode=ID )? ')';
 
 pause: 'pause' '(' seconds=INT ')';
 
@@ -25,15 +25,15 @@ allParts: 'allParts';
 
 lost: 'lost';
 
-set: 'set' '(' SET_NUM (',' BOOL)?')';
+set: 'set' '(' SET_NUM (',' BOOL)? ')';
 
-userSet: 'userSet' '(' SET_NUM (',' BOOL)?')';
+userSet: 'userSet' '(' SET_NUM (',' BOOL)? ')';
 
-setList: 'setList' '(' INT (',' BOOL)?')';
+setList: 'setList' '(' INT (',' BOOL)? ')';
 
 partList: 'partList' '(' INT ')';
 
-partLists: 'partLists' '(' STRING (',' BOOL)?')';
+partLists: 'partLists' '(' STRING (',' BOOL)? ')';
 
 sum: 'sum' '(' exp (',' exp)+ ')';
 

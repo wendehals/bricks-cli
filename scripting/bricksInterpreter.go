@@ -58,8 +58,6 @@ func (b *bricksInterpreter) ExitBuild(ctx *parser.BuildContext) {
 		mode = services.ModeToUInt8(ctx.GetBuild_mode().GetText())
 	}
 
-	log.Printf("mode = %d", mode)
-
 	buildCollection := services.Build(neededCollection, providedCollection, mode)
 	model.Save(buildCollection, fmt.Sprintf("%s/result.build", exportDir))
 	services.ExportBuildCollectionToHTML(buildCollection, exportDir, "build")

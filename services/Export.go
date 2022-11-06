@@ -178,7 +178,7 @@ func extractImage(partNumber string, colorId int, exportDir string) (string, err
 }
 
 func findImagesFileForColor(colorId int) (string, error) {
-	imagesFile := filepath.FromSlash(fmt.Sprintf("%s/parts_%d.zip", utils.GetBricksDir(), colorId))
+	imagesFile := filepath.FromSlash(fmt.Sprintf("%s/parts_%d.zip", utils.CacheDir(), colorId))
 	if _, err := os.Stat(imagesFile); os.IsNotExist(err) {
 		return "", err
 	}

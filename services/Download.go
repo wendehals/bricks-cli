@@ -141,7 +141,7 @@ func DownloadPartImages(update bool) {
 		log.Fatal("no URLs for part images found!")
 	}
 
-	bricksDir := utils.GetBricksDir()
+	bricksDir := utils.CacheDir()
 
 	for _, partImagesURL := range partImagesURLs {
 		log.Printf("Loading %s...", partImagesURL)

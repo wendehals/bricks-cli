@@ -33,13 +33,13 @@ func SplitFileName(fileName string) (string, string) {
 	return baseWoExt, ext
 }
 
-func GetBricksDir() string {
-	userHome, err := os.UserHomeDir()
+func CacheDir() string {
+	userCacheDir, err := os.UserCacheDir()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	bricksDir := filepath.Join(userHome, ".bricks-cli")
+	bricksDir := filepath.Join(userCacheDir, "bricks-cli")
 	if _, err := os.Stat(bricksDir); os.IsNotExist(err) {
 		err = os.Mkdir(bricksDir, os.ModePerm)
 		if err != nil {
@@ -51,27 +51,27 @@ func GetBricksDir() string {
 }
 
 func ColorsPath() string {
-	return filepath.Join(GetBricksDir(), "colors.json")
+	return filepath.Join(CacheDir(), "colors.json")
 }
 
 func AlternatesPath() string {
-	return filepath.Join(GetBricksDir(), "alternates.json")
+	return filepath.Join(CacheDir(), "alternates.json")
 }
 
 func MoldsPath() string {
-	return filepath.Join(GetBricksDir(), "molds.json")
+	return filepath.Join(CacheDir(), "molds.json")
 }
 
 func PrintsPath() string {
-	return filepath.Join(GetBricksDir(), "prints.json")
+	return filepath.Join(CacheDir(), "prints.json")
 }
 
 func ShapesPath() string {
-	return filepath.Join(GetBricksDir(), "shapes.json")
+	return filepath.Join(CacheDir(), "shapes.json")
 }
 
 func ImageIndexPath() string {
-	return filepath.Join(GetBricksDir(), "image_index.json")
+	return filepath.Join(CacheDir(), "image_index.json")
 }
 
 func CSVReader(csvFile string) *csv.Reader {

@@ -69,5 +69,5 @@ func executeSort(args []string) {
 		collection.SortByColorAndName(descending)
 	}
 
-	model.Save(collection, outputFile)
+	collection.Save(outputFile)
 }

@@ -154,7 +154,7 @@ func executeAllParts() {
 		outputFile = options.ReplaceIllegalCharsFromFileName(credentials.UserName) + "_all" + PARTS_FILE_SUFFIX
 	}
 
-	model.Save(allParts, outputFile)
+	allParts.Save(outputFile)
 }
 
 func executeSetParts() {
@@ -164,7 +164,7 @@ func executeSetParts() {
 		outputFile = options.ReplaceIllegalCharsFromFileName(setNum) + PARTS_FILE_SUFFIX
 	}
 
-	model.Save(setParts, outputFile)
+	setParts.Save(outputFile)
 }
 
 func executeUserSetParts() {
@@ -174,7 +174,7 @@ func executeUserSetParts() {
 		outputFile = options.ReplaceIllegalCharsFromFileName(userSetNum) + "_wo_lost" + PARTS_FILE_SUFFIX
 	}
 
-	model.Save(setPartsWithoutLost, outputFile)
+	setPartsWithoutLost.Save(outputFile)
 }
 
 func executeSetListParts() {
@@ -194,7 +194,7 @@ func executePartListParts() {
 		outputFile = fmt.Sprint(partListId) + PARTS_FILE_SUFFIX
 	}
 
-	model.Save(partListParts, outputFile)
+	partListParts.Save(outputFile)
 }
 
 func executePartListsParts() {
@@ -214,7 +214,7 @@ func executeLostParts() {
 		outputFile = options.ReplaceIllegalCharsFromFileName(credentials.UserName) + "_lost" + PARTS_FILE_SUFFIX
 	}
 
-	model.Save(lostParts, outputFile)
+	lostParts.Save(outputFile)
 }
 
 func mergeAndSave(collections []model.Collection) {
@@ -233,7 +233,7 @@ func mergeAndSave(collections []model.Collection) {
 		outputFile = b.String()
 	}
 
-	model.Save(collection, outputFile)
+	collection.Save(outputFile)
 }
 
 func saveAll(collections []model.Collection) {
@@ -245,6 +245,6 @@ func saveAll(collections []model.Collection) {
 			fileName = fmt.Sprintf("%02d_%s", i+1, outputFile)
 		}
 
-		model.Save(collection, fileName)
+		collection.Save(fileName)
 	}
 }

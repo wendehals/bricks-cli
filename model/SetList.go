@@ -7,3 +7,7 @@ type SetList struct {
 	Name        string `json:"name"`
 	NumSets     uint   `json:"num_sets"`
 }
+
+func (s *SetList) Save(filePath string) {
+	Save(s, filePath)
+}

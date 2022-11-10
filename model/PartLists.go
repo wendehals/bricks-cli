@@ -11,3 +11,7 @@ func NewPartLists() *PartLists {
 		PartLists: []PartList{},
 	}
 }
+
+func (s *PartLists) Save(filePath string) {
+	Save(s, filePath)
+}

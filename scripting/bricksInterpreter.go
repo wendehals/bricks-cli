@@ -39,7 +39,7 @@ func (b *bricksInterpreter) ExitAssignment(ctx *parser.AssignmentContext) {
 func (b *bricksInterpreter) ExitSave(ctx *parser.SaveContext) {
 	collection := b.stack.pop()
 	filePath := strings.Trim(ctx.STRING().GetText(), "\"")
-	model.Save(collection, filePath)
+	collection.Save(filePath)
 }
 
 func (b *bricksInterpreter) ExitExport(ctx *parser.ExportContext) {
@@ -59,10 +59,10 @@ func (b *bricksInterpreter) ExitBuild(ctx *parser.BuildContext) {
 	}
 
 	buildCollection := services.Build(neededCollection, providedCollection, mode)
-	model.Save(buildCollection, fmt.Sprintf("%s/result.build", exportDir))
+	buildCollection.Save(fmt.Sprintf("%s/result.build", exportDir))
 	services.ExportBuildCollectionToHTML(buildCollection, exportDir, "build")
 
-	model.Save(providedCollection, fmt.Sprintf("%s/remaining.parts", exportDir))
+	providedCollection.Save(fmt.Sprintf("%s/remaining.parts", exportDir))
 	services.ExportCollectionToHTML(providedCollection, exportDir, "remaining")
 }
 

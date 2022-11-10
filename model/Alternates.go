@@ -9,3 +9,7 @@ func NewAlternates() *Alternates {
 		AbstractPartRelationships: *NewAbstractRelationships(),
 	}
 }
+
+func (a *Alternates) Save(filePath string) {
+	Save(a, filePath)
+}

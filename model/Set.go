@@ -47,3 +47,7 @@ func (s *Set) splitNumber() (int, int) {
 
 	return number, variant
 }
+
+func (s *Set) Save(filePath string) {
+	Save(s, filePath)
+}

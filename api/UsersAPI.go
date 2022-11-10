@@ -76,8 +76,8 @@ func (u *UsersAPI) GetAllParts() *model.Collection {
 	return collection
 }
 
-// GetSets returns all sets of the user provided by /api/v3/users/{user_token}/sets/
-func (u *UsersAPI) GetSets() *model.UserSets {
+// GetUserSets returns all sets of the user provided by /api/v3/users/{user_token}/sets/
+func (u *UsersAPI) GetUserSets() *model.UserSets {
 	log.Printf("Retrieving all sets owned by user %s", u.userName)
 
 	usersSets := model.NewUserSets()

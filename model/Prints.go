@@ -32,3 +32,7 @@ func (p *Prints) RepresentativeFor(part string) string {
 	}
 	return part
 }
+
+func (p *Prints) Save(filePath string) {
+	Save(p, filePath)
+}

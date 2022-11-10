@@ -179,6 +179,10 @@ func (c *Collection) MapPartsByPartNumber(keyMapping func(string) string) map[st
 	return partsMap
 }
 
+func (c *Collection) Save(filePath string) {
+	Save(c, filePath)
+}
+
 func (c *Collection) setParts(partsMap map[string][]Part) {
 	newParts := []Part{}
 	for key, value := range partsMap {

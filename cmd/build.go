@@ -98,9 +98,9 @@ func executeBuild(args []string) {
 	providedCollection := model.Load(model.NewCollection(), args[0])
 
 	buildCollection := services.Build(neededCollection, providedCollection, services.ModeToUInt8(mode))
-	model.Save(buildCollection, fmt.Sprintf("%s/result.build", outputDir))
+	buildCollection.Save(fmt.Sprintf("%s/result.build", outputDir))
 	services.ExportBuildCollectionToHTML(buildCollection, outputDir, "build")
 
-	model.Save(providedCollection, fmt.Sprintf("%s/remaining.parts", outputDir))
+	providedCollection.Save(fmt.Sprintf("%s/remaining.parts", outputDir))
 	services.ExportCollectionToHTML(providedCollection, outputDir, "remaining")
 }

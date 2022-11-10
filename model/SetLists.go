@@ -11,3 +11,7 @@ func NewSetLists() *SetLists {
 		SetLists: []SetList{},
 	}
 }
+
+func (s *SetLists) Save(filePath string) {
+	Save(s, filePath)
+}

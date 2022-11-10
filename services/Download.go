@@ -49,7 +49,7 @@ func DownloadColors() *model.Colors {
 		colors.Colors = append(colors.Colors, color)
 	}
 
-	model.Save(colors, utils.ColorsPath())
+	colors.Save(utils.ColorsPath())
 
 	os.Remove(csvFile)
 
@@ -85,11 +85,12 @@ func DownloadPartRelationships() (*model.Alternates, *model.Molds, *model.Prints
 	}
 
 	alternates.TransitiveClosure()
+	alternates.Save(utils.AlternatesPath())
+
+	molds.Save(utils.MoldsPath())
 	molds.TransitiveClosure()
 
-	model.Save(alternates, utils.AlternatesPath())
-	model.Save(molds, utils.MoldsPath())
-	model.Save(prints, utils.PrintsPath())
+	prints.Save(utils.PrintsPath())
 
 	os.Remove(csvFile)
 

@@ -13,3 +13,7 @@ func NewUserSets() *UserSets {
 		Sets: []UserSet{},
 	}
 }
+
+func (s *UserSets) Save(filePath string) {
+	Save(s, filePath)
+}

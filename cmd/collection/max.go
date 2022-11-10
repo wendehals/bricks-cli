@@ -39,5 +39,5 @@ func executeMax(args []string) {
 		outputFile = options.FileNameFromArgs(args, "_max.parts")
 	}
 
-	model.Save(max, outputFile)
+	max.Save(outputFile)
 }

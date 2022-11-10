@@ -52,3 +52,7 @@ func (b *BuildCollection) CountProvidedParts() int {
 
 	return provided
 }
+
+func (b *BuildCollection) Save(filePath string) {
+	Save(b, filePath)
+}

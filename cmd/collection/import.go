@@ -5,7 +5,6 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/cmd/options"
-	"github.com/wendehals/bricks/model"
 	"github.com/wendehals/bricks/services"
 )
 
@@ -31,6 +30,5 @@ func executeImport(args []string) {
 	}
 
 	collection := services.ImportCSVCollection(args[0])
-
-	model.Save(collection, outputFile)
+	collection.Save(outputFile)
 }

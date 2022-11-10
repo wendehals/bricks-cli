@@ -41,5 +41,5 @@ func executeSum(args []string) {
 		outputFile = options.FileNameFromArgs(args, "_sum.parts")
 	}
 
-	model.Save(sum, outputFile)
+	sum.Save(outputFile)
 }

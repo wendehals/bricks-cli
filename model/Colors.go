@@ -9,3 +9,7 @@ func NewColors() *Colors {
 		Colors: []Color{},
 	}
 }
+
+func (c *Colors) Save(filePath string) {
+	Save(c, filePath)
+}

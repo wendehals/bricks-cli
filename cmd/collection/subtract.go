@@ -39,5 +39,5 @@ func executeSubtract(args []string) {
 		outputFile = options.FileNameFromArgs(args, "_subtracted.parts")
 	}
 
-	model.Save(result, outputFile)
+	result.Save(outputFile)
 }

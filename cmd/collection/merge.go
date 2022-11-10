@@ -72,5 +72,5 @@ func executeMerge(args []string) {
 		outputFile = options.FileNameFromArgs(args, "_merged.parts")
 	}
 
-	model.Save(collection, outputFile)
+	collection.Save(outputFile)
 }

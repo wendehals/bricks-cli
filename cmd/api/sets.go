@@ -5,7 +5,6 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/cmd/options"
-	"github.com/wendehals/bricks/model"
 )
 
 var setsCmd = &cobra.Command{
@@ -45,25 +44,25 @@ func executeSets() {
 }
 
 func executeAllSets() {
-	sets := createUsersAPI().GetSets()
+	userSets := createUsersAPI().GetUserSets()
 
 	if outputFile == "" {
 		outputFile = fmt.Sprintf("%s.sets",
 			options.ReplaceIllegalCharsFromFileName(credentials.UserName))
 	}
 
-	model.Save(sets, outputFile)
+	userSets.Save(outputFile)
 }
 
 func executeSetListSets() {
 	usersAPI := createUsersAPI()
-	sets := usersAPI.GetSetListSets(setListId)
+	userSets := usersAPI.GetSetListSets(setListId)
 	setList := usersAPI.GetSetList(setListId)
-	sets.Name = setList.Name
+	userSets.Name = setList.Name
 
 	if outputFile == "" {
 		outputFile = fmt.Sprintf("%d.sets", setListId)
 	}
 
-	model.Save(sets, outputFile)
+	userSets.Save(outputFile)
 }

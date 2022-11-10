@@ -7,3 +7,7 @@ type PartList struct {
 	Name        string `json:"name"`
 	NumParts    uint   `json:"num_parts"`
 }
+
+func (s *PartList) Save(filePath string) {
+	Save(s, filePath)
+}

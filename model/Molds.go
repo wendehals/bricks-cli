@@ -9,3 +9,7 @@ func NewMolds() *Molds {
 		AbstractPartRelationships: *NewAbstractRelationships(),
 	}
 }
+
+func (m *Molds) Save(filePath string) {
+	Save(m, filePath)
+}

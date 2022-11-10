@@ -40,7 +40,7 @@ func CacheDir() string {
 	}
 
 	bricksDir := filepath.Join(userCacheDir, "bricks-cli")
-	if _, err := os.Stat(bricksDir); os.IsNotExist(err) {
+	if !FileExists(bricksDir) {
 		err = os.Mkdir(bricksDir, os.ModePerm)
 		if err != nil {
 			log.Fatal(err)
@@ -68,6 +68,18 @@ func PrintsPath() string {
 
 func ShapesPath() string {
 	return filepath.Join(CacheDir(), "shapes.json")
+}
+
+func SetsPath() string {
+	setsPath := filepath.Join(CacheDir(), "sets")
+	if !FileExists(setsPath) {
+		err := os.Mkdir(setsPath, os.ModePerm)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	return setsPath
 }
 
 func ImageIndexPath() string {

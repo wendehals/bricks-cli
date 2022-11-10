@@ -3,16 +3,31 @@ package api
 import (
 	"fmt"
 	"log"
+	"path/filepath"
 	"strings"
 
 	"github.com/wendehals/bricks/model"
+	"github.com/wendehals/bricks/utils"
 )
 
 func RetrieveSetParts(bricksAPI *BricksAPI, setNum string, includeMiniFigs bool) *model.Collection {
-	set := bricksAPI.GetSet(setNum)
+	// looking up cache
+	var collection *model.Collection
+	setFilePath := filepath.Join(utils.SetsPath(), setNum+".parts")
 
-	collection := bricksAPI.GetSetParts(setNum, includeMiniFigs)
-	collection.Sets = append(collection.Sets, *set)
+	if utils.FileExists(setFilePath) {
+		log.Printf("Loading set parts of '%s' from cache", setNum)
+
+		collection = model.Load(model.NewCollection(), setFilePath)
+	} else {
+		// it's not in cache, retrieve set parts via API and save it to cache dir
+		set := bricksAPI.GetSet(setNum)
+
+		collection = bricksAPI.GetSetParts(setNum, includeMiniFigs)
+		collection.Sets = append(collection.Sets, *set)
+
+		collection.Save(setFilePath)
+	}
 
 	return collection
 }

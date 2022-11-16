@@ -9,6 +9,7 @@ import (
 	"github.com/wendehals/bricks/cmd/options"
 	"github.com/wendehals/bricks/model"
 	"github.com/wendehals/bricks/services"
+	"github.com/wendehals/bricks/utils"
 )
 
 const (
@@ -44,7 +45,7 @@ var (
 func init() {
 	exportCmd.Flags().BoolVarP(&sort, SORT_OPT, SORT_SOPT, false, SORT_USAGE)
 	exportCmd.Flags().StringVarP(&credentialsFile, options.CREDENTIALS_OPT, options.CREDENTIALS_SOPT,
-		"credentials.json", options.CREDENTIALS_USAGE)
+		utils.CredentialsDefaultPath(), options.CREDENTIALS_USAGE)
 	exportCmd.Flags().StringVarP(&outputDir, options.OUTPUT_DIR_OPT, options.OUTPUT_DIR_SOPT,
 		"", options.OUTPUT_DIR_USAGE)
 }

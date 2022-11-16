@@ -12,6 +12,7 @@ import (
 	"github.com/wendehals/bricks/cmd/options"
 	"github.com/wendehals/bricks/model"
 	"github.com/wendehals/bricks/services"
+	"github.com/wendehals/bricks/utils"
 )
 
 const (
@@ -57,7 +58,8 @@ func init() {
 	buildCmd.Flags().StringVarP(&setNum, options.SET_NUM_OPT, options.SET_NUM_SOPT, "", options.SET_NUM_USAGE)
 	buildCmd.Flags().StringVarP(&neededPartsFile, NEEDED_PARTS_FILE_OPT, NEEDED_PARTS_FILE_SOPT, "", NEEDED_PARTS_FILE_USAGE)
 	buildCmd.Flags().StringVarP(&mode, options.MODE_OPT, options.MODE_SOPT, "", options.MODE_USAGE)
-	buildCmd.Flags().StringVarP(&credentialsFile, options.CREDENTIALS_OPT, options.CREDENTIALS_SOPT, "credentials.json", options.CREDENTIALS_USAGE)
+	buildCmd.Flags().StringVarP(&credentialsFile, options.CREDENTIALS_OPT, options.CREDENTIALS_SOPT,
+		utils.CredentialsDefaultPath(), options.CREDENTIALS_USAGE)
 	buildCmd.Flags().StringVarP(&outputDir, options.OUTPUT_DIR_OPT, options.OUTPUT_DIR_SOPT, "", options.OUTPUT_DIR_USAGE)
 }
 

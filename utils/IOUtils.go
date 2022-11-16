@@ -82,6 +82,15 @@ func SetsPath() string {
 	return setsPath
 }
 
+func CredentialsDefaultPath() string {
+	userHomeDir, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return filepath.Join(userHomeDir, ".bricks-credentials.json")
+}
+
 func CSVReader(csvFile string) *csv.Reader {
 	file, err := os.Open(csvFile)
 	if err != nil {

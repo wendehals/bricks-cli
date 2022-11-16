@@ -40,7 +40,7 @@
 		sets        Get details about sets owned by the user
 
 	Flags:
-		-c, --credentials string   a JSON file containing the Rebrickable credentials (default "credentials.json")
+		-c, --credentials string   a JSON file containing the Rebrickable credentials (default "<user_home>/.bricks-credentials.json")
 		-h, --help                 help for api
 		-o, --output string        a name for the output file
 

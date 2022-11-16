@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks/api"
 	"github.com/wendehals/bricks/cmd/options"
+	"github.com/wendehals/bricks/utils"
 )
 
 const (
@@ -56,8 +57,8 @@ func init() {
 	ApiCmd.AddCommand(setsCmd)
 	ApiCmd.AddCommand(partsCmd)
 
-	ApiCmd.PersistentFlags().StringVarP(&credentialsFile, options.CREDENTIALS_OPT, options.CREDENTIALS_SOPT, "credentials.json",
-		options.CREDENTIALS_USAGE)
+	ApiCmd.PersistentFlags().StringVarP(&credentialsFile, options.CREDENTIALS_OPT, options.CREDENTIALS_SOPT,
+		utils.CredentialsDefaultPath(), options.CREDENTIALS_USAGE)
 	ApiCmd.PersistentFlags().StringVarP(&outputFile, options.OUTPUT_FILE_OPT, options.OUTPUT_FILE_SOPT, "", options.OUTPUT_FILE_USAGE)
 }
 

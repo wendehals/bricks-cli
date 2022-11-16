@@ -8,6 +8,7 @@ import (
 	"github.com/wendehals/bricks/api"
 	"github.com/wendehals/bricks/cmd/options"
 	"github.com/wendehals/bricks/scripting"
+	"github.com/wendehals/bricks/utils"
 )
 
 var scriptCmd = &cobra.Command{
@@ -31,7 +32,7 @@ var scriptCmd = &cobra.Command{
 
 func init() {
 	scriptCmd.Flags().StringVarP(&credentialsFile, options.CREDENTIALS_OPT, options.CREDENTIALS_SOPT,
-		"credentials.json", options.CREDENTIALS_USAGE)
+		utils.CredentialsDefaultPath(), options.CREDENTIALS_USAGE)
 }
 
 func executeScript(args []string) {

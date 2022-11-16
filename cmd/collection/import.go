@@ -11,8 +11,8 @@ import (
 var (
 	importCmd = &cobra.Command{
 		Use:   fmt.Sprintf("import CSV_FILE %s", options.OUTPUT_FILE_ARG),
-		Short: "Imports parts from a CSV file",
-		Long:  "The command imports a collection of parts from a CSV file.",
+		Short: "Imports parts from a Rebrickable CSV file",
+		Long:  "The command imports a collection of parts from a Rebrickable CSV file.",
 
 		DisableFlagsInUseLine: true,
 

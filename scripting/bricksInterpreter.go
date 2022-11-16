@@ -92,6 +92,12 @@ func (b *bricksInterpreter) ExitLoad(ctx *parser.LoadContext) {
 	b.stack.push(model.Load(model.NewCollection(), filePath))
 }
 
+func (b *bricksInterpreter) ExitImport_(ctx *parser.Import_Context) {
+	filePath := strings.Trim(ctx.STRING().GetText(), "\"")
+
+	b.stack.push(services.ImportCSVCollection(filePath))
+}
+
 func (b *bricksInterpreter) ExitAllParts(ctx *parser.AllPartsContext) {
 	allParts := b.usersAPI.GetAllParts()
 	b.stack.push(allParts)

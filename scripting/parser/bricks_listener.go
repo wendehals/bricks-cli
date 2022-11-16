@@ -38,6 +38,9 @@ type BricksListener interface {
 	// EnterLoad is called when entering the load production.
 	EnterLoad(c *LoadContext)
 
+	// EnterImport_ is called when entering the import_ production.
+	EnterImport_(c *Import_Context)
+
 	// EnterAllParts is called when entering the allParts production.
 	EnterAllParts(c *AllPartsContext)
 
@@ -100,6 +103,9 @@ type BricksListener interface {
 
 	// ExitLoad is called when exiting the load production.
 	ExitLoad(c *LoadContext)
+
+	// ExitImport_ is called when exiting the import_ production.
+	ExitImport_(c *Import_Context)
 
 	// ExitAllParts is called when exiting the allParts production.
 	ExitAllParts(c *AllPartsContext)

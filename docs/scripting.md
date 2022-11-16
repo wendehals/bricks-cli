@@ -23,6 +23,7 @@ These expressions are available in the bricks scripts:
 
 * *Identifier* - Identifiers denote a variable defined by an assignment in advance. Identifiers start with a lower or upper case letter and can contain letters (lower and upper case), digits, and underscore `_`.
 * `load(FILE_NAME)` - Loads a collection from a file with the given FILE_NAME.
+* `import(FILE_NAME)` - Loads a collection from a Rebrickable CSV file with the given FILE_NAME.
 * `allParts` - Denotes all parts owned by the user.
 * `lost` - Denotes all parts lost by the user.
 * `set(SET_NUM, BOOL?)` - Denotes all parts of set number SET_NUM (e.g. 8880-1). If the optional BOOL paramater is set to `true`, it includes all mini figures. If the BOOL parameter is not specified it defaults to `false`, which means that mini figures are not included.

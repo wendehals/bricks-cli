@@ -81,6 +81,12 @@ func (s *BaseBricksListener) EnterLoad(ctx *LoadContext) {}
 // ExitLoad is called when production load is exited.
 func (s *BaseBricksListener) ExitLoad(ctx *LoadContext) {}
 
+// EnterImport_ is called when production import_ is entered.
+func (s *BaseBricksListener) EnterImport_(ctx *Import_Context) {}
+
+// ExitImport_ is called when production import_ is exited.
+func (s *BaseBricksListener) ExitImport_(ctx *Import_Context) {}
+
 // EnterAllParts is called when production allParts is entered.
 func (s *BaseBricksListener) EnterAllParts(ctx *AllPartsContext) {}
 

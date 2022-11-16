@@ -15,11 +15,13 @@ build: 'build' '(' exp ',' exp ',' STRING (',' build_mode=ID )? ')';
 pause: 'pause' '(' seconds=INT ')';
 
 
-exp: identifier | load | allParts | lost | set | userSet | setList | partList | partLists | sum | subtract | max | sort;
+exp: identifier | load | import_ | allParts | lost | set | userSet | setList | partList | partLists | sum | subtract | max | sort;
 
 identifier: ID;
 
 load: 'load' '(' STRING ')';
+
+import_: 'import' '(' STRING ')';
 
 allParts: 'allParts';
 

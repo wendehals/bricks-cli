@@ -62,6 +62,12 @@ func Test_ShapesPath(t *testing.T) {
 	test.AssertSameString(t, expectedBricksDir, ShapesPath())
 }
 
+func Test_SetsPath(t *testing.T) {
+	userCacheDir, _ := os.UserCacheDir()
+	expectedSetsDir := filepath.Join(userCacheDir, "bricks-cli", "sets")
+	test.AssertSameString(t, expectedSetsDir, SetsPath())
+}
+
 func Test_CredentialsDefaultPath(t *testing.T) {
 	userHomeDir, _ := os.UserHomeDir()
 	expectedCredentialsDefaultPath := filepath.Join(userHomeDir, ".bricks-credentials.json")

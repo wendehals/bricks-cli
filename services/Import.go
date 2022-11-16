@@ -10,7 +10,7 @@ import (
 )
 
 func ImportCSVCollection(csvFile string) *model.Collection {
-	log.Printf("Importing parts from '%s'", csvFile)
+	log.Printf("Importing parts from Rebrickable CSV file '%s'", csvFile)
 
 	collection := model.NewCollection()
 

@@ -62,6 +62,12 @@ func Test_ShapesPath(t *testing.T) {
 	test.AssertSameString(t, expectedBricksDir, ShapesPath())
 }
 
+func Test_CredentialsDefaultPath(t *testing.T) {
+	userHomeDir, _ := os.UserHomeDir()
+	expectedCredentialsDefaultPath := filepath.Join(userHomeDir, ".bricks-credentials.json")
+	test.AssertSameString(t, expectedCredentialsDefaultPath, CredentialsDefaultPath())
+}
+
 func Test_CVSReader(t *testing.T) {
 	csvReader := CSVReader("test_resources/test.csv")
 	record, err := csvReader.Read()

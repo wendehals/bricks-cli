@@ -3,22 +3,16 @@ package collection
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"regexp"
-	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/wendehals/bricks/api"
 	"github.com/wendehals/bricks/cmd/options"
 	"github.com/wendehals/bricks/model"
 	"github.com/wendehals/bricks/services"
 )
 
 var (
-	mode            string
-	credentialsFile string
-
-	credentials *api.Credentials
+	mode string
 
 	mergeCmd = &cobra.Command{
 		Use:   fmt.Sprintf("merge PARTS_FILE [%s] %s", options.MODE_ARG, options.OUTPUT_FILE_ARG),
@@ -29,11 +23,6 @@ var (
 
 		Args: cobra.ExactArgs(1),
 		PreRunE: func(cmd *cobra.Command, args []string) error {
-			var err error
-			credentials, err = api.ImportCredentials(credentialsFile)
-			if err != nil {
-				return err
-			}
 			return checkOptionsMerge()
 		},
 		Run: func(cmd *cobra.Command, args []string) {
@@ -51,8 +40,6 @@ func checkOptionsMerge() error {
 }
 
 func init() {
-	mergeCmd.Flags().StringVarP(&credentialsFile, options.CREDENTIALS_OPT, options.CREDENTIALS_SOPT,
-		"credentials.json", options.CREDENTIALS_USAGE)
 	mergeCmd.Flags().StringVarP(&mode, options.MODE_OPT, options.MODE_SOPT, "c", options.MODE_USAGE)
 }
 
@@ -61,12 +48,7 @@ func executeMerge(args []string) {
 
 	collection := model.Load(model.NewCollection(), args[0])
 
-	client := http.Client{
-		Timeout: time.Second * 15,
-	}
-	bricksAPI := api.NewBricksAPI(&client, credentials.APIKey, options.Verbose)
-
-	services.Merge(collection, bricksAPI, services.ModeToUInt8(mode))
+	services.Merge(collection, services.ModeToUInt8(mode))
 
 	if outputFile == "" {
 		outputFile = options.FileNameFromArgs(args, "_merged.parts")

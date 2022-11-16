@@ -46,10 +46,12 @@ func addMissingData(collection *model.Collection) {
 	}
 
 	for i := range collection.Parts {
-		shape := shapes.Shapes[collection.Parts[i].Shape.Number]
-		collection.Parts[i].Color.Name = colorNames[collection.Parts[i].Color.ID]
-		collection.Parts[i].Shape.Name = shape.Name
-		collection.Parts[i].Shape.URL = shape.URL
-		collection.Parts[i].Shape.ImageURL = shape.ImageURL
+		shape, found := shapes.GetShape(collection.Parts[i].Shape.Number)
+		if found {
+			collection.Parts[i].Color.Name = colorNames[collection.Parts[i].Color.ID]
+			collection.Parts[i].Shape.Name = shape.Name
+			collection.Parts[i].Shape.URL = shape.URL
+			collection.Parts[i].Shape.ImageURL = shape.ImageURL
+		}
 	}
 }

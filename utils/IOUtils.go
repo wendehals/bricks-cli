@@ -82,10 +82,6 @@ func SetsPath() string {
 	return setsPath
 }
 
-func ImageIndexPath() string {
-	return filepath.Join(CacheDir(), "image_index.json")
-}
-
 func CSVReader(csvFile string) *csv.Reader {
 	file, err := os.Open(csvFile)
 	if err != nil {

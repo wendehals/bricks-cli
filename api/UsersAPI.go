@@ -7,6 +7,7 @@ import (
 	"net/url"
 
 	"github.com/wendehals/bricks/model"
+	"github.com/wendehals/bricks/services"
 )
 
 const (
@@ -72,6 +73,8 @@ func (u *UsersAPI) GetAllParts() *model.Collection {
 
 		collection.Parts = append(collection.Parts, allPartsPage.Results...)
 	}
+
+	services.GetShapes(false).ComplementShapesData(collection.Parts)
 
 	return collection
 }
@@ -253,6 +256,8 @@ func (u *UsersAPI) GetPartListParts(listId uint) *model.Collection {
 		collection.Parts = append(collection.Parts, partsPage.Results...)
 	}
 
+	services.GetShapes(false).ComplementShapesData(collection.Parts)
+
 	return collection
 }
 
@@ -282,6 +287,8 @@ func (u *UsersAPI) GetLostParts() *model.Collection {
 
 		lostParts.Parts = append(lostParts.Parts, lostPartsPage.convertToParts()...)
 	}
+
+	services.GetShapes(false).ComplementShapesData(lostParts.Parts)
 
 	return lostParts
 }

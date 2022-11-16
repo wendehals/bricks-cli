@@ -62,12 +62,6 @@ func Test_ShapesPath(t *testing.T) {
 	test.AssertSameString(t, expectedBricksDir, ShapesPath())
 }
 
-func Test_ImageIndexPath(t *testing.T) {
-	userCacheDir, _ := os.UserCacheDir()
-	expectedBricksDir := filepath.Join(userCacheDir, "bricks-cli", "image_index.json")
-	test.AssertSameString(t, expectedBricksDir, ImageIndexPath())
-}
-
 func Test_CVSReader(t *testing.T) {
 	csvReader := CSVReader("test_resources/test.csv")
 	record, err := csvReader.Read()

@@ -261,8 +261,14 @@ func (u *UsersAPI) GetPartListParts(listId uint) *model.Collection {
 	return collection
 }
 
+var lostPartsCache *model.Collection
+
 // GetLostParts returns all parts owned by the user provided by /api/v3/users/{user_token}/lost_parts/
 func (u *UsersAPI) GetLostParts() *model.Collection {
+	if lostPartsCache != nil {
+		return lostPartsCache
+	}
+
 	log.Printf("Retrieving lost parts of user %s", u.userName)
 
 	lostParts := model.NewCollection()
@@ -289,6 +295,9 @@ func (u *UsersAPI) GetLostParts() *model.Collection {
 	}
 
 	services.GetShapes(false).ComplementShapesData(lostParts.Parts)
+
+	// cache lost parts
+	lostPartsCache = lostParts
 
 	return lostParts
 }

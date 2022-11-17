@@ -13,8 +13,9 @@ const (
 	IMAGE_URL = "https://cdn.rebrickable.com/media/thumbs/parts/ldraw/4/3001.png/250x250p.png?1658329933.4319756"
 )
 
-func Test_GetShape(t *testing.T) {
-	shapes := createShapes()
+func Test_Add_GetShape(t *testing.T) {
+	shapes := NewShapes()
+	shapes.AddShape(createShape())
 
 	actualShape, found := shapes.GetShape(NUMBER)
 	test.AssertTrue(t, found)
@@ -28,14 +29,16 @@ func Test_GetShape(t *testing.T) {
 }
 
 func Test_GetImageURL(t *testing.T) {
-	shapes := createShapes()
+	shapes := NewShapes()
+	shapes.AddShape(createShape())
 
 	test.AssertSameString(t, IMAGE_URL, shapes.GetImageURL(NUMBER))
 	test.AssertSameString(t, "", shapes.GetImageURL("42"))
 }
 
 func Test_ComplementShapesData(t *testing.T) {
-	shapes := createShapes()
+	shapes := NewShapes()
+	shapes.AddShape(createShape())
 
 	shape := Shape{}
 	shape.Number = "3003"
@@ -65,16 +68,12 @@ func Test_ComplementShapesData(t *testing.T) {
 	test.AssertFalse(t, found)
 }
 
-func createShapes() *Shapes {
-	shapes := NewShapes()
-
+func createShape() Shape {
 	shape := Shape{}
 	shape.Number = NUMBER
 	shape.Name = NAME
 	shape.URL = URL
 	shape.ImageURL = IMAGE_URL
 
-	shapes.Shapes[shape.Number] = shape
-
-	return shapes
+	return shape
 }

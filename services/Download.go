@@ -118,7 +118,7 @@ func DownloadShapes() *model.Shapes {
 		shape.Name = record[1]
 		shape.URL = fmt.Sprintf("https://rebrickable.com/parts/%s", shape.Number)
 
-		shapes.Shapes[shape.Number] = shape
+		shapes.AddShape(shape)
 	}
 	shapes.Save()
 	os.Remove(csvFile)

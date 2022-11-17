@@ -3,13 +3,20 @@ package model
 import "github.com/wendehals/bricks/utils"
 
 type Shapes struct {
-	Shapes map[string]Shape `json:"shapes"`
+	Shapes  map[string]Shape `json:"shapes"`
+	changed bool
 }
 
 func NewShapes() *Shapes {
 	return &Shapes{
-		Shapes: make(map[string]Shape, 0),
+		Shapes:  make(map[string]Shape, 0),
+		changed: false,
 	}
+}
+
+func (s *Shapes) AddShape(shape Shape) {
+	s.Shapes[shape.Number] = shape
+	s.changed = true
 }
 
 func (s *Shapes) GetShape(number string) (Shape, bool) {
@@ -33,12 +40,15 @@ func (s *Shapes) ComplementShapesData(parts []Part) {
 			if shape.ImageURL == "" {
 				shape.ImageURL = part.Shape.ImageURL
 				s.Shapes[part.Shape.Number] = shape
+				s.changed = true
 			}
 		}
 	}
-	s.Save()
 }
 
 func (s *Shapes) Save() {
-	Save(s, utils.ShapesPath())
+	if s.changed {
+		Save(s, utils.ShapesPath())
+		s.changed = false
+	}
 }

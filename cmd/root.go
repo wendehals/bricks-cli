@@ -6,6 +6,7 @@ import (
 	"github.com/wendehals/bricks/cmd/collection"
 	"github.com/wendehals/bricks/cmd/download"
 	"github.com/wendehals/bricks/cmd/options"
+	"github.com/wendehals/bricks/services"
 )
 
 var RootCmd = &cobra.Command{
@@ -21,6 +22,9 @@ to new collections.`,
 
 	CompletionOptions: cobra.CompletionOptions{
 		DisableDefaultCmd: true},
+	PersistentPostRun: func(cmd *cobra.Command, args []string) {
+		postExecuteRoot()
+	},
 }
 
 func init() {
@@ -32,4 +36,8 @@ func init() {
 	RootCmd.AddCommand(download.DownloadCmd)
 
 	RootCmd.PersistentFlags().BoolVarP(&options.Verbose, "verbose", "v", false, "verbose output")
+}
+
+func postExecuteRoot() {
+	services.GetShapes(false).Save()
 }

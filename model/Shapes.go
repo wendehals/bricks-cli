@@ -1,7 +1,5 @@
 package model
 
-import "github.com/wendehals/bricks/utils"
-
 type Shapes struct {
 	Shapes  map[string]Shape `json:"shapes"`
 	changed bool
@@ -46,9 +44,9 @@ func (s *Shapes) ComplementShapesData(parts []Part) {
 	}
 }
 
-func (s *Shapes) Save() {
+func (s *Shapes) Save(filePath string) {
 	if s.changed {
-		Save(s, utils.ShapesPath())
+		Save(s, filePath)
 		s.changed = false
 	}
 }

@@ -120,7 +120,7 @@ func DownloadShapes() *model.Shapes {
 
 		shapes.AddShape(shape)
 	}
-	shapes.Save()
+	shapes.Save(utils.ShapesPath())
 	os.Remove(csvFile)
 
 	return shapes

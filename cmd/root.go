@@ -7,6 +7,7 @@ import (
 	"github.com/wendehals/bricks/cmd/download"
 	"github.com/wendehals/bricks/cmd/options"
 	"github.com/wendehals/bricks/services"
+	"github.com/wendehals/bricks/utils"
 )
 
 var RootCmd = &cobra.Command{
@@ -39,5 +40,5 @@ func init() {
 }
 
 func postExecuteRoot() {
-	services.GetShapes(false).Save()
+	services.GetShapes(false).Save(utils.ShapesPath())
 }

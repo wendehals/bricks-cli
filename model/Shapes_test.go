@@ -1,6 +1,8 @@
 package model
 
 import (
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/wendehals/bricks/test"
@@ -66,6 +68,25 @@ func Test_ComplementShapesData(t *testing.T) {
 
 	_, found := shapes.GetShape("3005")
 	test.AssertFalse(t, found)
+}
+
+func Test_Shapes_Save(t *testing.T) {
+	shapes := NewShapes()
+	expectedShape := createShape()
+	shapes.AddShape(expectedShape)
+
+	tmpFilePath := filepath.Join(os.TempDir(), "shapes_tmp.json")
+	defer os.Remove(tmpFilePath)
+
+	shapes.Save(tmpFilePath)
+
+	actualShapes, err := LoadE(NewShapes(), tmpFilePath)
+	test.AssertNoError(t, err)
+
+	actualShape, found := actualShapes.GetShape(expectedShape.Number)
+	test.AssertTrue(t, found)
+	test.AssertSameString(t, expectedShape.Number, actualShape.Number)
+	test.AssertSameString(t, expectedShape.Name, actualShape.Name)
 }
 
 func createShape() Shape {

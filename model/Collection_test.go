@@ -7,7 +7,7 @@ import (
 )
 
 func Test_Collection_SortByColorAndName(t *testing.T) {
-	collection := Load(&Collection{}, "test_resources/testCollection1.parts")
+	collection := Load[Collection]("test_resources/testCollection1.parts")
 
 	collection.SortByColorAndName(false)
 
@@ -34,7 +34,7 @@ func Test_Collection_SortByColorAndName(t *testing.T) {
 }
 
 func Test_Collection_SortByColorAndName_descending(t *testing.T) {
-	collection := Load(&Collection{}, "test_resources/testCollection1.parts")
+	collection := Load[Collection]("test_resources/testCollection1.parts")
 
 	collection.SortByColorAndName(true)
 
@@ -61,7 +61,7 @@ func Test_Collection_SortByColorAndName_descending(t *testing.T) {
 }
 
 func Test_Collection_SortByQuantityAndName(t *testing.T) {
-	collection := Load(&Collection{}, "test_resources/testCollection1.parts")
+	collection := Load[Collection]("test_resources/testCollection1.parts")
 
 	collection.SortByQuantityAndName(false)
 
@@ -88,7 +88,7 @@ func Test_Collection_SortByQuantityAndName(t *testing.T) {
 }
 
 func Test_Collection_SortByQuantityAndName_descending(t *testing.T) {
-	collection := Load(&Collection{}, "test_resources/testCollection1.parts")
+	collection := Load[Collection]("test_resources/testCollection1.parts")
 
 	collection.SortByQuantityAndName(true)
 
@@ -115,7 +115,7 @@ func Test_Collection_SortByQuantityAndName_descending(t *testing.T) {
 }
 
 func Test_Collection_FindByEquivalence(t *testing.T) {
-	collection := Load(&Collection{}, "test_resources/testCollection1.parts")
+	collection := Load[Collection]("test_resources/testCollection1.parts")
 
 	equivalent := func(a, b string) bool {
 		return a == "2c"
@@ -128,7 +128,7 @@ func Test_Collection_FindByEquivalence(t *testing.T) {
 }
 
 func Test_Collection_FindByEquivalence_none(t *testing.T) {
-	collection := Load(&Collection{}, "test_resources/testCollection1.parts")
+	collection := Load[Collection]("test_resources/testCollection1.parts")
 
 	notEquivalent := func(a, b string) bool {
 		return false
@@ -140,9 +140,11 @@ func Test_Collection_FindByEquivalence_none(t *testing.T) {
 }
 
 func Test_Collection_Add(t *testing.T) {
-	collection := Load(&Collection{}, "test_resources/testCollection1.parts").Add(Load(&Collection{}, "test_resources/testCollection2.parts")).SortByColorAndName(false)
+	collection := Load[Collection]("test_resources/testCollection1.parts")
+	collection2 := Load[Collection]("test_resources/testCollection2.parts")
+	collection.Add(&collection2).SortByColorAndName(false)
 
-	assertSize(t, collection, 9)
+	assertSize(t, &collection, 9)
 
 	test.AssertSameString(t, "2412a", collection.Parts[0].Shape.Number)
 	test.AssertSameInt(t, 6, collection.Parts[0].Quantity)
@@ -179,9 +181,11 @@ func Test_Collection_Add(t *testing.T) {
 }
 
 func Test_Collection_Add_SpareParts(t *testing.T) {
-	collection := Load(&Collection{}, "test_resources/addSpareParts1.parts").Add(Load(&Collection{}, "test_resources/addSpareParts2.parts")).SortByColorAndName(false)
+	collection := Load[Collection]("test_resources/addSpareParts1.parts")
+	collection2 := Load[Collection]("test_resources/addSpareParts2.parts")
+	collection.Add(&collection2).SortByColorAndName(false)
 
-	assertSize(t, collection, 2)
+	assertSize(t, &collection, 2)
 
 	test.AssertSameString(t, "42", collection.Parts[0].Shape.Number)
 	test.AssertSameInt(t, 6, collection.Parts[0].Quantity)
@@ -191,9 +195,11 @@ func Test_Collection_Add_SpareParts(t *testing.T) {
 }
 
 func Test_Collection_Substract(t *testing.T) {
-	collection := Load(&Collection{}, "test_resources/testCollection1.parts").Subtract(Load(&Collection{}, "test_resources/testCollection2.parts")).SortByColorAndName(false)
+	collection := Load[Collection]("test_resources/testCollection1.parts")
+	collection2 := Load[Collection]("test_resources/testCollection2.parts")
+	collection.Subtract(&collection2).SortByColorAndName(false)
 
-	assertSize(t, collection, 9)
+	assertSize(t, &collection, 9)
 
 	test.AssertSameString(t, "2412a", collection.Parts[0].Shape.Number)
 	test.AssertSameInt(t, 4, collection.Parts[0].Quantity)
@@ -224,9 +230,11 @@ func Test_Collection_Substract(t *testing.T) {
 }
 
 func Test_Collection_Max(t *testing.T) {
-	collection := Load(&Collection{}, "test_resources/testCollection1.parts").Max(Load(&Collection{}, "test_resources/testCollection2.parts")).SortByColorAndName(false)
+	collection := Load[Collection]("test_resources/testCollection1.parts")
+	collection2 := Load[Collection]("test_resources/testCollection2.parts")
+	collection.Max(&collection2).SortByColorAndName(false)
 
-	assertSize(t, collection, 9)
+	assertSize(t, &collection, 9)
 
 	test.AssertSameString(t, "2412a", collection.Parts[0].Shape.Number)
 	test.AssertSameInt(t, 5, collection.Parts[0].Quantity)
@@ -266,25 +274,25 @@ func Test_Collection_Max(t *testing.T) {
 }
 
 func Test_Collection_CountParts(t *testing.T) {
-	collection := Load(&Collection{}, "test_resources/testCollection1.parts")
+	collection := Load[Collection]("test_resources/testCollection1.parts")
 
 	test.AssertSameInt(t, 25, collection.CountParts())
 }
 
 func Test_Collection_HasSpareParts(t *testing.T) {
-	collection1 := Load(&Collection{}, "test_resources/testCollection1.parts")
-	collection2 := Load(&Collection{}, "test_resources/testCollection2.parts")
+	collection1 := Load[Collection]("test_resources/testCollection1.parts")
+	collection2 := Load[Collection]("test_resources/testCollection2.parts")
 
 	test.AssertTrue(t, collection1.HasSpareParts())
 	test.AssertFalse(t, collection2.HasSpareParts())
 }
 
 func Test_Collection_HasMissingParts(t *testing.T) {
-	collection := Load(&Collection{}, "test_resources/testCollection1.parts")
+	collection := Load[Collection]("test_resources/testCollection1.parts")
 
 	test.AssertFalse(t, collection.HasMissingParts())
 
-	collection = NewCollection()
+	collection = *NewCollection()
 	part := NewPart()
 	part.Quantity = 10
 	collection.Parts = append(collection.Parts, *part)

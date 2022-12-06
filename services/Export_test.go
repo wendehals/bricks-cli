@@ -13,10 +13,10 @@ import (
 )
 
 func Test_ExportCollectionToHTML(t *testing.T) {
-	collection := model.Load(model.NewCollection(), "test_resources/886-1.parts")
+	collection := model.Load[model.Collection]("test_resources/886-1.parts")
 	tmpPath := filepath.FromSlash(fmt.Sprintf("%s/bricks_export", os.TempDir()))
 
-	ExportCollectionToHTML(collection, tmpPath, "886-1")
+	ExportCollectionToHTML(&collection, tmpPath, "886-1")
 
 	htmlPath := filepath.FromSlash(fmt.Sprintf("%s/886-1.html", tmpPath))
 
@@ -35,10 +35,10 @@ func Test_ExportCollectionToHTML(t *testing.T) {
 }
 
 func Test_ExportBuildCollectionToHTML(t *testing.T) {
-	buildCollection := model.Load(model.NewBuildCollection(), "test_resources/886-1.build")
+	buildCollection := model.Load[model.BuildCollection]("test_resources/886-1.build")
 	tmpPath := filepath.FromSlash(fmt.Sprintf("%s/bricks_export", os.TempDir()))
 
-	ExportBuildCollectionToHTML(buildCollection, tmpPath, "886-1")
+	ExportBuildCollectionToHTML(&buildCollection, tmpPath, "886-1")
 
 	htmlPath := filepath.FromSlash(fmt.Sprintf("%s/886-1.html", tmpPath))
 

@@ -7,7 +7,7 @@ import (
 )
 
 func Test_BuildCollection_Sort(t *testing.T) {
-	buildCollection := Load(&BuildCollection{}, "test_resources/result.build")
+	buildCollection := Load[BuildCollection]("test_resources/result.build")
 
 	buildCollection.Sort()
 
@@ -17,19 +17,19 @@ func Test_BuildCollection_Sort(t *testing.T) {
 }
 
 func Test_BuildCollection_HasMissingParts(t *testing.T) {
-	buildCollection := Load(&BuildCollection{}, "test_resources/result.build")
+	buildCollection := Load[BuildCollection]("test_resources/result.build")
 
 	test.AssertTrue(t, buildCollection.HasMissingParts())
 }
 
 func Test_BuildCollection_CountMissingParts(t *testing.T) {
-	buildCollection := Load(&BuildCollection{}, "test_resources/result.build")
+	buildCollection := Load[BuildCollection]("test_resources/result.build")
 
 	test.AssertSameInt(t, 9, buildCollection.CountMissingParts())
 }
 
 func Test_BuildCollection_CountProvidedParts(t *testing.T) {
-	buildCollection := Load(&BuildCollection{}, "test_resources/result.build")
+	buildCollection := Load[BuildCollection]("test_resources/result.build")
 
 	test.AssertSameInt(t, 8, buildCollection.CountProvidedParts())
 }

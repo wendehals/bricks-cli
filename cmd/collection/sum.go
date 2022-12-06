@@ -29,7 +29,7 @@ func executeSum(args []string) {
 
 	var collections []model.Collection
 	for _, filename := range args {
-		collections = append(collections, *model.Load(model.NewCollection(), filename))
+		collections = append(collections, model.Load[model.Collection](filename))
 	}
 
 	sum := model.NewCollection()

@@ -15,10 +15,10 @@ type Credentials struct {
 }
 
 func ImportCredentials(fileName string) (*Credentials, error) {
-	credentials, err := model.LoadE(&Credentials{}, fileName)
+	credentials, err := model.LoadE[Credentials](fileName)
 	if err != nil {
 		return nil, fmt.Errorf(CREDENTIALS_ERR_MSG, err)
 	}
 
-	return credentials, nil
+	return &credentials, nil
 }

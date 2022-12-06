@@ -57,10 +57,10 @@ func executeExport(args []string) {
 
 	log.Printf("Exporting '%s' to directory '%s'", args[0], outputDir)
 
-	collection := model.Load(model.NewCollection(), args[0])
+	collection := model.Load[model.Collection](args[0])
 	if sort {
 		collection.SortByColorAndName(false)
 	}
 
-	services.ExportCollectionToHTML(collection, outputDir, args[0])
+	services.ExportCollectionToHTML(&collection, outputDir, args[0])
 }

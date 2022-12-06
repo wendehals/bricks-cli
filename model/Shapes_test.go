@@ -80,7 +80,7 @@ func Test_Shapes_Save(t *testing.T) {
 
 	shapes.Save(tmpFilePath)
 
-	actualShapes, err := LoadE(NewShapes(), tmpFilePath)
+	actualShapes, err := LoadE[Shapes](tmpFilePath)
 	test.AssertNoError(t, err)
 
 	actualShape, found := actualShapes.GetShape(expectedShape.Number)

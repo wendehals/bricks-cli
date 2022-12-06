@@ -46,9 +46,9 @@ func init() {
 func executeMerge(args []string) {
 	log.Print("Merging the parts of the collection")
 
-	collection := model.Load(model.NewCollection(), args[0])
+	collection := model.Load[model.Collection](args[0])
 
-	services.Merge(collection, services.ModeToUInt8(mode))
+	services.Merge(&collection, services.ModeToUInt8(mode))
 
 	if outputFile == "" {
 		outputFile = options.FileNameFromArgs(args, "_merged.parts")

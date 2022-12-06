@@ -30,7 +30,7 @@ func mapSameShapeSameColor(neededCollection *model.Collection, providedCollectio
 	for _, neededPart := range neededCollection.Parts {
 		mapping := model.NewPartMapping()
 		mapping.Quantity = neededPart.Quantity
-		mapping.Original = *model.DeepClone(&neededPart, &model.Part{})
+		mapping.Original = *model.DeepClone(&neededPart)
 
 		mapPart(providedCollection, mapping, neededPart.Color.ID, utils.Equals)
 
@@ -87,7 +87,7 @@ func mapPart(providedCollection *model.Collection, mapping *model.PartMapping, c
 			mapping.Original.Shape.Number, colorId, eqFunc)
 
 		if providedPart != nil && providedPart.Quantity > 0 {
-			mappedPart := model.DeepClone(providedPart, &model.Part{})
+			mappedPart := model.DeepClone(providedPart)
 			if providedPart.Quantity >= mapping.Quantity {
 				providedPart.Quantity -= mapping.Quantity
 				mappedPart.Quantity = mapping.Quantity

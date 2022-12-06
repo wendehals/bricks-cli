@@ -80,16 +80,16 @@ func executeBuild(args []string) {
 	}
 	bricksAPI := api.NewBricksAPI(client, credentials.APIKey, options.Verbose)
 
-	var neededCollection *model.Collection
+	var neededCollection model.Collection
 	if setNum != "" {
 		log.Printf("Building set '%s' from provided parts '%s'", setNum, args[0])
-		neededCollection = api.RetrieveSetParts(bricksAPI, setNum, false)
+		neededCollection = *api.RetrieveSetParts(bricksAPI, setNum, false)
 		if outputDir == "" {
 			outputDir = setNum
 		}
 	} else {
 		log.Printf("Building '%s' from provided parts '%s'", neededPartsFile, args[0])
-		neededCollection = model.Load(model.NewCollection(), neededPartsFile)
+		neededCollection = model.Load[model.Collection](neededPartsFile)
 		if outputDir == "" {
 			arg := []string{}
 			arg = append(arg, neededPartsFile)
@@ -97,12 +97,12 @@ func executeBuild(args []string) {
 		}
 	}
 
-	providedCollection := model.Load(model.NewCollection(), args[0])
+	providedCollection := model.Load[model.Collection](args[0])
 
-	buildCollection := services.Build(neededCollection, providedCollection, services.ModeToUInt8(mode))
+	buildCollection := services.Build(&neededCollection, &providedCollection, services.ModeToUInt8(mode))
 	buildCollection.Save(fmt.Sprintf("%s/result.build", outputDir))
 	services.ExportBuildCollectionToHTML(buildCollection, outputDir, "build")
 
 	providedCollection.Save(fmt.Sprintf("%s/remaining.parts", outputDir))
-	services.ExportCollectionToHTML(providedCollection, outputDir, "remaining")
+	services.ExportCollectionToHTML(&providedCollection, outputDir, "remaining")
 }

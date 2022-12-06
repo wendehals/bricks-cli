@@ -12,24 +12,24 @@ import (
 
 func RetrieveSetParts(bricksAPI *BricksAPI, setNum string, includeMiniFigs bool) *model.Collection {
 	// looking up cache
-	var collection *model.Collection
+	var collection model.Collection
 	setFilePath := filepath.Join(utils.SetsPath(), setNum+".parts")
 
 	if utils.FileExists(setFilePath) {
 		log.Printf("Loading set parts of '%s' from cache", setNum)
 
-		collection = model.Load(model.NewCollection(), setFilePath)
+		collection = model.Load[model.Collection](setFilePath)
 	} else {
 		// it's not in cache, retrieve set parts via API and save it to cache dir
 		set := bricksAPI.GetSet(setNum)
 
-		collection = bricksAPI.GetSetParts(setNum, includeMiniFigs)
+		collection = *bricksAPI.GetSetParts(setNum, includeMiniFigs)
 		collection.Sets = append(collection.Sets, *set)
 
 		collection.Save(setFilePath)
 	}
 
-	return collection
+	return &collection
 }
 
 func RetrieveUserSetParts(bricksAPI *BricksAPI, usersAPI *UsersAPI, setNum string, includeMiniFigs bool) *model.Collection {
@@ -78,7 +78,7 @@ func RetrievePartListParts(usersAPI *UsersAPI, listId uint) *model.Collection {
 func RetrievePartListsParts(usersAPI *UsersAPI, partListsFile string, includeNonBuildable bool) []model.Collection {
 	log.Printf("Retrieving parts from all part lists from the part lists file %s", partListsFile)
 
-	partLists := model.Load(&model.PartLists{}, partListsFile)
+	partLists := model.Load[model.PartLists](partListsFile)
 	var collections []model.Collection
 	for _, partList := range partLists.PartLists {
 		if partList.IsBuildable || (includeNonBuildable && !partList.IsBuildable) {

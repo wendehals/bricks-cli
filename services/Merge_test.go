@@ -9,8 +9,8 @@ import (
 
 func Test_MergeAllCollections(t *testing.T) {
 	collections := []model.Collection{
-		*model.Load(model.NewCollection(), "../model/test_resources/testCollection1.parts"),
-		*model.Load(model.NewCollection(), "../model/test_resources/testCollection2.parts"),
+		model.Load[model.Collection]("../model/test_resources/testCollection1.parts"),
+		model.Load[model.Collection]("../model/test_resources/testCollection2.parts"),
 	}
 
 	collection := MergeAllCollections(collections)
@@ -24,67 +24,67 @@ func Test_MergeAllCollections(t *testing.T) {
 }
 
 func Test_Merge_C(t *testing.T) {
-	collection := model.Load(model.NewCollection(), "../model/test_resources/testCollection1.parts")
-	Merge(collection, ModeToUInt8("c"))
+	collection := model.Load[model.Collection]("../model/test_resources/testCollection1.parts")
+	Merge(&collection, ModeToUInt8("c"))
 	collection.SortByColorAndName(false)
 
-	assertMergeByColor(t, collection)
+	assertMergeByColor(t, &collection)
 }
 
 func Test_MergeByColor(t *testing.T) {
-	collection := model.Load(model.NewCollection(), "../model/test_resources/testCollection1.parts")
-	MergeByColor(collection)
+	collection := model.Load[model.Collection]("../model/test_resources/testCollection1.parts")
+	MergeByColor(&collection)
 	collection.SortByColorAndName(false)
 
-	assertMergeByColor(t, collection)
+	assertMergeByColor(t, &collection)
 }
 
 func Test_Merge_P(t *testing.T) {
-	collection := model.Load(model.NewCollection(), "test_resources/mergeByPrint.parts")
-	Merge(collection, ModeToUInt8("p"))
+	collection := model.Load[model.Collection]("test_resources/mergeByPrint.parts")
+	Merge(&collection, ModeToUInt8("p"))
 	collection.SortByColorAndName(false)
 
-	assertMergeByPrint(t, collection)
+	assertMergeByPrint(t, &collection)
 }
 
 func Test_MergeByPrint(t *testing.T) {
-	collection := model.Load(model.NewCollection(), "test_resources/mergeByPrint.parts")
-	MergeByPrint(collection)
+	collection := model.Load[model.Collection]("test_resources/mergeByPrint.parts")
+	MergeByPrint(&collection)
 	collection.SortByColorAndName(false)
 
-	assertMergeByPrint(t, collection)
+	assertMergeByPrint(t, &collection)
 }
 
 func Test_Merge_M(t *testing.T) {
-	collection := model.Load(model.NewCollection(), "test_resources/mergeByMold.parts")
-	Merge(collection, ModeToUInt8("m"))
+	collection := model.Load[model.Collection]("test_resources/mergeByMold.parts")
+	Merge(&collection, ModeToUInt8("m"))
 	collection.SortByColorAndName(false)
 
-	assertMergeByMold(t, collection)
+	assertMergeByMold(t, &collection)
 }
 
 func Test_MergeByMold(t *testing.T) {
-	collection := model.Load(model.NewCollection(), "test_resources/mergeByMold.parts")
-	MergeByMold(collection)
+	collection := model.Load[model.Collection]("test_resources/mergeByMold.parts")
+	MergeByMold(&collection)
 	collection.SortByColorAndName(false)
 
-	assertMergeByMold(t, collection)
+	assertMergeByMold(t, &collection)
 }
 
 func Test_Merge_A(t *testing.T) {
-	collection := model.Load(model.NewCollection(), "test_resources/mergeByAlternate.parts")
-	Merge(collection, ModeToUInt8("a"))
+	collection := model.Load[model.Collection]("test_resources/mergeByAlternate.parts")
+	Merge(&collection, ModeToUInt8("a"))
 	collection.SortByColorAndName(false)
 
-	assertMergeByAlternate(t, collection)
+	assertMergeByAlternate(t, &collection)
 }
 
 func Test_MergeByAlternate(t *testing.T) {
-	collection := model.Load(model.NewCollection(), "test_resources/mergeByAlternate.parts")
-	MergeByAlternate(collection)
+	collection := model.Load[model.Collection]("test_resources/mergeByAlternate.parts")
+	MergeByAlternate(&collection)
 	collection.SortByColorAndName(false)
 
-	assertMergeByAlternate(t, collection)
+	assertMergeByAlternate(t, &collection)
 }
 
 func assertMergeByColor(t *testing.T, collection *model.Collection) {

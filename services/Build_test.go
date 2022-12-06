@@ -9,10 +9,10 @@ import (
 )
 
 func Test_Build_CAMP(t *testing.T) {
-	neededCollection := model.Load(model.NewCollection(), "test_resources/886-1.parts")
-	providedCollection := model.Load(model.NewCollection(), "test_resources/886-1_provided.parts")
+	neededCollection := model.Load[model.Collection]("test_resources/886-1.parts")
+	providedCollection := model.Load[model.Collection]("test_resources/886-1_provided.parts")
 
-	buildCollection := Build(neededCollection, providedCollection, 15) // mode = camp
+	buildCollection := Build(&neededCollection, &providedCollection, 15) // mode = camp
 
 	test.AssertTrue(t, cmp.Equal(buildCollection.Set, neededCollection.Sets[0]))
 
@@ -46,10 +46,10 @@ func Test_Build_CAMP(t *testing.T) {
 }
 
 func Test_Build_C(t *testing.T) {
-	neededCollection := model.Load(model.NewCollection(), "test_resources/886-1.parts")
-	providedCollection := model.Load(model.NewCollection(), "test_resources/886-1_provided.parts")
+	neededCollection := model.Load[model.Collection]("test_resources/886-1.parts")
+	providedCollection := model.Load[model.Collection]("test_resources/886-1_provided.parts")
 
-	buildCollection := Build(neededCollection, providedCollection, MODE_COLOR)
+	buildCollection := Build(&neededCollection, &providedCollection, MODE_COLOR)
 
 	test.AssertTrue(t, cmp.Equal(buildCollection.Set, neededCollection.Sets[0]))
 
@@ -75,10 +75,10 @@ func Test_Build_C(t *testing.T) {
 }
 
 func Test_Build_CA(t *testing.T) {
-	neededCollection := model.Load(model.NewCollection(), "test_resources/886-1.parts")
-	providedCollection := model.Load(model.NewCollection(), "test_resources/886-1_provided.parts")
+	neededCollection := model.Load[model.Collection]("test_resources/886-1.parts")
+	providedCollection := model.Load[model.Collection]("test_resources/886-1_provided.parts")
 
-	buildCollection := Build(neededCollection, providedCollection, 3) // mode = ca
+	buildCollection := Build(&neededCollection, &providedCollection, 3) // mode = ca
 
 	test.AssertTrue(t, cmp.Equal(buildCollection.Set, neededCollection.Sets[0]))
 
@@ -107,10 +107,10 @@ func Test_Build_CA(t *testing.T) {
 }
 
 func Test_Build_CAM(t *testing.T) {
-	neededCollection := model.Load(model.NewCollection(), "test_resources/886-1.parts")
-	providedCollection := model.Load(model.NewCollection(), "test_resources/886-1_provided.parts")
+	neededCollection := model.Load[model.Collection]("test_resources/886-1.parts")
+	providedCollection := model.Load[model.Collection]("test_resources/886-1_provided.parts")
 
-	buildCollection := Build(neededCollection, providedCollection, 7) // mode = camp
+	buildCollection := Build(&neededCollection, &providedCollection, 7) // mode = camp
 
 	test.AssertTrue(t, cmp.Equal(buildCollection.Set, neededCollection.Sets[0]))
 

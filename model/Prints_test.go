@@ -1,10 +1,27 @@
 package model
 
 import (
+	"os"
+	"path/filepath"
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
 	"github.com/wendehals/bricks/test"
 )
+
+func Test_Prints_Save(t *testing.T) {
+	prints := NewPrints()
+
+	prints.Add("3001pr0001", "3001a")
+	prints.Add("123pr0001", "123")
+
+	tmpFile := filepath.Join(os.TempDir(), "prints.json")
+	defer os.Remove(tmpFile)
+	prints.Save(tmpFile)
+
+	actualPrints := Load[Prints](tmpFile)
+	test.AssertTrue(t, cmp.Equal(prints, &actualPrints))
+}
 
 func Test_Prints_IsCompatible(t *testing.T) {
 	prints := NewPrints()

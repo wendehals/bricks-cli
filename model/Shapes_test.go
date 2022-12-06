@@ -75,12 +75,12 @@ func Test_Shapes_Save(t *testing.T) {
 	expectedShape := createShape()
 	shapes.AddShape(expectedShape)
 
-	tmpFilePath := filepath.Join(os.TempDir(), "shapes_tmp.json")
-	defer os.Remove(tmpFilePath)
+	tmpFile := filepath.Join(os.TempDir(), "shapes_tmp.json")
 
-	shapes.Save(tmpFilePath)
+	shapes.Save(tmpFile)
+	defer os.Remove(tmpFile)
 
-	actualShapes, err := LoadE[Shapes](tmpFilePath)
+	actualShapes, err := LoadE[Shapes](tmpFile)
 	test.AssertNoError(t, err)
 
 	actualShape, found := actualShapes.GetShape(expectedShape.Number)

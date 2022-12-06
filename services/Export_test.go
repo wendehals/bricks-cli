@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -14,11 +13,13 @@ import (
 
 func Test_ExportCollectionToHTML(t *testing.T) {
 	collection := model.Load[model.Collection]("test_resources/886-1.parts")
-	tmpPath := filepath.FromSlash(fmt.Sprintf("%s/bricks_export", os.TempDir()))
+
+	tmpPath := filepath.Join(os.TempDir(), "bricks_export")
+	defer os.RemoveAll(tmpPath)
 
 	ExportCollectionToHTML(&collection, tmpPath, "886-1")
 
-	htmlPath := filepath.FromSlash(fmt.Sprintf("%s/886-1.html", tmpPath))
+	htmlPath := filepath.Join(tmpPath, "886-1.html")
 
 	test.AssertTrue(t, utils.FileExists(htmlPath))
 
@@ -30,17 +31,17 @@ func Test_ExportCollectionToHTML(t *testing.T) {
 	test.AssertTrue(t, matches(html, "<a href=\"https://rebrickable.com/sets/886-1/space-buggy/\">886-1 Space Buggy</a>"))
 	test.AssertTrue(t, matches(html, "<p>Total number of parts: 15"))
 	test.AssertTrue(t, matches(html, "title=\"Tyre 15 x 6 Offset Tread Small, Black\" alt=\"Tyre 15 x 6 Offset Tread Small\" width=\"100\" height=\"100\"/>"))
-
-	os.RemoveAll(tmpPath)
 }
 
 func Test_ExportBuildCollectionToHTML(t *testing.T) {
 	buildCollection := model.Load[model.BuildCollection]("test_resources/886-1.build")
-	tmpPath := filepath.FromSlash(fmt.Sprintf("%s/bricks_export", os.TempDir()))
+
+	tmpPath := filepath.Join(os.TempDir(), "bricks_export")
+	defer os.RemoveAll(tmpPath)
 
 	ExportBuildCollectionToHTML(&buildCollection, tmpPath, "886-1")
 
-	htmlPath := filepath.FromSlash(fmt.Sprintf("%s/886-1.html", tmpPath))
+	htmlPath := filepath.Join(tmpPath, "886-1.html")
 
 	test.AssertTrue(t, utils.FileExists(htmlPath))
 
@@ -55,8 +56,6 @@ func Test_ExportBuildCollectionToHTML(t *testing.T) {
 	test.AssertTrue(t, matches(html, "<p>Missing parts: 3"))
 	test.AssertTrue(t, matches(html, "title=\"Tyre 15 x 6 Offset Tread Small, Black\" alt=\"Tyre 15 x 6 Offset Tread Small\" width=\"100\" height=\"100\"/>"))
 	test.AssertTrue(t, matches(html, "<div class=\"missing\">2</div>"))
-
-	os.RemoveAll(tmpPath)
 }
 
 func matches(text, regex string) bool {

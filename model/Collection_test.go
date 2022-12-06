@@ -1,10 +1,35 @@
 package model
 
 import (
+	"os"
+	"path/filepath"
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
 	"github.com/wendehals/bricks/test"
 )
+
+func Test_Collection_Save(t *testing.T) {
+	collection := NewCollection()
+	collection.User = "user"
+	collection.Comment = "comment"
+
+	set := Set{Name: "setName", Number: "123-1", Year: 1992, NumParts: 5}
+	collection.Sets = append(collection.Sets, set)
+
+	part := NewPart()
+	part.Quantity = 1
+	part.Shape.Name = "Brick 2 x 4"
+	part.Shape.Number = "3001"
+	collection.Parts = append(collection.Parts, *part)
+
+	tmpFile := filepath.Join(os.TempDir(), "collection.parts")
+	defer os.Remove(tmpFile)
+	collection.Save(tmpFile)
+
+	actualCollection := Load[Collection](tmpFile)
+	test.AssertTrue(t, cmp.Equal(collection, &actualCollection))
+}
 
 func Test_Collection_SortByColorAndName(t *testing.T) {
 	collection := Load[Collection]("test_resources/testCollection1.parts")

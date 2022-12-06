@@ -10,10 +10,11 @@ import (
 
 func Test_CreateFolder_FileExists(t *testing.T) {
 	tmpFolder := filepath.Join(os.TempDir(), "folder")
+	defer os.RemoveAll(tmpFolder)
+
 	test.AssertFalse(t, FileExists(tmpFolder))
 	CreateFolder(tmpFolder)
 	test.AssertTrue(t, FileExists(tmpFolder))
-	os.RemoveAll(tmpFolder)
 }
 
 func Test_SplitFileName(t *testing.T) {

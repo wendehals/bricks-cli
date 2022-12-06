@@ -1,7 +1,6 @@
 package model
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
@@ -25,12 +24,11 @@ func Test_LoadE(t *testing.T) {
 func Test_Save(t *testing.T) {
 	original := Load[Collection]("test_resources/testCollection1.parts")
 
-	tmpFile := filepath.FromSlash(fmt.Sprintf("%s/%s", os.TempDir(), "test.parts"))
-
+	tmpFile := filepath.Join(os.TempDir(), "test.parts")
 	Save(original, tmpFile)
 
 	saved := Load[Collection](tmpFile)
-	os.Remove(tmpFile)
+	defer os.Remove(tmpFile)
 
 	test.AssertTrue(t, cmp.Equal(original, saved))
 }

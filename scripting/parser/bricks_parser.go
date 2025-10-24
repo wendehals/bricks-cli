@@ -1,4 +1,4 @@
-// Code generated from java-escape by ANTLR 4.11.1. DO NOT EDIT.
+// Code generated from ./scripting/parser/Bricks.g4 by ANTLR 4.13.2. DO NOT EDIT.
 
 package parser // Bricks
 
@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
+	"github.com/antlr4-go/antlr/v4"
 )
 
 // Suppress unused import errors
@@ -19,36 +19,36 @@ type BricksParser struct {
 	*antlr.BaseParser
 }
 
-var bricksParserStaticData struct {
+var BricksParserStaticData struct {
 	once                   sync.Once
 	serializedATN          []int32
-	literalNames           []string
-	symbolicNames          []string
-	ruleNames              []string
-	predictionContextCache *antlr.PredictionContextCache
+	LiteralNames           []string
+	SymbolicNames          []string
+	RuleNames              []string
+	PredictionContextCache *antlr.PredictionContextCache
 	atn                    *antlr.ATN
 	decisionToDFA          []*antlr.DFA
 }
 
 func bricksParserInit() {
-	staticData := &bricksParserStaticData
-	staticData.literalNames = []string{
+	staticData := &BricksParserStaticData
+	staticData.LiteralNames = []string{
 		"", "':='", "'save'", "'('", "','", "')'", "'export'", "'build'", "'pause'",
 		"'load'", "'import'", "'allParts'", "'lost'", "'set'", "'userSet'",
 		"'setList'", "'partList'", "'partLists'", "'sum'", "'subtract'", "'max'",
 		"'sort'", "'quantity'", "'descending'",
 	}
-	staticData.symbolicNames = []string{
+	staticData.SymbolicNames = []string{
 		"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
 		"", "", "", "", "", "", "", "INT", "BOOL", "STRING", "ID", "SET_NUM",
 		"WS",
 	}
-	staticData.ruleNames = []string{
+	staticData.RuleNames = []string{
 		"bricks", "command", "assignment", "save", "export", "build", "pause",
 		"exp", "identifier", "load", "import_", "allParts", "lost", "set", "userSet",
 		"setList", "partList", "partLists", "sum", "subtract", "max", "sort",
 	}
-	staticData.predictionContextCache = antlr.NewPredictionContextCache()
+	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
 		4, 1, 29, 208, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2, 10, 7,
@@ -152,7 +152,7 @@ func bricksParserInit() {
 // NewBricksParser(). You can call this function if you wish to initialize the static state ahead
 // of time.
 func BricksParserInit() {
-	staticData := &bricksParserStaticData
+	staticData := &BricksParserStaticData
 	staticData.once.Do(bricksParserInit)
 }
 
@@ -161,12 +161,12 @@ func NewBricksParser(input antlr.TokenStream) *BricksParser {
 	BricksParserInit()
 	this := new(BricksParser)
 	this.BaseParser = antlr.NewBaseParser(input)
-	staticData := &bricksParserStaticData
-	this.Interpreter = antlr.NewParserATNSimulator(this, staticData.atn, staticData.decisionToDFA, staticData.predictionContextCache)
-	this.RuleNames = staticData.ruleNames
-	this.LiteralNames = staticData.literalNames
-	this.SymbolicNames = staticData.symbolicNames
-	this.GrammarFileName = "java-escape"
+	staticData := &BricksParserStaticData
+	this.Interpreter = antlr.NewParserATNSimulator(this, staticData.atn, staticData.decisionToDFA, staticData.PredictionContextCache)
+	this.RuleNames = staticData.RuleNames
+	this.LiteralNames = staticData.LiteralNames
+	this.SymbolicNames = staticData.SymbolicNames
+	this.GrammarFileName = "Bricks.g4"
 
 	return this
 }
@@ -238,20 +238,29 @@ type IBricksContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	AllCommand() []ICommandContext
+	Command(i int) ICommandContext
+
 	// IsBricksContext differentiates from other interfaces.
 	IsBricksContext()
 }
 
 type BricksContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyBricksContext() *BricksContext {
 	var p = new(BricksContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_bricks
 	return p
+}
+
+func InitEmptyBricksContext(p *BricksContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_bricks
 }
 
 func (*BricksContext) IsBricksContext() {}
@@ -259,7 +268,7 @@ func (*BricksContext) IsBricksContext() {}
 func NewBricksContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *BricksContext {
 	var p = new(BricksContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_bricks
@@ -331,35 +340,19 @@ func (s *BricksContext) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) Bricks() (localctx IBricksContext) {
-	this := p
-	_ = this
-
 	localctx = NewBricksContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 0, BricksParserRULE_bricks)
 	var _la int
 
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.EnterOuterAlt(localctx, 1)
 	p.SetState(45)
 	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
 	_la = p.GetTokenStream().LA(1)
 
-	for ok := true; ok; ok = (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&134218180) != 0 {
+	for ok := true; ok; ok = ((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&134218180) != 0) {
 		{
 			p.SetState(44)
 			p.Command()
@@ -367,10 +360,23 @@ func (p *BricksParser) Bricks() (localctx IBricksContext) {
 
 		p.SetState(47)
 		p.GetErrorHandler().Sync(p)
+		if p.HasError() {
+			goto errorExit
+		}
 		_la = p.GetTokenStream().LA(1)
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // ICommandContext is an interface to support dynamic dispatch.
@@ -380,20 +386,32 @@ type ICommandContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	Assignment() IAssignmentContext
+	Save() ISaveContext
+	Export() IExportContext
+	Build() IBuildContext
+	Pause() IPauseContext
+
 	// IsCommandContext differentiates from other interfaces.
 	IsCommandContext()
 }
 
 type CommandContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyCommandContext() *CommandContext {
 	var p = new(CommandContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_command
 	return p
+}
+
+func InitEmptyCommandContext(p *CommandContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_command
 }
 
 func (*CommandContext) IsCommandContext() {}
@@ -401,7 +419,7 @@ func (*CommandContext) IsCommandContext() {}
 func NewCommandContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *CommandContext {
 	var p = new(CommandContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_command
@@ -512,30 +530,13 @@ func (s *CommandContext) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) Command() (localctx ICommandContext) {
-	this := p
-	_ = this
-
 	localctx = NewCommandContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 2, BricksParserRULE_command)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.SetState(54)
 	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
 
 	switch p.GetTokenStream().LA(1) {
 	case BricksParserID:
@@ -574,10 +575,21 @@ func (p *BricksParser) Command() (localctx ICommandContext) {
 		}
 
 	default:
-		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
+		p.SetError(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
+		goto errorExit
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IAssignmentContext is an interface to support dynamic dispatch.
@@ -587,20 +599,29 @@ type IAssignmentContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	ID() antlr.TerminalNode
+	Exp() IExpContext
+
 	// IsAssignmentContext differentiates from other interfaces.
 	IsAssignmentContext()
 }
 
 type AssignmentContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyAssignmentContext() *AssignmentContext {
 	var p = new(AssignmentContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_assignment
 	return p
+}
+
+func InitEmptyAssignmentContext(p *AssignmentContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_assignment
 }
 
 func (*AssignmentContext) IsAssignmentContext() {}
@@ -608,7 +629,7 @@ func (*AssignmentContext) IsAssignmentContext() {}
 func NewAssignmentContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *AssignmentContext {
 	var p = new(AssignmentContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_assignment
@@ -659,43 +680,41 @@ func (s *AssignmentContext) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) Assignment() (localctx IAssignmentContext) {
-	this := p
-	_ = this
-
 	localctx = NewAssignmentContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 4, BricksParserRULE_assignment)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(56)
 		p.Match(BricksParserID)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(57)
 		p.Match(BricksParserT__0)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(58)
 		p.Exp()
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // ISaveContext is an interface to support dynamic dispatch.
@@ -705,20 +724,29 @@ type ISaveContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	Exp() IExpContext
+	STRING() antlr.TerminalNode
+
 	// IsSaveContext differentiates from other interfaces.
 	IsSaveContext()
 }
 
 type SaveContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptySaveContext() *SaveContext {
 	var p = new(SaveContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_save
 	return p
+}
+
+func InitEmptySaveContext(p *SaveContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_save
 }
 
 func (*SaveContext) IsSaveContext() {}
@@ -726,7 +754,7 @@ func (*SaveContext) IsSaveContext() {}
 func NewSaveContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *SaveContext {
 	var p = new(SaveContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_save
@@ -777,36 +805,24 @@ func (s *SaveContext) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) Save() (localctx ISaveContext) {
-	this := p
-	_ = this
-
 	localctx = NewSaveContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 6, BricksParserRULE_save)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(60)
 		p.Match(BricksParserT__1)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(61)
 		p.Match(BricksParserT__2)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(62)
@@ -815,17 +831,39 @@ func (p *BricksParser) Save() (localctx ISaveContext) {
 	{
 		p.SetState(63)
 		p.Match(BricksParserT__3)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(64)
 		p.Match(BricksParserSTRING)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(65)
 		p.Match(BricksParserT__4)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IExportContext is an interface to support dynamic dispatch.
@@ -835,20 +873,29 @@ type IExportContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	Exp() IExpContext
+	STRING() antlr.TerminalNode
+
 	// IsExportContext differentiates from other interfaces.
 	IsExportContext()
 }
 
 type ExportContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyExportContext() *ExportContext {
 	var p = new(ExportContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_export
 	return p
+}
+
+func InitEmptyExportContext(p *ExportContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_export
 }
 
 func (*ExportContext) IsExportContext() {}
@@ -856,7 +903,7 @@ func (*ExportContext) IsExportContext() {}
 func NewExportContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ExportContext {
 	var p = new(ExportContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_export
@@ -907,36 +954,24 @@ func (s *ExportContext) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) Export() (localctx IExportContext) {
-	this := p
-	_ = this
-
 	localctx = NewExportContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 8, BricksParserRULE_export)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(67)
 		p.Match(BricksParserT__5)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(68)
 		p.Match(BricksParserT__2)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(69)
@@ -945,17 +980,39 @@ func (p *BricksParser) Export() (localctx IExportContext) {
 	{
 		p.SetState(70)
 		p.Match(BricksParserT__3)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(71)
 		p.Match(BricksParserSTRING)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(72)
 		p.Match(BricksParserT__4)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IBuildContext is an interface to support dynamic dispatch.
@@ -971,21 +1028,32 @@ type IBuildContext interface {
 	// SetBuild_mode sets the build_mode token.
 	SetBuild_mode(antlr.Token)
 
+	// Getter signatures
+	AllExp() []IExpContext
+	Exp(i int) IExpContext
+	STRING() antlr.TerminalNode
+	ID() antlr.TerminalNode
+
 	// IsBuildContext differentiates from other interfaces.
 	IsBuildContext()
 }
 
 type BuildContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser     antlr.Parser
 	build_mode antlr.Token
 }
 
 func NewEmptyBuildContext() *BuildContext {
 	var p = new(BuildContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_build
 	return p
+}
+
+func InitEmptyBuildContext(p *BuildContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_build
 }
 
 func (*BuildContext) IsBuildContext() {}
@@ -993,7 +1061,7 @@ func (*BuildContext) IsBuildContext() {}
 func NewBuildContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *BuildContext {
 	var p = new(BuildContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_build
@@ -1077,37 +1145,26 @@ func (s *BuildContext) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) Build() (localctx IBuildContext) {
-	this := p
-	_ = this
-
 	localctx = NewBuildContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 10, BricksParserRULE_build)
 	var _la int
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
 
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(74)
 		p.Match(BricksParserT__6)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(75)
 		p.Match(BricksParserT__2)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(76)
@@ -1116,6 +1173,10 @@ func (p *BricksParser) Build() (localctx IBuildContext) {
 	{
 		p.SetState(77)
 		p.Match(BricksParserT__3)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(78)
@@ -1124,19 +1185,34 @@ func (p *BricksParser) Build() (localctx IBuildContext) {
 	{
 		p.SetState(79)
 		p.Match(BricksParserT__3)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(80)
 		p.Match(BricksParserSTRING)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	p.SetState(83)
 	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
 	_la = p.GetTokenStream().LA(1)
 
 	if _la == BricksParserT__3 {
 		{
 			p.SetState(81)
 			p.Match(BricksParserT__3)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(82)
@@ -1144,15 +1220,33 @@ func (p *BricksParser) Build() (localctx IBuildContext) {
 			var _m = p.Match(BricksParserID)
 
 			localctx.(*BuildContext).build_mode = _m
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	}
 	{
 		p.SetState(85)
 		p.Match(BricksParserT__4)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IPauseContext is an interface to support dynamic dispatch.
@@ -1168,21 +1262,29 @@ type IPauseContext interface {
 	// SetSeconds sets the seconds token.
 	SetSeconds(antlr.Token)
 
+	// Getter signatures
+	INT() antlr.TerminalNode
+
 	// IsPauseContext differentiates from other interfaces.
 	IsPauseContext()
 }
 
 type PauseContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser  antlr.Parser
 	seconds antlr.Token
 }
 
 func NewEmptyPauseContext() *PauseContext {
 	var p = new(PauseContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_pause
 	return p
+}
+
+func InitEmptyPauseContext(p *PauseContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_pause
 }
 
 func (*PauseContext) IsPauseContext() {}
@@ -1190,7 +1292,7 @@ func (*PauseContext) IsPauseContext() {}
 func NewPauseContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *PauseContext {
 	var p = new(PauseContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_pause
@@ -1229,36 +1331,24 @@ func (s *PauseContext) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) Pause() (localctx IPauseContext) {
-	this := p
-	_ = this
-
 	localctx = NewPauseContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 12, BricksParserRULE_pause)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(87)
 		p.Match(BricksParserT__7)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(88)
 		p.Match(BricksParserT__2)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(89)
@@ -1266,13 +1356,31 @@ func (p *BricksParser) Pause() (localctx IPauseContext) {
 		var _m = p.Match(BricksParserINT)
 
 		localctx.(*PauseContext).seconds = _m
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(90)
 		p.Match(BricksParserT__4)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IExpContext is an interface to support dynamic dispatch.
@@ -1282,20 +1390,41 @@ type IExpContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	Identifier() IIdentifierContext
+	Load() ILoadContext
+	Import_() IImport_Context
+	AllParts() IAllPartsContext
+	Lost() ILostContext
+	Set() ISetContext
+	UserSet() IUserSetContext
+	SetList() ISetListContext
+	PartList() IPartListContext
+	PartLists() IPartListsContext
+	Sum() ISumContext
+	Subtract() ISubtractContext
+	Max() IMaxContext
+	Sort() ISortContext
+
 	// IsExpContext differentiates from other interfaces.
 	IsExpContext()
 }
 
 type ExpContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyExpContext() *ExpContext {
 	var p = new(ExpContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_exp
 	return p
+}
+
+func InitEmptyExpContext(p *ExpContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_exp
 }
 
 func (*ExpContext) IsExpContext() {}
@@ -1303,7 +1432,7 @@ func (*ExpContext) IsExpContext() {}
 func NewExpContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ExpContext {
 	var p = new(ExpContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_exp
@@ -1558,30 +1687,13 @@ func (s *ExpContext) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) Exp() (localctx IExpContext) {
-	this := p
-	_ = this
-
 	localctx = NewExpContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 14, BricksParserRULE_exp)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.SetState(106)
 	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
 
 	switch p.GetTokenStream().LA(1) {
 	case BricksParserID:
@@ -1683,10 +1795,21 @@ func (p *BricksParser) Exp() (localctx IExpContext) {
 		}
 
 	default:
-		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
+		p.SetError(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
+		goto errorExit
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IIdentifierContext is an interface to support dynamic dispatch.
@@ -1696,20 +1819,28 @@ type IIdentifierContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	ID() antlr.TerminalNode
+
 	// IsIdentifierContext differentiates from other interfaces.
 	IsIdentifierContext()
 }
 
 type IdentifierContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyIdentifierContext() *IdentifierContext {
 	var p = new(IdentifierContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_identifier
 	return p
+}
+
+func InitEmptyIdentifierContext(p *IdentifierContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_identifier
 }
 
 func (*IdentifierContext) IsIdentifierContext() {}
@@ -1717,7 +1848,7 @@ func (*IdentifierContext) IsIdentifierContext() {}
 func NewIdentifierContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *IdentifierContext {
 	var p = new(IdentifierContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_identifier
@@ -1752,35 +1883,29 @@ func (s *IdentifierContext) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) Identifier() (localctx IIdentifierContext) {
-	this := p
-	_ = this
-
 	localctx = NewIdentifierContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 16, BricksParserRULE_identifier)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(108)
 		p.Match(BricksParserID)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // ILoadContext is an interface to support dynamic dispatch.
@@ -1790,20 +1915,28 @@ type ILoadContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	STRING() antlr.TerminalNode
+
 	// IsLoadContext differentiates from other interfaces.
 	IsLoadContext()
 }
 
 type LoadContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyLoadContext() *LoadContext {
 	var p = new(LoadContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_load
 	return p
+}
+
+func InitEmptyLoadContext(p *LoadContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_load
 }
 
 func (*LoadContext) IsLoadContext() {}
@@ -1811,7 +1944,7 @@ func (*LoadContext) IsLoadContext() {}
 func NewLoadContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *LoadContext {
 	var p = new(LoadContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_load
@@ -1846,47 +1979,53 @@ func (s *LoadContext) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) Load() (localctx ILoadContext) {
-	this := p
-	_ = this
-
 	localctx = NewLoadContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 18, BricksParserRULE_load)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(110)
 		p.Match(BricksParserT__8)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(111)
 		p.Match(BricksParserT__2)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(112)
 		p.Match(BricksParserSTRING)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(113)
 		p.Match(BricksParserT__4)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IImport_Context is an interface to support dynamic dispatch.
@@ -1896,20 +2035,28 @@ type IImport_Context interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	STRING() antlr.TerminalNode
+
 	// IsImport_Context differentiates from other interfaces.
 	IsImport_Context()
 }
 
 type Import_Context struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyImport_Context() *Import_Context {
 	var p = new(Import_Context)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_import_
 	return p
+}
+
+func InitEmptyImport_Context(p *Import_Context) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_import_
 }
 
 func (*Import_Context) IsImport_Context() {}
@@ -1917,7 +2064,7 @@ func (*Import_Context) IsImport_Context() {}
 func NewImport_Context(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *Import_Context {
 	var p = new(Import_Context)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_import_
@@ -1952,47 +2099,53 @@ func (s *Import_Context) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) Import_() (localctx IImport_Context) {
-	this := p
-	_ = this
-
 	localctx = NewImport_Context(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 20, BricksParserRULE_import_)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(115)
 		p.Match(BricksParserT__9)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(116)
 		p.Match(BricksParserT__2)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(117)
 		p.Match(BricksParserSTRING)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(118)
 		p.Match(BricksParserT__4)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IAllPartsContext is an interface to support dynamic dispatch.
@@ -2001,21 +2154,25 @@ type IAllPartsContext interface {
 
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
-
 	// IsAllPartsContext differentiates from other interfaces.
 	IsAllPartsContext()
 }
 
 type AllPartsContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyAllPartsContext() *AllPartsContext {
 	var p = new(AllPartsContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_allParts
 	return p
+}
+
+func InitEmptyAllPartsContext(p *AllPartsContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_allParts
 }
 
 func (*AllPartsContext) IsAllPartsContext() {}
@@ -2023,7 +2180,7 @@ func (*AllPartsContext) IsAllPartsContext() {}
 func NewAllPartsContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *AllPartsContext {
 	var p = new(AllPartsContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_allParts
@@ -2053,35 +2210,29 @@ func (s *AllPartsContext) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) AllParts() (localctx IAllPartsContext) {
-	this := p
-	_ = this
-
 	localctx = NewAllPartsContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 22, BricksParserRULE_allParts)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(120)
 		p.Match(BricksParserT__10)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // ILostContext is an interface to support dynamic dispatch.
@@ -2090,21 +2241,25 @@ type ILostContext interface {
 
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
-
 	// IsLostContext differentiates from other interfaces.
 	IsLostContext()
 }
 
 type LostContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyLostContext() *LostContext {
 	var p = new(LostContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_lost
 	return p
+}
+
+func InitEmptyLostContext(p *LostContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_lost
 }
 
 func (*LostContext) IsLostContext() {}
@@ -2112,7 +2267,7 @@ func (*LostContext) IsLostContext() {}
 func NewLostContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *LostContext {
 	var p = new(LostContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_lost
@@ -2142,35 +2297,29 @@ func (s *LostContext) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) Lost() (localctx ILostContext) {
-	this := p
-	_ = this
-
 	localctx = NewLostContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 24, BricksParserRULE_lost)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(122)
 		p.Match(BricksParserT__11)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // ISetContext is an interface to support dynamic dispatch.
@@ -2180,20 +2329,29 @@ type ISetContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	SET_NUM() antlr.TerminalNode
+	BOOL() antlr.TerminalNode
+
 	// IsSetContext differentiates from other interfaces.
 	IsSetContext()
 }
 
 type SetContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptySetContext() *SetContext {
 	var p = new(SetContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_set
 	return p
+}
+
+func InitEmptySetContext(p *SetContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_set
 }
 
 func (*SetContext) IsSetContext() {}
@@ -2201,7 +2359,7 @@ func (*SetContext) IsSetContext() {}
 func NewSetContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *SetContext {
 	var p = new(SetContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_set
@@ -2240,63 +2398,81 @@ func (s *SetContext) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) Set() (localctx ISetContext) {
-	this := p
-	_ = this
-
 	localctx = NewSetContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 26, BricksParserRULE_set)
 	var _la int
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
 
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(124)
 		p.Match(BricksParserT__12)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(125)
 		p.Match(BricksParserT__2)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(126)
 		p.Match(BricksParserSET_NUM)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	p.SetState(129)
 	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
 	_la = p.GetTokenStream().LA(1)
 
 	if _la == BricksParserT__3 {
 		{
 			p.SetState(127)
 			p.Match(BricksParserT__3)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(128)
 			p.Match(BricksParserBOOL)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	}
 	{
 		p.SetState(131)
 		p.Match(BricksParserT__4)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IUserSetContext is an interface to support dynamic dispatch.
@@ -2306,20 +2482,29 @@ type IUserSetContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	SET_NUM() antlr.TerminalNode
+	BOOL() antlr.TerminalNode
+
 	// IsUserSetContext differentiates from other interfaces.
 	IsUserSetContext()
 }
 
 type UserSetContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyUserSetContext() *UserSetContext {
 	var p = new(UserSetContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_userSet
 	return p
+}
+
+func InitEmptyUserSetContext(p *UserSetContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_userSet
 }
 
 func (*UserSetContext) IsUserSetContext() {}
@@ -2327,7 +2512,7 @@ func (*UserSetContext) IsUserSetContext() {}
 func NewUserSetContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *UserSetContext {
 	var p = new(UserSetContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_userSet
@@ -2366,63 +2551,81 @@ func (s *UserSetContext) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) UserSet() (localctx IUserSetContext) {
-	this := p
-	_ = this
-
 	localctx = NewUserSetContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 28, BricksParserRULE_userSet)
 	var _la int
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
 
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(133)
 		p.Match(BricksParserT__13)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(134)
 		p.Match(BricksParserT__2)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(135)
 		p.Match(BricksParserSET_NUM)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	p.SetState(138)
 	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
 	_la = p.GetTokenStream().LA(1)
 
 	if _la == BricksParserT__3 {
 		{
 			p.SetState(136)
 			p.Match(BricksParserT__3)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(137)
 			p.Match(BricksParserBOOL)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	}
 	{
 		p.SetState(140)
 		p.Match(BricksParserT__4)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // ISetListContext is an interface to support dynamic dispatch.
@@ -2432,20 +2635,29 @@ type ISetListContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	INT() antlr.TerminalNode
+	BOOL() antlr.TerminalNode
+
 	// IsSetListContext differentiates from other interfaces.
 	IsSetListContext()
 }
 
 type SetListContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptySetListContext() *SetListContext {
 	var p = new(SetListContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_setList
 	return p
+}
+
+func InitEmptySetListContext(p *SetListContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_setList
 }
 
 func (*SetListContext) IsSetListContext() {}
@@ -2453,7 +2665,7 @@ func (*SetListContext) IsSetListContext() {}
 func NewSetListContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *SetListContext {
 	var p = new(SetListContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_setList
@@ -2492,63 +2704,81 @@ func (s *SetListContext) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) SetList() (localctx ISetListContext) {
-	this := p
-	_ = this
-
 	localctx = NewSetListContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 30, BricksParserRULE_setList)
 	var _la int
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
 
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(142)
 		p.Match(BricksParserT__14)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(143)
 		p.Match(BricksParserT__2)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(144)
 		p.Match(BricksParserINT)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	p.SetState(147)
 	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
 	_la = p.GetTokenStream().LA(1)
 
 	if _la == BricksParserT__3 {
 		{
 			p.SetState(145)
 			p.Match(BricksParserT__3)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(146)
 			p.Match(BricksParserBOOL)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	}
 	{
 		p.SetState(149)
 		p.Match(BricksParserT__4)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IPartListContext is an interface to support dynamic dispatch.
@@ -2558,20 +2788,28 @@ type IPartListContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	INT() antlr.TerminalNode
+
 	// IsPartListContext differentiates from other interfaces.
 	IsPartListContext()
 }
 
 type PartListContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyPartListContext() *PartListContext {
 	var p = new(PartListContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_partList
 	return p
+}
+
+func InitEmptyPartListContext(p *PartListContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_partList
 }
 
 func (*PartListContext) IsPartListContext() {}
@@ -2579,7 +2817,7 @@ func (*PartListContext) IsPartListContext() {}
 func NewPartListContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *PartListContext {
 	var p = new(PartListContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_partList
@@ -2614,47 +2852,53 @@ func (s *PartListContext) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) PartList() (localctx IPartListContext) {
-	this := p
-	_ = this
-
 	localctx = NewPartListContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 32, BricksParserRULE_partList)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(151)
 		p.Match(BricksParserT__15)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(152)
 		p.Match(BricksParserT__2)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(153)
 		p.Match(BricksParserINT)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(154)
 		p.Match(BricksParserT__4)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IPartListsContext is an interface to support dynamic dispatch.
@@ -2664,20 +2908,29 @@ type IPartListsContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	STRING() antlr.TerminalNode
+	BOOL() antlr.TerminalNode
+
 	// IsPartListsContext differentiates from other interfaces.
 	IsPartListsContext()
 }
 
 type PartListsContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyPartListsContext() *PartListsContext {
 	var p = new(PartListsContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_partLists
 	return p
+}
+
+func InitEmptyPartListsContext(p *PartListsContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_partLists
 }
 
 func (*PartListsContext) IsPartListsContext() {}
@@ -2685,7 +2938,7 @@ func (*PartListsContext) IsPartListsContext() {}
 func NewPartListsContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *PartListsContext {
 	var p = new(PartListsContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_partLists
@@ -2724,63 +2977,81 @@ func (s *PartListsContext) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) PartLists() (localctx IPartListsContext) {
-	this := p
-	_ = this
-
 	localctx = NewPartListsContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 34, BricksParserRULE_partLists)
 	var _la int
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
 
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(156)
 		p.Match(BricksParserT__16)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(157)
 		p.Match(BricksParserT__2)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(158)
 		p.Match(BricksParserSTRING)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	p.SetState(161)
 	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
 	_la = p.GetTokenStream().LA(1)
 
 	if _la == BricksParserT__3 {
 		{
 			p.SetState(159)
 			p.Match(BricksParserT__3)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(160)
 			p.Match(BricksParserBOOL)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	}
 	{
 		p.SetState(163)
 		p.Match(BricksParserT__4)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // ISumContext is an interface to support dynamic dispatch.
@@ -2790,20 +3061,29 @@ type ISumContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	AllExp() []IExpContext
+	Exp(i int) IExpContext
+
 	// IsSumContext differentiates from other interfaces.
 	IsSumContext()
 }
 
 type SumContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptySumContext() *SumContext {
 	var p = new(SumContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_sum
 	return p
+}
+
+func InitEmptySumContext(p *SumContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_sum
 }
 
 func (*SumContext) IsSumContext() {}
@@ -2811,7 +3091,7 @@ func (*SumContext) IsSumContext() {}
 func NewSumContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *SumContext {
 	var p = new(SumContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_sum
@@ -2883,37 +3163,26 @@ func (s *SumContext) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) Sum() (localctx ISumContext) {
-	this := p
-	_ = this
-
 	localctx = NewSumContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 36, BricksParserRULE_sum)
 	var _la int
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
 
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(165)
 		p.Match(BricksParserT__17)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(166)
 		p.Match(BricksParserT__2)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(167)
@@ -2921,12 +3190,19 @@ func (p *BricksParser) Sum() (localctx ISumContext) {
 	}
 	p.SetState(170)
 	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
 	_la = p.GetTokenStream().LA(1)
 
 	for ok := true; ok; ok = _la == BricksParserT__3 {
 		{
 			p.SetState(168)
 			p.Match(BricksParserT__3)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(169)
@@ -2935,14 +3211,31 @@ func (p *BricksParser) Sum() (localctx ISumContext) {
 
 		p.SetState(172)
 		p.GetErrorHandler().Sync(p)
+		if p.HasError() {
+			goto errorExit
+		}
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
 		p.SetState(174)
 		p.Match(BricksParserT__4)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // ISubtractContext is an interface to support dynamic dispatch.
@@ -2952,20 +3245,29 @@ type ISubtractContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	AllExp() []IExpContext
+	Exp(i int) IExpContext
+
 	// IsSubtractContext differentiates from other interfaces.
 	IsSubtractContext()
 }
 
 type SubtractContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptySubtractContext() *SubtractContext {
 	var p = new(SubtractContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_subtract
 	return p
+}
+
+func InitEmptySubtractContext(p *SubtractContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_subtract
 }
 
 func (*SubtractContext) IsSubtractContext() {}
@@ -2973,7 +3275,7 @@ func (*SubtractContext) IsSubtractContext() {}
 func NewSubtractContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *SubtractContext {
 	var p = new(SubtractContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_subtract
@@ -3045,36 +3347,24 @@ func (s *SubtractContext) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) Subtract() (localctx ISubtractContext) {
-	this := p
-	_ = this
-
 	localctx = NewSubtractContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 38, BricksParserRULE_subtract)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(176)
 		p.Match(BricksParserT__18)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(177)
 		p.Match(BricksParserT__2)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(178)
@@ -3083,6 +3373,10 @@ func (p *BricksParser) Subtract() (localctx ISubtractContext) {
 	{
 		p.SetState(179)
 		p.Match(BricksParserT__3)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(180)
@@ -3091,9 +3385,23 @@ func (p *BricksParser) Subtract() (localctx ISubtractContext) {
 	{
 		p.SetState(181)
 		p.Match(BricksParserT__4)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // IMaxContext is an interface to support dynamic dispatch.
@@ -3103,20 +3411,29 @@ type IMaxContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Getter signatures
+	AllExp() []IExpContext
+	Exp(i int) IExpContext
+
 	// IsMaxContext differentiates from other interfaces.
 	IsMaxContext()
 }
 
 type MaxContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
 func NewEmptyMaxContext() *MaxContext {
 	var p = new(MaxContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_max
 	return p
+}
+
+func InitEmptyMaxContext(p *MaxContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_max
 }
 
 func (*MaxContext) IsMaxContext() {}
@@ -3124,7 +3441,7 @@ func (*MaxContext) IsMaxContext() {}
 func NewMaxContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *MaxContext {
 	var p = new(MaxContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_max
@@ -3196,37 +3513,26 @@ func (s *MaxContext) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) Max() (localctx IMaxContext) {
-	this := p
-	_ = this
-
 	localctx = NewMaxContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 40, BricksParserRULE_max)
 	var _la int
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
 
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(183)
 		p.Match(BricksParserT__19)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(184)
 		p.Match(BricksParserT__2)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(185)
@@ -3234,12 +3540,19 @@ func (p *BricksParser) Max() (localctx IMaxContext) {
 	}
 	p.SetState(188)
 	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
 	_la = p.GetTokenStream().LA(1)
 
 	for ok := true; ok; ok = _la == BricksParserT__3 {
 		{
 			p.SetState(186)
 			p.Match(BricksParserT__3)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(187)
@@ -3248,14 +3561,31 @@ func (p *BricksParser) Max() (localctx IMaxContext) {
 
 		p.SetState(190)
 		p.GetErrorHandler().Sync(p)
+		if p.HasError() {
+			goto errorExit
+		}
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
 		p.SetState(192)
 		p.Match(BricksParserT__4)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
 // ISortContext is an interface to support dynamic dispatch.
@@ -3277,12 +3607,15 @@ type ISortContext interface {
 	// SetDescending sets the descending token.
 	SetDescending(antlr.Token)
 
+	// Getter signatures
+	Exp() IExpContext
+
 	// IsSortContext differentiates from other interfaces.
 	IsSortContext()
 }
 
 type SortContext struct {
-	*antlr.BaseParserRuleContext
+	antlr.BaseParserRuleContext
 	parser     antlr.Parser
 	quantity   antlr.Token
 	descending antlr.Token
@@ -3290,9 +3623,14 @@ type SortContext struct {
 
 func NewEmptySortContext() *SortContext {
 	var p = new(SortContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
 	p.RuleIndex = BricksParserRULE_sort
 	return p
+}
+
+func InitEmptySortContext(p *SortContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_sort
 }
 
 func (*SortContext) IsSortContext() {}
@@ -3300,7 +3638,7 @@ func (*SortContext) IsSortContext() {}
 func NewSortContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *SortContext {
 	var p = new(SortContext)
 
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
 	p.RuleIndex = BricksParserRULE_sort
@@ -3355,37 +3693,26 @@ func (s *SortContext) ExitRule(listener antlr.ParseTreeListener) {
 }
 
 func (p *BricksParser) Sort() (localctx ISortContext) {
-	this := p
-	_ = this
-
 	localctx = NewSortContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 42, BricksParserRULE_sort)
 	var _la int
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
 
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(194)
 		p.Match(BricksParserT__20)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(195)
 		p.Match(BricksParserT__2)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 	{
 		p.SetState(196)
@@ -3394,10 +3721,14 @@ func (p *BricksParser) Sort() (localctx ISortContext) {
 	p.SetState(199)
 	p.GetErrorHandler().Sync(p)
 
-	if p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 10, p.GetParserRuleContext()) == 1 {
+	if p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 10, p.GetParserRuleContext()) == 1 {
 		{
 			p.SetState(197)
 			p.Match(BricksParserT__3)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(198)
@@ -3405,17 +3736,30 @@ func (p *BricksParser) Sort() (localctx ISortContext) {
 			var _m = p.Match(BricksParserT__21)
 
 			localctx.(*SortContext).quantity = _m
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
+	} else if p.HasError() { // JIM
+		goto errorExit
 	}
 	p.SetState(203)
 	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
 	_la = p.GetTokenStream().LA(1)
 
 	if _la == BricksParserT__3 {
 		{
 			p.SetState(201)
 			p.Match(BricksParserT__3)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(202)
@@ -3423,13 +3767,31 @@ func (p *BricksParser) Sort() (localctx ISortContext) {
 			var _m = p.Match(BricksParserT__22)
 
 			localctx.(*SortContext).descending = _m
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	}
 	{
 		p.SetState(205)
 		p.Match(BricksParserT__4)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
 	}
 
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
 	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
 }

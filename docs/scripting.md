@@ -11,11 +11,11 @@ The first command in the script above retrieves all parts of set 8880-1 and stor
 
 The following commands can be used in bricks scripts:
 
-* *Assignment*: `ID := exp` - assigns a collection of parts defined by the given expression to a variable with name ID. The variable can be used in any expression later on.
-* *save*: `save(exp, FILE_NAME)` - saves the given collection defined by the expression to a JSON file with the given FILE_NAME.
-* *export*: `export(exp, EXPORT_DIR)` - exports the given collection defined by the expression to an HTML file into the given EXPORT_DIR.
-* *build*: `build(EXP, EXP, DIR_NAME, MODE?)` - Builds a set given by the first expression by using parts from the collection defined by the second expression. MODE is a combination of any of the following characters: C(olor), A(lternates), M(olds), and P(rints). If for example CAMP is provided, the build substitutes missing parts by parts of different color, alternates, molds, and prints. If no MODE is provided, no missing parts will be replaced. Exports the result to the given directory.
-* *pause*: `pause(INT)` - Pauses the script for the given time in seconds. Sometimes it's neccessary to pause the script between API requests to avoid a "429 Too many requests" error message from the rebrickable.com server.
+* *Assignment*: `ID := EXP` - assigns a collection of parts defined by the given expression EXP to a variable with name ID. The variable can be used in any expression later on.
+* *save*: `save(EXP, FILE_NAME)` - saves the given collection defined by the expression EXP to a JSON file with the given FILE_NAME.
+* *export*: `export(EXP, DIR_NAME)` - exports the given collection defined by the expression EXP to an HTML file into the given DIR_NAME.
+* *build*: `build(EXP1, EXP2, DIR_NAME, MODE?)` - Builds a set given by the first expression EXP1 by using parts from the collection defined by the second expression EXP2. MODE is a combination of any of the following characters: C(olor), A(lternates), M(olds), and P(rints). If for example CAMP is provided, the build substitutes missing parts by parts of different color, alternates, molds, and prints. If no MODE is provided, no missing parts will be replaced. Exports the result to the given directory DIR_NAME.
+* *pause*: `pause(INT)` - Pauses the script for the given time INT in seconds. Sometimes it's neccessary to pause the script between API requests to avoid a "429 Too many requests" error message from the rebrickable.com server.
 
 ## Expressions
 

@@ -1,13 +1,12 @@
-// Code generated from java-escape by ANTLR 4.11.1. DO NOT EDIT.
+// Code generated from ./scripting/parser/Bricks.g4 by ANTLR 4.13.2. DO NOT EDIT.
 
 package parser
 
 import (
 	"fmt"
+	"github.com/antlr4-go/antlr/v4"
 	"sync"
 	"unicode"
-
-	"github.com/antlr/antlr4/runtime/Go/antlr/v4"
 )
 
 // Suppress unused import error
@@ -22,45 +21,45 @@ type BricksLexer struct {
 	// TODO: EOF string
 }
 
-var brickslexerLexerStaticData struct {
+var BricksLexerLexerStaticData struct {
 	once                   sync.Once
 	serializedATN          []int32
-	channelNames           []string
-	modeNames              []string
-	literalNames           []string
-	symbolicNames          []string
-	ruleNames              []string
-	predictionContextCache *antlr.PredictionContextCache
+	ChannelNames           []string
+	ModeNames              []string
+	LiteralNames           []string
+	SymbolicNames          []string
+	RuleNames              []string
+	PredictionContextCache *antlr.PredictionContextCache
 	atn                    *antlr.ATN
 	decisionToDFA          []*antlr.DFA
 }
 
 func brickslexerLexerInit() {
-	staticData := &brickslexerLexerStaticData
-	staticData.channelNames = []string{
+	staticData := &BricksLexerLexerStaticData
+	staticData.ChannelNames = []string{
 		"DEFAULT_TOKEN_CHANNEL", "HIDDEN",
 	}
-	staticData.modeNames = []string{
+	staticData.ModeNames = []string{
 		"DEFAULT_MODE",
 	}
-	staticData.literalNames = []string{
+	staticData.LiteralNames = []string{
 		"", "':='", "'save'", "'('", "','", "')'", "'export'", "'build'", "'pause'",
 		"'load'", "'import'", "'allParts'", "'lost'", "'set'", "'userSet'",
 		"'setList'", "'partList'", "'partLists'", "'sum'", "'subtract'", "'max'",
 		"'sort'", "'quantity'", "'descending'",
 	}
-	staticData.symbolicNames = []string{
+	staticData.SymbolicNames = []string{
 		"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
 		"", "", "", "", "", "", "", "INT", "BOOL", "STRING", "ID", "SET_NUM",
 		"WS",
 	}
-	staticData.ruleNames = []string{
+	staticData.RuleNames = []string{
 		"T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6", "T__7", "T__8",
 		"T__9", "T__10", "T__11", "T__12", "T__13", "T__14", "T__15", "T__16",
 		"T__17", "T__18", "T__19", "T__20", "T__21", "T__22", "DIGIT", "INT",
 		"BOOL", "STRING", "ID", "SET_NUM", "WS",
 	}
-	staticData.predictionContextCache = antlr.NewPredictionContextCache()
+	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
 		4, 0, 29, 252, 6, -1, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2,
 		4, 7, 4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2,
@@ -187,7 +186,7 @@ func brickslexerLexerInit() {
 // NewBricksLexer(). You can call this function if you wish to initialize the static state ahead
 // of time.
 func BricksLexerInit() {
-	staticData := &brickslexerLexerStaticData
+	staticData := &BricksLexerLexerStaticData
 	staticData.once.Do(brickslexerLexerInit)
 }
 
@@ -196,13 +195,13 @@ func NewBricksLexer(input antlr.CharStream) *BricksLexer {
 	BricksLexerInit()
 	l := new(BricksLexer)
 	l.BaseLexer = antlr.NewBaseLexer(input)
-	staticData := &brickslexerLexerStaticData
-	l.Interpreter = antlr.NewLexerATNSimulator(l, staticData.atn, staticData.decisionToDFA, staticData.predictionContextCache)
-	l.channelNames = staticData.channelNames
-	l.modeNames = staticData.modeNames
-	l.RuleNames = staticData.ruleNames
-	l.LiteralNames = staticData.literalNames
-	l.SymbolicNames = staticData.symbolicNames
+	staticData := &BricksLexerLexerStaticData
+	l.Interpreter = antlr.NewLexerATNSimulator(l, staticData.atn, staticData.decisionToDFA, staticData.PredictionContextCache)
+	l.channelNames = staticData.ChannelNames
+	l.modeNames = staticData.ModeNames
+	l.RuleNames = staticData.RuleNames
+	l.LiteralNames = staticData.LiteralNames
+	l.SymbolicNames = staticData.SymbolicNames
 	l.GrammarFileName = "Bricks.g4"
 	// TODO: l.EOF = antlr.TokenEOF
 

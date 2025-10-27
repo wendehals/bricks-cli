@@ -3,7 +3,7 @@ package model
 import (
 	"strings"
 
-	"github.com/wendehals/bricks/utils"
+	"github.com/wendehals/bricks-cli/utils"
 )
 
 type AbstractPartRelationships struct {

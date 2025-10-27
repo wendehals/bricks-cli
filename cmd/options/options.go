@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/wendehals/bricks/utils"
+	"github.com/wendehals/bricks-cli/utils"
 )
 
 const (

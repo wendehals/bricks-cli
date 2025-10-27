@@ -1,6 +1,6 @@
 package api
 
-import "github.com/wendehals/bricks/model"
+import "github.com/wendehals/bricks-cli/model"
 
 // setListsPageResult contains the result of /api/v3/users/{user_token}/setlists/?page={page}
 type setListsPageResult struct {

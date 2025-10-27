@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/wendehals/bricks/services"
+	"github.com/wendehals/bricks-cli/services"
 )
 
 const (

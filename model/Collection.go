@@ -4,7 +4,7 @@ import (
 	"sort"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/wendehals/bricks/utils"
+	"github.com/wendehals/bricks-cli/utils"
 )
 
 const (

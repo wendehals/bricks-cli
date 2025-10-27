@@ -3,8 +3,8 @@ package services
 import (
 	"testing"
 
-	"github.com/wendehals/bricks/model"
-	"github.com/wendehals/bricks/test"
+	"github.com/wendehals/bricks-cli/model"
+	"github.com/wendehals/bricks-cli/test"
 )
 
 func Test_MergeAllCollections(t *testing.T) {

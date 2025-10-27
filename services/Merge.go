@@ -3,8 +3,8 @@ package services
 import (
 	"log"
 
-	"github.com/wendehals/bricks/model"
-	"github.com/wendehals/bricks/utils"
+	"github.com/wendehals/bricks-cli/model"
+	"github.com/wendehals/bricks-cli/utils"
 )
 
 // MergeAllCollections merges all given collections to a new single collection.

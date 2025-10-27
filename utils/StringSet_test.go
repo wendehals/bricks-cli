@@ -3,7 +3,7 @@ package utils
 import (
 	"testing"
 
-	"github.com/wendehals/bricks/test"
+	"github.com/wendehals/bricks-cli/test"
 )
 
 func Test_StringSet_Add(t *testing.T) {

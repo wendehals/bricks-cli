@@ -5,11 +5,11 @@ import (
 	"log"
 
 	"github.com/spf13/cobra"
-	"github.com/wendehals/bricks/api"
-	"github.com/wendehals/bricks/cmd/options"
-	"github.com/wendehals/bricks/model"
-	"github.com/wendehals/bricks/services"
-	"github.com/wendehals/bricks/utils"
+	"github.com/wendehals/bricks-cli/api"
+	"github.com/wendehals/bricks-cli/cmd/options"
+	"github.com/wendehals/bricks-cli/model"
+	"github.com/wendehals/bricks-cli/services"
+	"github.com/wendehals/bricks-cli/utils"
 )
 
 const (

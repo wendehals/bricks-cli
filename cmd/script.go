@@ -5,16 +5,16 @@ import (
 	"log"
 
 	"github.com/spf13/cobra"
-	"github.com/wendehals/bricks/api"
-	"github.com/wendehals/bricks/cmd/options"
-	"github.com/wendehals/bricks/scripting"
-	"github.com/wendehals/bricks/utils"
+	"github.com/wendehals/bricks-cli/api"
+	"github.com/wendehals/bricks-cli/cmd/options"
+	"github.com/wendehals/bricks-cli/scripting"
+	"github.com/wendehals/bricks-cli/utils"
 )
 
 var scriptCmd = &cobra.Command{
 	Use:   fmt.Sprintf("script %s SCRIPT_FILE", options.CREDENTIALS_ARG),
-	Short: "Executes a bricks script",
-	Long:  "The script command executes a bricks script.",
+	Short: "Executes a bricks-cli script",
+	Long:  "The script command executes a bricks-cli script.",
 
 	DisableFlagsInUseLine: true,
 

@@ -2,7 +2,7 @@ package download
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/wendehals/bricks/services"
+	"github.com/wendehals/bricks-cli/services"
 )
 
 var updateCmd = &cobra.Command{

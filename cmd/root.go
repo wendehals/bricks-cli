@@ -2,22 +2,22 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/wendehals/bricks/cmd/api"
-	"github.com/wendehals/bricks/cmd/collection"
-	"github.com/wendehals/bricks/cmd/download"
-	"github.com/wendehals/bricks/cmd/options"
-	"github.com/wendehals/bricks/services"
-	"github.com/wendehals/bricks/utils"
+	"github.com/wendehals/bricks-cli/cmd/api"
+	"github.com/wendehals/bricks-cli/cmd/collection"
+	"github.com/wendehals/bricks-cli/cmd/download"
+	"github.com/wendehals/bricks-cli/cmd/options"
+	"github.com/wendehals/bricks-cli/services"
+	"github.com/wendehals/bricks-cli/utils"
 )
 
 var RootCmd = &cobra.Command{
 	Use:   "bricks",
-	Short: "A command line interface to Rebrickable and bricks collections",
-	Long: `bricks is a command line interface to the rebrickable.com API. It
+	Short: "A command line interface to Rebrickable and bricks-cli collections",
+	Long: `bricks-cli is a command line interface to the rebrickable.com API. It
 enables you to access the Rebrickable database to retrieve for example a list
 of all parts of a certain set or user specific part collections.
 
-bricks is also able to merge, sort, add, or subtract collections of parts
+bricks-cli is also able to merge, sort, add, or subtract collections of parts
 to new collections.`,
 	Version: "0.7.0",
 

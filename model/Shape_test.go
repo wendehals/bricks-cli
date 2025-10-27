@@ -3,7 +3,7 @@ package model
 import (
 	"testing"
 
-	"github.com/wendehals/bricks/test"
+	"github.com/wendehals/bricks-cli/test"
 )
 
 func Test_Shape_Dimensions(t *testing.T) {

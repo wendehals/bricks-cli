@@ -7,10 +7,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/wendehals/bricks/api"
-	"github.com/wendehals/bricks/model"
-	"github.com/wendehals/bricks/scripting/parser"
-	"github.com/wendehals/bricks/services"
+	"github.com/wendehals/bricks-cli/api"
+	"github.com/wendehals/bricks-cli/model"
+	"github.com/wendehals/bricks-cli/scripting/parser"
+	"github.com/wendehals/bricks-cli/services"
 )
 
 type bricksInterpreter struct {

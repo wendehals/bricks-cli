@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/wendehals/bricks/cmd"
+	"github.com/wendehals/bricks-cli/cmd"
 )
 
 func main() {

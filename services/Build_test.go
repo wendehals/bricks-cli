@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/wendehals/bricks/model"
-	"github.com/wendehals/bricks/test"
+	"github.com/wendehals/bricks-cli/model"
+	"github.com/wendehals/bricks-cli/test"
 )
 
 func Test_Build_CAMP(t *testing.T) {

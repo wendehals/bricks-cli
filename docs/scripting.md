@@ -1,6 +1,6 @@
 # Scripting
 
-The bricks-cli supports executing scripts contained in *.bricks files. The scripts are made up of commands working with expressions describing part collections. Have a look at the following example:
+The bricks-cli supports executing scripts contained in *.bricks-cli files. The scripts are made up of commands working with expressions describing part collections. Have a look at the following example:
 
     a := set(8880-1)
     save(sort(subtract(allParts, a)))
@@ -9,7 +9,7 @@ The first command in the script above retrieves all parts of set 8880-1 and stor
 
 ## Commands
 
-The following commands can be used in bricks scripts:
+The following commands can be used in bricks-cli scripts:
 
 * *Assignment*: `ID := EXP` - assigns a collection of parts defined by the given expression EXP to a variable with name ID. The variable can be used in any expression later on.
 * *save*: `save(EXP, FILE_NAME)` - saves the given collection defined by the expression EXP to a JSON file with the given FILE_NAME.
@@ -19,7 +19,7 @@ The following commands can be used in bricks scripts:
 
 ## Expressions
 
-These expressions are available in the bricks scripts:
+These expressions are available in the bricks-cli scripts:
 
 * *Identifier* - Identifiers denote a variable defined by an assignment in advance. Identifiers start with a lower or upper case letter and can contain letters (lower and upper case), digits, and underscore `_`.
 * `load(FILE_NAME)` - Loads a collection from a file with the given FILE_NAME.

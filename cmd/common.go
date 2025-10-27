@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/wendehals/bricks/api"
+	"github.com/wendehals/bricks-cli/api"
 )
 
 var (

@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/wendehals/bricks/model"
-	"github.com/wendehals/bricks/utils"
+	"github.com/wendehals/bricks-cli/model"
+	"github.com/wendehals/bricks-cli/utils"
 )
 
 func Build(neededCollection *model.Collection, providedCollection *model.Collection, mode uint8) *model.BuildCollection {

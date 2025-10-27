@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/wendehals/bricks/model"
-	"github.com/wendehals/bricks/services"
+	"github.com/wendehals/bricks-cli/model"
+	"github.com/wendehals/bricks-cli/services"
 )
 
 const (

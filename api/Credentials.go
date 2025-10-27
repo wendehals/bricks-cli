@@ -3,7 +3,7 @@ package api
 import (
 	"fmt"
 
-	"github.com/wendehals/bricks/model"
+	"github.com/wendehals/bricks-cli/model"
 )
 
 const CREDENTIALS_ERR_MSG = "please provide a valid JSON file containing the Rebrickable credentials:\n   %s"

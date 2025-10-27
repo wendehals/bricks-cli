@@ -3,7 +3,7 @@ package options
 import (
 	"testing"
 
-	"github.com/wendehals/bricks/test"
+	"github.com/wendehals/bricks-cli/test"
 )
 
 func Test_FileNameFromArgs(t *testing.T) {

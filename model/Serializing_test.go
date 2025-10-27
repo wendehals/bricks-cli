@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/wendehals/bricks/test"
+	"github.com/wendehals/bricks-cli/test"
 )
 
 func Test_Load(t *testing.T) {

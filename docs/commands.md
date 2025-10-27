@@ -1,14 +1,14 @@
 # Commands
 
-	bricks is a command line interface to the rebrickable.com API. It
+	bricks-cli is a command line interface to the rebrickable.com API. It
 	enables you to access the Rebrickable database to retrieve for example a list
 	of all parts of a certain set or user specific part collections.
 
-	bricks is also able to merge, sort, add, or subtract collections of parts    
+	bricks-cli is also able to merge, sort, add, or subtract collections of parts    
 	to new collections.
 
 	Usage:
-		  bricks [command]
+		  bricks-cli [command]
 
 	Available Commands:
 		api         Groups all commands for the Rebrickable API
@@ -17,21 +17,21 @@
 		download    Groups all download commands
 		export      Exports the parts input file as HTML
 		help        Help about any command
-		script      Executes a bricks script
+		script      Executes a bricks-cli script
 
 	Flags:
 		-h, --help      help for bricks
 			--verbose   verbose output
 		-v, --version   version for bricks
 
-	Use "bricks [command] --help" for more information about a command.
+	Use "bricks-cli [command] --help" for more information about a command.
 
-## bricks api Subcommands
+## bricks-cli api Subcommands
 
 	The api command groups all sub commands for the Rebrickable API.
 
 	Usage:
-		bricks api [command]
+		bricks-cli api [command]
 
 	Available Commands:
 		details     Get details about a certain set, set list, or part list
@@ -47,14 +47,14 @@
 	Global Flags:
 		--verbose   verbose output
 
-	Use "bricks api [command] --help" for more information about a command.
+	Use "bricks-cli api [command] --help" for more information about a command.
 
-## bricks collection Subcommands
+## bricks-cli collection Subcommands
 
 	The collection command groups all sub commands for working with part collections.
 
 	Usage:
-		bricks collection [command]
+		bricks-cli collection [command]
 
 	Available Commands:
 		import      Import parts from a CSV file
@@ -70,14 +70,14 @@
 	Global Flags:
   		-v, --verbose   verbose output
 
-	Use "bricks collection [command] --help" for more information about a command.
+	Use "bricks-cli collection [command] --help" for more information about a command.
 
-## bricks download Subcommands
+## bricks-cli download Subcommands
 
 	The download command groups all sub commands to download Rebrickable data for offline usage.
 
 	Usage:
-		bricks download [command]
+		bricks-cli download [command]
 
 	Available Commands:
 		images      Downloads part images
@@ -90,4 +90,4 @@
 	Global Flags:
 		--verbose   verbose output
 
-	Use "bricks download [command] --help" for more information about a command.
+	Use "bricks-cli download [command] --help" for more information about a command.

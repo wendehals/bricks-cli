@@ -6,9 +6,9 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/wendehals/bricks/model"
-	"github.com/wendehals/bricks/test"
-	"github.com/wendehals/bricks/utils"
+	"github.com/wendehals/bricks-cli/model"
+	"github.com/wendehals/bricks-cli/test"
+	"github.com/wendehals/bricks-cli/utils"
 )
 
 func Test_ExportCollectionToHTML(t *testing.T) {

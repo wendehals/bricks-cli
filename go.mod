@@ -1,4 +1,4 @@
-module github.com/wendehals/bricks
+module github.com/wendehals/bricks-cli
 
 go 1.25.3
 

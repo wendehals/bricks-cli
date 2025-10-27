@@ -2,7 +2,7 @@ package collection
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/wendehals/bricks/cmd/options"
+	"github.com/wendehals/bricks-cli/cmd/options"
 )
 
 var (

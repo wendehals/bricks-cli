@@ -31,7 +31,7 @@ jobs:
 
       - name: Version
         run: |
-          v=$(./bricks --version)
+          v=$(./bricks-cli --version)
           echo "::set-output name=version::${v:15}"
         id: version
 

@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/antlr4-go/antlr/v4"
-	"github.com/wendehals/bricks/api"
-	"github.com/wendehals/bricks/scripting/parser"
+	"github.com/wendehals/bricks-cli/api"
+	"github.com/wendehals/bricks-cli/scripting/parser"
 )
 
 type BricksScript struct {

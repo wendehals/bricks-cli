@@ -3,7 +3,7 @@ package scripting
 import (
 	"log"
 
-	"github.com/wendehals/bricks/model"
+	"github.com/wendehals/bricks-cli/model"
 )
 
 type stack struct {

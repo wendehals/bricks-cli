@@ -3,7 +3,7 @@ package services
 import (
 	"testing"
 
-	"github.com/wendehals/bricks/test"
+	"github.com/wendehals/bricks-cli/test"
 )
 
 func Test_ImportCSVCollection(t *testing.T) {

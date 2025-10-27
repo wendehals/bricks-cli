@@ -19,7 +19,7 @@ of all parts of a certain set or user specific part collections.
 
 bricks-cli is also able to merge, sort, add, or subtract collections of parts
 to new collections.`,
-	Version: "0.8.0",
+	Version: "0.8.1",
 
 	CompletionOptions: cobra.CompletionOptions{
 		DisableDefaultCmd: true},

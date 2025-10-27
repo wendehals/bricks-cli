@@ -32,7 +32,7 @@ jobs:
       - name: Version
         run: |
           v=$(./bricks-cli --version)
-          echo "::set-output name=version::${v:15}"
+          echo "name=version::${v:15}" >> $GITHUB_OUTPUT
         id: version
 
       - name: Release

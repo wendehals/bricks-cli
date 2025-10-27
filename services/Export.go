@@ -123,7 +123,7 @@ func replaceImageURL(part *model.Part, exportDir string) {
 		imageUrl, err := extractImage(part.Shape.Number, part.Color.ID, exportDir)
 		if err == nil {
 			part.Shape.ImageURL = imageUrl
-		} else if err != nil && options.Verbose {
+		} else if options.Verbose {
 			log.Print(err)
 		}
 	}

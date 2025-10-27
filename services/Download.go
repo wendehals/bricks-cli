@@ -193,7 +193,13 @@ func downloadPartRelationshipsCSVFile() string {
 }
 
 func findDownloadURLs(regex string) []string {
-	response, err := http.Get(REBRICKABLE_DOWNLOADS)
+	req, err := http.NewRequest("GET", REBRICKABLE_DOWNLOADS, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	req.Header.Set("User-Agent", "Mozilla/5.0")
+
+	response, err := http.DefaultClient.Do(req)
 	if err != nil {
 		log.Fatal(err)
 	}

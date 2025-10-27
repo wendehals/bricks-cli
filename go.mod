@@ -1,6 +1,6 @@
 module github.com/wendehals/bricks
 
-go 1.25.3
+go 1.25
 
 require (
 	github.com/antlr4-go/antlr/v4 v4.13.1

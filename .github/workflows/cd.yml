@@ -36,32 +36,13 @@ jobs:
         id: version
 
       - name: Release
-        uses: actions/create-release@v1
-        id: create_release
+        uses: softprops/action-gh-release@v1
         with:
           draft: false
           prerelease: false
-          release_name: ${{ steps.version.outputs.version }}
-          tag_name: ${{ github.ref }}
+          name: ${{ steps.version.outputs.version }}
+          files: |
+            ./bricks-cli-linux-x64.gz
+            ./bricks-cli-windows-x64.zip
         env:
           GITHUB_TOKEN: ${{ github.token }}
-
-      - name: Upload Linux executable
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bricks-cli-linux-x64.gz
-          asset_name: bricks-cli-linux-x64.gz
-          asset_content_type: application/x-executable
-
-      - name: Upload Windows executable
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bricks-cli-windows-x64.zip
-          asset_name: bricks-cli-windows-x64.zip
-          asset_content_type: application/octet-stream; version="64 bit"

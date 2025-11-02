@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/spf13/cobra"
 	"github.com/wendehals/bricks-cli/api"
@@ -38,6 +39,11 @@ func init() {
 func executeScript(args []string) {
 	log.Printf("Executing script '%s'", args[0])
 
-	bricksScript := scripting.NewBricksScript(credentials, args[0], options.Verbose)
+	scriptContent, err := os.ReadFile(args[0])
+	if err != nil {
+		log.Fatalf("reading script from file '%s' failed: %s", args[0], err.Error())
+	}
+
+	bricksScript := scripting.NewBricksScript(credentials, string(scriptContent), options.Verbose)
 	bricksScript.Execute()
 }

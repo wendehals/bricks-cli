@@ -1,7 +1,6 @@
 package scripting
 
 import (
-	"log"
 	"net/http"
 	"time"
 
@@ -11,7 +10,7 @@ import (
 )
 
 type BricksScript struct {
-	scriptPath  string
+	script      string
 	credentials *api.Credentials
 
 	client    *http.Client
@@ -20,19 +19,16 @@ type BricksScript struct {
 	verbose   bool
 }
 
-func NewBricksScript(credentials *api.Credentials, scriptPath string, verbose bool) *BricksScript {
+func NewBricksScript(credentials *api.Credentials, script string, verbose bool) *BricksScript {
 	return &BricksScript{
-		scriptPath:  scriptPath,
+		script:      script,
 		credentials: credentials,
 		verbose:     verbose,
 	}
 }
 
 func (b *BricksScript) Execute() {
-	input, err := antlr.NewFileStream(b.scriptPath)
-	if err != nil {
-		log.Fatalf("opening script from file '%s' failed: %s", b.scriptPath, err.Error())
-	}
+	input := antlr.NewInputStream(b.script)
 
 	lexer := parser.NewBricksLexer(input)
 	stream := antlr.NewCommonTokenStream(lexer, 0)

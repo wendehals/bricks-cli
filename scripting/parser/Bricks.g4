@@ -4,18 +4,22 @@ bricks: command+;
 
 command: assignment | save | export | print | pause;
 
-assignment: ID ':=' collectionExp;
+expression: collection | build | identifier;
 
-save: 'save' '(' (collectionExp | buildExp) ',' STRING ')';
+assignment: ID ':=' expression;
 
-export: 'export' '(' (collectionExp | buildExp) ',' STRING ')';
+save: 'save' '(' expression ',' STRING ')';
 
-print: 'print' '(' (collectionExp | buildExp) ')';
+export: 'export' '(' expression ',' STRING ')';
+
+print: 'print' '(' expression ')';
 
 pause: 'pause' '(' seconds=INT ')';
 
 
-collectionExp: identifier | load | import_ | allParts | lost | set | userSet | setList | partList | partLists | sum | subtract | max | sort;
+collectionOrId: collection | identifier;
+
+collection: load | import_ | allParts | lost | set | userSet | setList | partList | partLists | sum | subtract | max | sort;
 
 load: 'load' '(' STRING ')';
 
@@ -35,18 +39,16 @@ partList: 'partList' '(' INT ')';
 
 partLists: 'partLists' '(' STRING (',' BOOL)? ')';
 
-sum: 'sum' '(' collectionExp (',' collectionExp)+ ')';
+sum: 'sum' '(' collectionOrId (',' collectionOrId)+ ')';
 
-subtract: 'subtract' '(' collectionExp ',' collectionExp ')';
+subtract: 'subtract' '(' collectionOrId ',' collectionOrId ')';
 
-max: 'max' '(' collectionExp (',' collectionExp)+ ')';
+max: 'max' '(' collectionOrId (',' collectionOrId)+ ')';
 
-sort: 'sort' '(' collectionExp (',' quantity='quantity')? (',' descending='descending')? ')';
+sort: 'sort' '(' collectionOrId (',' quantity='quantity')? (',' descending='descending')? ')';
 
 
-buildExp : identifier | build;
-
-build: 'build' '(' collectionExp ',' collectionExp (',' build_mode=ID )? ')';
+build: 'build' '(' collectionOrId ',' collectionOrId (',' build_mode=ID )? ')';
 
 
 ID: [a-zA-Z][a-zA-Z0-9_]*;

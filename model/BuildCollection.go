@@ -1,6 +1,10 @@
 package model
 
-import "sort"
+import (
+	"encoding/json"
+	"log"
+	"sort"
+)
 
 type BuildCollection struct {
 	Set     Set
@@ -23,6 +27,7 @@ func (b *BuildCollection) Sort() *BuildCollection {
 	return b
 }
 
+// HasMissingParts returns true if there are parts missing in the BuildCollection.
 func (b *BuildCollection) HasMissingParts() bool {
 	for _, entry := range b.Mapping {
 		if entry.Quantity > 0 {
@@ -33,6 +38,7 @@ func (b *BuildCollection) HasMissingParts() bool {
 	return false
 }
 
+// CountMissingParts counts all parts that are still missing in the BuildCollection.
 func (b *BuildCollection) CountMissingParts() int {
 	var missing int
 	for _, entry := range b.Mapping {
@@ -42,6 +48,7 @@ func (b *BuildCollection) CountMissingParts() int {
 	return missing
 }
 
+// CountProvidedParts counts all parts that are provided in the BuildCollection, including substitutes.
 func (b *BuildCollection) CountProvidedParts() int {
 	var provided int
 	for _, entry := range b.Mapping {
@@ -53,10 +60,28 @@ func (b *BuildCollection) CountProvidedParts() int {
 	return provided
 }
 
+// Save writes the BuildCollection into a JSON encoded file. In case of an error it terminates with a fatal log entry.
 func (b BuildCollection) Save(filePath string) {
 	Save(b, filePath)
 }
 
+// Print outputs a human-readable representation of the BuildCollection to the standard output.
 func (b BuildCollection) Print() {
 	Print(b)
+}
+
+// Clone creates a deep copy of the BuildCollection and returns it as a CollectionType.
+func (b BuildCollection) Clone() CollectionType {
+	origJSON, err := json.Marshal(b)
+	if err != nil {
+		log.Fatalf(CLONING_FAILED_MSG, err.Error())
+	}
+
+	clone := new(BuildCollection)
+	err = json.Unmarshal(origJSON, clone)
+	if err != nil {
+		log.Fatalf(CLONING_FAILED_MSG, err.Error())
+	}
+
+	return *clone
 }

@@ -1,6 +1,8 @@
 package model
 
 import (
+	"encoding/json"
+	"log"
 	"sort"
 
 	"github.com/google/go-cmp/cmp"
@@ -179,12 +181,30 @@ func (c *Collection) MapPartsByPartNumber(keyMapping func(string) string) map[st
 	return partsMap
 }
 
+// Save writes the Collection into a JSON encoded file. In case of an error it terminates with a fatal log entry.
 func (c Collection) Save(filePath string) {
 	Save(c, filePath)
 }
 
+// Print outputs a human-readable representation of the Collection to the standard output.
 func (c Collection) Print() {
 	Print(c)
+}
+
+// Clone creates a deep copy of the Collection and returns it as a CollectionType.
+func (b Collection) Clone() CollectionType {
+	origJSON, err := json.Marshal(b)
+	if err != nil {
+		log.Fatalf(CLONING_FAILED_MSG, err.Error())
+	}
+
+	clone := new(Collection)
+	err = json.Unmarshal(origJSON, clone)
+	if err != nil {
+		log.Fatalf(CLONING_FAILED_MSG, err.Error())
+	}
+
+	return *clone
 }
 
 func (c *Collection) setParts(partsMap map[string][]Part) {

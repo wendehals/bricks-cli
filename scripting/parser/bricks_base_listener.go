@@ -33,6 +33,12 @@ func (s *BaseBricksListener) EnterCommand(ctx *CommandContext) {}
 // ExitCommand is called when production command is exited.
 func (s *BaseBricksListener) ExitCommand(ctx *CommandContext) {}
 
+// EnterExpression is called when production expression is entered.
+func (s *BaseBricksListener) EnterExpression(ctx *ExpressionContext) {}
+
+// ExitExpression is called when production expression is exited.
+func (s *BaseBricksListener) ExitExpression(ctx *ExpressionContext) {}
+
 // EnterAssignment is called when production assignment is entered.
 func (s *BaseBricksListener) EnterAssignment(ctx *AssignmentContext) {}
 
@@ -63,11 +69,17 @@ func (s *BaseBricksListener) EnterPause(ctx *PauseContext) {}
 // ExitPause is called when production pause is exited.
 func (s *BaseBricksListener) ExitPause(ctx *PauseContext) {}
 
-// EnterCollectionExp is called when production collectionExp is entered.
-func (s *BaseBricksListener) EnterCollectionExp(ctx *CollectionExpContext) {}
+// EnterCollectionOrId is called when production collectionOrId is entered.
+func (s *BaseBricksListener) EnterCollectionOrId(ctx *CollectionOrIdContext) {}
 
-// ExitCollectionExp is called when production collectionExp is exited.
-func (s *BaseBricksListener) ExitCollectionExp(ctx *CollectionExpContext) {}
+// ExitCollectionOrId is called when production collectionOrId is exited.
+func (s *BaseBricksListener) ExitCollectionOrId(ctx *CollectionOrIdContext) {}
+
+// EnterCollection is called when production collection is entered.
+func (s *BaseBricksListener) EnterCollection(ctx *CollectionContext) {}
+
+// ExitCollection is called when production collection is exited.
+func (s *BaseBricksListener) ExitCollection(ctx *CollectionContext) {}
 
 // EnterLoad is called when production load is entered.
 func (s *BaseBricksListener) EnterLoad(ctx *LoadContext) {}
@@ -146,12 +158,6 @@ func (s *BaseBricksListener) EnterSort(ctx *SortContext) {}
 
 // ExitSort is called when production sort is exited.
 func (s *BaseBricksListener) ExitSort(ctx *SortContext) {}
-
-// EnterBuildExp is called when production buildExp is entered.
-func (s *BaseBricksListener) EnterBuildExp(ctx *BuildExpContext) {}
-
-// ExitBuildExp is called when production buildExp is exited.
-func (s *BaseBricksListener) ExitBuildExp(ctx *BuildExpContext) {}
 
 // EnterBuild is called when production build is entered.
 func (s *BaseBricksListener) EnterBuild(ctx *BuildContext) {}

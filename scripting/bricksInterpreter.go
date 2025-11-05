@@ -85,7 +85,7 @@ func (b *bricksInterpreter) ExitBuild(ctx *parser.BuildContext) {
 	if neededCollection, ok := firstValue.(model.Collection); ok {
 		if providedCollection, ok := secondValue.(model.Collection); ok {
 			result := services.Build(&neededCollection, &providedCollection, mode)
-			b.stack.push(result)
+			b.stack.push(*result)
 		} else {
 			log.Fatal("The second operand of build must be a collection")
 			return
@@ -101,7 +101,7 @@ func (b *bricksInterpreter) ExitIdentifier(ctx *parser.IdentifierContext) {
 	if !ok {
 		log.Fatalf("The variable '%s' is not defined", ctx.ID().GetText())
 	}
-	b.stack.push(model.DeepClone(value))
+	b.stack.push(value.Clone())
 }
 
 func (b *bricksInterpreter) ExitLoad(ctx *parser.LoadContext) {
@@ -115,29 +115,29 @@ func (b *bricksInterpreter) ExitLoad(ctx *parser.LoadContext) {
 func (b *bricksInterpreter) ExitImport_(ctx *parser.Import_Context) {
 	filePath := strings.Trim(ctx.STRING().GetText(), "\"")
 
-	b.stack.push(services.ImportCSVCollection(filePath))
+	b.stack.push(*services.ImportCSVCollection(filePath))
 }
 
 func (b *bricksInterpreter) ExitAllParts(ctx *parser.AllPartsContext) {
 	allParts := b.usersAPI.GetAllParts()
-	b.stack.push(allParts)
+	b.stack.push(*allParts)
 }
 
 func (b *bricksInterpreter) ExitLost(ctx *parser.LostContext) {
 	lostParts := b.usersAPI.GetLostParts()
-	b.stack.push(lostParts)
+	b.stack.push(*lostParts)
 }
 
 func (b *bricksInterpreter) ExitSet(ctx *parser.SetContext) {
 	includeMiniFigs := ctx.BOOL() != nil && ctx.BOOL().GetText() == "true"
 	setParts := api.RetrieveSetParts(b.bricksAPI, ctx.SET_NUM().GetText(), includeMiniFigs)
-	b.stack.push(setParts)
+	b.stack.push(*setParts)
 }
 
 func (b *bricksInterpreter) ExitUserSet(ctx *parser.UserSetContext) {
 	includeMiniFigs := ctx.BOOL() != nil && ctx.BOOL().GetText() == "true"
 	userSetParts := api.RetrieveUserSetParts(b.bricksAPI, b.usersAPI, ctx.SET_NUM().GetText(), includeMiniFigs)
-	b.stack.push(userSetParts)
+	b.stack.push(*userSetParts)
 }
 
 func (b *bricksInterpreter) ExitSetList(ctx *parser.SetListContext) {
@@ -151,7 +151,7 @@ func (b *bricksInterpreter) ExitSetList(ctx *parser.SetListContext) {
 	collection := services.MergeAllCollections(setListParts)
 	collection.SortByColorAndName(false)
 
-	b.stack.push(collection)
+	b.stack.push(*collection)
 }
 
 func (b *bricksInterpreter) ExitPartList(ctx *parser.PartListContext) {
@@ -160,7 +160,7 @@ func (b *bricksInterpreter) ExitPartList(ctx *parser.PartListContext) {
 		log.Fatal(err)
 	}
 	partListParts := b.usersAPI.GetPartListParts(uint(partListId))
-	b.stack.push(partListParts)
+	b.stack.push(*partListParts)
 }
 
 func (b *bricksInterpreter) ExitPartLists(ctx *parser.PartListsContext) {
@@ -168,7 +168,7 @@ func (b *bricksInterpreter) ExitPartLists(ctx *parser.PartListsContext) {
 	includeNonBuildable := ctx.BOOL() != nil && ctx.BOOL().GetText() == "true"
 	collections := api.RetrievePartListsParts(b.usersAPI, filePath, includeNonBuildable)
 	collection := services.MergeAllCollections(collections)
-	b.stack.push(collection)
+	b.stack.push(*collection)
 }
 
 func (b *bricksInterpreter) ExitSum(ctx *parser.SumContext) {
@@ -176,7 +176,7 @@ func (b *bricksInterpreter) ExitSum(ctx *parser.SumContext) {
 
 	sum := model.NewCollection()
 
-	for range ctx.AllCollectionExp() {
+	for range ctx.AllCollectionOrId() {
 		value := b.stack.pop()
 		if summand, ok := value.(model.Collection); ok {
 			sum.Add(&summand)
@@ -185,7 +185,7 @@ func (b *bricksInterpreter) ExitSum(ctx *parser.SumContext) {
 		}
 	}
 
-	b.stack.push(sum)
+	b.stack.push(*sum)
 }
 
 func (b *bricksInterpreter) ExitSubtract(ctx *parser.SubtractContext) {
@@ -209,7 +209,7 @@ func (b *bricksInterpreter) ExitMax(ctx *parser.MaxContext) {
 	log.Printf("Calculating maximum")
 
 	max := model.NewCollection()
-	for range ctx.AllCollectionExp() {
+	for range ctx.AllCollectionOrId() {
 		value := b.stack.pop()
 		if collection, ok := value.(model.Collection); ok {
 			max.Max(&collection)
@@ -217,7 +217,7 @@ func (b *bricksInterpreter) ExitMax(ctx *parser.MaxContext) {
 			log.Fatal("Only collections can be compared")
 		}
 
-		b.stack.push(max)
+		b.stack.push(*max)
 	}
 }
 

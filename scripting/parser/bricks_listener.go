@@ -14,6 +14,9 @@ type BricksListener interface {
 	// EnterCommand is called when entering the command production.
 	EnterCommand(c *CommandContext)
 
+	// EnterExpression is called when entering the expression production.
+	EnterExpression(c *ExpressionContext)
+
 	// EnterAssignment is called when entering the assignment production.
 	EnterAssignment(c *AssignmentContext)
 
@@ -29,8 +32,11 @@ type BricksListener interface {
 	// EnterPause is called when entering the pause production.
 	EnterPause(c *PauseContext)
 
-	// EnterCollectionExp is called when entering the collectionExp production.
-	EnterCollectionExp(c *CollectionExpContext)
+	// EnterCollectionOrId is called when entering the collectionOrId production.
+	EnterCollectionOrId(c *CollectionOrIdContext)
+
+	// EnterCollection is called when entering the collection production.
+	EnterCollection(c *CollectionContext)
 
 	// EnterLoad is called when entering the load production.
 	EnterLoad(c *LoadContext)
@@ -71,9 +77,6 @@ type BricksListener interface {
 	// EnterSort is called when entering the sort production.
 	EnterSort(c *SortContext)
 
-	// EnterBuildExp is called when entering the buildExp production.
-	EnterBuildExp(c *BuildExpContext)
-
 	// EnterBuild is called when entering the build production.
 	EnterBuild(c *BuildContext)
 
@@ -85,6 +88,9 @@ type BricksListener interface {
 
 	// ExitCommand is called when exiting the command production.
 	ExitCommand(c *CommandContext)
+
+	// ExitExpression is called when exiting the expression production.
+	ExitExpression(c *ExpressionContext)
 
 	// ExitAssignment is called when exiting the assignment production.
 	ExitAssignment(c *AssignmentContext)
@@ -101,8 +107,11 @@ type BricksListener interface {
 	// ExitPause is called when exiting the pause production.
 	ExitPause(c *PauseContext)
 
-	// ExitCollectionExp is called when exiting the collectionExp production.
-	ExitCollectionExp(c *CollectionExpContext)
+	// ExitCollectionOrId is called when exiting the collectionOrId production.
+	ExitCollectionOrId(c *CollectionOrIdContext)
+
+	// ExitCollection is called when exiting the collection production.
+	ExitCollection(c *CollectionContext)
 
 	// ExitLoad is called when exiting the load production.
 	ExitLoad(c *LoadContext)
@@ -142,9 +151,6 @@ type BricksListener interface {
 
 	// ExitSort is called when exiting the sort production.
 	ExitSort(c *SortContext)
-
-	// ExitBuildExp is called when exiting the buildExp production.
-	ExitBuildExp(c *BuildExpContext)
 
 	// ExitBuild is called when exiting the build production.
 	ExitBuild(c *BuildContext)

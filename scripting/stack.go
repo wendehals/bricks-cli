@@ -38,35 +38,6 @@ func (s *stack[T]) pop() T {
 	return element
 }
 
-// peek returns the top element without removing it
-func (s *stack[T]) peek() T {
-	top := len(s.elements) - 1
-	if top < 0 {
-		log.Fatalf("peek: no elements on stack")
-	}
-	return s.elements[top]
-}
-
-// isEmpty returns true if the stack has no elements
-func (s *stack[T]) isEmpty() bool {
-	return len(s.elements) == 0
-}
-
-// size returns the number of elements in the stack
-func (s *stack[T]) size() int {
-	return len(s.elements)
-}
-
-// clear removes all elements from the stack
-func (s *stack[T]) clear() {
-	// Clear all references for garbage collection
-	var zero T
-	for i := range s.elements {
-		s.elements[i] = zero
-	}
-	s.elements = s.elements[:0]
-}
-
 // String implements fmt.Stringer for debugging
 func (s *stack[T]) String() string {
 	return fmt.Sprintf("Stack[%T]%v", *new(T), s.elements)

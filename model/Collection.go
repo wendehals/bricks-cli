@@ -26,7 +26,7 @@ func NewCollection() *Collection {
 	}
 }
 
-// SortByColorAndName the sets by their number and the parts their color and name.
+// Sort the sets by their number and the parts their color and name.
 func (c *Collection) SortByColorAndName(descending bool) *Collection {
 	sort.Slice(c.Sets, func(i, j int) bool {
 		return c.Sets[i].Compare(&c.Sets[j]) < 0
@@ -179,8 +179,12 @@ func (c *Collection) MapPartsByPartNumber(keyMapping func(string) string) map[st
 	return partsMap
 }
 
-func (c *Collection) Save(filePath string) {
+func (c Collection) Save(filePath string) {
 	Save(c, filePath)
+}
+
+func (c Collection) Print() {
+	Print(c)
 }
 
 func (c *Collection) setParts(partsMap map[string][]Part) {

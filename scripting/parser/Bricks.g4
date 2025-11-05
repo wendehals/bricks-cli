@@ -2,22 +2,20 @@ grammar Bricks;
 
 bricks: command+;
 
-command: assignment | save | export | build | pause;
+command: assignment | save | export | print | pause;
 
-assignment: ID ':=' exp;
+assignment: ID ':=' collectionExp;
 
-save: 'save' '(' exp ',' STRING ')';
+save: 'save' '(' (collectionExp | buildExp) ',' STRING ')';
 
-export: 'export' '(' exp ',' STRING ')';
+export: 'export' '(' (collectionExp | buildExp) ',' STRING ')';
 
-build: 'build' '(' exp ',' exp ',' STRING (',' build_mode=ID )? ')';
+print: 'print' '(' (collectionExp | buildExp) ')';
 
 pause: 'pause' '(' seconds=INT ')';
 
 
-exp: identifier | load | import_ | allParts | lost | set | userSet | setList | partList | partLists | sum | subtract | max | sort;
-
-identifier: ID;
+collectionExp: identifier | load | import_ | allParts | lost | set | userSet | setList | partList | partLists | sum | subtract | max | sort;
 
 load: 'load' '(' STRING ')';
 
@@ -37,25 +35,32 @@ partList: 'partList' '(' INT ')';
 
 partLists: 'partLists' '(' STRING (',' BOOL)? ')';
 
-sum: 'sum' '(' exp (',' exp)+ ')';
+sum: 'sum' '(' collectionExp (',' collectionExp)+ ')';
 
-subtract: 'subtract' '(' exp ',' exp ')';
+subtract: 'subtract' '(' collectionExp ',' collectionExp ')';
 
-max: 'max' '(' exp (',' exp)+ ')';
+max: 'max' '(' collectionExp (',' collectionExp)+ ')';
 
-sort: 'sort' '(' exp (',' quantity='quantity')? (',' descending='descending')? ')';
+sort: 'sort' '(' collectionExp (',' quantity='quantity')? (',' descending='descending')? ')';
 
+
+buildExp : identifier | build;
+
+build: 'build' '(' collectionExp ',' collectionExp (',' build_mode=ID )? ')';
+
+
+ID: [a-zA-Z][a-zA-Z0-9_]*;
+
+identifier: ID;
 
 fragment DIGIT: ('0'..'9');
 
 INT: DIGIT+;
 
+SET_NUM: DIGIT+'-'DIGIT;
+
 BOOL: 'true'|'false';
 
 STRING : '"' ( '\\"' | . )*? '"' ;
-
-ID: [a-zA-Z][a-zA-Z0-9_]*;
-
-SET_NUM: DIGIT+'-'DIGIT;
 
 WS: [ \t\r\n]+ -> skip;

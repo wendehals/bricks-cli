@@ -19,16 +19,16 @@ type bricksInterpreter struct {
 	usersAPI  *api.UsersAPI
 	bricksAPI *api.BricksAPI
 
-	heap  map[string]*model.Collection
-	stack stack
+	heap  map[string]model.CollectionType
+	stack stack[model.CollectionType]
 }
 
 func newBricksInterpreter(usersAPI *api.UsersAPI, bricksAPI *api.BricksAPI) *bricksInterpreter {
 	return &bricksInterpreter{
 		usersAPI:  usersAPI,
 		bricksAPI: bricksAPI,
-		heap:      make(map[string]*model.Collection),
-		stack:     *newStack(),
+		heap:      make(map[string]model.CollectionType),
+		stack:     *newStack[model.CollectionType](),
 	}
 }
 
@@ -37,33 +37,29 @@ func (b *bricksInterpreter) ExitAssignment(ctx *parser.AssignmentContext) {
 }
 
 func (b *bricksInterpreter) ExitSave(ctx *parser.SaveContext) {
-	collection := b.stack.pop()
-	filePath := strings.Trim(ctx.STRING().GetText(), "\"")
-	collection.Save(filePath)
+	b.stack.pop().Save(strings.Trim(ctx.STRING().GetText(), "\""))
 }
 
 func (b *bricksInterpreter) ExitExport(ctx *parser.ExportContext) {
-	collection := b.stack.pop()
+	value := b.stack.pop()
 	exportDir := strings.Trim(ctx.STRING().GetText(), "\"")
-	services.ExportCollectionToHTML(collection, exportDir, exportDir)
+
+	switch collection := value.(type) {
+	case model.BuildCollection:
+		fileName := fmt.Sprintf("build_%s", collection.Set.Name)
+		services.ExportBuildCollectionToHTML(&collection, exportDir, fileName)
+	case model.Collection:
+		fileName := "collection"
+		for i := 0; i < len(collection.Sets) && i < 8; i++ {
+			fileName += "_" + collection.Sets[i].Number
+		}
+		services.ExportCollectionToHTML(&collection, exportDir, fileName)
+	}
 }
 
-func (b *bricksInterpreter) ExitBuild(ctx *parser.BuildContext) {
-	providedCollection := b.stack.pop()
-	neededCollection := b.stack.pop()
-	exportDir := strings.Trim(ctx.STRING().GetText(), "\"")
-
-	var mode uint8 = 0
-	if ctx.GetBuild_mode() != nil {
-		mode = services.ModeToUInt8(ctx.GetBuild_mode().GetText())
-	}
-
-	buildCollection := services.Build(neededCollection, providedCollection, mode)
-	buildCollection.Save(fmt.Sprintf("%s/result.build", exportDir))
-	services.ExportBuildCollectionToHTML(buildCollection, exportDir, "build")
-
-	providedCollection.Save(fmt.Sprintf("%s/remaining.parts", exportDir))
-	services.ExportCollectionToHTML(providedCollection, exportDir, "remaining")
+func (b *bricksInterpreter) ExitPrint(ctx *parser.PrintContext) {
+	value := b.stack.pop()
+	value.Print()
 }
 
 // ExitPause is called when production pause is exited.
@@ -75,6 +71,29 @@ func (b *bricksInterpreter) ExitPause(ctx *parser.PauseContext) {
 
 	log.Printf("Pausing for %d seconds...", seconds)
 	time.Sleep(time.Duration(seconds) * time.Second)
+}
+
+func (b *bricksInterpreter) ExitBuild(ctx *parser.BuildContext) {
+	firstValue := b.stack.pop()
+	secondValue := b.stack.pop()
+
+	var mode uint8 = 0
+	if ctx.GetBuild_mode() != nil {
+		mode = services.ModeToUInt8(ctx.GetBuild_mode().GetText())
+	}
+
+	if neededCollection, ok := firstValue.(model.Collection); ok {
+		if providedCollection, ok := secondValue.(model.Collection); ok {
+			result := services.Build(&neededCollection, &providedCollection, mode)
+			b.stack.push(result)
+		} else {
+			log.Fatal("The second operand of build must be a collection")
+			return
+		}
+	} else {
+		log.Fatal("The first operand of build must be a collection")
+		return
+	}
 }
 
 func (b *bricksInterpreter) ExitIdentifier(ctx *parser.IdentifierContext) {
@@ -90,7 +109,7 @@ func (b *bricksInterpreter) ExitLoad(ctx *parser.LoadContext) {
 
 	log.Printf("Loading collection from '%s'", filePath)
 	collection := model.Load[model.Collection](filePath)
-	b.stack.push(&collection)
+	b.stack.push(collection)
 }
 
 func (b *bricksInterpreter) ExitImport_(ctx *parser.Import_Context) {
@@ -157,9 +176,13 @@ func (b *bricksInterpreter) ExitSum(ctx *parser.SumContext) {
 
 	sum := model.NewCollection()
 
-	for range ctx.AllExp() {
-		summand := b.stack.pop()
-		sum.Add(summand)
+	for range ctx.AllCollectionExp() {
+		value := b.stack.pop()
+		if summand, ok := value.(model.Collection); ok {
+			sum.Add(&summand)
+		} else {
+			log.Fatal("Only collections can be summed")
+		}
 	}
 
 	b.stack.push(sum)
@@ -168,35 +191,48 @@ func (b *bricksInterpreter) ExitSum(ctx *parser.SumContext) {
 func (b *bricksInterpreter) ExitSubtract(ctx *parser.SubtractContext) {
 	log.Printf("Calculating difference")
 
-	subtrahend := b.stack.pop()
-	minuend := b.stack.pop()
-	difference := minuend.Subtract(subtrahend)
-	b.stack.push(difference)
+	firstValue := b.stack.pop()
+	secondValue := b.stack.pop()
+	if subtrahend, ok := firstValue.(model.Collection); ok {
+		if minuend, ok := secondValue.(model.Collection); ok {
+			minuend.Subtract(&subtrahend)
+			b.stack.push(minuend)
+		} else {
+			log.Fatal("The second operand of subtract must be a collection")
+		}
+	} else {
+		log.Fatal("The first operand of subtract must be a collection")
+	}
 }
 
 func (b *bricksInterpreter) ExitMax(ctx *parser.MaxContext) {
 	log.Printf("Calculating maximum")
 
 	max := model.NewCollection()
+	for range ctx.AllCollectionExp() {
+		value := b.stack.pop()
+		if collection, ok := value.(model.Collection); ok {
+			max.Max(&collection)
+		} else {
+			log.Fatal("Only collections can be compared")
+		}
 
-	for range ctx.AllExp() {
-		collection := b.stack.pop()
-		max.Max(collection)
+		b.stack.push(max)
 	}
-
-	b.stack.push(max)
 }
 
 func (b *bricksInterpreter) ExitSort(ctx *parser.SortContext) {
 	log.Printf("Sorting collection")
 
-	collection := b.stack.pop()
-
-	if ctx.GetQuantity() == nil {
-		collection.SortByColorAndName(ctx.GetDescending() != nil)
+	value := b.stack.pop()
+	if collection, ok := value.(model.Collection); ok {
+		if ctx.GetQuantity() == nil {
+			collection.SortByColorAndName(ctx.GetDescending() != nil)
+		} else {
+			collection.SortByQuantityAndName(ctx.GetDescending() != nil)
+		}
+		b.stack.push(collection)
 	} else {
-		collection.SortByQuantityAndName(ctx.GetDescending() != nil)
+		log.Fatal("Only collections can be sorted")
 	}
-
-	b.stack.push(collection)
 }

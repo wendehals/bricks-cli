@@ -51,11 +51,11 @@ func (s *BaseBricksListener) EnterExport(ctx *ExportContext) {}
 // ExitExport is called when production export is exited.
 func (s *BaseBricksListener) ExitExport(ctx *ExportContext) {}
 
-// EnterBuild is called when production build is entered.
-func (s *BaseBricksListener) EnterBuild(ctx *BuildContext) {}
+// EnterPrint is called when production print is entered.
+func (s *BaseBricksListener) EnterPrint(ctx *PrintContext) {}
 
-// ExitBuild is called when production build is exited.
-func (s *BaseBricksListener) ExitBuild(ctx *BuildContext) {}
+// ExitPrint is called when production print is exited.
+func (s *BaseBricksListener) ExitPrint(ctx *PrintContext) {}
 
 // EnterPause is called when production pause is entered.
 func (s *BaseBricksListener) EnterPause(ctx *PauseContext) {}
@@ -63,17 +63,11 @@ func (s *BaseBricksListener) EnterPause(ctx *PauseContext) {}
 // ExitPause is called when production pause is exited.
 func (s *BaseBricksListener) ExitPause(ctx *PauseContext) {}
 
-// EnterExp is called when production exp is entered.
-func (s *BaseBricksListener) EnterExp(ctx *ExpContext) {}
+// EnterCollectionExp is called when production collectionExp is entered.
+func (s *BaseBricksListener) EnterCollectionExp(ctx *CollectionExpContext) {}
 
-// ExitExp is called when production exp is exited.
-func (s *BaseBricksListener) ExitExp(ctx *ExpContext) {}
-
-// EnterIdentifier is called when production identifier is entered.
-func (s *BaseBricksListener) EnterIdentifier(ctx *IdentifierContext) {}
-
-// ExitIdentifier is called when production identifier is exited.
-func (s *BaseBricksListener) ExitIdentifier(ctx *IdentifierContext) {}
+// ExitCollectionExp is called when production collectionExp is exited.
+func (s *BaseBricksListener) ExitCollectionExp(ctx *CollectionExpContext) {}
 
 // EnterLoad is called when production load is entered.
 func (s *BaseBricksListener) EnterLoad(ctx *LoadContext) {}
@@ -152,3 +146,21 @@ func (s *BaseBricksListener) EnterSort(ctx *SortContext) {}
 
 // ExitSort is called when production sort is exited.
 func (s *BaseBricksListener) ExitSort(ctx *SortContext) {}
+
+// EnterBuildExp is called when production buildExp is entered.
+func (s *BaseBricksListener) EnterBuildExp(ctx *BuildExpContext) {}
+
+// ExitBuildExp is called when production buildExp is exited.
+func (s *BaseBricksListener) ExitBuildExp(ctx *BuildExpContext) {}
+
+// EnterBuild is called when production build is entered.
+func (s *BaseBricksListener) EnterBuild(ctx *BuildContext) {}
+
+// ExitBuild is called when production build is exited.
+func (s *BaseBricksListener) ExitBuild(ctx *BuildContext) {}
+
+// EnterIdentifier is called when production identifier is entered.
+func (s *BaseBricksListener) EnterIdentifier(ctx *IdentifierContext) {}
+
+// ExitIdentifier is called when production identifier is exited.
+func (s *BaseBricksListener) ExitIdentifier(ctx *IdentifierContext) {}

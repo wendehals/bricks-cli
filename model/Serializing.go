@@ -58,12 +58,27 @@ func SaveE(v any, fileName string) error {
 	}
 
 	fileName = filepath.FromSlash(fileName)
-	os.WriteFile(fileName, data, os.ModePerm)
+	err = os.WriteFile(fileName, data, os.ModePerm)
 	if err != nil {
 		return fmt.Errorf("exporting collection to JSON file '%s' failed: %s", fileName, err.Error())
 	}
 
 	log.Printf("Saved data to file '%s'", fileName)
+
+	return nil
+}
+
+// Print serializes a value to JSON and prints it to the standard output.
+func Print(v any) error {
+	data, err := json.MarshalIndent(v, "", " ")
+	if err != nil {
+		return fmt.Errorf("serializing to JSON failed: %s", err.Error())
+	}
+
+	_, err = fmt.Println(string(data))
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

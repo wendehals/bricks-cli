@@ -33,109 +33,119 @@ var BricksParserStaticData struct {
 func bricksParserInit() {
 	staticData := &BricksParserStaticData
 	staticData.LiteralNames = []string{
-		"", "':='", "'save'", "'('", "','", "')'", "'export'", "'build'", "'pause'",
+		"", "':='", "'save'", "'('", "','", "')'", "'export'", "'print'", "'pause'",
 		"'load'", "'import'", "'allParts'", "'lost'", "'set'", "'userSet'",
 		"'setList'", "'partList'", "'partLists'", "'sum'", "'subtract'", "'max'",
-		"'sort'", "'quantity'", "'descending'",
+		"'sort'", "'quantity'", "'descending'", "'build'",
 	}
 	staticData.SymbolicNames = []string{
 		"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-		"", "", "", "", "", "", "", "INT", "BOOL", "STRING", "ID", "SET_NUM",
+		"", "", "", "", "", "", "", "", "ID", "INT", "SET_NUM", "BOOL", "STRING",
 		"WS",
 	}
 	staticData.RuleNames = []string{
-		"bricks", "command", "assignment", "save", "export", "build", "pause",
-		"exp", "identifier", "load", "import_", "allParts", "lost", "set", "userSet",
+		"bricks", "command", "assignment", "save", "export", "print", "pause",
+		"collectionExp", "load", "import_", "allParts", "lost", "set", "userSet",
 		"setList", "partList", "partLists", "sum", "subtract", "max", "sort",
+		"buildExp", "build", "identifier",
 	}
 	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 29, 208, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
+		4, 1, 30, 228, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2, 10, 7,
 		10, 2, 11, 7, 11, 2, 12, 7, 12, 2, 13, 7, 13, 2, 14, 7, 14, 2, 15, 7, 15,
 		2, 16, 7, 16, 2, 17, 7, 17, 2, 18, 7, 18, 2, 19, 7, 19, 2, 20, 7, 20, 2,
-		21, 7, 21, 1, 0, 4, 0, 46, 8, 0, 11, 0, 12, 0, 47, 1, 1, 1, 1, 1, 1, 1,
-		1, 1, 1, 3, 1, 55, 8, 1, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1, 3, 1, 3, 1, 3,
-		1, 3, 1, 3, 1, 3, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 5, 1, 5,
-		1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 3, 5, 84, 8, 5, 1, 5, 1, 5, 1,
-		6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1,
-		7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 3, 7, 107, 8, 7, 1, 8, 1, 8, 1,
-		9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 10, 1, 10, 1, 10, 1, 10, 1, 10, 1, 11, 1,
-		11, 1, 12, 1, 12, 1, 13, 1, 13, 1, 13, 1, 13, 1, 13, 3, 13, 130, 8, 13,
-		1, 13, 1, 13, 1, 14, 1, 14, 1, 14, 1, 14, 1, 14, 3, 14, 139, 8, 14, 1,
-		14, 1, 14, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 3, 15, 148, 8, 15, 1, 15,
-		1, 15, 1, 16, 1, 16, 1, 16, 1, 16, 1, 16, 1, 17, 1, 17, 1, 17, 1, 17, 1,
-		17, 3, 17, 162, 8, 17, 1, 17, 1, 17, 1, 18, 1, 18, 1, 18, 1, 18, 1, 18,
-		4, 18, 171, 8, 18, 11, 18, 12, 18, 172, 1, 18, 1, 18, 1, 19, 1, 19, 1,
-		19, 1, 19, 1, 19, 1, 19, 1, 19, 1, 20, 1, 20, 1, 20, 1, 20, 1, 20, 4, 20,
-		189, 8, 20, 11, 20, 12, 20, 190, 1, 20, 1, 20, 1, 21, 1, 21, 1, 21, 1,
-		21, 1, 21, 3, 21, 200, 8, 21, 1, 21, 1, 21, 3, 21, 204, 8, 21, 1, 21, 1,
-		21, 1, 21, 0, 0, 22, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26,
-		28, 30, 32, 34, 36, 38, 40, 42, 0, 0, 212, 0, 45, 1, 0, 0, 0, 2, 54, 1,
-		0, 0, 0, 4, 56, 1, 0, 0, 0, 6, 60, 1, 0, 0, 0, 8, 67, 1, 0, 0, 0, 10, 74,
-		1, 0, 0, 0, 12, 87, 1, 0, 0, 0, 14, 106, 1, 0, 0, 0, 16, 108, 1, 0, 0,
-		0, 18, 110, 1, 0, 0, 0, 20, 115, 1, 0, 0, 0, 22, 120, 1, 0, 0, 0, 24, 122,
-		1, 0, 0, 0, 26, 124, 1, 0, 0, 0, 28, 133, 1, 0, 0, 0, 30, 142, 1, 0, 0,
-		0, 32, 151, 1, 0, 0, 0, 34, 156, 1, 0, 0, 0, 36, 165, 1, 0, 0, 0, 38, 176,
-		1, 0, 0, 0, 40, 183, 1, 0, 0, 0, 42, 194, 1, 0, 0, 0, 44, 46, 3, 2, 1,
-		0, 45, 44, 1, 0, 0, 0, 46, 47, 1, 0, 0, 0, 47, 45, 1, 0, 0, 0, 47, 48,
-		1, 0, 0, 0, 48, 1, 1, 0, 0, 0, 49, 55, 3, 4, 2, 0, 50, 55, 3, 6, 3, 0,
-		51, 55, 3, 8, 4, 0, 52, 55, 3, 10, 5, 0, 53, 55, 3, 12, 6, 0, 54, 49, 1,
-		0, 0, 0, 54, 50, 1, 0, 0, 0, 54, 51, 1, 0, 0, 0, 54, 52, 1, 0, 0, 0, 54,
-		53, 1, 0, 0, 0, 55, 3, 1, 0, 0, 0, 56, 57, 5, 27, 0, 0, 57, 58, 5, 1, 0,
-		0, 58, 59, 3, 14, 7, 0, 59, 5, 1, 0, 0, 0, 60, 61, 5, 2, 0, 0, 61, 62,
-		5, 3, 0, 0, 62, 63, 3, 14, 7, 0, 63, 64, 5, 4, 0, 0, 64, 65, 5, 26, 0,
-		0, 65, 66, 5, 5, 0, 0, 66, 7, 1, 0, 0, 0, 67, 68, 5, 6, 0, 0, 68, 69, 5,
-		3, 0, 0, 69, 70, 3, 14, 7, 0, 70, 71, 5, 4, 0, 0, 71, 72, 5, 26, 0, 0,
-		72, 73, 5, 5, 0, 0, 73, 9, 1, 0, 0, 0, 74, 75, 5, 7, 0, 0, 75, 76, 5, 3,
-		0, 0, 76, 77, 3, 14, 7, 0, 77, 78, 5, 4, 0, 0, 78, 79, 3, 14, 7, 0, 79,
-		80, 5, 4, 0, 0, 80, 83, 5, 26, 0, 0, 81, 82, 5, 4, 0, 0, 82, 84, 5, 27,
-		0, 0, 83, 81, 1, 0, 0, 0, 83, 84, 1, 0, 0, 0, 84, 85, 1, 0, 0, 0, 85, 86,
-		5, 5, 0, 0, 86, 11, 1, 0, 0, 0, 87, 88, 5, 8, 0, 0, 88, 89, 5, 3, 0, 0,
-		89, 90, 5, 24, 0, 0, 90, 91, 5, 5, 0, 0, 91, 13, 1, 0, 0, 0, 92, 107, 3,
-		16, 8, 0, 93, 107, 3, 18, 9, 0, 94, 107, 3, 20, 10, 0, 95, 107, 3, 22,
-		11, 0, 96, 107, 3, 24, 12, 0, 97, 107, 3, 26, 13, 0, 98, 107, 3, 28, 14,
-		0, 99, 107, 3, 30, 15, 0, 100, 107, 3, 32, 16, 0, 101, 107, 3, 34, 17,
-		0, 102, 107, 3, 36, 18, 0, 103, 107, 3, 38, 19, 0, 104, 107, 3, 40, 20,
-		0, 105, 107, 3, 42, 21, 0, 106, 92, 1, 0, 0, 0, 106, 93, 1, 0, 0, 0, 106,
-		94, 1, 0, 0, 0, 106, 95, 1, 0, 0, 0, 106, 96, 1, 0, 0, 0, 106, 97, 1, 0,
-		0, 0, 106, 98, 1, 0, 0, 0, 106, 99, 1, 0, 0, 0, 106, 100, 1, 0, 0, 0, 106,
-		101, 1, 0, 0, 0, 106, 102, 1, 0, 0, 0, 106, 103, 1, 0, 0, 0, 106, 104,
-		1, 0, 0, 0, 106, 105, 1, 0, 0, 0, 107, 15, 1, 0, 0, 0, 108, 109, 5, 27,
-		0, 0, 109, 17, 1, 0, 0, 0, 110, 111, 5, 9, 0, 0, 111, 112, 5, 3, 0, 0,
-		112, 113, 5, 26, 0, 0, 113, 114, 5, 5, 0, 0, 114, 19, 1, 0, 0, 0, 115,
-		116, 5, 10, 0, 0, 116, 117, 5, 3, 0, 0, 117, 118, 5, 26, 0, 0, 118, 119,
-		5, 5, 0, 0, 119, 21, 1, 0, 0, 0, 120, 121, 5, 11, 0, 0, 121, 23, 1, 0,
-		0, 0, 122, 123, 5, 12, 0, 0, 123, 25, 1, 0, 0, 0, 124, 125, 5, 13, 0, 0,
-		125, 126, 5, 3, 0, 0, 126, 129, 5, 28, 0, 0, 127, 128, 5, 4, 0, 0, 128,
-		130, 5, 25, 0, 0, 129, 127, 1, 0, 0, 0, 129, 130, 1, 0, 0, 0, 130, 131,
-		1, 0, 0, 0, 131, 132, 5, 5, 0, 0, 132, 27, 1, 0, 0, 0, 133, 134, 5, 14,
-		0, 0, 134, 135, 5, 3, 0, 0, 135, 138, 5, 28, 0, 0, 136, 137, 5, 4, 0, 0,
-		137, 139, 5, 25, 0, 0, 138, 136, 1, 0, 0, 0, 138, 139, 1, 0, 0, 0, 139,
-		140, 1, 0, 0, 0, 140, 141, 5, 5, 0, 0, 141, 29, 1, 0, 0, 0, 142, 143, 5,
-		15, 0, 0, 143, 144, 5, 3, 0, 0, 144, 147, 5, 24, 0, 0, 145, 146, 5, 4,
-		0, 0, 146, 148, 5, 25, 0, 0, 147, 145, 1, 0, 0, 0, 147, 148, 1, 0, 0, 0,
-		148, 149, 1, 0, 0, 0, 149, 150, 5, 5, 0, 0, 150, 31, 1, 0, 0, 0, 151, 152,
-		5, 16, 0, 0, 152, 153, 5, 3, 0, 0, 153, 154, 5, 24, 0, 0, 154, 155, 5,
-		5, 0, 0, 155, 33, 1, 0, 0, 0, 156, 157, 5, 17, 0, 0, 157, 158, 5, 3, 0,
-		0, 158, 161, 5, 26, 0, 0, 159, 160, 5, 4, 0, 0, 160, 162, 5, 25, 0, 0,
-		161, 159, 1, 0, 0, 0, 161, 162, 1, 0, 0, 0, 162, 163, 1, 0, 0, 0, 163,
-		164, 5, 5, 0, 0, 164, 35, 1, 0, 0, 0, 165, 166, 5, 18, 0, 0, 166, 167,
-		5, 3, 0, 0, 167, 170, 3, 14, 7, 0, 168, 169, 5, 4, 0, 0, 169, 171, 3, 14,
-		7, 0, 170, 168, 1, 0, 0, 0, 171, 172, 1, 0, 0, 0, 172, 170, 1, 0, 0, 0,
-		172, 173, 1, 0, 0, 0, 173, 174, 1, 0, 0, 0, 174, 175, 5, 5, 0, 0, 175,
-		37, 1, 0, 0, 0, 176, 177, 5, 19, 0, 0, 177, 178, 5, 3, 0, 0, 178, 179,
-		3, 14, 7, 0, 179, 180, 5, 4, 0, 0, 180, 181, 3, 14, 7, 0, 181, 182, 5,
-		5, 0, 0, 182, 39, 1, 0, 0, 0, 183, 184, 5, 20, 0, 0, 184, 185, 5, 3, 0,
-		0, 185, 188, 3, 14, 7, 0, 186, 187, 5, 4, 0, 0, 187, 189, 3, 14, 7, 0,
-		188, 186, 1, 0, 0, 0, 189, 190, 1, 0, 0, 0, 190, 188, 1, 0, 0, 0, 190,
-		191, 1, 0, 0, 0, 191, 192, 1, 0, 0, 0, 192, 193, 5, 5, 0, 0, 193, 41, 1,
-		0, 0, 0, 194, 195, 5, 21, 0, 0, 195, 196, 5, 3, 0, 0, 196, 199, 3, 14,
-		7, 0, 197, 198, 5, 4, 0, 0, 198, 200, 5, 22, 0, 0, 199, 197, 1, 0, 0, 0,
-		199, 200, 1, 0, 0, 0, 200, 203, 1, 0, 0, 0, 201, 202, 5, 4, 0, 0, 202,
-		204, 5, 23, 0, 0, 203, 201, 1, 0, 0, 0, 203, 204, 1, 0, 0, 0, 204, 205,
-		1, 0, 0, 0, 205, 206, 5, 5, 0, 0, 206, 43, 1, 0, 0, 0, 12, 47, 54, 83,
-		106, 129, 138, 147, 161, 172, 190, 199, 203,
+		21, 7, 21, 2, 22, 7, 22, 2, 23, 7, 23, 1, 0, 4, 0, 50, 8, 0, 11, 0, 12,
+		0, 51, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 59, 8, 1, 1, 2, 1, 2, 1, 2,
+		1, 2, 1, 3, 1, 3, 1, 3, 1, 3, 3, 3, 69, 8, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1,
+		4, 1, 4, 1, 4, 1, 4, 3, 4, 79, 8, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 5, 1, 5,
+		1, 5, 1, 5, 3, 5, 89, 8, 5, 1, 5, 1, 5, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1,
+		7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 1,
+		7, 1, 7, 3, 7, 112, 8, 7, 1, 8, 1, 8, 1, 8, 1, 8, 1, 8, 1, 9, 1, 9, 1,
+		9, 1, 9, 1, 9, 1, 10, 1, 10, 1, 11, 1, 11, 1, 12, 1, 12, 1, 12, 1, 12,
+		1, 12, 3, 12, 133, 8, 12, 1, 12, 1, 12, 1, 13, 1, 13, 1, 13, 1, 13, 1,
+		13, 3, 13, 142, 8, 13, 1, 13, 1, 13, 1, 14, 1, 14, 1, 14, 1, 14, 1, 14,
+		3, 14, 151, 8, 14, 1, 14, 1, 14, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1,
+		16, 1, 16, 1, 16, 1, 16, 1, 16, 3, 16, 165, 8, 16, 1, 16, 1, 16, 1, 17,
+		1, 17, 1, 17, 1, 17, 1, 17, 4, 17, 174, 8, 17, 11, 17, 12, 17, 175, 1,
+		17, 1, 17, 1, 18, 1, 18, 1, 18, 1, 18, 1, 18, 1, 18, 1, 18, 1, 19, 1, 19,
+		1, 19, 1, 19, 1, 19, 4, 19, 192, 8, 19, 11, 19, 12, 19, 193, 1, 19, 1,
+		19, 1, 20, 1, 20, 1, 20, 1, 20, 1, 20, 3, 20, 203, 8, 20, 1, 20, 1, 20,
+		3, 20, 207, 8, 20, 1, 20, 1, 20, 1, 21, 1, 21, 3, 21, 213, 8, 21, 1, 22,
+		1, 22, 1, 22, 1, 22, 1, 22, 1, 22, 1, 22, 3, 22, 222, 8, 22, 1, 22, 1,
+		22, 1, 23, 1, 23, 1, 23, 0, 0, 24, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20,
+		22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 0, 0, 234, 0, 49, 1,
+		0, 0, 0, 2, 58, 1, 0, 0, 0, 4, 60, 1, 0, 0, 0, 6, 64, 1, 0, 0, 0, 8, 74,
+		1, 0, 0, 0, 10, 84, 1, 0, 0, 0, 12, 92, 1, 0, 0, 0, 14, 111, 1, 0, 0, 0,
+		16, 113, 1, 0, 0, 0, 18, 118, 1, 0, 0, 0, 20, 123, 1, 0, 0, 0, 22, 125,
+		1, 0, 0, 0, 24, 127, 1, 0, 0, 0, 26, 136, 1, 0, 0, 0, 28, 145, 1, 0, 0,
+		0, 30, 154, 1, 0, 0, 0, 32, 159, 1, 0, 0, 0, 34, 168, 1, 0, 0, 0, 36, 179,
+		1, 0, 0, 0, 38, 186, 1, 0, 0, 0, 40, 197, 1, 0, 0, 0, 42, 212, 1, 0, 0,
+		0, 44, 214, 1, 0, 0, 0, 46, 225, 1, 0, 0, 0, 48, 50, 3, 2, 1, 0, 49, 48,
+		1, 0, 0, 0, 50, 51, 1, 0, 0, 0, 51, 49, 1, 0, 0, 0, 51, 52, 1, 0, 0, 0,
+		52, 1, 1, 0, 0, 0, 53, 59, 3, 4, 2, 0, 54, 59, 3, 6, 3, 0, 55, 59, 3, 8,
+		4, 0, 56, 59, 3, 10, 5, 0, 57, 59, 3, 12, 6, 0, 58, 53, 1, 0, 0, 0, 58,
+		54, 1, 0, 0, 0, 58, 55, 1, 0, 0, 0, 58, 56, 1, 0, 0, 0, 58, 57, 1, 0, 0,
+		0, 59, 3, 1, 0, 0, 0, 60, 61, 5, 25, 0, 0, 61, 62, 5, 1, 0, 0, 62, 63,
+		3, 14, 7, 0, 63, 5, 1, 0, 0, 0, 64, 65, 5, 2, 0, 0, 65, 68, 5, 3, 0, 0,
+		66, 69, 3, 14, 7, 0, 67, 69, 3, 42, 21, 0, 68, 66, 1, 0, 0, 0, 68, 67,
+		1, 0, 0, 0, 69, 70, 1, 0, 0, 0, 70, 71, 5, 4, 0, 0, 71, 72, 5, 29, 0, 0,
+		72, 73, 5, 5, 0, 0, 73, 7, 1, 0, 0, 0, 74, 75, 5, 6, 0, 0, 75, 78, 5, 3,
+		0, 0, 76, 79, 3, 14, 7, 0, 77, 79, 3, 42, 21, 0, 78, 76, 1, 0, 0, 0, 78,
+		77, 1, 0, 0, 0, 79, 80, 1, 0, 0, 0, 80, 81, 5, 4, 0, 0, 81, 82, 5, 29,
+		0, 0, 82, 83, 5, 5, 0, 0, 83, 9, 1, 0, 0, 0, 84, 85, 5, 7, 0, 0, 85, 88,
+		5, 3, 0, 0, 86, 89, 3, 14, 7, 0, 87, 89, 3, 42, 21, 0, 88, 86, 1, 0, 0,
+		0, 88, 87, 1, 0, 0, 0, 89, 90, 1, 0, 0, 0, 90, 91, 5, 5, 0, 0, 91, 11,
+		1, 0, 0, 0, 92, 93, 5, 8, 0, 0, 93, 94, 5, 3, 0, 0, 94, 95, 5, 26, 0, 0,
+		95, 96, 5, 5, 0, 0, 96, 13, 1, 0, 0, 0, 97, 112, 3, 46, 23, 0, 98, 112,
+		3, 16, 8, 0, 99, 112, 3, 18, 9, 0, 100, 112, 3, 20, 10, 0, 101, 112, 3,
+		22, 11, 0, 102, 112, 3, 24, 12, 0, 103, 112, 3, 26, 13, 0, 104, 112, 3,
+		28, 14, 0, 105, 112, 3, 30, 15, 0, 106, 112, 3, 32, 16, 0, 107, 112, 3,
+		34, 17, 0, 108, 112, 3, 36, 18, 0, 109, 112, 3, 38, 19, 0, 110, 112, 3,
+		40, 20, 0, 111, 97, 1, 0, 0, 0, 111, 98, 1, 0, 0, 0, 111, 99, 1, 0, 0,
+		0, 111, 100, 1, 0, 0, 0, 111, 101, 1, 0, 0, 0, 111, 102, 1, 0, 0, 0, 111,
+		103, 1, 0, 0, 0, 111, 104, 1, 0, 0, 0, 111, 105, 1, 0, 0, 0, 111, 106,
+		1, 0, 0, 0, 111, 107, 1, 0, 0, 0, 111, 108, 1, 0, 0, 0, 111, 109, 1, 0,
+		0, 0, 111, 110, 1, 0, 0, 0, 112, 15, 1, 0, 0, 0, 113, 114, 5, 9, 0, 0,
+		114, 115, 5, 3, 0, 0, 115, 116, 5, 29, 0, 0, 116, 117, 5, 5, 0, 0, 117,
+		17, 1, 0, 0, 0, 118, 119, 5, 10, 0, 0, 119, 120, 5, 3, 0, 0, 120, 121,
+		5, 29, 0, 0, 121, 122, 5, 5, 0, 0, 122, 19, 1, 0, 0, 0, 123, 124, 5, 11,
+		0, 0, 124, 21, 1, 0, 0, 0, 125, 126, 5, 12, 0, 0, 126, 23, 1, 0, 0, 0,
+		127, 128, 5, 13, 0, 0, 128, 129, 5, 3, 0, 0, 129, 132, 5, 27, 0, 0, 130,
+		131, 5, 4, 0, 0, 131, 133, 5, 28, 0, 0, 132, 130, 1, 0, 0, 0, 132, 133,
+		1, 0, 0, 0, 133, 134, 1, 0, 0, 0, 134, 135, 5, 5, 0, 0, 135, 25, 1, 0,
+		0, 0, 136, 137, 5, 14, 0, 0, 137, 138, 5, 3, 0, 0, 138, 141, 5, 27, 0,
+		0, 139, 140, 5, 4, 0, 0, 140, 142, 5, 28, 0, 0, 141, 139, 1, 0, 0, 0, 141,
+		142, 1, 0, 0, 0, 142, 143, 1, 0, 0, 0, 143, 144, 5, 5, 0, 0, 144, 27, 1,
+		0, 0, 0, 145, 146, 5, 15, 0, 0, 146, 147, 5, 3, 0, 0, 147, 150, 5, 26,
+		0, 0, 148, 149, 5, 4, 0, 0, 149, 151, 5, 28, 0, 0, 150, 148, 1, 0, 0, 0,
+		150, 151, 1, 0, 0, 0, 151, 152, 1, 0, 0, 0, 152, 153, 5, 5, 0, 0, 153,
+		29, 1, 0, 0, 0, 154, 155, 5, 16, 0, 0, 155, 156, 5, 3, 0, 0, 156, 157,
+		5, 26, 0, 0, 157, 158, 5, 5, 0, 0, 158, 31, 1, 0, 0, 0, 159, 160, 5, 17,
+		0, 0, 160, 161, 5, 3, 0, 0, 161, 164, 5, 29, 0, 0, 162, 163, 5, 4, 0, 0,
+		163, 165, 5, 28, 0, 0, 164, 162, 1, 0, 0, 0, 164, 165, 1, 0, 0, 0, 165,
+		166, 1, 0, 0, 0, 166, 167, 5, 5, 0, 0, 167, 33, 1, 0, 0, 0, 168, 169, 5,
+		18, 0, 0, 169, 170, 5, 3, 0, 0, 170, 173, 3, 14, 7, 0, 171, 172, 5, 4,
+		0, 0, 172, 174, 3, 14, 7, 0, 173, 171, 1, 0, 0, 0, 174, 175, 1, 0, 0, 0,
+		175, 173, 1, 0, 0, 0, 175, 176, 1, 0, 0, 0, 176, 177, 1, 0, 0, 0, 177,
+		178, 5, 5, 0, 0, 178, 35, 1, 0, 0, 0, 179, 180, 5, 19, 0, 0, 180, 181,
+		5, 3, 0, 0, 181, 182, 3, 14, 7, 0, 182, 183, 5, 4, 0, 0, 183, 184, 3, 14,
+		7, 0, 184, 185, 5, 5, 0, 0, 185, 37, 1, 0, 0, 0, 186, 187, 5, 20, 0, 0,
+		187, 188, 5, 3, 0, 0, 188, 191, 3, 14, 7, 0, 189, 190, 5, 4, 0, 0, 190,
+		192, 3, 14, 7, 0, 191, 189, 1, 0, 0, 0, 192, 193, 1, 0, 0, 0, 193, 191,
+		1, 0, 0, 0, 193, 194, 1, 0, 0, 0, 194, 195, 1, 0, 0, 0, 195, 196, 5, 5,
+		0, 0, 196, 39, 1, 0, 0, 0, 197, 198, 5, 21, 0, 0, 198, 199, 5, 3, 0, 0,
+		199, 202, 3, 14, 7, 0, 200, 201, 5, 4, 0, 0, 201, 203, 5, 22, 0, 0, 202,
+		200, 1, 0, 0, 0, 202, 203, 1, 0, 0, 0, 203, 206, 1, 0, 0, 0, 204, 205,
+		5, 4, 0, 0, 205, 207, 5, 23, 0, 0, 206, 204, 1, 0, 0, 0, 206, 207, 1, 0,
+		0, 0, 207, 208, 1, 0, 0, 0, 208, 209, 5, 5, 0, 0, 209, 41, 1, 0, 0, 0,
+		210, 213, 3, 46, 23, 0, 211, 213, 3, 44, 22, 0, 212, 210, 1, 0, 0, 0, 212,
+		211, 1, 0, 0, 0, 213, 43, 1, 0, 0, 0, 214, 215, 5, 24, 0, 0, 215, 216,
+		5, 3, 0, 0, 216, 217, 3, 14, 7, 0, 217, 218, 5, 4, 0, 0, 218, 221, 3, 14,
+		7, 0, 219, 220, 5, 4, 0, 0, 220, 222, 5, 25, 0, 0, 221, 219, 1, 0, 0, 0,
+		221, 222, 1, 0, 0, 0, 222, 223, 1, 0, 0, 0, 223, 224, 5, 5, 0, 0, 224,
+		45, 1, 0, 0, 0, 225, 226, 5, 25, 0, 0, 226, 47, 1, 0, 0, 0, 16, 51, 58,
+		68, 78, 88, 111, 132, 141, 150, 164, 175, 193, 202, 206, 212, 221,
 	}
 	deserializer := antlr.NewATNDeserializer(nil)
 	staticData.atn = deserializer.Deserialize(staticData.serializedATN)
@@ -197,38 +207,41 @@ const (
 	BricksParserT__20   = 21
 	BricksParserT__21   = 22
 	BricksParserT__22   = 23
-	BricksParserINT     = 24
-	BricksParserBOOL    = 25
-	BricksParserSTRING  = 26
-	BricksParserID      = 27
-	BricksParserSET_NUM = 28
-	BricksParserWS      = 29
+	BricksParserT__23   = 24
+	BricksParserID      = 25
+	BricksParserINT     = 26
+	BricksParserSET_NUM = 27
+	BricksParserBOOL    = 28
+	BricksParserSTRING  = 29
+	BricksParserWS      = 30
 )
 
 // BricksParser rules.
 const (
-	BricksParserRULE_bricks     = 0
-	BricksParserRULE_command    = 1
-	BricksParserRULE_assignment = 2
-	BricksParserRULE_save       = 3
-	BricksParserRULE_export     = 4
-	BricksParserRULE_build      = 5
-	BricksParserRULE_pause      = 6
-	BricksParserRULE_exp        = 7
-	BricksParserRULE_identifier = 8
-	BricksParserRULE_load       = 9
-	BricksParserRULE_import_    = 10
-	BricksParserRULE_allParts   = 11
-	BricksParserRULE_lost       = 12
-	BricksParserRULE_set        = 13
-	BricksParserRULE_userSet    = 14
-	BricksParserRULE_setList    = 15
-	BricksParserRULE_partList   = 16
-	BricksParserRULE_partLists  = 17
-	BricksParserRULE_sum        = 18
-	BricksParserRULE_subtract   = 19
-	BricksParserRULE_max        = 20
-	BricksParserRULE_sort       = 21
+	BricksParserRULE_bricks        = 0
+	BricksParserRULE_command       = 1
+	BricksParserRULE_assignment    = 2
+	BricksParserRULE_save          = 3
+	BricksParserRULE_export        = 4
+	BricksParserRULE_print         = 5
+	BricksParserRULE_pause         = 6
+	BricksParserRULE_collectionExp = 7
+	BricksParserRULE_load          = 8
+	BricksParserRULE_import_       = 9
+	BricksParserRULE_allParts      = 10
+	BricksParserRULE_lost          = 11
+	BricksParserRULE_set           = 12
+	BricksParserRULE_userSet       = 13
+	BricksParserRULE_setList       = 14
+	BricksParserRULE_partList      = 15
+	BricksParserRULE_partLists     = 16
+	BricksParserRULE_sum           = 17
+	BricksParserRULE_subtract      = 18
+	BricksParserRULE_max           = 19
+	BricksParserRULE_sort          = 20
+	BricksParserRULE_buildExp      = 21
+	BricksParserRULE_build         = 22
+	BricksParserRULE_identifier    = 23
 )
 
 // IBricksContext is an interface to support dynamic dispatch.
@@ -345,20 +358,20 @@ func (p *BricksParser) Bricks() (localctx IBricksContext) {
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(45)
+	p.SetState(49)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
 	}
 	_la = p.GetTokenStream().LA(1)
 
-	for ok := true; ok; ok = ((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&134218180) != 0) {
+	for ok := true; ok; ok = ((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&33554884) != 0) {
 		{
-			p.SetState(44)
+			p.SetState(48)
 			p.Command()
 		}
 
-		p.SetState(47)
+		p.SetState(51)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -390,7 +403,7 @@ type ICommandContext interface {
 	Assignment() IAssignmentContext
 	Save() ISaveContext
 	Export() IExportContext
-	Build() IBuildContext
+	Print_() IPrintContext
 	Pause() IPauseContext
 
 	// IsCommandContext differentiates from other interfaces.
@@ -477,10 +490,10 @@ func (s *CommandContext) Export() IExportContext {
 	return t.(IExportContext)
 }
 
-func (s *CommandContext) Build() IBuildContext {
+func (s *CommandContext) Print_() IPrintContext {
 	var t antlr.RuleContext
 	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IBuildContext); ok {
+		if _, ok := ctx.(IPrintContext); ok {
 			t = ctx.(antlr.RuleContext)
 			break
 		}
@@ -490,7 +503,7 @@ func (s *CommandContext) Build() IBuildContext {
 		return nil
 	}
 
-	return t.(IBuildContext)
+	return t.(IPrintContext)
 }
 
 func (s *CommandContext) Pause() IPauseContext {
@@ -532,7 +545,7 @@ func (s *CommandContext) ExitRule(listener antlr.ParseTreeListener) {
 func (p *BricksParser) Command() (localctx ICommandContext) {
 	localctx = NewCommandContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 2, BricksParserRULE_command)
-	p.SetState(54)
+	p.SetState(58)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -542,35 +555,35 @@ func (p *BricksParser) Command() (localctx ICommandContext) {
 	case BricksParserID:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(49)
+			p.SetState(53)
 			p.Assignment()
 		}
 
 	case BricksParserT__1:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(50)
+			p.SetState(54)
 			p.Save()
 		}
 
 	case BricksParserT__5:
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(51)
+			p.SetState(55)
 			p.Export()
 		}
 
 	case BricksParserT__6:
 		p.EnterOuterAlt(localctx, 4)
 		{
-			p.SetState(52)
-			p.Build()
+			p.SetState(56)
+			p.Print_()
 		}
 
 	case BricksParserT__7:
 		p.EnterOuterAlt(localctx, 5)
 		{
-			p.SetState(53)
+			p.SetState(57)
 			p.Pause()
 		}
 
@@ -601,7 +614,7 @@ type IAssignmentContext interface {
 
 	// Getter signatures
 	ID() antlr.TerminalNode
-	Exp() IExpContext
+	CollectionExp() ICollectionExpContext
 
 	// IsAssignmentContext differentiates from other interfaces.
 	IsAssignmentContext()
@@ -643,10 +656,10 @@ func (s *AssignmentContext) ID() antlr.TerminalNode {
 	return s.GetToken(BricksParserID, 0)
 }
 
-func (s *AssignmentContext) Exp() IExpContext {
+func (s *AssignmentContext) CollectionExp() ICollectionExpContext {
 	var t antlr.RuleContext
 	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IExpContext); ok {
+		if _, ok := ctx.(ICollectionExpContext); ok {
 			t = ctx.(antlr.RuleContext)
 			break
 		}
@@ -656,7 +669,7 @@ func (s *AssignmentContext) Exp() IExpContext {
 		return nil
 	}
 
-	return t.(IExpContext)
+	return t.(ICollectionExpContext)
 }
 
 func (s *AssignmentContext) GetRuleContext() antlr.RuleContext {
@@ -684,7 +697,7 @@ func (p *BricksParser) Assignment() (localctx IAssignmentContext) {
 	p.EnterRule(localctx, 4, BricksParserRULE_assignment)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(56)
+		p.SetState(60)
 		p.Match(BricksParserID)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -692,7 +705,7 @@ func (p *BricksParser) Assignment() (localctx IAssignmentContext) {
 		}
 	}
 	{
-		p.SetState(57)
+		p.SetState(61)
 		p.Match(BricksParserT__0)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -700,8 +713,8 @@ func (p *BricksParser) Assignment() (localctx IAssignmentContext) {
 		}
 	}
 	{
-		p.SetState(58)
-		p.Exp()
+		p.SetState(62)
+		p.CollectionExp()
 	}
 
 errorExit:
@@ -725,8 +738,9 @@ type ISaveContext interface {
 	GetParser() antlr.Parser
 
 	// Getter signatures
-	Exp() IExpContext
 	STRING() antlr.TerminalNode
+	CollectionExp() ICollectionExpContext
+	BuildExp() IBuildExpContext
 
 	// IsSaveContext differentiates from other interfaces.
 	IsSaveContext()
@@ -764,10 +778,14 @@ func NewSaveContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokin
 
 func (s *SaveContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *SaveContext) Exp() IExpContext {
+func (s *SaveContext) STRING() antlr.TerminalNode {
+	return s.GetToken(BricksParserSTRING, 0)
+}
+
+func (s *SaveContext) CollectionExp() ICollectionExpContext {
 	var t antlr.RuleContext
 	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IExpContext); ok {
+		if _, ok := ctx.(ICollectionExpContext); ok {
 			t = ctx.(antlr.RuleContext)
 			break
 		}
@@ -777,11 +795,23 @@ func (s *SaveContext) Exp() IExpContext {
 		return nil
 	}
 
-	return t.(IExpContext)
+	return t.(ICollectionExpContext)
 }
 
-func (s *SaveContext) STRING() antlr.TerminalNode {
-	return s.GetToken(BricksParserSTRING, 0)
+func (s *SaveContext) BuildExp() IBuildExpContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IBuildExpContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IBuildExpContext)
 }
 
 func (s *SaveContext) GetRuleContext() antlr.RuleContext {
@@ -809,7 +839,7 @@ func (p *BricksParser) Save() (localctx ISaveContext) {
 	p.EnterRule(localctx, 6, BricksParserRULE_save)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(60)
+		p.SetState(64)
 		p.Match(BricksParserT__1)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -817,165 +847,34 @@ func (p *BricksParser) Save() (localctx ISaveContext) {
 		}
 	}
 	{
-		p.SetState(61)
-		p.Match(BricksParserT__2)
-		if p.HasError() {
-			// Recognition error - abort rule
-			goto errorExit
-		}
-	}
-	{
-		p.SetState(62)
-		p.Exp()
-	}
-	{
-		p.SetState(63)
-		p.Match(BricksParserT__3)
-		if p.HasError() {
-			// Recognition error - abort rule
-			goto errorExit
-		}
-	}
-	{
-		p.SetState(64)
-		p.Match(BricksParserSTRING)
-		if p.HasError() {
-			// Recognition error - abort rule
-			goto errorExit
-		}
-	}
-	{
 		p.SetState(65)
-		p.Match(BricksParserT__4)
-		if p.HasError() {
-			// Recognition error - abort rule
-			goto errorExit
-		}
-	}
-
-errorExit:
-	if p.HasError() {
-		v := p.GetError()
-		localctx.SetException(v)
-		p.GetErrorHandler().ReportError(p, v)
-		p.GetErrorHandler().Recover(p, v)
-		p.SetError(nil)
-	}
-	p.ExitRule()
-	return localctx
-	goto errorExit // Trick to prevent compiler error if the label is not used
-}
-
-// IExportContext is an interface to support dynamic dispatch.
-type IExportContext interface {
-	antlr.ParserRuleContext
-
-	// GetParser returns the parser.
-	GetParser() antlr.Parser
-
-	// Getter signatures
-	Exp() IExpContext
-	STRING() antlr.TerminalNode
-
-	// IsExportContext differentiates from other interfaces.
-	IsExportContext()
-}
-
-type ExportContext struct {
-	antlr.BaseParserRuleContext
-	parser antlr.Parser
-}
-
-func NewEmptyExportContext() *ExportContext {
-	var p = new(ExportContext)
-	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
-	p.RuleIndex = BricksParserRULE_export
-	return p
-}
-
-func InitEmptyExportContext(p *ExportContext) {
-	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
-	p.RuleIndex = BricksParserRULE_export
-}
-
-func (*ExportContext) IsExportContext() {}
-
-func NewExportContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ExportContext {
-	var p = new(ExportContext)
-
-	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
-
-	p.parser = parser
-	p.RuleIndex = BricksParserRULE_export
-
-	return p
-}
-
-func (s *ExportContext) GetParser() antlr.Parser { return s.parser }
-
-func (s *ExportContext) Exp() IExpContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IExpContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IExpContext)
-}
-
-func (s *ExportContext) STRING() antlr.TerminalNode {
-	return s.GetToken(BricksParserSTRING, 0)
-}
-
-func (s *ExportContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *ExportContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
-	return antlr.TreesStringTree(s, ruleNames, recog)
-}
-
-func (s *ExportContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(BricksListener); ok {
-		listenerT.EnterExport(s)
-	}
-}
-
-func (s *ExportContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(BricksListener); ok {
-		listenerT.ExitExport(s)
-	}
-}
-
-func (p *BricksParser) Export() (localctx IExportContext) {
-	localctx = NewExportContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 8, BricksParserRULE_export)
-	p.EnterOuterAlt(localctx, 1)
-	{
-		p.SetState(67)
-		p.Match(BricksParserT__5)
-		if p.HasError() {
-			// Recognition error - abort rule
-			goto errorExit
-		}
-	}
-	{
-		p.SetState(68)
 		p.Match(BricksParserT__2)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
 		}
 	}
-	{
-		p.SetState(69)
-		p.Exp()
+	p.SetState(68)
+	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
+
+	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 2, p.GetParserRuleContext()) {
+	case 1:
+		{
+			p.SetState(66)
+			p.CollectionExp()
+		}
+
+	case 2:
+		{
+			p.SetState(67)
+			p.BuildExp()
+		}
+
+	case antlr.ATNInvalidAltNumber:
+		goto errorExit
 	}
 	{
 		p.SetState(70)
@@ -1015,97 +914,64 @@ errorExit:
 	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
-// IBuildContext is an interface to support dynamic dispatch.
-type IBuildContext interface {
+// IExportContext is an interface to support dynamic dispatch.
+type IExportContext interface {
 	antlr.ParserRuleContext
 
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
-	// GetBuild_mode returns the build_mode token.
-	GetBuild_mode() antlr.Token
-
-	// SetBuild_mode sets the build_mode token.
-	SetBuild_mode(antlr.Token)
-
 	// Getter signatures
-	AllExp() []IExpContext
-	Exp(i int) IExpContext
 	STRING() antlr.TerminalNode
-	ID() antlr.TerminalNode
+	CollectionExp() ICollectionExpContext
+	BuildExp() IBuildExpContext
 
-	// IsBuildContext differentiates from other interfaces.
-	IsBuildContext()
+	// IsExportContext differentiates from other interfaces.
+	IsExportContext()
 }
 
-type BuildContext struct {
+type ExportContext struct {
 	antlr.BaseParserRuleContext
-	parser     antlr.Parser
-	build_mode antlr.Token
+	parser antlr.Parser
 }
 
-func NewEmptyBuildContext() *BuildContext {
-	var p = new(BuildContext)
+func NewEmptyExportContext() *ExportContext {
+	var p = new(ExportContext)
 	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
-	p.RuleIndex = BricksParserRULE_build
+	p.RuleIndex = BricksParserRULE_export
 	return p
 }
 
-func InitEmptyBuildContext(p *BuildContext) {
+func InitEmptyExportContext(p *ExportContext) {
 	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
-	p.RuleIndex = BricksParserRULE_build
+	p.RuleIndex = BricksParserRULE_export
 }
 
-func (*BuildContext) IsBuildContext() {}
+func (*ExportContext) IsExportContext() {}
 
-func NewBuildContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *BuildContext {
-	var p = new(BuildContext)
+func NewExportContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ExportContext {
+	var p = new(ExportContext)
 
 	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
-	p.RuleIndex = BricksParserRULE_build
+	p.RuleIndex = BricksParserRULE_export
 
 	return p
 }
 
-func (s *BuildContext) GetParser() antlr.Parser { return s.parser }
+func (s *ExportContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *BuildContext) GetBuild_mode() antlr.Token { return s.build_mode }
-
-func (s *BuildContext) SetBuild_mode(v antlr.Token) { s.build_mode = v }
-
-func (s *BuildContext) AllExp() []IExpContext {
-	children := s.GetChildren()
-	len := 0
-	for _, ctx := range children {
-		if _, ok := ctx.(IExpContext); ok {
-			len++
-		}
-	}
-
-	tst := make([]IExpContext, len)
-	i := 0
-	for _, ctx := range children {
-		if t, ok := ctx.(IExpContext); ok {
-			tst[i] = t.(IExpContext)
-			i++
-		}
-	}
-
-	return tst
+func (s *ExportContext) STRING() antlr.TerminalNode {
+	return s.GetToken(BricksParserSTRING, 0)
 }
 
-func (s *BuildContext) Exp(i int) IExpContext {
+func (s *ExportContext) CollectionExp() ICollectionExpContext {
 	var t antlr.RuleContext
-	j := 0
 	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IExpContext); ok {
-			if j == i {
-				t = ctx.(antlr.RuleContext)
-				break
-			}
-			j++
+		if _, ok := ctx.(ICollectionExpContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
 		}
 	}
 
@@ -1113,46 +979,52 @@ func (s *BuildContext) Exp(i int) IExpContext {
 		return nil
 	}
 
-	return t.(IExpContext)
+	return t.(ICollectionExpContext)
 }
 
-func (s *BuildContext) STRING() antlr.TerminalNode {
-	return s.GetToken(BricksParserSTRING, 0)
+func (s *ExportContext) BuildExp() IBuildExpContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IBuildExpContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IBuildExpContext)
 }
 
-func (s *BuildContext) ID() antlr.TerminalNode {
-	return s.GetToken(BricksParserID, 0)
-}
-
-func (s *BuildContext) GetRuleContext() antlr.RuleContext {
+func (s *ExportContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *BuildContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+func (s *ExportContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
 	return antlr.TreesStringTree(s, ruleNames, recog)
 }
 
-func (s *BuildContext) EnterRule(listener antlr.ParseTreeListener) {
+func (s *ExportContext) EnterRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(BricksListener); ok {
-		listenerT.EnterBuild(s)
+		listenerT.EnterExport(s)
 	}
 }
 
-func (s *BuildContext) ExitRule(listener antlr.ParseTreeListener) {
+func (s *ExportContext) ExitRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(BricksListener); ok {
-		listenerT.ExitBuild(s)
+		listenerT.ExitExport(s)
 	}
 }
 
-func (p *BricksParser) Build() (localctx IBuildContext) {
-	localctx = NewBuildContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 10, BricksParserRULE_build)
-	var _la int
-
+func (p *BricksParser) Export() (localctx IExportContext) {
+	localctx = NewExportContext(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 8, BricksParserRULE_export)
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(74)
-		p.Match(BricksParserT__6)
+		p.Match(BricksParserT__5)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
@@ -1166,69 +1038,209 @@ func (p *BricksParser) Build() (localctx IBuildContext) {
 			goto errorExit
 		}
 	}
-	{
-		p.SetState(76)
-		p.Exp()
+	p.SetState(78)
+	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
 	}
-	{
-		p.SetState(77)
-		p.Match(BricksParserT__3)
-		if p.HasError() {
-			// Recognition error - abort rule
-			goto errorExit
+
+	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 3, p.GetParserRuleContext()) {
+	case 1:
+		{
+			p.SetState(76)
+			p.CollectionExp()
 		}
-	}
-	{
-		p.SetState(78)
-		p.Exp()
-	}
-	{
-		p.SetState(79)
-		p.Match(BricksParserT__3)
-		if p.HasError() {
-			// Recognition error - abort rule
-			goto errorExit
+
+	case 2:
+		{
+			p.SetState(77)
+			p.BuildExp()
 		}
+
+	case antlr.ATNInvalidAltNumber:
+		goto errorExit
 	}
 	{
 		p.SetState(80)
+		p.Match(BricksParserT__3)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
+	}
+	{
+		p.SetState(81)
 		p.Match(BricksParserSTRING)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
 		}
 	}
-	p.SetState(83)
+	{
+		p.SetState(82)
+		p.Match(BricksParserT__4)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
+	}
+
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
+	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
+}
+
+// IPrintContext is an interface to support dynamic dispatch.
+type IPrintContext interface {
+	antlr.ParserRuleContext
+
+	// GetParser returns the parser.
+	GetParser() antlr.Parser
+
+	// Getter signatures
+	CollectionExp() ICollectionExpContext
+	BuildExp() IBuildExpContext
+
+	// IsPrintContext differentiates from other interfaces.
+	IsPrintContext()
+}
+
+type PrintContext struct {
+	antlr.BaseParserRuleContext
+	parser antlr.Parser
+}
+
+func NewEmptyPrintContext() *PrintContext {
+	var p = new(PrintContext)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_print
+	return p
+}
+
+func InitEmptyPrintContext(p *PrintContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_print
+}
+
+func (*PrintContext) IsPrintContext() {}
+
+func NewPrintContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *PrintContext {
+	var p = new(PrintContext)
+
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
+
+	p.parser = parser
+	p.RuleIndex = BricksParserRULE_print
+
+	return p
+}
+
+func (s *PrintContext) GetParser() antlr.Parser { return s.parser }
+
+func (s *PrintContext) CollectionExp() ICollectionExpContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(ICollectionExpContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(ICollectionExpContext)
+}
+
+func (s *PrintContext) BuildExp() IBuildExpContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IBuildExpContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IBuildExpContext)
+}
+
+func (s *PrintContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *PrintContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+	return antlr.TreesStringTree(s, ruleNames, recog)
+}
+
+func (s *PrintContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(BricksListener); ok {
+		listenerT.EnterPrint(s)
+	}
+}
+
+func (s *PrintContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(BricksListener); ok {
+		listenerT.ExitPrint(s)
+	}
+}
+
+func (p *BricksParser) Print_() (localctx IPrintContext) {
+	localctx = NewPrintContext(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 10, BricksParserRULE_print)
+	p.EnterOuterAlt(localctx, 1)
+	{
+		p.SetState(84)
+		p.Match(BricksParserT__6)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
+	}
+	{
+		p.SetState(85)
+		p.Match(BricksParserT__2)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
+	}
+	p.SetState(88)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
 	}
-	_la = p.GetTokenStream().LA(1)
 
-	if _la == BricksParserT__3 {
+	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 4, p.GetParserRuleContext()) {
+	case 1:
 		{
-			p.SetState(81)
-			p.Match(BricksParserT__3)
-			if p.HasError() {
-				// Recognition error - abort rule
-				goto errorExit
-			}
-		}
-		{
-			p.SetState(82)
-
-			var _m = p.Match(BricksParserID)
-
-			localctx.(*BuildContext).build_mode = _m
-			if p.HasError() {
-				// Recognition error - abort rule
-				goto errorExit
-			}
+			p.SetState(86)
+			p.CollectionExp()
 		}
 
+	case 2:
+		{
+			p.SetState(87)
+			p.BuildExp()
+		}
+
+	case antlr.ATNInvalidAltNumber:
+		goto errorExit
 	}
 	{
-		p.SetState(85)
+		p.SetState(90)
 		p.Match(BricksParserT__4)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -1335,7 +1347,7 @@ func (p *BricksParser) Pause() (localctx IPauseContext) {
 	p.EnterRule(localctx, 12, BricksParserRULE_pause)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(87)
+		p.SetState(92)
 		p.Match(BricksParserT__7)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -1343,7 +1355,7 @@ func (p *BricksParser) Pause() (localctx IPauseContext) {
 		}
 	}
 	{
-		p.SetState(88)
+		p.SetState(93)
 		p.Match(BricksParserT__2)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -1351,7 +1363,7 @@ func (p *BricksParser) Pause() (localctx IPauseContext) {
 		}
 	}
 	{
-		p.SetState(89)
+		p.SetState(94)
 
 		var _m = p.Match(BricksParserINT)
 
@@ -1362,7 +1374,7 @@ func (p *BricksParser) Pause() (localctx IPauseContext) {
 		}
 	}
 	{
-		p.SetState(90)
+		p.SetState(95)
 		p.Match(BricksParserT__4)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -1383,8 +1395,8 @@ errorExit:
 	goto errorExit // Trick to prevent compiler error if the label is not used
 }
 
-// IExpContext is an interface to support dynamic dispatch.
-type IExpContext interface {
+// ICollectionExpContext is an interface to support dynamic dispatch.
+type ICollectionExpContext interface {
 	antlr.ParserRuleContext
 
 	// GetParser returns the parser.
@@ -1406,43 +1418,43 @@ type IExpContext interface {
 	Max() IMaxContext
 	Sort() ISortContext
 
-	// IsExpContext differentiates from other interfaces.
-	IsExpContext()
+	// IsCollectionExpContext differentiates from other interfaces.
+	IsCollectionExpContext()
 }
 
-type ExpContext struct {
+type CollectionExpContext struct {
 	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
-func NewEmptyExpContext() *ExpContext {
-	var p = new(ExpContext)
+func NewEmptyCollectionExpContext() *CollectionExpContext {
+	var p = new(CollectionExpContext)
 	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
-	p.RuleIndex = BricksParserRULE_exp
+	p.RuleIndex = BricksParserRULE_collectionExp
 	return p
 }
 
-func InitEmptyExpContext(p *ExpContext) {
+func InitEmptyCollectionExpContext(p *CollectionExpContext) {
 	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
-	p.RuleIndex = BricksParserRULE_exp
+	p.RuleIndex = BricksParserRULE_collectionExp
 }
 
-func (*ExpContext) IsExpContext() {}
+func (*CollectionExpContext) IsCollectionExpContext() {}
 
-func NewExpContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ExpContext {
-	var p = new(ExpContext)
+func NewCollectionExpContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *CollectionExpContext {
+	var p = new(CollectionExpContext)
 
 	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
-	p.RuleIndex = BricksParserRULE_exp
+	p.RuleIndex = BricksParserRULE_collectionExp
 
 	return p
 }
 
-func (s *ExpContext) GetParser() antlr.Parser { return s.parser }
+func (s *CollectionExpContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *ExpContext) Identifier() IIdentifierContext {
+func (s *CollectionExpContext) Identifier() IIdentifierContext {
 	var t antlr.RuleContext
 	for _, ctx := range s.GetChildren() {
 		if _, ok := ctx.(IIdentifierContext); ok {
@@ -1458,7 +1470,7 @@ func (s *ExpContext) Identifier() IIdentifierContext {
 	return t.(IIdentifierContext)
 }
 
-func (s *ExpContext) Load() ILoadContext {
+func (s *CollectionExpContext) Load() ILoadContext {
 	var t antlr.RuleContext
 	for _, ctx := range s.GetChildren() {
 		if _, ok := ctx.(ILoadContext); ok {
@@ -1474,7 +1486,7 @@ func (s *ExpContext) Load() ILoadContext {
 	return t.(ILoadContext)
 }
 
-func (s *ExpContext) Import_() IImport_Context {
+func (s *CollectionExpContext) Import_() IImport_Context {
 	var t antlr.RuleContext
 	for _, ctx := range s.GetChildren() {
 		if _, ok := ctx.(IImport_Context); ok {
@@ -1490,7 +1502,7 @@ func (s *ExpContext) Import_() IImport_Context {
 	return t.(IImport_Context)
 }
 
-func (s *ExpContext) AllParts() IAllPartsContext {
+func (s *CollectionExpContext) AllParts() IAllPartsContext {
 	var t antlr.RuleContext
 	for _, ctx := range s.GetChildren() {
 		if _, ok := ctx.(IAllPartsContext); ok {
@@ -1506,7 +1518,7 @@ func (s *ExpContext) AllParts() IAllPartsContext {
 	return t.(IAllPartsContext)
 }
 
-func (s *ExpContext) Lost() ILostContext {
+func (s *CollectionExpContext) Lost() ILostContext {
 	var t antlr.RuleContext
 	for _, ctx := range s.GetChildren() {
 		if _, ok := ctx.(ILostContext); ok {
@@ -1522,7 +1534,7 @@ func (s *ExpContext) Lost() ILostContext {
 	return t.(ILostContext)
 }
 
-func (s *ExpContext) Set() ISetContext {
+func (s *CollectionExpContext) Set() ISetContext {
 	var t antlr.RuleContext
 	for _, ctx := range s.GetChildren() {
 		if _, ok := ctx.(ISetContext); ok {
@@ -1538,7 +1550,7 @@ func (s *ExpContext) Set() ISetContext {
 	return t.(ISetContext)
 }
 
-func (s *ExpContext) UserSet() IUserSetContext {
+func (s *CollectionExpContext) UserSet() IUserSetContext {
 	var t antlr.RuleContext
 	for _, ctx := range s.GetChildren() {
 		if _, ok := ctx.(IUserSetContext); ok {
@@ -1554,7 +1566,7 @@ func (s *ExpContext) UserSet() IUserSetContext {
 	return t.(IUserSetContext)
 }
 
-func (s *ExpContext) SetList() ISetListContext {
+func (s *CollectionExpContext) SetList() ISetListContext {
 	var t antlr.RuleContext
 	for _, ctx := range s.GetChildren() {
 		if _, ok := ctx.(ISetListContext); ok {
@@ -1570,7 +1582,7 @@ func (s *ExpContext) SetList() ISetListContext {
 	return t.(ISetListContext)
 }
 
-func (s *ExpContext) PartList() IPartListContext {
+func (s *CollectionExpContext) PartList() IPartListContext {
 	var t antlr.RuleContext
 	for _, ctx := range s.GetChildren() {
 		if _, ok := ctx.(IPartListContext); ok {
@@ -1586,7 +1598,7 @@ func (s *ExpContext) PartList() IPartListContext {
 	return t.(IPartListContext)
 }
 
-func (s *ExpContext) PartLists() IPartListsContext {
+func (s *CollectionExpContext) PartLists() IPartListsContext {
 	var t antlr.RuleContext
 	for _, ctx := range s.GetChildren() {
 		if _, ok := ctx.(IPartListsContext); ok {
@@ -1602,7 +1614,7 @@ func (s *ExpContext) PartLists() IPartListsContext {
 	return t.(IPartListsContext)
 }
 
-func (s *ExpContext) Sum() ISumContext {
+func (s *CollectionExpContext) Sum() ISumContext {
 	var t antlr.RuleContext
 	for _, ctx := range s.GetChildren() {
 		if _, ok := ctx.(ISumContext); ok {
@@ -1618,7 +1630,7 @@ func (s *ExpContext) Sum() ISumContext {
 	return t.(ISumContext)
 }
 
-func (s *ExpContext) Subtract() ISubtractContext {
+func (s *CollectionExpContext) Subtract() ISubtractContext {
 	var t antlr.RuleContext
 	for _, ctx := range s.GetChildren() {
 		if _, ok := ctx.(ISubtractContext); ok {
@@ -1634,7 +1646,7 @@ func (s *ExpContext) Subtract() ISubtractContext {
 	return t.(ISubtractContext)
 }
 
-func (s *ExpContext) Max() IMaxContext {
+func (s *CollectionExpContext) Max() IMaxContext {
 	var t antlr.RuleContext
 	for _, ctx := range s.GetChildren() {
 		if _, ok := ctx.(IMaxContext); ok {
@@ -1650,7 +1662,7 @@ func (s *ExpContext) Max() IMaxContext {
 	return t.(IMaxContext)
 }
 
-func (s *ExpContext) Sort() ISortContext {
+func (s *CollectionExpContext) Sort() ISortContext {
 	var t antlr.RuleContext
 	for _, ctx := range s.GetChildren() {
 		if _, ok := ctx.(ISortContext); ok {
@@ -1666,30 +1678,30 @@ func (s *ExpContext) Sort() ISortContext {
 	return t.(ISortContext)
 }
 
-func (s *ExpContext) GetRuleContext() antlr.RuleContext {
+func (s *CollectionExpContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *ExpContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+func (s *CollectionExpContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
 	return antlr.TreesStringTree(s, ruleNames, recog)
 }
 
-func (s *ExpContext) EnterRule(listener antlr.ParseTreeListener) {
+func (s *CollectionExpContext) EnterRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(BricksListener); ok {
-		listenerT.EnterExp(s)
+		listenerT.EnterCollectionExp(s)
 	}
 }
 
-func (s *ExpContext) ExitRule(listener antlr.ParseTreeListener) {
+func (s *CollectionExpContext) ExitRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(BricksListener); ok {
-		listenerT.ExitExp(s)
+		listenerT.ExitCollectionExp(s)
 	}
 }
 
-func (p *BricksParser) Exp() (localctx IExpContext) {
-	localctx = NewExpContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 14, BricksParserRULE_exp)
-	p.SetState(106)
+func (p *BricksParser) CollectionExp() (localctx ICollectionExpContext) {
+	localctx = NewCollectionExpContext(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 14, BricksParserRULE_collectionExp)
+	p.SetState(111)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -1699,200 +1711,104 @@ func (p *BricksParser) Exp() (localctx IExpContext) {
 	case BricksParserID:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(92)
+			p.SetState(97)
 			p.Identifier()
 		}
 
 	case BricksParserT__8:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(93)
+			p.SetState(98)
 			p.Load()
 		}
 
 	case BricksParserT__9:
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(94)
+			p.SetState(99)
 			p.Import_()
 		}
 
 	case BricksParserT__10:
 		p.EnterOuterAlt(localctx, 4)
 		{
-			p.SetState(95)
+			p.SetState(100)
 			p.AllParts()
 		}
 
 	case BricksParserT__11:
 		p.EnterOuterAlt(localctx, 5)
 		{
-			p.SetState(96)
+			p.SetState(101)
 			p.Lost()
 		}
 
 	case BricksParserT__12:
 		p.EnterOuterAlt(localctx, 6)
 		{
-			p.SetState(97)
+			p.SetState(102)
 			p.Set()
 		}
 
 	case BricksParserT__13:
 		p.EnterOuterAlt(localctx, 7)
 		{
-			p.SetState(98)
+			p.SetState(103)
 			p.UserSet()
 		}
 
 	case BricksParserT__14:
 		p.EnterOuterAlt(localctx, 8)
 		{
-			p.SetState(99)
+			p.SetState(104)
 			p.SetList()
 		}
 
 	case BricksParserT__15:
 		p.EnterOuterAlt(localctx, 9)
 		{
-			p.SetState(100)
+			p.SetState(105)
 			p.PartList()
 		}
 
 	case BricksParserT__16:
 		p.EnterOuterAlt(localctx, 10)
 		{
-			p.SetState(101)
+			p.SetState(106)
 			p.PartLists()
 		}
 
 	case BricksParserT__17:
 		p.EnterOuterAlt(localctx, 11)
 		{
-			p.SetState(102)
+			p.SetState(107)
 			p.Sum()
 		}
 
 	case BricksParserT__18:
 		p.EnterOuterAlt(localctx, 12)
 		{
-			p.SetState(103)
+			p.SetState(108)
 			p.Subtract()
 		}
 
 	case BricksParserT__19:
 		p.EnterOuterAlt(localctx, 13)
 		{
-			p.SetState(104)
+			p.SetState(109)
 			p.Max()
 		}
 
 	case BricksParserT__20:
 		p.EnterOuterAlt(localctx, 14)
 		{
-			p.SetState(105)
+			p.SetState(110)
 			p.Sort()
 		}
 
 	default:
 		p.SetError(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 		goto errorExit
-	}
-
-errorExit:
-	if p.HasError() {
-		v := p.GetError()
-		localctx.SetException(v)
-		p.GetErrorHandler().ReportError(p, v)
-		p.GetErrorHandler().Recover(p, v)
-		p.SetError(nil)
-	}
-	p.ExitRule()
-	return localctx
-	goto errorExit // Trick to prevent compiler error if the label is not used
-}
-
-// IIdentifierContext is an interface to support dynamic dispatch.
-type IIdentifierContext interface {
-	antlr.ParserRuleContext
-
-	// GetParser returns the parser.
-	GetParser() antlr.Parser
-
-	// Getter signatures
-	ID() antlr.TerminalNode
-
-	// IsIdentifierContext differentiates from other interfaces.
-	IsIdentifierContext()
-}
-
-type IdentifierContext struct {
-	antlr.BaseParserRuleContext
-	parser antlr.Parser
-}
-
-func NewEmptyIdentifierContext() *IdentifierContext {
-	var p = new(IdentifierContext)
-	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
-	p.RuleIndex = BricksParserRULE_identifier
-	return p
-}
-
-func InitEmptyIdentifierContext(p *IdentifierContext) {
-	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
-	p.RuleIndex = BricksParserRULE_identifier
-}
-
-func (*IdentifierContext) IsIdentifierContext() {}
-
-func NewIdentifierContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *IdentifierContext {
-	var p = new(IdentifierContext)
-
-	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
-
-	p.parser = parser
-	p.RuleIndex = BricksParserRULE_identifier
-
-	return p
-}
-
-func (s *IdentifierContext) GetParser() antlr.Parser { return s.parser }
-
-func (s *IdentifierContext) ID() antlr.TerminalNode {
-	return s.GetToken(BricksParserID, 0)
-}
-
-func (s *IdentifierContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *IdentifierContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
-	return antlr.TreesStringTree(s, ruleNames, recog)
-}
-
-func (s *IdentifierContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(BricksListener); ok {
-		listenerT.EnterIdentifier(s)
-	}
-}
-
-func (s *IdentifierContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(BricksListener); ok {
-		listenerT.ExitIdentifier(s)
-	}
-}
-
-func (p *BricksParser) Identifier() (localctx IIdentifierContext) {
-	localctx = NewIdentifierContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 16, BricksParserRULE_identifier)
-	p.EnterOuterAlt(localctx, 1)
-	{
-		p.SetState(108)
-		p.Match(BricksParserID)
-		if p.HasError() {
-			// Recognition error - abort rule
-			goto errorExit
-		}
 	}
 
 errorExit:
@@ -1980,10 +1896,10 @@ func (s *LoadContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BricksParser) Load() (localctx ILoadContext) {
 	localctx = NewLoadContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 18, BricksParserRULE_load)
+	p.EnterRule(localctx, 16, BricksParserRULE_load)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(110)
+		p.SetState(113)
 		p.Match(BricksParserT__8)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -1991,7 +1907,7 @@ func (p *BricksParser) Load() (localctx ILoadContext) {
 		}
 	}
 	{
-		p.SetState(111)
+		p.SetState(114)
 		p.Match(BricksParserT__2)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -1999,7 +1915,7 @@ func (p *BricksParser) Load() (localctx ILoadContext) {
 		}
 	}
 	{
-		p.SetState(112)
+		p.SetState(115)
 		p.Match(BricksParserSTRING)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2007,7 +1923,7 @@ func (p *BricksParser) Load() (localctx ILoadContext) {
 		}
 	}
 	{
-		p.SetState(113)
+		p.SetState(116)
 		p.Match(BricksParserT__4)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2100,10 +2016,10 @@ func (s *Import_Context) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BricksParser) Import_() (localctx IImport_Context) {
 	localctx = NewImport_Context(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 20, BricksParserRULE_import_)
+	p.EnterRule(localctx, 18, BricksParserRULE_import_)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(115)
+		p.SetState(118)
 		p.Match(BricksParserT__9)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2111,7 +2027,7 @@ func (p *BricksParser) Import_() (localctx IImport_Context) {
 		}
 	}
 	{
-		p.SetState(116)
+		p.SetState(119)
 		p.Match(BricksParserT__2)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2119,7 +2035,7 @@ func (p *BricksParser) Import_() (localctx IImport_Context) {
 		}
 	}
 	{
-		p.SetState(117)
+		p.SetState(120)
 		p.Match(BricksParserSTRING)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2127,7 +2043,7 @@ func (p *BricksParser) Import_() (localctx IImport_Context) {
 		}
 	}
 	{
-		p.SetState(118)
+		p.SetState(121)
 		p.Match(BricksParserT__4)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2211,10 +2127,10 @@ func (s *AllPartsContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BricksParser) AllParts() (localctx IAllPartsContext) {
 	localctx = NewAllPartsContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 22, BricksParserRULE_allParts)
+	p.EnterRule(localctx, 20, BricksParserRULE_allParts)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(120)
+		p.SetState(123)
 		p.Match(BricksParserT__10)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2298,10 +2214,10 @@ func (s *LostContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BricksParser) Lost() (localctx ILostContext) {
 	localctx = NewLostContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 24, BricksParserRULE_lost)
+	p.EnterRule(localctx, 22, BricksParserRULE_lost)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(122)
+		p.SetState(125)
 		p.Match(BricksParserT__11)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2399,12 +2315,12 @@ func (s *SetContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BricksParser) Set() (localctx ISetContext) {
 	localctx = NewSetContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 26, BricksParserRULE_set)
+	p.EnterRule(localctx, 24, BricksParserRULE_set)
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(124)
+		p.SetState(127)
 		p.Match(BricksParserT__12)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2412,7 +2328,7 @@ func (p *BricksParser) Set() (localctx ISetContext) {
 		}
 	}
 	{
-		p.SetState(125)
+		p.SetState(128)
 		p.Match(BricksParserT__2)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2420,14 +2336,14 @@ func (p *BricksParser) Set() (localctx ISetContext) {
 		}
 	}
 	{
-		p.SetState(126)
+		p.SetState(129)
 		p.Match(BricksParserSET_NUM)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
 		}
 	}
-	p.SetState(129)
+	p.SetState(132)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -2436,7 +2352,7 @@ func (p *BricksParser) Set() (localctx ISetContext) {
 
 	if _la == BricksParserT__3 {
 		{
-			p.SetState(127)
+			p.SetState(130)
 			p.Match(BricksParserT__3)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2444,7 +2360,7 @@ func (p *BricksParser) Set() (localctx ISetContext) {
 			}
 		}
 		{
-			p.SetState(128)
+			p.SetState(131)
 			p.Match(BricksParserBOOL)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2454,7 +2370,7 @@ func (p *BricksParser) Set() (localctx ISetContext) {
 
 	}
 	{
-		p.SetState(131)
+		p.SetState(134)
 		p.Match(BricksParserT__4)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2552,12 +2468,12 @@ func (s *UserSetContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BricksParser) UserSet() (localctx IUserSetContext) {
 	localctx = NewUserSetContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 28, BricksParserRULE_userSet)
+	p.EnterRule(localctx, 26, BricksParserRULE_userSet)
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(133)
+		p.SetState(136)
 		p.Match(BricksParserT__13)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2565,7 +2481,7 @@ func (p *BricksParser) UserSet() (localctx IUserSetContext) {
 		}
 	}
 	{
-		p.SetState(134)
+		p.SetState(137)
 		p.Match(BricksParserT__2)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2573,14 +2489,14 @@ func (p *BricksParser) UserSet() (localctx IUserSetContext) {
 		}
 	}
 	{
-		p.SetState(135)
+		p.SetState(138)
 		p.Match(BricksParserSET_NUM)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
 		}
 	}
-	p.SetState(138)
+	p.SetState(141)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -2589,7 +2505,7 @@ func (p *BricksParser) UserSet() (localctx IUserSetContext) {
 
 	if _la == BricksParserT__3 {
 		{
-			p.SetState(136)
+			p.SetState(139)
 			p.Match(BricksParserT__3)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2597,7 +2513,7 @@ func (p *BricksParser) UserSet() (localctx IUserSetContext) {
 			}
 		}
 		{
-			p.SetState(137)
+			p.SetState(140)
 			p.Match(BricksParserBOOL)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2607,7 +2523,7 @@ func (p *BricksParser) UserSet() (localctx IUserSetContext) {
 
 	}
 	{
-		p.SetState(140)
+		p.SetState(143)
 		p.Match(BricksParserT__4)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2705,12 +2621,12 @@ func (s *SetListContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BricksParser) SetList() (localctx ISetListContext) {
 	localctx = NewSetListContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 30, BricksParserRULE_setList)
+	p.EnterRule(localctx, 28, BricksParserRULE_setList)
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(142)
+		p.SetState(145)
 		p.Match(BricksParserT__14)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2718,7 +2634,7 @@ func (p *BricksParser) SetList() (localctx ISetListContext) {
 		}
 	}
 	{
-		p.SetState(143)
+		p.SetState(146)
 		p.Match(BricksParserT__2)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2726,14 +2642,14 @@ func (p *BricksParser) SetList() (localctx ISetListContext) {
 		}
 	}
 	{
-		p.SetState(144)
+		p.SetState(147)
 		p.Match(BricksParserINT)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
 		}
 	}
-	p.SetState(147)
+	p.SetState(150)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -2742,7 +2658,7 @@ func (p *BricksParser) SetList() (localctx ISetListContext) {
 
 	if _la == BricksParserT__3 {
 		{
-			p.SetState(145)
+			p.SetState(148)
 			p.Match(BricksParserT__3)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2750,7 +2666,7 @@ func (p *BricksParser) SetList() (localctx ISetListContext) {
 			}
 		}
 		{
-			p.SetState(146)
+			p.SetState(149)
 			p.Match(BricksParserBOOL)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2760,7 +2676,7 @@ func (p *BricksParser) SetList() (localctx ISetListContext) {
 
 	}
 	{
-		p.SetState(149)
+		p.SetState(152)
 		p.Match(BricksParserT__4)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2853,10 +2769,10 @@ func (s *PartListContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BricksParser) PartList() (localctx IPartListContext) {
 	localctx = NewPartListContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 32, BricksParserRULE_partList)
+	p.EnterRule(localctx, 30, BricksParserRULE_partList)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(151)
+		p.SetState(154)
 		p.Match(BricksParserT__15)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2864,7 +2780,7 @@ func (p *BricksParser) PartList() (localctx IPartListContext) {
 		}
 	}
 	{
-		p.SetState(152)
+		p.SetState(155)
 		p.Match(BricksParserT__2)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2872,7 +2788,7 @@ func (p *BricksParser) PartList() (localctx IPartListContext) {
 		}
 	}
 	{
-		p.SetState(153)
+		p.SetState(156)
 		p.Match(BricksParserINT)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2880,7 +2796,7 @@ func (p *BricksParser) PartList() (localctx IPartListContext) {
 		}
 	}
 	{
-		p.SetState(154)
+		p.SetState(157)
 		p.Match(BricksParserT__4)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2978,12 +2894,12 @@ func (s *PartListsContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BricksParser) PartLists() (localctx IPartListsContext) {
 	localctx = NewPartListsContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 34, BricksParserRULE_partLists)
+	p.EnterRule(localctx, 32, BricksParserRULE_partLists)
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(156)
+		p.SetState(159)
 		p.Match(BricksParserT__16)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2991,7 +2907,7 @@ func (p *BricksParser) PartLists() (localctx IPartListsContext) {
 		}
 	}
 	{
-		p.SetState(157)
+		p.SetState(160)
 		p.Match(BricksParserT__2)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -2999,14 +2915,14 @@ func (p *BricksParser) PartLists() (localctx IPartListsContext) {
 		}
 	}
 	{
-		p.SetState(158)
+		p.SetState(161)
 		p.Match(BricksParserSTRING)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
 		}
 	}
-	p.SetState(161)
+	p.SetState(164)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -3015,7 +2931,7 @@ func (p *BricksParser) PartLists() (localctx IPartListsContext) {
 
 	if _la == BricksParserT__3 {
 		{
-			p.SetState(159)
+			p.SetState(162)
 			p.Match(BricksParserT__3)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3023,7 +2939,7 @@ func (p *BricksParser) PartLists() (localctx IPartListsContext) {
 			}
 		}
 		{
-			p.SetState(160)
+			p.SetState(163)
 			p.Match(BricksParserBOOL)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3033,7 +2949,7 @@ func (p *BricksParser) PartLists() (localctx IPartListsContext) {
 
 	}
 	{
-		p.SetState(163)
+		p.SetState(166)
 		p.Match(BricksParserT__4)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3062,8 +2978,8 @@ type ISumContext interface {
 	GetParser() antlr.Parser
 
 	// Getter signatures
-	AllExp() []IExpContext
-	Exp(i int) IExpContext
+	AllCollectionExp() []ICollectionExpContext
+	CollectionExp(i int) ICollectionExpContext
 
 	// IsSumContext differentiates from other interfaces.
 	IsSumContext()
@@ -3101,20 +3017,20 @@ func NewSumContext(parser antlr.Parser, parent antlr.ParserRuleContext, invoking
 
 func (s *SumContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *SumContext) AllExp() []IExpContext {
+func (s *SumContext) AllCollectionExp() []ICollectionExpContext {
 	children := s.GetChildren()
 	len := 0
 	for _, ctx := range children {
-		if _, ok := ctx.(IExpContext); ok {
+		if _, ok := ctx.(ICollectionExpContext); ok {
 			len++
 		}
 	}
 
-	tst := make([]IExpContext, len)
+	tst := make([]ICollectionExpContext, len)
 	i := 0
 	for _, ctx := range children {
-		if t, ok := ctx.(IExpContext); ok {
-			tst[i] = t.(IExpContext)
+		if t, ok := ctx.(ICollectionExpContext); ok {
+			tst[i] = t.(ICollectionExpContext)
 			i++
 		}
 	}
@@ -3122,11 +3038,11 @@ func (s *SumContext) AllExp() []IExpContext {
 	return tst
 }
 
-func (s *SumContext) Exp(i int) IExpContext {
+func (s *SumContext) CollectionExp(i int) ICollectionExpContext {
 	var t antlr.RuleContext
 	j := 0
 	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IExpContext); ok {
+		if _, ok := ctx.(ICollectionExpContext); ok {
 			if j == i {
 				t = ctx.(antlr.RuleContext)
 				break
@@ -3139,7 +3055,7 @@ func (s *SumContext) Exp(i int) IExpContext {
 		return nil
 	}
 
-	return t.(IExpContext)
+	return t.(ICollectionExpContext)
 }
 
 func (s *SumContext) GetRuleContext() antlr.RuleContext {
@@ -3164,12 +3080,12 @@ func (s *SumContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BricksParser) Sum() (localctx ISumContext) {
 	localctx = NewSumContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 36, BricksParserRULE_sum)
+	p.EnterRule(localctx, 34, BricksParserRULE_sum)
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(165)
+		p.SetState(168)
 		p.Match(BricksParserT__17)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3177,7 +3093,7 @@ func (p *BricksParser) Sum() (localctx ISumContext) {
 		}
 	}
 	{
-		p.SetState(166)
+		p.SetState(169)
 		p.Match(BricksParserT__2)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3185,10 +3101,10 @@ func (p *BricksParser) Sum() (localctx ISumContext) {
 		}
 	}
 	{
-		p.SetState(167)
-		p.Exp()
+		p.SetState(170)
+		p.CollectionExp()
 	}
-	p.SetState(170)
+	p.SetState(173)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -3197,7 +3113,7 @@ func (p *BricksParser) Sum() (localctx ISumContext) {
 
 	for ok := true; ok; ok = _la == BricksParserT__3 {
 		{
-			p.SetState(168)
+			p.SetState(171)
 			p.Match(BricksParserT__3)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3205,11 +3121,11 @@ func (p *BricksParser) Sum() (localctx ISumContext) {
 			}
 		}
 		{
-			p.SetState(169)
-			p.Exp()
+			p.SetState(172)
+			p.CollectionExp()
 		}
 
-		p.SetState(172)
+		p.SetState(175)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -3217,7 +3133,7 @@ func (p *BricksParser) Sum() (localctx ISumContext) {
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
-		p.SetState(174)
+		p.SetState(177)
 		p.Match(BricksParserT__4)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3246,8 +3162,8 @@ type ISubtractContext interface {
 	GetParser() antlr.Parser
 
 	// Getter signatures
-	AllExp() []IExpContext
-	Exp(i int) IExpContext
+	AllCollectionExp() []ICollectionExpContext
+	CollectionExp(i int) ICollectionExpContext
 
 	// IsSubtractContext differentiates from other interfaces.
 	IsSubtractContext()
@@ -3285,20 +3201,20 @@ func NewSubtractContext(parser antlr.Parser, parent antlr.ParserRuleContext, inv
 
 func (s *SubtractContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *SubtractContext) AllExp() []IExpContext {
+func (s *SubtractContext) AllCollectionExp() []ICollectionExpContext {
 	children := s.GetChildren()
 	len := 0
 	for _, ctx := range children {
-		if _, ok := ctx.(IExpContext); ok {
+		if _, ok := ctx.(ICollectionExpContext); ok {
 			len++
 		}
 	}
 
-	tst := make([]IExpContext, len)
+	tst := make([]ICollectionExpContext, len)
 	i := 0
 	for _, ctx := range children {
-		if t, ok := ctx.(IExpContext); ok {
-			tst[i] = t.(IExpContext)
+		if t, ok := ctx.(ICollectionExpContext); ok {
+			tst[i] = t.(ICollectionExpContext)
 			i++
 		}
 	}
@@ -3306,11 +3222,11 @@ func (s *SubtractContext) AllExp() []IExpContext {
 	return tst
 }
 
-func (s *SubtractContext) Exp(i int) IExpContext {
+func (s *SubtractContext) CollectionExp(i int) ICollectionExpContext {
 	var t antlr.RuleContext
 	j := 0
 	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IExpContext); ok {
+		if _, ok := ctx.(ICollectionExpContext); ok {
 			if j == i {
 				t = ctx.(antlr.RuleContext)
 				break
@@ -3323,7 +3239,7 @@ func (s *SubtractContext) Exp(i int) IExpContext {
 		return nil
 	}
 
-	return t.(IExpContext)
+	return t.(ICollectionExpContext)
 }
 
 func (s *SubtractContext) GetRuleContext() antlr.RuleContext {
@@ -3348,10 +3264,10 @@ func (s *SubtractContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BricksParser) Subtract() (localctx ISubtractContext) {
 	localctx = NewSubtractContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 38, BricksParserRULE_subtract)
+	p.EnterRule(localctx, 36, BricksParserRULE_subtract)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(176)
+		p.SetState(179)
 		p.Match(BricksParserT__18)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3359,7 +3275,7 @@ func (p *BricksParser) Subtract() (localctx ISubtractContext) {
 		}
 	}
 	{
-		p.SetState(177)
+		p.SetState(180)
 		p.Match(BricksParserT__2)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3367,11 +3283,11 @@ func (p *BricksParser) Subtract() (localctx ISubtractContext) {
 		}
 	}
 	{
-		p.SetState(178)
-		p.Exp()
+		p.SetState(181)
+		p.CollectionExp()
 	}
 	{
-		p.SetState(179)
+		p.SetState(182)
 		p.Match(BricksParserT__3)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3379,11 +3295,11 @@ func (p *BricksParser) Subtract() (localctx ISubtractContext) {
 		}
 	}
 	{
-		p.SetState(180)
-		p.Exp()
+		p.SetState(183)
+		p.CollectionExp()
 	}
 	{
-		p.SetState(181)
+		p.SetState(184)
 		p.Match(BricksParserT__4)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3412,8 +3328,8 @@ type IMaxContext interface {
 	GetParser() antlr.Parser
 
 	// Getter signatures
-	AllExp() []IExpContext
-	Exp(i int) IExpContext
+	AllCollectionExp() []ICollectionExpContext
+	CollectionExp(i int) ICollectionExpContext
 
 	// IsMaxContext differentiates from other interfaces.
 	IsMaxContext()
@@ -3451,20 +3367,20 @@ func NewMaxContext(parser antlr.Parser, parent antlr.ParserRuleContext, invoking
 
 func (s *MaxContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *MaxContext) AllExp() []IExpContext {
+func (s *MaxContext) AllCollectionExp() []ICollectionExpContext {
 	children := s.GetChildren()
 	len := 0
 	for _, ctx := range children {
-		if _, ok := ctx.(IExpContext); ok {
+		if _, ok := ctx.(ICollectionExpContext); ok {
 			len++
 		}
 	}
 
-	tst := make([]IExpContext, len)
+	tst := make([]ICollectionExpContext, len)
 	i := 0
 	for _, ctx := range children {
-		if t, ok := ctx.(IExpContext); ok {
-			tst[i] = t.(IExpContext)
+		if t, ok := ctx.(ICollectionExpContext); ok {
+			tst[i] = t.(ICollectionExpContext)
 			i++
 		}
 	}
@@ -3472,11 +3388,11 @@ func (s *MaxContext) AllExp() []IExpContext {
 	return tst
 }
 
-func (s *MaxContext) Exp(i int) IExpContext {
+func (s *MaxContext) CollectionExp(i int) ICollectionExpContext {
 	var t antlr.RuleContext
 	j := 0
 	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IExpContext); ok {
+		if _, ok := ctx.(ICollectionExpContext); ok {
 			if j == i {
 				t = ctx.(antlr.RuleContext)
 				break
@@ -3489,7 +3405,7 @@ func (s *MaxContext) Exp(i int) IExpContext {
 		return nil
 	}
 
-	return t.(IExpContext)
+	return t.(ICollectionExpContext)
 }
 
 func (s *MaxContext) GetRuleContext() antlr.RuleContext {
@@ -3514,12 +3430,12 @@ func (s *MaxContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BricksParser) Max() (localctx IMaxContext) {
 	localctx = NewMaxContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 40, BricksParserRULE_max)
+	p.EnterRule(localctx, 38, BricksParserRULE_max)
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(183)
+		p.SetState(186)
 		p.Match(BricksParserT__19)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3527,7 +3443,7 @@ func (p *BricksParser) Max() (localctx IMaxContext) {
 		}
 	}
 	{
-		p.SetState(184)
+		p.SetState(187)
 		p.Match(BricksParserT__2)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3535,10 +3451,10 @@ func (p *BricksParser) Max() (localctx IMaxContext) {
 		}
 	}
 	{
-		p.SetState(185)
-		p.Exp()
+		p.SetState(188)
+		p.CollectionExp()
 	}
-	p.SetState(188)
+	p.SetState(191)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -3547,7 +3463,7 @@ func (p *BricksParser) Max() (localctx IMaxContext) {
 
 	for ok := true; ok; ok = _la == BricksParserT__3 {
 		{
-			p.SetState(186)
+			p.SetState(189)
 			p.Match(BricksParserT__3)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3555,11 +3471,11 @@ func (p *BricksParser) Max() (localctx IMaxContext) {
 			}
 		}
 		{
-			p.SetState(187)
-			p.Exp()
+			p.SetState(190)
+			p.CollectionExp()
 		}
 
-		p.SetState(190)
+		p.SetState(193)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -3567,7 +3483,7 @@ func (p *BricksParser) Max() (localctx IMaxContext) {
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
-		p.SetState(192)
+		p.SetState(195)
 		p.Match(BricksParserT__4)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3608,7 +3524,7 @@ type ISortContext interface {
 	SetDescending(antlr.Token)
 
 	// Getter signatures
-	Exp() IExpContext
+	CollectionExp() ICollectionExpContext
 
 	// IsSortContext differentiates from other interfaces.
 	IsSortContext()
@@ -3656,10 +3572,10 @@ func (s *SortContext) SetQuantity(v antlr.Token) { s.quantity = v }
 
 func (s *SortContext) SetDescending(v antlr.Token) { s.descending = v }
 
-func (s *SortContext) Exp() IExpContext {
+func (s *SortContext) CollectionExp() ICollectionExpContext {
 	var t antlr.RuleContext
 	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IExpContext); ok {
+		if _, ok := ctx.(ICollectionExpContext); ok {
 			t = ctx.(antlr.RuleContext)
 			break
 		}
@@ -3669,7 +3585,7 @@ func (s *SortContext) Exp() IExpContext {
 		return nil
 	}
 
-	return t.(IExpContext)
+	return t.(ICollectionExpContext)
 }
 
 func (s *SortContext) GetRuleContext() antlr.RuleContext {
@@ -3694,12 +3610,12 @@ func (s *SortContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *BricksParser) Sort() (localctx ISortContext) {
 	localctx = NewSortContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 42, BricksParserRULE_sort)
+	p.EnterRule(localctx, 40, BricksParserRULE_sort)
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(194)
+		p.SetState(197)
 		p.Match(BricksParserT__20)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3707,7 +3623,7 @@ func (p *BricksParser) Sort() (localctx ISortContext) {
 		}
 	}
 	{
-		p.SetState(195)
+		p.SetState(198)
 		p.Match(BricksParserT__2)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -3715,15 +3631,15 @@ func (p *BricksParser) Sort() (localctx ISortContext) {
 		}
 	}
 	{
-		p.SetState(196)
-		p.Exp()
+		p.SetState(199)
+		p.CollectionExp()
 	}
-	p.SetState(199)
+	p.SetState(202)
 	p.GetErrorHandler().Sync(p)
 
-	if p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 10, p.GetParserRuleContext()) == 1 {
+	if p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 12, p.GetParserRuleContext()) == 1 {
 		{
-			p.SetState(197)
+			p.SetState(200)
 			p.Match(BricksParserT__3)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3731,7 +3647,7 @@ func (p *BricksParser) Sort() (localctx ISortContext) {
 			}
 		}
 		{
-			p.SetState(198)
+			p.SetState(201)
 
 			var _m = p.Match(BricksParserT__21)
 
@@ -3745,7 +3661,7 @@ func (p *BricksParser) Sort() (localctx ISortContext) {
 	} else if p.HasError() { // JIM
 		goto errorExit
 	}
-	p.SetState(203)
+	p.SetState(206)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -3754,7 +3670,7 @@ func (p *BricksParser) Sort() (localctx ISortContext) {
 
 	if _la == BricksParserT__3 {
 		{
-			p.SetState(201)
+			p.SetState(204)
 			p.Match(BricksParserT__3)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -3762,7 +3678,7 @@ func (p *BricksParser) Sort() (localctx ISortContext) {
 			}
 		}
 		{
-			p.SetState(202)
+			p.SetState(205)
 
 			var _m = p.Match(BricksParserT__22)
 
@@ -3775,8 +3691,458 @@ func (p *BricksParser) Sort() (localctx ISortContext) {
 
 	}
 	{
-		p.SetState(205)
+		p.SetState(208)
 		p.Match(BricksParserT__4)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
+	}
+
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
+	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
+}
+
+// IBuildExpContext is an interface to support dynamic dispatch.
+type IBuildExpContext interface {
+	antlr.ParserRuleContext
+
+	// GetParser returns the parser.
+	GetParser() antlr.Parser
+
+	// Getter signatures
+	Identifier() IIdentifierContext
+	Build() IBuildContext
+
+	// IsBuildExpContext differentiates from other interfaces.
+	IsBuildExpContext()
+}
+
+type BuildExpContext struct {
+	antlr.BaseParserRuleContext
+	parser antlr.Parser
+}
+
+func NewEmptyBuildExpContext() *BuildExpContext {
+	var p = new(BuildExpContext)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_buildExp
+	return p
+}
+
+func InitEmptyBuildExpContext(p *BuildExpContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_buildExp
+}
+
+func (*BuildExpContext) IsBuildExpContext() {}
+
+func NewBuildExpContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *BuildExpContext {
+	var p = new(BuildExpContext)
+
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
+
+	p.parser = parser
+	p.RuleIndex = BricksParserRULE_buildExp
+
+	return p
+}
+
+func (s *BuildExpContext) GetParser() antlr.Parser { return s.parser }
+
+func (s *BuildExpContext) Identifier() IIdentifierContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IIdentifierContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IIdentifierContext)
+}
+
+func (s *BuildExpContext) Build() IBuildContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IBuildContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IBuildContext)
+}
+
+func (s *BuildExpContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *BuildExpContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+	return antlr.TreesStringTree(s, ruleNames, recog)
+}
+
+func (s *BuildExpContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(BricksListener); ok {
+		listenerT.EnterBuildExp(s)
+	}
+}
+
+func (s *BuildExpContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(BricksListener); ok {
+		listenerT.ExitBuildExp(s)
+	}
+}
+
+func (p *BricksParser) BuildExp() (localctx IBuildExpContext) {
+	localctx = NewBuildExpContext(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 42, BricksParserRULE_buildExp)
+	p.SetState(212)
+	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
+
+	switch p.GetTokenStream().LA(1) {
+	case BricksParserID:
+		p.EnterOuterAlt(localctx, 1)
+		{
+			p.SetState(210)
+			p.Identifier()
+		}
+
+	case BricksParserT__23:
+		p.EnterOuterAlt(localctx, 2)
+		{
+			p.SetState(211)
+			p.Build()
+		}
+
+	default:
+		p.SetError(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
+		goto errorExit
+	}
+
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
+	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
+}
+
+// IBuildContext is an interface to support dynamic dispatch.
+type IBuildContext interface {
+	antlr.ParserRuleContext
+
+	// GetParser returns the parser.
+	GetParser() antlr.Parser
+
+	// GetBuild_mode returns the build_mode token.
+	GetBuild_mode() antlr.Token
+
+	// SetBuild_mode sets the build_mode token.
+	SetBuild_mode(antlr.Token)
+
+	// Getter signatures
+	AllCollectionExp() []ICollectionExpContext
+	CollectionExp(i int) ICollectionExpContext
+	ID() antlr.TerminalNode
+
+	// IsBuildContext differentiates from other interfaces.
+	IsBuildContext()
+}
+
+type BuildContext struct {
+	antlr.BaseParserRuleContext
+	parser     antlr.Parser
+	build_mode antlr.Token
+}
+
+func NewEmptyBuildContext() *BuildContext {
+	var p = new(BuildContext)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_build
+	return p
+}
+
+func InitEmptyBuildContext(p *BuildContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_build
+}
+
+func (*BuildContext) IsBuildContext() {}
+
+func NewBuildContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *BuildContext {
+	var p = new(BuildContext)
+
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
+
+	p.parser = parser
+	p.RuleIndex = BricksParserRULE_build
+
+	return p
+}
+
+func (s *BuildContext) GetParser() antlr.Parser { return s.parser }
+
+func (s *BuildContext) GetBuild_mode() antlr.Token { return s.build_mode }
+
+func (s *BuildContext) SetBuild_mode(v antlr.Token) { s.build_mode = v }
+
+func (s *BuildContext) AllCollectionExp() []ICollectionExpContext {
+	children := s.GetChildren()
+	len := 0
+	for _, ctx := range children {
+		if _, ok := ctx.(ICollectionExpContext); ok {
+			len++
+		}
+	}
+
+	tst := make([]ICollectionExpContext, len)
+	i := 0
+	for _, ctx := range children {
+		if t, ok := ctx.(ICollectionExpContext); ok {
+			tst[i] = t.(ICollectionExpContext)
+			i++
+		}
+	}
+
+	return tst
+}
+
+func (s *BuildContext) CollectionExp(i int) ICollectionExpContext {
+	var t antlr.RuleContext
+	j := 0
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(ICollectionExpContext); ok {
+			if j == i {
+				t = ctx.(antlr.RuleContext)
+				break
+			}
+			j++
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(ICollectionExpContext)
+}
+
+func (s *BuildContext) ID() antlr.TerminalNode {
+	return s.GetToken(BricksParserID, 0)
+}
+
+func (s *BuildContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *BuildContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+	return antlr.TreesStringTree(s, ruleNames, recog)
+}
+
+func (s *BuildContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(BricksListener); ok {
+		listenerT.EnterBuild(s)
+	}
+}
+
+func (s *BuildContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(BricksListener); ok {
+		listenerT.ExitBuild(s)
+	}
+}
+
+func (p *BricksParser) Build() (localctx IBuildContext) {
+	localctx = NewBuildContext(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 44, BricksParserRULE_build)
+	var _la int
+
+	p.EnterOuterAlt(localctx, 1)
+	{
+		p.SetState(214)
+		p.Match(BricksParserT__23)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
+	}
+	{
+		p.SetState(215)
+		p.Match(BricksParserT__2)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
+	}
+	{
+		p.SetState(216)
+		p.CollectionExp()
+	}
+	{
+		p.SetState(217)
+		p.Match(BricksParserT__3)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
+	}
+	{
+		p.SetState(218)
+		p.CollectionExp()
+	}
+	p.SetState(221)
+	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
+	_la = p.GetTokenStream().LA(1)
+
+	if _la == BricksParserT__3 {
+		{
+			p.SetState(219)
+			p.Match(BricksParserT__3)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(220)
+
+			var _m = p.Match(BricksParserID)
+
+			localctx.(*BuildContext).build_mode = _m
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+
+	}
+	{
+		p.SetState(223)
+		p.Match(BricksParserT__4)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
+	}
+
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
+	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
+}
+
+// IIdentifierContext is an interface to support dynamic dispatch.
+type IIdentifierContext interface {
+	antlr.ParserRuleContext
+
+	// GetParser returns the parser.
+	GetParser() antlr.Parser
+
+	// Getter signatures
+	ID() antlr.TerminalNode
+
+	// IsIdentifierContext differentiates from other interfaces.
+	IsIdentifierContext()
+}
+
+type IdentifierContext struct {
+	antlr.BaseParserRuleContext
+	parser antlr.Parser
+}
+
+func NewEmptyIdentifierContext() *IdentifierContext {
+	var p = new(IdentifierContext)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_identifier
+	return p
+}
+
+func InitEmptyIdentifierContext(p *IdentifierContext) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = BricksParserRULE_identifier
+}
+
+func (*IdentifierContext) IsIdentifierContext() {}
+
+func NewIdentifierContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *IdentifierContext {
+	var p = new(IdentifierContext)
+
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
+
+	p.parser = parser
+	p.RuleIndex = BricksParserRULE_identifier
+
+	return p
+}
+
+func (s *IdentifierContext) GetParser() antlr.Parser { return s.parser }
+
+func (s *IdentifierContext) ID() antlr.TerminalNode {
+	return s.GetToken(BricksParserID, 0)
+}
+
+func (s *IdentifierContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *IdentifierContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+	return antlr.TreesStringTree(s, ruleNames, recog)
+}
+
+func (s *IdentifierContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(BricksListener); ok {
+		listenerT.EnterIdentifier(s)
+	}
+}
+
+func (s *IdentifierContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(BricksListener); ok {
+		listenerT.ExitIdentifier(s)
+	}
+}
+
+func (p *BricksParser) Identifier() (localctx IIdentifierContext) {
+	localctx = NewIdentifierContext(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 46, BricksParserRULE_identifier)
+	p.EnterOuterAlt(localctx, 1)
+	{
+		p.SetState(225)
+		p.Match(BricksParserID)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit

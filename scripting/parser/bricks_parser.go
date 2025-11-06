@@ -41,7 +41,7 @@ func bricksParserInit() {
 	staticData.SymbolicNames = []string{
 		"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
 		"", "", "", "", "", "", "", "", "ID", "INT", "SET_NUM", "BOOL", "STRING",
-		"WS",
+		"LINE_COMMENT", "WS",
 	}
 	staticData.RuleNames = []string{
 		"bricks", "command", "expression", "assignment", "save", "export", "print",
@@ -51,7 +51,7 @@ func bricksParserInit() {
 	}
 	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 30, 225, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
+		4, 1, 31, 225, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2, 10, 7,
 		10, 2, 11, 7, 11, 2, 12, 7, 12, 2, 13, 7, 13, 2, 14, 7, 14, 2, 15, 7, 15,
 		2, 16, 7, 16, 2, 17, 7, 17, 2, 18, 7, 18, 2, 19, 7, 19, 2, 20, 7, 20, 2,
@@ -181,37 +181,38 @@ func NewBricksParser(input antlr.TokenStream) *BricksParser {
 
 // BricksParser tokens.
 const (
-	BricksParserEOF     = antlr.TokenEOF
-	BricksParserT__0    = 1
-	BricksParserT__1    = 2
-	BricksParserT__2    = 3
-	BricksParserT__3    = 4
-	BricksParserT__4    = 5
-	BricksParserT__5    = 6
-	BricksParserT__6    = 7
-	BricksParserT__7    = 8
-	BricksParserT__8    = 9
-	BricksParserT__9    = 10
-	BricksParserT__10   = 11
-	BricksParserT__11   = 12
-	BricksParserT__12   = 13
-	BricksParserT__13   = 14
-	BricksParserT__14   = 15
-	BricksParserT__15   = 16
-	BricksParserT__16   = 17
-	BricksParserT__17   = 18
-	BricksParserT__18   = 19
-	BricksParserT__19   = 20
-	BricksParserT__20   = 21
-	BricksParserT__21   = 22
-	BricksParserT__22   = 23
-	BricksParserT__23   = 24
-	BricksParserID      = 25
-	BricksParserINT     = 26
-	BricksParserSET_NUM = 27
-	BricksParserBOOL    = 28
-	BricksParserSTRING  = 29
-	BricksParserWS      = 30
+	BricksParserEOF          = antlr.TokenEOF
+	BricksParserT__0         = 1
+	BricksParserT__1         = 2
+	BricksParserT__2         = 3
+	BricksParserT__3         = 4
+	BricksParserT__4         = 5
+	BricksParserT__5         = 6
+	BricksParserT__6         = 7
+	BricksParserT__7         = 8
+	BricksParserT__8         = 9
+	BricksParserT__9         = 10
+	BricksParserT__10        = 11
+	BricksParserT__11        = 12
+	BricksParserT__12        = 13
+	BricksParserT__13        = 14
+	BricksParserT__14        = 15
+	BricksParserT__15        = 16
+	BricksParserT__16        = 17
+	BricksParserT__17        = 18
+	BricksParserT__18        = 19
+	BricksParserT__19        = 20
+	BricksParserT__20        = 21
+	BricksParserT__21        = 22
+	BricksParserT__22        = 23
+	BricksParserT__23        = 24
+	BricksParserID           = 25
+	BricksParserINT          = 26
+	BricksParserSET_NUM      = 27
+	BricksParserBOOL         = 28
+	BricksParserSTRING       = 29
+	BricksParserLINE_COMMENT = 30
+	BricksParserWS           = 31
 )
 
 // BricksParser rules.

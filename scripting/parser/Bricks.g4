@@ -65,4 +65,6 @@ BOOL: 'true'|'false';
 
 STRING : '"' ( '\\"' | . )*? '"' ;
 
+LINE_COMMENT : '//' ~[\r\n]* -> skip ;
+
 WS: [ \t\r\n]+ -> skip;
